@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<meta name="gwt:property" content="locale=sl_SI">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   	<link rel="icon" href="favicon.ico">
+
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap-responsive.css">
+    <link type="text/css" rel="stylesheet" href="css/kulinarika.css">
+
+    <title>Kuharske mojstrovine</title>
+    
+    <!--                                           -->
+    <!-- This script loads your compiled module.   -->
+    <!-- If you add any GWT meta tags, they must   -->
+    <!-- be added before this line.                -->
+    <!--                                           -->
+    <script src="magistrska/magistrska.nocache.js"></script>
+  </head>
+
+  <body>
+    <!-- OPTIONAL: include this if you want history support -->
+    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+    
+    <noscript>
+      <div id="noScript">
+        Your web browser must have JavaScript enabled
+        in order for this application to display correctly.
+      </div>
+    </noscript>
+    
+	<header></header>
+
+	<div class="container">
+    <h1 id="recipeTitle"></h1>
+	  <div class="row-fluid">
+	    <div class="span2">
+		    <div id="ingredients">
+    			<h2 id="ingredientsTitle"></h2>
+    		</div>
+		    <div id="tools">
+    			<h2 id="toolsTitle"></h2>
+		    </div>
+	    </div>
+	    <div class="span10">
+    		<div id="recipeInfo"></div>
+    		<div id="tabs">
+	    		<ul class="nav nav-tabs">
+				  <li class="active"><a href="#basic"><i class="icon-list"></i> <span id="tabBasic"></span></a></li>
+				  <li><a href="#details"><i class="icon-list-alt"></i> <span id="tabDetails"></span></a></li>
+				  <li><a href="#video"><i class=" icon-film"></i> <span id="tabVideo"></span></a></li>
+				  <li><a href="#audio"><i class="icon-music"></i> <span id="tabAudio"></span></a></li>
+				</ul>
+				<div id="textBasic"></div>
+				<div id="textDetails"></div>
+				<div id="video"></div>
+				<div id="audio"></div>
+    		</div>
+    		<div id="comments">
+    			<i class="icon-comment"></i><h2 id="commentsTitle"></h2>
+    		</div>
+	    </div>
+	  </div>
+	  <footer>Jakob Merljak, 2013.</footer>
+	</div>
+
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- DB connection -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost/magistrska</property>
+        <property name="hibernate.connection.username">magistrska</property>
+        <property name="hibernate.connection.password">magistrskapostgres</property>
+
+        <!-- SQL dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">1</property>
+
+        <!-- Connection pooling -->
+        <!--<property name="hibernate.c3p0.min_size">5</property>
+        <property name="hibernate.c3p0.max_size">25</property>
+        <property name="hibernate.c3p0.timeout">1500</property>
+        <property name="hibernate.c3p0.max_statements">50</property> -->
+
+        <!-- Enable Hibernate's automatic session context management
+        <property name="current_session_context_class">thread</property> -->
+
+        <!-- Disable the second-level cache -->
+    	<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+    	
+    	<!-- 
+    	<property name="javax.persistence.validation.mode">none</property> -->
+
+    	<!-- Echo all executed SQL to stdout? -->
+        <property name="show_sql">true</property>
+
+        <!-- Update or drop and re-create the database schema on startup? -->
+        <property name="hbm2ddl.auto">drop-create</property>
+
+        <!-- Entity mapping -->
+        <mapping class="si.merljak.magistrska.model.Comment" />
+		<mapping class="si.merljak.magistrska.model.Ingredient" />
+		<mapping class="si.merljak.magistrska.model.Recipe" />
+		<mapping class="si.merljak.magistrska.model.RecipeAudio" />
+		<mapping class="si.merljak.magistrska.model.RecipeIngredient" />
+		<mapping class="si.merljak.magistrska.model.RecipeText" />
+		<mapping class="si.merljak.magistrska.model.RecipeTool" />
+		<mapping class="si.merljak.magistrska.model.RecipeVideo" />
+		<mapping class="si.merljak.magistrska.model.RecipeVideoSubtitle" />
+		<mapping class="si.merljak.magistrska.model.Technique" />
+		<mapping class="si.merljak.magistrska.model.TechniqueAudio" />
+		<mapping class="si.merljak.magistrska.model.TechniqueText" />
+		<mapping class="si.merljak.magistrska.model.TechniqueTool" />
+		<mapping class="si.merljak.magistrska.model.TechniqueVideo" />
+		<mapping class="si.merljak.magistrska.model.TechniqueVideoSubtitle" />
+		<mapping class="si.merljak.magistrska.model.Tool" />
+		<mapping class="si.merljak.magistrska.model.User" />
+    </session-factory>
+</hibernate-configuration>
