@@ -9,25 +9,50 @@
 
 	<dependencies>
 		<!-- model -->
-        <dependency>
-            <groupId>si.merljak.magistrska</groupId>
-            <artifactId>model</artifactId>
+		<dependency>
+			<groupId>si.merljak.magistrska</groupId>
+			<artifactId>model</artifactId>
 			<version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
+			<type>jar</type>
+		</dependency>
 
 		<!-- GWT -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
 			<version>2.5.0</version>
+  			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>2.5.0</version>
+  			<scope>provided</scope>
+		</dependency>
+
+		<!-- GWT / bootstrap -->
+		<dependency>
+			<groupId>com.github.gwtbootstrap</groupId>
+			<artifactId>gwt-bootstrap</artifactId>
+			<version>2.2.1.0-SNAPSHOT</version>
+			<!--<version>2.0.4.0</version>-->
+  			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<!-- GWT bootstrap snapshot repository -->
+		<repository>
+			<id>sonatype</id>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>

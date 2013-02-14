@@ -7,10 +7,9 @@ import si.merljak.magistrska.client.i18n.GlobalConstants;
 import si.merljak.magistrska.client.i18n.GlobalFormatters;
 import si.merljak.magistrska.client.rpc.RecipeService;
 import si.merljak.magistrska.client.rpc.RecipeServiceAsync;
-import si.merljak.magistrska.client.widgets.GlyphIconWidget;
 import si.merljak.magistrska.client.widgets.IngredientsWidget;
-import si.merljak.magistrska.client.widgets.ListWidget;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
+import si.merljak.magistrska.client.widgets.TabsWidget;
 import si.merljak.magistrska.dto.CommentDto;
 import si.merljak.magistrska.dto.RecipeDto;
 import si.merljak.magistrska.dto.TextDto;
@@ -77,12 +76,9 @@ public class RecipeEntry implements EntryPoint {
 		for (ToolDto tool : recipe.getTools()) {
 			toolsPanel.add(new Label(tool.getQuantity() + " " + tool.getTitle()));
 		}
-
+		
 		// tabs
-		RootPanel.get("tabBasic").getElement().setInnerHTML(constants.tabBasic());
-		RootPanel.get("tabDetails").getElement().setInnerHTML(constants.tabDetails());
-		RootPanel.get("tabVideo").getElement().setInnerHTML(constants.tabVideo());
-		RootPanel.get("tabAudio").getElement().setInnerHTML(constants.tabAudio());
+		RootPanel.get("tabs").add(new TabsWidget());
 
 		RootPanel tabsPanel = RootPanel.get("textBasic");
 		tabsPanel.add(new Label("Besedila:"));
@@ -96,13 +92,10 @@ public class RecipeEntry implements EntryPoint {
 			tools.add(new Label(dateFormat.format(comment.getDate()) + " - " + comment.getUser() + ": " + comment.getContent()));
 			commentsPanel.add(new Label(dateFormat.format(comment.getDate()) + " - " + comment.getUser() + ": " + comment.getContent()));
 		}
-		ListWidget listWidget = new ListWidget(tools);
-		commentsPanel.add(listWidget);
-		
+
 		LocaleWidget localeWidget = new LocaleWidget();
 		commentsPanel.add(localeWidget);
-		commentsPanel.add(new GlyphIconWidget("icon-flag"));
-		commentsPanel.add(new Label(constants.languageMap().get(localeWidget.getCurrentLanguage().name())));
+		
 	}
 
 	public static GlobalConstants getConstants() {
