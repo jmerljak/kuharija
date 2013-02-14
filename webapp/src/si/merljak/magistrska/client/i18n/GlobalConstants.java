@@ -53,15 +53,23 @@ public interface GlobalConstants extends Constants {
 	
 	@DefaultStringMapValue({
 		"sl_SI", "Slovenščina",
-		"en_US", "English",
-		"de_DE", "Deutsch"})
+		"en_US", "English"})
 	Map<String, String> languageMap();
 	
 	@DefaultStringMapValue({
 		"G", "g",
+		"KG", "kg",
+		"OZ", "oz",
+		"LB", "lb",
 		"L", "l",
+		"DL", "dl",
+		"ML", "ml",
+		"PT", "pt",
+		"CUP", "cup",
+		"TABLESPOON", "table spoon",
+		"TEASPOON", "tea spoon",
 		"C", "°C",
-		"K", "K",
+		"F", "°F",
 		"PIECE", "x",
 		"PINCH", "pinch"})
 	Map<String, String> unitMap();

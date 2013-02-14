@@ -1,11 +1,17 @@
 package si.merljak.magistrska.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import si.merljak.magistrska.client.i18n.GlobalConstants;
 import si.merljak.magistrska.client.i18n.GlobalFormatters;
 import si.merljak.magistrska.client.rpc.RecipeService;
 import si.merljak.magistrska.client.rpc.RecipeServiceAsync;
+import si.merljak.magistrska.client.widgets.GlyphIconWidget;
+import si.merljak.magistrska.client.widgets.IngredientsWidget;
+import si.merljak.magistrska.client.widgets.ListWidget;
+import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.dto.CommentDto;
-import si.merljak.magistrska.dto.IngredientDto;
 import si.merljak.magistrska.dto.RecipeDto;
 import si.merljak.magistrska.dto.TextDto;
 import si.merljak.magistrska.dto.ToolDto;
@@ -19,6 +25,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class RecipeEntry implements EntryPoint {
 
@@ -26,13 +33,13 @@ public class RecipeEntry implements EntryPoint {
 	private final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
 
 	// constants
-	private GlobalConstants constants = GWT.create(GlobalConstants.class);
-	private GlobalFormatters formatters = GWT.create(GlobalFormatters.class);
+	private static final GlobalConstants constants = GWT.create(GlobalConstants.class);
+	private static final GlobalFormatters formatters = GWT.create(GlobalFormatters.class);
 
     // formatters
-    private NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
-    private DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
-
+    private static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
+    private static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
+    
 	public void onModuleLoad() {
 		recipeService.getRecipe(0, Language.sl_SI, new AsyncCallback<RecipeDto>() {
 			@Override
@@ -57,15 +64,13 @@ public class RecipeEntry implements EntryPoint {
 		// recipe info
 		RootPanel recipeDetailsPanel = RootPanel.get("recipeInfo");
 		recipeDetailsPanel.add(new Label(constants.preparationTime() + ": " + recipe.getPreparationTime()));
-		recipeDetailsPanel.add(new Label(constants.numberOfMeals() + ": " + recipe.getNumberOfMeals()));
+//		recipeDetailsPanel.add(new Label(constants.numberOfMeals() + ": " + recipe.getNumberOfMeals()));
 		recipeDetailsPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
 		recipeDetailsPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
 
 		// ingredients
 		RootPanel ingredientsPanel = RootPanel.get("ingredients");
-		for (IngredientDto ingredient : recipe.getIngredients()) {
-			ingredientsPanel.add(new Label(numberFormat.format(ingredient.getAmount()) + " " + constants.unitMap().get(ingredient.getUnit().name()) + " " + ingredient.getName()));
-		}
+		ingredientsPanel.add(new IngredientsWidget(recipe.getIngredients(), recipe.getNumberOfMeals()));
 
 		// tools
 		RootPanel toolsPanel = RootPanel.get("tools");
@@ -86,8 +91,25 @@ public class RecipeEntry implements EntryPoint {
 		}
 
 		RootPanel commentsPanel = RootPanel.get("comments");
+		List<Widget> tools = new ArrayList<Widget>();
 		for (CommentDto comment : recipe.getComments()) {
+			tools.add(new Label(dateFormat.format(comment.getDate()) + " - " + comment.getUser() + ": " + comment.getContent()));
 			commentsPanel.add(new Label(dateFormat.format(comment.getDate()) + " - " + comment.getUser() + ": " + comment.getContent()));
 		}
+		ListWidget listWidget = new ListWidget(tools);
+		commentsPanel.add(listWidget);
+		
+		LocaleWidget localeWidget = new LocaleWidget();
+		commentsPanel.add(localeWidget);
+		commentsPanel.add(new GlyphIconWidget("icon-flag"));
+		commentsPanel.add(new Label(constants.languageMap().get(localeWidget.getCurrentLanguage().name())));
+	}
+
+	public static GlobalConstants getConstants() {
+		return constants;
+	}
+	
+	public static NumberFormat getNumberFormat() {
+		return numberFormat;
 	}
 }
