@@ -32,8 +32,8 @@ public class TabsWidget extends Composite {
 				tabAudio.getParent().removeStyleName("active");
 				RootPanel.get("basic").setVisible(true);
 				RootPanel.get("details").setVisible(false);
-				RootPanel.get("audi").setVisible(false);
 				RootPanel.get("video").setVisible(false);
+				RootPanel.get("audio").setVisible(false);
 			}
 		});
 
