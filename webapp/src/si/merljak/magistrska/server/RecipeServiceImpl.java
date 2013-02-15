@@ -28,7 +28,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 //	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	
 	@Override
-	public RecipeDto getRecipe(int recipeId, Language language) {
+	public RecipeDto getRecipe(long recipeId, Language language) {
 		log.debug("executing getRecipe()");
 
 //		Session session = sessionFactory.openSession();
@@ -37,7 +37,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 //		session.getTransaction().commit();
 //		session.close();
 		
-		RecipeDto recipe = new RecipeDto("Okusna jed", "jAKOB", null, Difficulty.EASY, "15min", 4, null);
+		RecipeDto recipe = new RecipeDto("Okusna jed", "Jakob", null, Difficulty.EASY, "15min", 4, null);
 		recipe.addText(new TextDto(Language.sl_SI, "Vzemi kuharsko knjigo,  odpri na strani 54 in kuhaj!", null));
 		recipe.addText(new TextDto(Language.sl_SI, "Vzemi kuharsko knjigo,  odpri na strani 54, dobro preberi, še enkrat pomešaj in kuhaj!", null));
 		recipe.addText(new TextDto(Language.en_US, "Open cook book on page 54, then cook!", null));

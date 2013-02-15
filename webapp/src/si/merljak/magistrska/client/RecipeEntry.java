@@ -38,9 +38,21 @@ public class RecipeEntry implements EntryPoint {
     // formatters
     private static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
     private static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
+
+    private LocaleWidget localeWidget;
     
 	public void onModuleLoad() {
-		recipeService.getRecipe(0, Language.sl_SI, new AsyncCallback<RecipeDto>() {
+		localeWidget = new LocaleWidget();
+		// get parameter
+		long recipeId = -1;
+		String parameter = Window.Location.getParameter("recipe");
+		try {
+			recipeId = Long.parseLong(parameter);
+		} catch (Exception e) {
+			
+		}
+
+		recipeService.getRecipe(recipeId, localeWidget.getCurrentLanguage(), new AsyncCallback<RecipeDto>() {
 			@Override
 			public void onSuccess(RecipeDto recipe) {
 				displayRecipe(recipe);
@@ -56,7 +68,6 @@ public class RecipeEntry implements EntryPoint {
 	private void displayRecipe(RecipeDto recipe) {
 		// titles
 		RootPanel.get("recipeTitle").getElement().setInnerHTML(recipe.getTitle());
-		RootPanel.get("ingredientsTitle").getElement().setInnerHTML(constants.ingredients());
 		RootPanel.get("toolsTitle").getElement().setInnerHTML(constants.tools());
 		RootPanel.get("commentsTitle").getElement().setInnerHTML(constants.comments());
 
@@ -80,10 +91,10 @@ public class RecipeEntry implements EntryPoint {
 		// tabs
 		RootPanel.get("tabs").add(new TabsWidget());
 
-		RootPanel tabsPanel = RootPanel.get("textBasic");
-		tabsPanel.add(new Label("Besedila:"));
+		RootPanel tabsPanel = RootPanel.get("basic");
 		for (TextDto text : recipe.getTexts()) {
 			tabsPanel.add(new Label(text.getContent() + " (" + constants.languageMap().get(text.getLanguage().name()) + ")"));
+			tabsPanel = RootPanel.get("details");
 		}
 
 		RootPanel commentsPanel = RootPanel.get("comments");
@@ -93,7 +104,6 @@ public class RecipeEntry implements EntryPoint {
 			commentsPanel.add(new Label(dateFormat.format(comment.getDate()) + " - " + comment.getUser() + ": " + comment.getContent()));
 		}
 
-		LocaleWidget localeWidget = new LocaleWidget();
 		commentsPanel.add(localeWidget);
 		
 	}

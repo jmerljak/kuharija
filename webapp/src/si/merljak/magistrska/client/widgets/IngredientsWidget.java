@@ -7,6 +7,7 @@ import si.merljak.magistrska.client.i18n.GlobalConstants;
 import si.merljak.magistrska.dto.IngredientDto;
 import si.merljak.magistrska.enumeration.Unit;
 
+import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -23,6 +24,7 @@ public class IngredientsWidget extends Composite {
 	private static final GlobalConstants constants = RecipeEntry.getConstants();
 	private static final NumberFormat numberFormat = RecipeEntry.getNumberFormat();
 
+	private Heading heading = new Heading(2, constants.ingredients());
 	private FlowPanel ingredientsList = new FlowPanel();
 	private Button buttonPlus = new Button("+");
 	private Button buttonMinus = new Button("-");
@@ -86,6 +88,7 @@ public class IngredientsWidget extends Composite {
 		formPanel.add(buttonPlus);
 
 		FlowPanel panel = new FlowPanel();
+		panel.add(heading);
 		panel.add(ingredientsList);
 		panel.add(formPanel);
 		panel.add(convertToNonMetric);

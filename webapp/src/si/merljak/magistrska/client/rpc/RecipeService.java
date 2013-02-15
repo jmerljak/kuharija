@@ -8,5 +8,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("recipe")
 public interface RecipeService extends RemoteService {
-	RecipeDto getRecipe(int recipeId, Language language);
+	RecipeDto getRecipe(long recipeId, Language language);
 }

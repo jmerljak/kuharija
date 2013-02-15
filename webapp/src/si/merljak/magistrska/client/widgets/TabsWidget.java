@@ -30,7 +30,10 @@ public class TabsWidget extends Composite {
 				tabDetails.getParent().removeStyleName("active");
 				tabVideo.getParent().removeStyleName("active");
 				tabAudio.getParent().removeStyleName("active");
-				RootPanel.get("textBasic").setVisible(true);
+				RootPanel.get("basic").setVisible(true);
+				RootPanel.get("details").setVisible(false);
+				RootPanel.get("audi").setVisible(false);
+				RootPanel.get("video").setVisible(false);
 			}
 		});
 
@@ -43,7 +46,10 @@ public class TabsWidget extends Composite {
 				tabDetails.getParent().setStyleName("active");
 				tabVideo.getParent().removeStyleName("active");
 				tabAudio.getParent().removeStyleName("active");
-				RootPanel.get("textBasic").setVisible(false);
+				RootPanel.get("basic").setVisible(false);
+				RootPanel.get("details").setVisible(true);
+				RootPanel.get("video").setVisible(false);
+				RootPanel.get("audio").setVisible(false);
 			}
 		});
 
@@ -56,6 +62,10 @@ public class TabsWidget extends Composite {
 				tabDetails.getParent().removeStyleName("active");
 				tabVideo.getParent().setStyleName("active");
 				tabAudio.getParent().removeStyleName("active");
+				RootPanel.get("basic").setVisible(false);
+				RootPanel.get("details").setVisible(false);
+				RootPanel.get("video").setVisible(true);
+				RootPanel.get("audio").setVisible(false);
 			}
 		});
 
@@ -68,6 +78,10 @@ public class TabsWidget extends Composite {
 				tabDetails.getParent().removeStyleName("active");
 				tabVideo.getParent().removeStyleName("active");
 				tabAudio.getParent().setStyleName("active");
+				RootPanel.get("basic").setVisible(false);
+				RootPanel.get("details").setVisible(false);
+				RootPanel.get("video").setVisible(false);
+				RootPanel.get("audio").setVisible(true);
 			}
 		});
 		
