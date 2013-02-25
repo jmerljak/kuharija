@@ -14,7 +14,6 @@ import si.merljak.magistrska.dto.CommentDto;
 import si.merljak.magistrska.dto.RecipeDto;
 import si.merljak.magistrska.dto.TextDto;
 import si.merljak.magistrska.dto.ToolDto;
-import si.merljak.magistrska.enumeration.Language;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

@@ -27,7 +27,7 @@
             <scope>provided</scope>
 		</dependency>
 
-		<!-- postgre driver -->
+		<!-- postgres driver -->
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -48,7 +48,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- GWT / bootstrap -->
+		<!-- bootstrap -->
 		<dependency>
 			<groupId>com.github.gwtbootstrap</groupId>
 			<artifactId>gwt-bootstrap</artifactId>

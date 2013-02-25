@@ -1,0 +1,31 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+   <persistence-unit name="postgresDS">
+		<jta-data-source>java:jboss/postgresDS</jta-data-source>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="update"/>
+		</properties>
+
+		<!-- Entity mapping -->
+		<class>si.merljak.magistrska.model.Comment</class>
+		<class>si.merljak.magistrska.model.Ingredient</class>
+		<class>si.merljak.magistrska.model.Recipe</class>
+		<class>si.merljak.magistrska.model.RecipeAudio</class>
+		<class>si.merljak.magistrska.model.RecipeIngredient</class>
+		<class>si.merljak.magistrska.model.RecipeText</class>
+		<class>si.merljak.magistrska.model.RecipeTool</class>
+		<class>si.merljak.magistrska.model.RecipeVideo</class>
+		<class>si.merljak.magistrska.model.RecipeVideoSubtitle</class>
+		<class>si.merljak.magistrska.model.Technique</class>
+		<class>si.merljak.magistrska.model.TechniqueAudio</class>
+		<class>si.merljak.magistrska.model.TechniqueText</class>
+		<class>si.merljak.magistrska.model.TechniqueTool</class>
+		<class>si.merljak.magistrska.model.TechniqueVideo</class>
+		<class>si.merljak.magistrska.model.TechniqueVideoSubtitle</class>
+		<class>si.merljak.magistrska.model.Tool</class>
+		<class>si.merljak.magistrska.model.User</class>
+	</persistence-unit>
+</persistence>
