@@ -165,7 +165,7 @@ pip-log.txt
 # poject specific
 target/
 gwt-unitCache/
-webapp/war/magistrska/
-webapp/war/WEB-INF/classes/
-webapp/war/WEB-INF/deploy/
-webapp/war/WEB-INF/lib/
+webapp/src/main/webapp/magistrska/
+webapp/src/main/webapp/WEB-INF/classes/
+webapp/src/main/webapp/WEB-INF/deploy/
+webapp/src/main/webapp/WEB-INF/lib/

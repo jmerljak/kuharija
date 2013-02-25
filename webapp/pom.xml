@@ -2,32 +2,50 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>si.merljak.magistrska</groupId>
 	<artifactId>webapp</artifactId>
-	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
+	
+    <parent>
+		<groupId>si.merljak.magistrska</groupId>
+        <artifactId>root</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
 	<dependencies>
-		<!-- model -->
+        <!-- model -->
 		<dependency>
 			<groupId>si.merljak.magistrska</groupId>
 			<artifactId>model</artifactId>
 			<version>1.0-SNAPSHOT</version>
-			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>si.merljak.magistrska</groupId>
+			<artifactId>model</artifactId>
+			<version>1.0-SNAPSHOT</version>
+            <classifier>sources</classifier>
+            <scope>provided</scope>
+		</dependency>
+
+		<!-- postgre driver -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
 		</dependency>
 
 		<!-- GWT -->
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>2.5.0</version>
-  			<scope>provided</scope>
-		</dependency>
+	    <dependency>
+	      <groupId>com.google.gwt</groupId>
+	      <artifactId>gwt-servlet</artifactId>
+	      <version>${gwt.version}</version>
+	      <scope>runtime</scope>
+	    </dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>2.5.0</version>
-  			<scope>provided</scope>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- GWT / bootstrap -->
@@ -35,44 +53,116 @@
 			<groupId>com.github.gwtbootstrap</groupId>
 			<artifactId>gwt-bootstrap</artifactId>
 			<version>2.2.1.0-SNAPSHOT</version>
-			<!--<version>2.0.4.0</version>-->
-  			<scope>provided</scope>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
-	<repositories>
-		<!-- GWT bootstrap snapshot repository -->
-		<repository>
-			<id>sonatype</id>
-			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
-
 	<build>
+    	<finalName>kuharija</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
-		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
 			</resource>
 		</resources>
+
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<!-- Exclude client only classes from the deployment. As these classes 
+						compile down to JavaScript, they are not needed at runtime. They would only 
+						introduce runtime dependencies to GWT development libraries.
+          			<packagingExcludes>**/client/widgets/**/*.class</packagingExcludes> -->
 				</configuration>
+			</plugin>
+
+			<!-- JBoss AS plugin to deploy war -->
+			<plugin>
+				<groupId>org.jboss.as.plugins</groupId>
+				<artifactId>jboss-as-maven-plugin</artifactId>
+                <version>7.3.Final</version>
+				<executions>
+                    <!--<execution>
+                        <id>deploy-postgresql</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <groupId>postgresql</groupId>
+                            <artifactId>postgresql</artifactId>
+                            <name>postgresql.jar</name>
+                        </configuration>
+                        <goals>
+                            <goal>deploy-artifact</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>add-datasource</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <address>subsystem=datasources,data-source=postgresDS</address>
+                            <resource>
+                                <enable-resource>true</enable-resource>
+                                <properties>
+                                    <connection-url>jdbc:postgresql://localhost/magistrska</connection-url>
+                                    <jndi-name>java:jboss/postgresDS</jndi-name>
+                                    <enabled>true</enabled>
+                                    <driver-name>postgresql.jar</driver-name>
+                                    <class-name>org.postgres.Driver</class-name>
+                                    <user-name>magistrska</user-name>
+                                    <password>magistrskapostgres</password>
+                                    <pool-name>myPool</pool-name>
+                                </properties>
+                            </resource>
+                        </configuration>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                    </execution>-->
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+			</plugin>
+
+			<!-- GWT plugin to compile client-side java code to javascript and to run GWT development mode -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>${gwt.version}</version>
+				<configuration>
+					<inplace>true</inplace>
+					<logLevel>INFO</logLevel>
+					<extraJvmArgs>-Xmx512m</extraJvmArgs>
+					<!-- Configure GWT's development mode (formerly known as hosted mode) 
+						to not start the default server (embedded jetty), but to download the HTML 
+						host page from the configured runTarget. -->
+					<noServer>true</noServer>
+			        <compileSourcesArtifacts>
+			        	<artifact>si.merljak.magistrska:Model</artifact>
+			        </compileSourcesArtifacts>
+				</configuration>
+				<executions>
+				    <execution>
+			            <configuration>
+			              <module>si.merljak.magistrska.Model</module>
+			              <module>si.merljak.magistrska.Webapp</module>
+			            </configuration>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+			        </execution>
+					<!--<execution>
+						<id>gwt-clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>-->
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

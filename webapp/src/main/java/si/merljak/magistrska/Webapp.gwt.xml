@@ -4,7 +4,6 @@
 	<!-- GWT modules -->
 	<inherits name="com.google.gwt.i18n.I18N"/>
 	<inherits name="com.google.gwt.user.User" />
-	<inherits name="com.google.gwt.user.theme.standard.Standard" />
 
 	<!-- Bootstrap module -->
 	<inherits name="com.github.gwtbootstrap.Bootstrap" />
