@@ -155,13 +155,13 @@
 							<goal>compile</goal>
 						</goals>
 			        </execution>
-					<!--<execution>
+					<execution>
 						<id>gwt-clean</id>
 						<phase>clean</phase>
 						<goals>
 							<goal>clean</goal>
 						</goals>
-					</execution>-->
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>

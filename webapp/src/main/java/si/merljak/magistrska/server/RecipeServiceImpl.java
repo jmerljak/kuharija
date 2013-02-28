@@ -32,10 +32,12 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 
 	@Override
 	public RecipeDto getRecipe(long recipeId, Language language) {
-		log.debug("executing getRecipe");
+		log.info("executing getRecipe for id: " + recipeId);
 
 		try {
 			Recipe recipeEntity = em.find(Recipe.class, recipeId);
+//			Recipe recipeEntity = new Recipe("kusna jed 2", "Mojca", null, Difficulty.MODERATE, "1h", 5);
+//			em.persist(recipeEntity);
 			log.info(recipeEntity + "");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
