@@ -3,6 +3,7 @@ package si.merljak.magistrska.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import si.merljak.magistrska.enumeration.Difficulty;
 
@@ -25,10 +25,10 @@ public class Recipe implements Serializable {
 	@GeneratedValue
 	private long id;
 
-	@NotNull
+	@Column(nullable = false)
 	private String title;
 
-	@NotNull
+	@Column(nullable = false)
 	private String author;
 
 	private String imageUrl;
@@ -36,10 +36,10 @@ public class Recipe implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Difficulty difficulty;
 
-	@NotNull
+	@Column(nullable = false)
 	private String preparationTime;
 
-	@NotNull
+	@Column(nullable = false)
 	private int numberOfMeals;
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy = "recipe")

@@ -2,11 +2,11 @@ package si.merljak.magistrska.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="TOOL")
@@ -18,7 +18,7 @@ public class Tool implements Serializable {
 	@GeneratedValue
 	private long id;
 
-	@NotNull
+	@Column(nullable = false)
 	private String name;
 
 	private String imageUrl;

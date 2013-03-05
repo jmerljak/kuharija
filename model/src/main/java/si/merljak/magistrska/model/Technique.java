@@ -3,6 +3,7 @@ package si.merljak.magistrska.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import si.merljak.magistrska.enumeration.Difficulty;
 
@@ -25,7 +25,7 @@ public class Technique implements Serializable {
 	@GeneratedValue
 	private long id;
 
-	@NotNull
+	@Column(nullable = false)
 	private String title;
 
 	private String imageUrl;

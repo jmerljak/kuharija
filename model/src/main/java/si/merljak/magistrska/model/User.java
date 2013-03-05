@@ -3,11 +3,11 @@ package si.merljak.magistrska.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -20,12 +20,12 @@ public class User implements Serializable {
 	@Size(max = 40)
 	private String username;
 
-	@NotNull
+	@Column(nullable = false)
 	private String name;
 
 	private String email;
 
-	@NotNull
+	@Column(nullable = false)
 	private String password;
 
 	private String metadata;
