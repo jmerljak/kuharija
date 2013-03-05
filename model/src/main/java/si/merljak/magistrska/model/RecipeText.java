@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,12 +15,13 @@ import javax.validation.constraints.NotNull;
 import si.merljak.magistrska.enumeration.Language;
 
 @Entity
-@Table(name="recipe_text")
+@Table(name="RECIPE_TEXT")
 public class RecipeText implements Serializable {
 
 	private static final long serialVersionUID = 6418198442104147678L;
 
 	@Id
+	@GeneratedValue
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -33,8 +35,9 @@ public class RecipeText implements Serializable {
 
 	private String metadata;
 
-	RecipeText(long id, Recipe recipe, Language language, String content, String metadata) {
-		this.id = id;
+	protected RecipeText() {}
+
+	public RecipeText( Recipe recipe, Language language, String content, String metadata) {
 		this.recipe = recipe;
 		this.language = language;
 		this.content = content;

@@ -7,18 +7,22 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import si.merljak.magistrska.enumeration.Difficulty;
 
 @Entity
+@Table(name="RECIPE")
 public class Recipe implements Serializable {
 
 	private static final long serialVersionUID = 3131171680171379875L;
 
 	@Id
+	@GeneratedValue
 	private long id;
 
 	@NotNull
@@ -61,26 +65,16 @@ public class Recipe implements Serializable {
 
 	private String metaData;
 
-	Recipe(long id, String title, String author, String imageUrl,
-			Difficulty difficulty, String preparationTime, int numberOfMeals,
-			List<RecipeIngredient> ingredients, List<RecipeTool> tools,
-			List<Technique> techniques, List<RecipeText> texts,
-			List<RecipeAudio> audioRecordings, List<RecipeVideo> videos,
-			List<Comment> comments, String metaData) {
-		this.id = id;
+	protected Recipe() {}
+
+	public Recipe(String title, String author, String imageUrl,
+			Difficulty difficulty, String preparationTime, int numberOfMeals, String metaData) {
 		this.title = title;
 		this.author = author;
 		this.imageUrl = imageUrl;
 		this.difficulty = difficulty;
 		this.preparationTime = preparationTime;
 		this.numberOfMeals = numberOfMeals;
-		this.ingredients = ingredients;
-		this.tools = tools;
-		this.techniques = techniques;
-		this.texts = texts;
-		this.audios = audioRecordings;
-		this.videos = videos;
-		this.comments = comments;
 		this.metaData = metaData;
 	}
 

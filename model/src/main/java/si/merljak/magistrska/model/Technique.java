@@ -7,18 +7,22 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import si.merljak.magistrska.enumeration.Difficulty;
 
 @Entity
+@Table(name="TECHNIQUE")
 public class Technique implements Serializable {
 
 	private static final long serialVersionUID = -7582271413855061062L;
 
 	@Id
+	@GeneratedValue
 	private long id;
 
 	@NotNull
@@ -43,18 +47,12 @@ public class Technique implements Serializable {
 
 	private String metaData;
 
-	Technique(long id, String title, String imageUrl, Difficulty difficulty,
-			List<TechniqueTool> tools, List<TechniqueText> texts,
-			List<TechniqueAudio> audios, List<TechniqueVideo> videos,
-			String metaData) {
-		this.id = id;
+	protected Technique() {}
+
+	public Technique(long id, String title, String imageUrl, Difficulty difficulty, String metaData) {
 		this.title = title;
 		this.imageUrl = imageUrl;
 		this.difficulty = difficulty;
-		this.tools = tools;
-		this.texts = texts;
-		this.audios = audios;
-		this.videos = videos;
 		this.metaData = metaData;
 	}
 

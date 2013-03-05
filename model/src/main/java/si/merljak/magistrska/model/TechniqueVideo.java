@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -16,12 +17,13 @@ import javax.validation.constraints.NotNull;
 import si.merljak.magistrska.enumeration.Language;
 
 @Entity
-@Table(name="technique_video")
+@Table(name="TECHNIQUE_VIDEO")
 public class TechniqueVideo implements Serializable {
 
 	private static final long serialVersionUID = -5682080495739973438L;
 
 	@Id
+	@GeneratedValue
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -36,8 +38,9 @@ public class TechniqueVideo implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="video")
 	private List<TechniqueVideoSubtitle> subtitles;
 
-	TechniqueVideo(long id, Technique technique, Language language, String url, List<TechniqueVideoSubtitle> subtitles) {
-		this.id = id;
+	protected TechniqueVideo() {}
+
+	public TechniqueVideo(Technique technique, Language language, String url, List<TechniqueVideoSubtitle> subtitles) {
 		this.technique = technique;
 		this.language = language;
 		this.url = url;

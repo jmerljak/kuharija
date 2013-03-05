@@ -11,12 +11,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="users")
+@Table(name="USERS")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1079761133290324147L;
 
-	@Id @Size(max = 40)
+	@Id
+	@Size(max = 40)
 	private String username;
 
 	@NotNull
@@ -32,8 +33,9 @@ public class User implements Serializable {
 	@Version
 	private Date updated;
 
-	User(String username, String name, String email, String password,
-			String metadata) {
+	protected User() {}
+
+	public User(String username, String name, String email, String password, String metadata) {
 		this.username = username;
 		this.name = name;
 		this.email = email;

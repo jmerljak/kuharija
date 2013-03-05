@@ -7,14 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name="COMMENT")
 public class Comment implements Serializable {
 
 	private static final long serialVersionUID = 1898355529967987383L;
 
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue
 	private long id;
 
 	@ManyToOne
@@ -29,13 +32,7 @@ public class Comment implements Serializable {
 	@NotNull
 	private String content;
 
-	Comment(long id, User user, Recipe recipe, Date date, String content) {
-		this.id = id;
-		this.user = user;
-		this.recipe = recipe;
-		this.date = date;
-		this.content = content;
-	}
+	protected Comment() {}
 
 	public Comment(User user, Recipe recipe, String content) {
 		this.user = user;

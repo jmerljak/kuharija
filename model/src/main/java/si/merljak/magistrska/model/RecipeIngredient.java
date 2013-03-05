@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,12 +15,13 @@ import javax.validation.constraints.NotNull;
 import si.merljak.magistrska.enumeration.Unit;
 
 @Entity
-@Table(name="recipe_ingredient")
+@Table(name="RECIPE_INGREDIENT")
 public class RecipeIngredient implements Serializable {
 
 	private static final long serialVersionUID = -7310557037747164374L;
 
 	@Id
+	@GeneratedValue
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -34,8 +36,9 @@ public class RecipeIngredient implements Serializable {
 	@NotNull
 	private double amount;
 
-	RecipeIngredient(long id, Recipe recipe, Ingredient ingredient, Unit unit, double amount) {
-		this.id = id;
+	protected RecipeIngredient() {}
+
+	public RecipeIngredient(Recipe recipe, Ingredient ingredient, Unit unit, double amount) {
 		this.recipe = recipe;
 		this.ingredient = ingredient;
 		this.unit = unit;

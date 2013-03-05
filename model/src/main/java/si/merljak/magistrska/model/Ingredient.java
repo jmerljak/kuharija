@@ -3,15 +3,19 @@ package si.merljak.magistrska.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name="INGREDIENT")
 public class Ingredient implements Serializable {
 
 	private static final long serialVersionUID = 6010168011125353169L;
 
 	@Id
+	@GeneratedValue
 	private long id;
 
 	@NotNull
@@ -19,8 +23,9 @@ public class Ingredient implements Serializable {
 
 	private String imageUrl;
 
-	Ingredient(long id, String name, String imageUrl) {
-		this.id = id;
+	protected Ingredient() {}
+
+	public Ingredient(String name, String imageUrl) {
 		this.name = name;
 		this.imageUrl = imageUrl;
 	}
