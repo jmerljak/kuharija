@@ -10,10 +10,10 @@ import si.merljak.magistrska.client.rpc.RecipeServiceAsync;
 import si.merljak.magistrska.client.widgets.IngredientsWidget;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.TabsWidget;
-import si.merljak.magistrska.dto.CommentDto;
-import si.merljak.magistrska.dto.RecipeDto;
-import si.merljak.magistrska.dto.TextDto;
-import si.merljak.magistrska.dto.ToolDto;
+import si.merljak.magistrska.common.dto.CommentDto;
+import si.merljak.magistrska.common.dto.RecipeDto;
+import si.merljak.magistrska.common.dto.TextDto;
+import si.merljak.magistrska.common.dto.ToolDto;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -21,6 +21,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -92,7 +93,7 @@ public class RecipeEntry implements EntryPoint {
 
 		RootPanel tabsPanel = RootPanel.get("basic");
 		for (TextDto text : recipe.getTexts()) {
-			tabsPanel.add(new Label(text.getContent() + " (" + constants.languageMap().get(text.getLanguage().name()) + ")"));
+			tabsPanel.add(new HTML(text.getContent() + " (" + constants.languageMap().get(text.getLanguage().name()) + ")"));
 			tabsPanel = RootPanel.get("details");
 		}
 

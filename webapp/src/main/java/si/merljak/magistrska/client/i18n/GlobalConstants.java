@@ -52,8 +52,8 @@ public interface GlobalConstants extends Constants {
     Map<String, String> difficultyMap();
 	
 	@DefaultStringMapValue({
-		"sl_SI", "Slovenščina",
-		"en_US", "English"})
+		"SI", "Slovenščina",
+		"EN", "English"})
 	Map<String, String> languageMap();
 	
 	@DefaultStringMapValue({

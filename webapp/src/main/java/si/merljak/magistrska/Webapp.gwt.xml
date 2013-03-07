@@ -9,14 +9,16 @@
 	<inherits name="com.github.gwtbootstrap.Bootstrap" />
 
 	<!-- Project modules -->
-	<inherits name="si.merljak.magistrska.Model" />
+	<!--<inherits name="si.merljak.magistrska.Model" />-->
+	<source path="client"/>
+	<source path="shared"/>
 
 	<!-- RPC blacklist (whitelist)
 	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.*Collection"/> -->
 
 	<!-- Specify locale. -->
 	<extend-property name="locale" values="sl_SI" />
-	<extend-property name="locale" values="en_US" />
+	<extend-property name="locale" values="en" />
 
 	<!-- Compile only for Firefox and Chrome -->
     <set-property name="user.agent" value="gecko1_8" />

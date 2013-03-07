@@ -4,8 +4,8 @@ import java.util.List;
 
 import si.merljak.magistrska.client.RecipeEntry;
 import si.merljak.magistrska.client.i18n.GlobalConstants;
-import si.merljak.magistrska.dto.IngredientDto;
-import si.merljak.magistrska.enumeration.Unit;
+import si.merljak.magistrska.common.dto.IngredientDto;
+import si.merljak.magistrska.common.enumeration.Unit;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -103,8 +103,18 @@ public class IngredientsWidget extends Composite {
 
 		ingredientsList.clear();
 		for (IngredientDto ingredient : ingredients) {
-			double amount = ingredient.getAmount()  * numOfPeople / numOfPeopleBase;
+			Double amount = ingredient.getAmount();
 			Unit unit = ingredient.getUnit();
+			if (amount == null) {
+				// uncountable
+				if (convertToNonMetric.getValue()) {
+					unit = unit.getNonMetricUnit();
+				}
+				ingredientsList.add(new Label(ingredient.getName() + " " + constants.unitMap().get(unit.name())));
+				continue;
+			}
+			
+			amount = ingredient.getAmount()  * numOfPeople / numOfPeopleBase;
 			
 			if (convertToNonMetric.getValue()) {
 				amount = unit.convertToNonMetric(amount).doubleValue();

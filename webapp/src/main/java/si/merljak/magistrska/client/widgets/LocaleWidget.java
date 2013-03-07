@@ -1,6 +1,6 @@
 package si.merljak.magistrska.client.widgets;
 
-import si.merljak.magistrska.enumeration.Language;
+import si.merljak.magistrska.common.enumeration.Language;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -40,6 +40,6 @@ public class LocaleWidget extends ListBox {
 	}
 
 	public Language getCurrentLanguage() {
-		return Language.valueOf(currentLocale);
+		return Language.getEnum(currentLocale);
 	}
 }

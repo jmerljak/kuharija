@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>model</module>
+        <!--<module>model</module>-->
         <module>webapp</module>
     </modules>
 
