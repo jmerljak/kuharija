@@ -11,7 +11,7 @@
 	<!-- Project modules -->
 	<!--<inherits name="si.merljak.magistrska.Model" />-->
 	<source path="client"/>
-	<source path="shared"/>
+	<source path="common"/>
 
 	<!-- RPC blacklist (whitelist)
 	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.*Collection"/> -->
