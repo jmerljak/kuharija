@@ -1,6 +1,7 @@
 package si.merljak.magistrska.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -70,7 +71,9 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 			}
 
 			for (Audio audio : recipeEntity.getAudios()) {
-				recipe.addAudio(new AudioDto(audio.getLanguage(), audio.getUrl()));
+				List<String> audioUrls = new ArrayList<String>();
+				audioUrls.addAll(Arrays.asList(audio.getUrls().split(";")));
+				recipe.addAudio(new AudioDto(audio.getLanguage(), audioUrls));
 			}
 
 			for (Video video : recipeEntity.getVideos()) {
@@ -78,7 +81,10 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 				for (Subtitle subtitle : video.getSubtitles()) {
 					subtitles.add(new SubtitleDto(subtitle.getLanguage(), subtitle.getUrl()));
 				}
-				recipe.addVideo(new VideoDto(video.getLanguage(), video.getUrl(), subtitles));
+
+				List<String> videoUrls = new ArrayList<String>();
+				videoUrls.addAll(Arrays.asList(video.getUrls().split(";")));
+				recipe.addVideo(new VideoDto(video.getLanguage(), videoUrls, video.getPosterUrl(), subtitles));
 			}
 
 			for (Comment comment : recipeEntity.getComments()) {
@@ -95,16 +101,6 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 		recipe.addText(new TextDto(Language.SI, "Vzemi kuharsko knjigo,  odpri na strani 54 in kuhaj!", null));
 		recipe.addText(new TextDto(Language.SI, "Vzemi kuharsko knjigo,  odpri na strani 54, dobro preberi, še enkrat pomešaj in kuhaj!", null));
 		recipe.addText(new TextDto(Language.EN, "Open cook bo5ok on page 54, then cook!", null));
-		recipe.addComment(new CommentDto("prijazen uporabnik", new Date(), "Zelo okusno!"));
-		recipe.addComment(new CommentDto("nesramen uporabnik", new Date(), "Ogabno!"));
-		recipe.addIngredient(new IngredientDto(1, "cheese", null, Unit.G, 250.00));
-		recipe.addIngredient(new IngredientDto(2, "water", null, Unit.L, 1.25));
-		recipe.addIngredient(new IngredientDto(3, "salt", null, Unit.PINCH, 1.0));
-		recipe.addIngredient(new IngredientDto(4, "sugar cube", null, Unit.PIECE, 4.0));
-		recipe.addTool(new ToolDto("spoon", null, 2));
-		recipe.addTool(new ToolDto("knife", null, 1));
-		recipe.addTool(new ToolDto("cooking pot", null, 1));
 		return recipe;
 	}
-
 }

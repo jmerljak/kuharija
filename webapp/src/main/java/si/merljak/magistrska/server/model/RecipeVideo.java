@@ -23,10 +23,10 @@ public class RecipeVideo extends Video implements Serializable {
 
 	protected RecipeVideo() {}
 
-	public RecipeVideo(Recipe recipe, Language language, String url, Set<Subtitle> subtitles) {
+	public RecipeVideo(Recipe recipe, Language language, String urls, Set<Subtitle> subtitles) {
 		this.recipe = recipe;
 		this.language = language;
-		this.url = url;
+		this.urls = urls;
 		this.subtitles = subtitles;
 	}
 }

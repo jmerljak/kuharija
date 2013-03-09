@@ -28,7 +28,7 @@ public abstract class Audio {
 	protected Language language;
 
 	@NotNull
-	protected String url;
+	protected String urls;
 
 	@Column(insertable=false, updatable=false)
 	protected String dtype;
@@ -37,7 +37,7 @@ public abstract class Audio {
 		return language;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getUrls() {
+		return urls;
 	}
 }

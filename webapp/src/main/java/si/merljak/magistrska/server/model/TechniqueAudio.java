@@ -22,9 +22,9 @@ public class TechniqueAudio extends Audio implements Serializable {
 
 	protected TechniqueAudio() {}
 
-	public TechniqueAudio(Technique technique, Language language, String url) {
+	public TechniqueAudio(Technique technique, Language language, String urls) {
 		this.technique = technique;
 		this.language = language;
-		this.url = url;
+		this.urls = urls;
 	}
 }

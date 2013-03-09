@@ -9,15 +9,23 @@
     <servlet-name>recipeServlet</servlet-name>
     <servlet-class>si.merljak.magistrska.server.RecipeServiceImpl</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>searchServlet</servlet-name>
+    <servlet-class>si.merljak.magistrska.server.SearchServiceImpl</servlet-class>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>recipeServlet</servlet-name>
     <url-pattern>/magistrska/recipe</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>searchServlet</servlet-name>
+    <url-pattern>/magistrska/search</url-pattern>
+  </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>recipe.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
 </web-app>

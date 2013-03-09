@@ -1,6 +1,6 @@
 package si.merljak.magistrska.client.widgets;
 
-import si.merljak.magistrska.client.RecipeEntry;
+import si.merljak.magistrska.client.KuharijaEntry;
 import si.merljak.magistrska.client.i18n.GlobalConstants;
 
 import com.github.gwtbootstrap.client.ui.NavTabs;
@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class TabsWidget extends Composite {
-	private static final GlobalConstants constants = RecipeEntry.getConstants();
+	private static final GlobalConstants constants = KuharijaEntry.getConstants();
 
 	private Anchor tabBasic = new Anchor();
 	private Anchor tabDetails = new Anchor();

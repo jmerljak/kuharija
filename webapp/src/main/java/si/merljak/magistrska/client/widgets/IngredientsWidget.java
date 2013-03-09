@@ -2,7 +2,7 @@ package si.merljak.magistrska.client.widgets;
 
 import java.util.List;
 
-import si.merljak.magistrska.client.RecipeEntry;
+import si.merljak.magistrska.client.KuharijaEntry;
 import si.merljak.magistrska.client.i18n.GlobalConstants;
 import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.enumeration.Unit;
@@ -21,8 +21,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class IngredientsWidget extends Composite {
-	private static final GlobalConstants constants = RecipeEntry.getConstants();
-	private static final NumberFormat numberFormat = RecipeEntry.getNumberFormat();
+	private static final GlobalConstants constants = KuharijaEntry.getConstants();
+	private static final NumberFormat numberFormat = KuharijaEntry.getNumberFormat();
 
 	private Heading heading = new Heading(2, constants.ingredients());
 	private FlowPanel ingredientsList = new FlowPanel();
@@ -105,12 +105,13 @@ public class IngredientsWidget extends Composite {
 		for (IngredientDto ingredient : ingredients) {
 			Double amount = ingredient.getAmount();
 			Unit unit = ingredient.getUnit();
+			String ingredientName = constants.ingredientMap().get(ingredient.getName());
 			if (amount == null) {
 				// uncountable
 				if (convertToNonMetric.getValue()) {
 					unit = unit.getNonMetricUnit();
 				}
-				ingredientsList.add(new Label(ingredient.getName() + " " + constants.unitMap().get(unit.name())));
+				ingredientsList.add(new Label(ingredientName + " " + constants.unitMap().get(unit.name())));
 				continue;
 			}
 			
@@ -121,7 +122,7 @@ public class IngredientsWidget extends Composite {
 				unit = unit.getNonMetricUnit();
 			}
 			
-			ingredientsList.add(new Label(ingredient.getName() + " " + numberFormat.format(amount) + " " + constants.unitMap().get(unit.name())));
+			ingredientsList.add(new Label(ingredientName + " " + numberFormat.format(amount) + " " + constants.unitMap().get(unit.name())));
 		}
 		
 	}

@@ -18,6 +18,7 @@ public enum Unit {
 	F(UnitType.TEMPERATURE),
 
 	PIECE(UnitType.PIECE),
+	PAIR(UnitType.PIECE),
 	PINCH(UnitType.UNCOUNTABLE);
 	
 

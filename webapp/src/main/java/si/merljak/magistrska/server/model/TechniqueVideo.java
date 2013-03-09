@@ -23,10 +23,10 @@ public class TechniqueVideo extends Video implements Serializable {
 
 	protected TechniqueVideo() {}
 
-	public TechniqueVideo(Technique technique, Language language, String url, Set<Subtitle> subtitles) {
+	public TechniqueVideo(Technique technique, Language language, String urls, Set<Subtitle> subtitles) {
 		this.technique = technique;
 		this.language = language;
-		this.url = url;
+		this.urls = urls;
 		this.subtitles = subtitles;
 	}
 }

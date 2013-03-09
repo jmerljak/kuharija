@@ -22,9 +22,9 @@ public class RecipeAudio extends Audio implements Serializable {
 
 	protected RecipeAudio() {}
 
-	public RecipeAudio(Recipe recipe, Language language, String url) {
+	public RecipeAudio(Recipe recipe, Language language, String urls) {
 		this.recipe = recipe;
 		this.language = language;
-		this.url = url;
+		this.urls = urls;
 	}
 }

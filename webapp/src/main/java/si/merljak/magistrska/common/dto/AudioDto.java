@@ -1,28 +1,29 @@
 package si.merljak.magistrska.common.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
 public class AudioDto implements Serializable {
 
-	private static final long serialVersionUID = -2676648300958057389L;
+	private static final long serialVersionUID = 6162966631238503867L;
 
 	private Language language;
-	private String url;
+	private List<String> urls;
 
 	AudioDto() {}
 
-	public AudioDto(Language language, String url) {
+	public AudioDto(Language language, List<String> urls) {
 		this.language = language;
-		this.url = url;
+		this.urls = urls;
 	}
 
 	public Language getLanguage() {
 		return language;
 	}
 
-	public String getUrl() {
-		return url;
+	public List<String> getUrls() {
+		return urls;
 	}
 }

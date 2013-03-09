@@ -5,15 +5,20 @@ import java.util.List;
 
 import si.merljak.magistrska.client.i18n.GlobalConstants;
 import si.merljak.magistrska.client.i18n.GlobalFormatters;
+import si.merljak.magistrska.client.i18n.GlobalMessages;
 import si.merljak.magistrska.client.rpc.RecipeService;
 import si.merljak.magistrska.client.rpc.RecipeServiceAsync;
+import si.merljak.magistrska.client.widgets.AudioWidget;
 import si.merljak.magistrska.client.widgets.IngredientsWidget;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.TabsWidget;
+import si.merljak.magistrska.client.widgets.VideoWidget;
+import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
 import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.ToolDto;
+import si.merljak.magistrska.common.dto.VideoDto;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -26,7 +31,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class RecipeEntry implements EntryPoint {
+public class KuharijaEntry implements EntryPoint {
 
 	// remote service proxy
 	private final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
@@ -34,6 +39,7 @@ public class RecipeEntry implements EntryPoint {
 	// constants
 	private static final GlobalConstants constants = GWT.create(GlobalConstants.class);
 	private static final GlobalFormatters formatters = GWT.create(GlobalFormatters.class);
+	private static final GlobalMessages messages = GWT.create(GlobalMessages.class);
 
     // formatters
     private static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
@@ -85,7 +91,7 @@ public class RecipeEntry implements EntryPoint {
 		// tools
 		RootPanel toolsPanel = RootPanel.get("tools");
 		for (ToolDto tool : recipe.getTools()) {
-			toolsPanel.add(new Label(tool.getQuantity() + " " + tool.getTitle()));
+			toolsPanel.add(new Label(tool.getQuantity() + "x " + constants.toolsMap().get(tool.getTitle())));
 		}
 		
 		// tabs
@@ -97,6 +103,17 @@ public class RecipeEntry implements EntryPoint {
 			tabsPanel = RootPanel.get("details");
 		}
 
+		RootPanel audioPanel = RootPanel.get("audio");
+		for (AudioDto audioDto : recipe.getAudios()) {
+			audioPanel.add(new AudioWidget(audioDto));
+		}
+
+		RootPanel videoPanel = RootPanel.get("video");
+		for (VideoDto videoDto : recipe.getVideos()) {
+			videoPanel.add(new VideoWidget(videoDto));
+		}
+
+
 		RootPanel commentsPanel = RootPanel.get("comments");
 		List<Widget> tools = new ArrayList<Widget>();
 		for (CommentDto comment : recipe.getComments()) {
@@ -105,7 +122,6 @@ public class RecipeEntry implements EntryPoint {
 		}
 
 		commentsPanel.add(localeWidget);
-		
 	}
 
 	public static GlobalConstants getConstants() {
@@ -114,5 +130,9 @@ public class RecipeEntry implements EntryPoint {
 	
 	public static NumberFormat getNumberFormat() {
 		return numberFormat;
+	}
+
+	public static GlobalMessages getMessages() {
+		return messages;
 	}
 }

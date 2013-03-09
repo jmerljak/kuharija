@@ -32,7 +32,9 @@ public abstract class Video {
 	protected Language language;
 
 	@NotNull
-	protected String url;
+	protected String urls;
+
+	protected String posterUrl;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="video")
 	protected Set<Subtitle> subtitles;
@@ -44,8 +46,12 @@ public abstract class Video {
 		return language;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getUrls() {
+		return urls;
+	}
+
+	public String getPosterUrl() {
+		return posterUrl;
 	}
 
 	public Set<Subtitle> getSubtitles() {
