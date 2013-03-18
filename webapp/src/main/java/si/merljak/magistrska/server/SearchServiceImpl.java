@@ -1,5 +1,9 @@
 package si.merljak.magistrska.server;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -20,9 +24,10 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 	private EntityManager em;
 
 	@Override
-	public void basicSearch(String searchString, int page, int pageSize) {
+	public List<String> basicSearch(String searchString, int page, int pageSize) {
 		log.info("searchinge for: " + searchString + ", page: " + page + ", pageSize: " + pageSize);
 		// TODO Auto-generated method stub
+		return new ArrayList<String>(Arrays.asList("polde", "jure", "miha"));
 		
 	}
 

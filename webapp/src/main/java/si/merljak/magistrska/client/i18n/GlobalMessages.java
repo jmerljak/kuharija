@@ -1,11 +1,11 @@
 package si.merljak.magistrska.client.i18n;
 
-import com.google.gwt.i18n.client.Constants;
+import com.google.gwt.i18n.client.Messages;
 
-public interface GlobalMessages extends Constants {
-	@DefaultStringValue("Unfortunatelly, your browser does not support HTML5 audio tag.")
+public interface GlobalMessages extends Messages {
+	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 audio tag.")
 	String htmlAudioNotSupported();
 
-	@DefaultStringValue("Unfortunatelly, your browser does not support HTML5 video tag.")
+	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 video tag.")
 	String htmlVideoNotSupported();
 }

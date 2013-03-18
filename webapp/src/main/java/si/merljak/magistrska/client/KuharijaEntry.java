@@ -1,40 +1,38 @@
 package si.merljak.magistrska.client;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import si.merljak.magistrska.client.i18n.GlobalConstants;
 import si.merljak.magistrska.client.i18n.GlobalFormatters;
 import si.merljak.magistrska.client.i18n.GlobalMessages;
+import si.merljak.magistrska.client.mvp.RecipeView;
 import si.merljak.magistrska.client.rpc.RecipeService;
 import si.merljak.magistrska.client.rpc.RecipeServiceAsync;
-import si.merljak.magistrska.client.widgets.AudioWidget;
-import si.merljak.magistrska.client.widgets.IngredientsWidget;
+import si.merljak.magistrska.client.rpc.SearchService;
+import si.merljak.magistrska.client.rpc.SearchServiceAsync;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.TabsWidget;
-import si.merljak.magistrska.client.widgets.VideoWidget;
-import si.merljak.magistrska.common.dto.AudioDto;
-import si.merljak.magistrska.common.dto.CommentDto;
 import si.merljak.magistrska.common.dto.RecipeDto;
-import si.merljak.magistrska.common.dto.TextDto;
-import si.merljak.magistrska.common.dto.ToolDto;
-import si.merljak.magistrska.common.dto.VideoDto;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 public class KuharijaEntry implements EntryPoint {
 
-	// remote service proxy
+	private static final int PAGE_SIZE = 15;
+
+	// remote service proxies
 	private final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
+	private final SearchServiceAsync searchService = GWT.create(SearchService.class);
 
 	// constants
 	private static final GlobalConstants constants = GWT.create(GlobalConstants.class);
@@ -45,10 +43,37 @@ public class KuharijaEntry implements EntryPoint {
     private static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
     private static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
 
+    private RecipeView recipeView;
     private LocaleWidget localeWidget;
     
 	public void onModuleLoad() {
+		recipeView = new RecipeView();
+
 		localeWidget = new LocaleWidget();
+		RootPanel.get("nav").add(localeWidget);
+		
+		// tabs
+		RootPanel.get("tabs").add(new TabsWidget());
+
+		// history handler
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+			public void onValueChange(ValueChangeEvent<String> event) {
+				String historyToken = event.getValue();
+				if (historyToken.equalsIgnoreCase("basic")) {
+					getRecipe();
+				} else if (historyToken.equalsIgnoreCase("search")) {
+					recipeView.setVisible(false);
+					search();
+				} else {
+					getRecipe();
+				}
+			}
+		});
+
+		// init current history state
+		History.fireCurrentHistoryState();
+	}
+	private void getRecipe() {
 		// get parameter
 		long recipeId = -1;
 		String parameter = Window.Location.getParameter("recipe");
@@ -61,7 +86,7 @@ public class KuharijaEntry implements EntryPoint {
 		recipeService.getRecipe(recipeId, localeWidget.getCurrentLanguage(), new AsyncCallback<RecipeDto>() {
 			@Override
 			public void onSuccess(RecipeDto recipe) {
-				displayRecipe(recipe);
+				recipeView.displayRecipe(recipe);
 			}
 
 			@Override
@@ -71,57 +96,34 @@ public class KuharijaEntry implements EntryPoint {
 		});
 	}
 
-	private void displayRecipe(RecipeDto recipe) {
-		// titles
-		RootPanel.get("recipeTitle").getElement().setInnerHTML(recipe.getTitle());
-		RootPanel.get("toolsTitle").getElement().setInnerHTML(constants.tools());
-		RootPanel.get("commentsTitle").getElement().setInnerHTML(constants.comments());
-
-		// recipe info
-		RootPanel recipeDetailsPanel = RootPanel.get("recipeInfo");
-		recipeDetailsPanel.add(new Label(constants.preparationTime() + ": " + recipe.getPreparationTime()));
-//		recipeDetailsPanel.add(new Label(constants.numberOfMeals() + ": " + recipe.getNumberOfMeals()));
-		recipeDetailsPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
-		recipeDetailsPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
-
-		// ingredients
-		RootPanel ingredientsPanel = RootPanel.get("ingredients");
-		ingredientsPanel.add(new IngredientsWidget(recipe.getIngredients(), recipe.getNumberOfMeals()));
-
-		// tools
-		RootPanel toolsPanel = RootPanel.get("tools");
-		for (ToolDto tool : recipe.getTools()) {
-			toolsPanel.add(new Label(tool.getQuantity() + "x " + constants.toolsMap().get(tool.getTitle())));
+	private void search() {
+		String searchParam = Window.Location.getParameter("searchFor");
+		if (searchParam != null) {
+			int page;
+			try {
+				page = Integer.parseInt(Window.Location.getParameter("page"));
+			} catch (Exception e) {
+				page = 1;
+			}
+			
+			searchService.basicSearch(searchParam, page, PAGE_SIZE, new AsyncCallback<List<String>>() {
+				@Override
+				public void onSuccess(List<String> results) {
+					RootPanel commentsPanel = RootPanel.get("searchWrapper");
+					commentsPanel.setVisible(true);
+					commentsPanel.clear();
+					for (String result : results) {
+						commentsPanel.add(new Label(result));
+					}
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
-		
-		// tabs
-		RootPanel.get("tabs").add(new TabsWidget());
-
-		RootPanel tabsPanel = RootPanel.get("basic");
-		for (TextDto text : recipe.getTexts()) {
-			tabsPanel.add(new HTML(text.getContent() + " (" + constants.languageMap().get(text.getLanguage().name()) + ")"));
-			tabsPanel = RootPanel.get("details");
-		}
-
-		RootPanel audioPanel = RootPanel.get("audio");
-		for (AudioDto audioDto : recipe.getAudios()) {
-			audioPanel.add(new AudioWidget(audioDto));
-		}
-
-		RootPanel videoPanel = RootPanel.get("video");
-		for (VideoDto videoDto : recipe.getVideos()) {
-			videoPanel.add(new VideoWidget(videoDto));
-		}
-
-
-		RootPanel commentsPanel = RootPanel.get("comments");
-		List<Widget> tools = new ArrayList<Widget>();
-		for (CommentDto comment : recipe.getComments()) {
-			tools.add(new Label(dateFormat.format(comment.getDate()) + " - " + comment.getUser() + ": " + comment.getContent()));
-			commentsPanel.add(new Label(dateFormat.format(comment.getDate()) + " - " + comment.getUser() + ": " + comment.getContent()));
-		}
-
-		commentsPanel.add(localeWidget);
 	}
 
 	public static GlobalConstants getConstants() {
@@ -134,5 +136,9 @@ public class KuharijaEntry implements EntryPoint {
 
 	public static GlobalMessages getMessages() {
 		return messages;
+	}
+
+	public static DateTimeFormat getDateformat() {
+		return dateFormat;
 	}
 }

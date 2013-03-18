@@ -2,11 +2,11 @@ package si.merljak.magistrska.server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +20,7 @@ import si.merljak.magistrska.common.dto.SubtitleDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.ToolDto;
 import si.merljak.magistrska.common.dto.VideoDto;
-import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
-import si.merljak.magistrska.common.enumeration.Unit;
 import si.merljak.magistrska.server.model.Audio;
 import si.merljak.magistrska.server.model.Comment;
 import si.merljak.magistrska.server.model.Ingredient;
@@ -51,6 +49,9 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 
 		try {
 			Recipe recipeEntity = em.find(Recipe.class, recipeId);
+			if (recipeEntity == null) {
+				return null;
+			}
 			
 			RecipeDto recipe = new RecipeDto(recipeEntity.getTitle(), recipeEntity.getAuthor(), recipeEntity.getImageUrl(), 
 											 recipeEntity.getDifficulty(), recipeEntity.getPreparationTime(), 
@@ -66,7 +67,12 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 				recipe.addTool(new ToolDto(tool.getName(), tool.getImageUrl(), recipeTool.getQuantity()));
 			}
 
-			for (Text text : recipeEntity.getTexts()) {
+			TypedQuery<Text> query = em.createQuery("SELECT t FROM Text t " +
+													"WHERE t.recipe = :recipe " +
+													"AND t.language = :language", Text.class);
+			query.setParameter("recipe", recipeEntity);
+			query.setParameter("language", language);
+			for (Text text : query.getResultList()) {
 				recipe.addText(new TextDto(text.getLanguage(), text.getContent(), text.getMetadata()));
 			}
 
@@ -95,12 +101,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 			return recipe;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
+			throw new RuntimeException(e);
 		}
-		
-		RecipeDto recipe = new RecipeDto("Okusna jed", "Jakob", null, Difficulty.EASY, "15min", 4, null);
-		recipe.addText(new TextDto(Language.SI, "Vzemi kuharsko knjigo,  odpri na strani 54 in kuhaj!", null));
-		recipe.addText(new TextDto(Language.SI, "Vzemi kuharsko knjigo,  odpri na strani 54, dobro preberi, še enkrat pomešaj in kuhaj!", null));
-		recipe.addText(new TextDto(Language.EN, "Open cook bo5ok on page 54, then cook!", null));
-		return recipe;
 	}
 }

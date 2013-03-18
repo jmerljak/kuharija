@@ -5,6 +5,7 @@ import si.merljak.magistrska.client.i18n.GlobalMessages;
 import si.merljak.magistrska.common.dto.AudioDto;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.AudioElement;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
@@ -22,12 +23,16 @@ public class AudioWidget extends Composite {
 
 			// add all available sources (mp3, ogg, ...)
 			for (String srcUrl : audioDto.getUrls()) {
-				audioWidget.addSource(GWT.getHostPageBaseURL() + "audio/" + srcUrl);
+				String fileExt = srcUrl.substring(srcUrl.length() - 3, srcUrl.length());
+				String audioType = fileExt.equalsIgnoreCase("mp3") ? AudioElement.TYPE_MP3 : AudioElement.TYPE_OGG;
+				audioWidget.addSource(GWT.getHostPageBaseURL() + "audio/" + srcUrl, audioType);
 			}
 
 			initWidget(audioWidget);
 		} else {
 			initWidget(new Label(messages.htmlAudioNotSupported()));
+			// TODO add links for download
+			// remind to upgrade browser
 		}
 	}
 

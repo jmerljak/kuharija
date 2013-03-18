@@ -12,6 +12,9 @@
     <link type="text/css" rel="stylesheet" href="css/kulinarika.css">
 
     <title>Kuharske mojstrovine</title>
+
+    <link type="text/css" rel="stylesheet" href="css/playr.css">
+    <script type="text/javascript" src="js/playr.js" ></script>
     
     <!--                                           -->
     <!-- This script loads your compiled module.   -->
@@ -35,32 +38,38 @@
 	<header></header>
 
 	<div class="container">
-    <h1 id="recipeTitle"></h1>
-	  <div class="row-fluid">
-	    <div class="span3">
-		    <div id="ingredients">
-    		</div>
-		    <div id="tools">
-    			<h2 id="toolsTitle"></h2>
-		    </div>
-	    </div>
-	    <div class="span9">
-    		<div id="recipeInfo"></div>
-    		<div>
-				<div id="tabs"></div>
-				<div id="basic"></div>
-				<div id="details"></div>
-				<div id="video"></div>
-				<div id="audio"></div>
-    		</div>
-    		<div id="comments">
-    			<h2 id="commentsTitle"></h2>
-    		</div>
-	    </div>
-	  </div>
+		<nav id="nav"></nav>
+		<div id="recipeWrapper" style="display: none;" aria-hidden="true">
+	    	<h1 id="recipeTitle"></h1>
+			<div class="row-fluid">
+			    <div class="span3">
+				    <div id="ingredients">
+		    		</div>
+				    <div id="tools">
+		    			<h2 id="toolsTitle"></h2>
+				    </div>
+			    </div>
+			    <div class="span9">
+		    		<div id="recipeInfo"></div>
+		    		<div>
+						<div id="tabs"></div>
+						<div id="basic"></div>
+						<div id="details" style="display: none;" aria-hidden="true"></div>
+						<div id="video" style="display: none;" aria-hidden="true"></div>
+						<div id="audio" style="display: none;" aria-hidden="true"></div>
+		    		</div>
+		    		<div id="comments">
+		    			<h2 id="commentsTitle"></h2>
+		    		</div>
+			    </div>
+		  	</div>
+		</div>
+		<div id="searchWrapper" style="display: none;" aria-hidden="true"></div>
 	</div>
 
 	<footer>Jakob Merljak, 2013.</footer>
 
+    <!-- OPTIONAL: include this if you want history support -->
+    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
   </body>
 </html>
