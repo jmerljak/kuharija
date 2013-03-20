@@ -4,15 +4,18 @@ import java.util.List;
 
 import si.merljak.magistrska.client.KuharijaEntry;
 import si.merljak.magistrska.client.i18n.GlobalConstants;
-import si.merljak.magistrska.common.dto.IngredientDto;
+import si.merljak.magistrska.common.dto.RecipeIngredientDto;
 import si.merljak.magistrska.common.enumeration.Unit;
 
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
@@ -21,8 +24,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class IngredientsWidget extends Composite {
-	private static final GlobalConstants constants = KuharijaEntry.getConstants();
-	private static final NumberFormat numberFormat = KuharijaEntry.getNumberFormat();
+	private static final GlobalConstants constants = KuharijaEntry.constants;
+	private static final NumberFormat numberFormat = KuharijaEntry.numberFormat;
 
 	private Heading heading = new Heading(2, constants.ingredients());
 	private FlowPanel ingredientsList = new FlowPanel();
@@ -30,12 +33,12 @@ public class IngredientsWidget extends Composite {
 	private Button buttonMinus = new Button("-");
 	private TextBox textBox = new TextBox();
 	
-	private List<IngredientDto> ingredients;
+	private List<RecipeIngredientDto> ingredients;
 	private int numOfPeopleBase;
 	private int numOfPeople;
 	private CheckBox convertToNonMetric = new CheckBox();
 
-	public IngredientsWidget(List<IngredientDto> ingredients, int numOfMeals) {
+	public IngredientsWidget(List<RecipeIngredientDto> ingredients, int numOfMeals) {
 		this.ingredients = ingredients;
 		this.numOfPeopleBase = numOfMeals;
 		this.numOfPeople = numOfMeals;
@@ -102,16 +105,27 @@ public class IngredientsWidget extends Composite {
 		removeStyleName("control-group error");
 
 		ingredientsList.clear();
-		for (IngredientDto ingredient : ingredients) {
+		for (RecipeIngredientDto ingredient : ingredients) {
 			Double amount = ingredient.getAmount();
 			Unit unit = ingredient.getUnit();
-			String ingredientName = constants.ingredientMap().get(ingredient.getName());
+			final String ingredientName = ingredient.getName();
+			String ingredientNameString = constants.ingredientMap().get(ingredientName);
 			if (amount == null) {
 				// uncountable
 				if (convertToNonMetric.getValue()) {
 					unit = unit.getNonMetricUnit();
 				}
-				ingredientsList.add(new Label(ingredientName + " " + constants.unitMap().get(unit.name())));
+
+				Label label = new Label(ingredientNameString + " " + constants.unitMap().get(unit.name()));
+				label.addClickHandler(new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						History.newItem(History.encodeHistoryToken("ingredient?name=" + ingredientName));
+//						UrlBuilder builder = Location.createUrlBuilder().setParameter("name", ingredientName);
+//						Window.Location.replace(builder.buildString());
+					}
+				});
+				ingredientsList.add(label);
 				continue;
 			}
 			
@@ -122,7 +136,10 @@ public class IngredientsWidget extends Composite {
 				unit = unit.getNonMetricUnit();
 			}
 			
-			ingredientsList.add(new Label(ingredientName + " " + numberFormat.format(amount) + " " + constants.unitMap().get(unit.name())));
+			Anchor label = new Anchor(
+					ingredientNameString + " " + numberFormat.format(amount) + " " + constants.unitMap().get(unit.name()),
+					GWT.getHostPageBaseURL() + "?name=" + ingredientName + "#ingredient");
+			ingredientsList.add(label);
 		}
 		
 	}

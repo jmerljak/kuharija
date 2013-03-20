@@ -103,7 +103,7 @@ public interface GlobalConstants extends Constants {
 		"BREAD", "bread",
 		"BREAD_CRUMBS", "bread crumbs",
 		"BAKING_POWDER", "baking powder",
-		"SUGAR_POWDER", "şugar powder",
+		"SUGAR_POWDER", "sugar powder",
 		"LEMON", "lemon",
 		"LEMON_JUICE", "lemon juice",
 		"ORANGE", "orange",

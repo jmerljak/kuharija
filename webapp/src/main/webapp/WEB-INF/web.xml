@@ -6,6 +6,10 @@
 
   <!-- Servlets -->
   <servlet>
+    <servlet-name>ingredientServlet</servlet-name>
+    <servlet-class>si.merljak.magistrska.server.IngredientServiceImpl</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>recipeServlet</servlet-name>
     <servlet-class>si.merljak.magistrska.server.RecipeServiceImpl</servlet-class>
   </servlet>
@@ -14,6 +18,10 @@
     <servlet-class>si.merljak.magistrska.server.SearchServiceImpl</servlet-class>
   </servlet>
   
+  <servlet-mapping>
+    <servlet-name>ingredientServlet</servlet-name>
+    <url-pattern>/magistrska/ingredient</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>recipeServlet</servlet-name>
     <url-pattern>/magistrska/recipe</url-pattern>

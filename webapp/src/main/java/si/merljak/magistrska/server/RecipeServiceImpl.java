@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -12,18 +13,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import si.merljak.magistrska.client.rpc.RecipeService;
+import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
-import si.merljak.magistrska.common.dto.IngredientDto;
+import si.merljak.magistrska.common.dto.RecipeIngredientDto;
 import si.merljak.magistrska.common.dto.RecipeDto;
+import si.merljak.magistrska.common.dto.StepDto;
 import si.merljak.magistrska.common.dto.SubtitleDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.ToolDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 import si.merljak.magistrska.common.enumeration.Language;
+import si.merljak.magistrska.server.model.Appendix;
 import si.merljak.magistrska.server.model.Audio;
 import si.merljak.magistrska.server.model.Comment;
 import si.merljak.magistrska.server.model.Ingredient;
+import si.merljak.magistrska.server.model.ProcedureStep;
 import si.merljak.magistrska.server.model.Recipe;
 import si.merljak.magistrska.server.model.RecipeIngredient;
 import si.merljak.magistrska.server.model.RecipeTool;
@@ -59,7 +64,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 
 			for (RecipeIngredient recipeIngredient : recipeEntity.getIngredients()) {
 				Ingredient ingredient = recipeIngredient.getIngredient();
-				recipe.addIngredient(new IngredientDto(ingredient.getId(), ingredient.getName(), ingredient.getImageUrl(), recipeIngredient.getUnit(), recipeIngredient.getAmount()));
+				recipe.addIngredient(new RecipeIngredientDto(ingredient.getId(), ingredient.getName(), ingredient.getImageUrl(), recipeIngredient.getUnit(), recipeIngredient.getAmount()));
 			}
 
 			for (RecipeTool recipeTool : recipeEntity.getTools()) {
@@ -98,10 +103,33 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 				recipe.addComment(new CommentDto(user, comment.getDate(), comment.getContent()));
 			}
 
+			for (Appendix appendix : recipeEntity.getAppendices()) {
+				recipe.addAppendix(new AppendixDto(appendix.getType(), appendix.getLanguage(), appendix.getContent()));
+			}
+
 			return recipe;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public StepDto getStep(long recipeId, Language language, int page) {
+		try {
+			Recipe recipeEntity = em.find(Recipe.class, recipeId);
+			TypedQuery<ProcedureStep> query = em.createQuery("SELECT s FROM ProcedureStep s " +
+					"WHERE s.recipe = :recipe " +
+					"AND s.language = :language " +
+					"AND s.page = :page", ProcedureStep.class);
+			query.setParameter("recipe", recipeEntity);
+			query.setParameter("language", language);
+			query.setParameter("page", page);
+
+			ProcedureStep singleResult = query.getSingleResult();
+			return new StepDto(singleResult.getLanguage(), singleResult.getPage(), singleResult.getContent(), singleResult.getImageUrl());
+		} catch (NoResultException e) {
+			return null;
 		}
 	}
 }

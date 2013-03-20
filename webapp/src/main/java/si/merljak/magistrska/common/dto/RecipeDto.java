@@ -18,12 +18,14 @@ public class RecipeDto implements Serializable {
 	private int numberOfMeals;
 	private String metaData;
 
-	private List<IngredientDto> ingredients = new ArrayList<IngredientDto>();
+	private List<RecipeIngredientDto> ingredients = new ArrayList<RecipeIngredientDto>();
 	private List<ToolDto> tools = new ArrayList<ToolDto>();
 	private List<TextDto> texts = new ArrayList<TextDto>();
 	private List<AudioDto> audios = new ArrayList<AudioDto>();
 	private List<VideoDto> videos = new ArrayList<VideoDto>();
 	private List<CommentDto> comments = new ArrayList<CommentDto>();
+	private List<AppendixDto> appendices = new ArrayList<AppendixDto>();
+	private List<StepDto> steps = new ArrayList<StepDto>();
 
 	RecipeDto() {}
 
@@ -66,11 +68,11 @@ public class RecipeDto implements Serializable {
 		return metaData;
 	}
 
-	public void addIngredient(IngredientDto ingredientDto) {
-		ingredients.add(ingredientDto);
+	public void addIngredient(RecipeIngredientDto recipeIngredientDto) {
+		ingredients.add(recipeIngredientDto);
 	}
 
-	public List<IngredientDto> getIngredients() {
+	public List<RecipeIngredientDto> getIngredients() {
 		return ingredients;
 	}
 
@@ -112,6 +114,22 @@ public class RecipeDto implements Serializable {
 
 	public List<CommentDto> getComments() {
 		return comments;
+	}
+
+	public void addAppendix(AppendixDto appendix) {
+		appendices.add(appendix);
+	}
+
+	public List<AppendixDto> getAppendices() {
+		return appendices;
+	}
+
+	public void addStep(StepDto step) {
+		steps.add(step);
+	}
+
+	public List<StepDto> getSteps() {
+		return steps;
 	}
 
 }

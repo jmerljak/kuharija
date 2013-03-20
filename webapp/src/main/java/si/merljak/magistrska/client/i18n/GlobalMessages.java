@@ -3,6 +3,9 @@ package si.merljak.magistrska.client.i18n;
 import com.google.gwt.i18n.client.Messages;
 
 public interface GlobalMessages extends Messages {
+	@DefaultMessage("Ingredient {0} not found.")
+	String ingredientNotFound(String ingredientName);
+
 	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 audio tag.")
 	String htmlAudioNotSupported();
 

@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Label;
 
 public class AudioWidget extends Composite {
 
-	private static final GlobalMessages messages = KuharijaEntry.getMessages();
+	private static final GlobalMessages messages = KuharijaEntry.messages;
 
 	private Audio audioWidget;
 

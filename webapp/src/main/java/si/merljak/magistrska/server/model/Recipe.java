@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -49,11 +50,17 @@ public class Recipe implements Serializable {
     @OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
 	private Set<RecipeTool> tools;
 
-	@OneToMany
+	@ManyToMany
 	private Set<Technique> techniques;
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe")
 	private Set<RecipeText> texts;
+
+	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
+	private Set<ProcedureStep> steps;
+
+	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
+	private Set<Appendix> appendices;
 
 	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
 	private Set<RecipeAudio> audios;
@@ -129,6 +136,14 @@ public class Recipe implements Serializable {
 
 	public Set<RecipeVideo> getVideos() {
 		return videos;
+	}
+
+	public Set<ProcedureStep> getSteps() {
+		return steps;
+	}
+
+	public Set<Appendix> getAppendices() {
+		return appendices;
 	}
 
 	public Set<Comment> getComments() {

@@ -9,13 +9,15 @@ import si.merljak.magistrska.common.dto.VideoDto;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.VideoElement;
 import com.google.gwt.media.client.Video;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 
 public class VideoWidget extends Composite {
 
-	private static final GlobalConstants constants = KuharijaEntry.getConstants();
-	private static final GlobalMessages messages = KuharijaEntry.getMessages();
+	private static final GlobalConstants constants = KuharijaEntry.constants;
+	private static final GlobalMessages messages = KuharijaEntry.messages;
 
 	private Video videoWidget;
 
@@ -26,18 +28,24 @@ public class VideoWidget extends Composite {
 			videoWidget.setPoster(GWT.getHostPageBaseURL() + "video/" + videoDto.getPosterUrl());
 			videoWidget.setWidth("100%");
 
-			// subtitles are not yet supported by GWT, add plain HTML
-			String trackHTML = "";
-			for (SubtitleDto subtitle : videoDto.getSubtitles()) {
-				trackHTML = trackHTML.concat("<track src='" + GWT.getHostPageBaseURL() + "video/" + subtitle.getUrl() + "' kind='subtitle' srclang='" + subtitle.getLanguage().name() + "' label='" + constants.languageMap().get(subtitle.getLanguage().name()) + "' />");
-			}
-			videoWidget.getVideoElement().setInnerHTML(trackHTML);
-
 			// add all available sources (webm, mp4, ...)
 			for (String srcUrl : videoDto.getUrls()) {
 				String fileExt = srcUrl.substring(srcUrl.length() - 3, srcUrl.length());
 				String videoType = fileExt.equalsIgnoreCase("mp4") ? VideoElement.TYPE_MP4 : VideoElement.TYPE_WEBM;
 				videoWidget.addSource(GWT.getHostPageBaseURL() + "video/" + srcUrl, videoType);
+			}
+
+			// subtitles
+			for (SubtitleDto subtitle : videoDto.getSubtitles()) {
+				String language = subtitle.getLanguage().name();
+
+				// subtitles/tracks are not yet supported in GWT, add manually
+				Element trackElement = DOM.createElement("track");
+			    trackElement.setAttribute("kind", "subtitle");
+				trackElement.setAttribute("srclang", language);
+			    trackElement.setAttribute("label", constants.languageMap().get(language));
+			    trackElement.setAttribute("src", GWT.getHostPageBaseURL() + "video/" + subtitle.getUrl());
+			    DOM.appendChild(videoWidget.getElement(), trackElement);
 			}
 
 			initWidget(videoWidget);
@@ -46,6 +54,10 @@ public class VideoWidget extends Composite {
 			// TODO add links for download
 			// <p>Your browser does not support video; download the <a href="video.webm">WebM</a>, <a href="video.mp4">mp4</a> or <a href="video.ogg">Ogg</a> video for off-line viewing.</p>
 			// remind to upgrade browser
+			
+//			String htlm = "<script>jwplayer(\"video\").setup({playlist: [{image: \"" + GWT.getHostPageBaseURL() + "img/glyphicons-halflings.png\", file: \"" + GWT.getHostPageBaseURL() + "video/Shaun.mp4\",  captions: [ { file: \"" + GWT.getHostPageBaseURL() + "video/Shaun.vtt\", label: \"English\" } ] }] });</script>";
+//			initWidget(new HTML(htlm));
+//			KuharijaEntry.addScript("/jwplayer/jwplayer.js ");
 		}
 	}
 

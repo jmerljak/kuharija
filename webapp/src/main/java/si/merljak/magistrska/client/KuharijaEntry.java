@@ -1,18 +1,24 @@
 package si.merljak.magistrska.client;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import si.merljak.magistrska.client.i18n.GlobalConstants;
 import si.merljak.magistrska.client.i18n.GlobalFormatters;
 import si.merljak.magistrska.client.i18n.GlobalMessages;
-import si.merljak.magistrska.client.mvp.RecipeView;
+import si.merljak.magistrska.client.mvp.AbstractPresenter;
+import si.merljak.magistrska.client.mvp.IngredientPresenter;
+import si.merljak.magistrska.client.mvp.RecipePresenter;
+import si.merljak.magistrska.client.rpc.IngredientService;
+import si.merljak.magistrska.client.rpc.IngredientServiceAsync;
 import si.merljak.magistrska.client.rpc.RecipeService;
 import si.merljak.magistrska.client.rpc.RecipeServiceAsync;
 import si.merljak.magistrska.client.rpc.SearchService;
 import si.merljak.magistrska.client.rpc.SearchServiceAsync;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.TabsWidget;
-import si.merljak.magistrska.common.dto.RecipeDto;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -20,6 +26,8 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -28,72 +36,62 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 public class KuharijaEntry implements EntryPoint {
 
-	private static final int PAGE_SIZE = 15;
-
 	// remote service proxies
-	private final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
-	private final SearchServiceAsync searchService = GWT.create(SearchService.class);
+	public static final IngredientServiceAsync ingredientService = GWT.create(IngredientService.class);
+	public static final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
+	public static final SearchServiceAsync searchService = GWT.create(SearchService.class);
 
 	// constants
-	private static final GlobalConstants constants = GWT.create(GlobalConstants.class);
-	private static final GlobalFormatters formatters = GWT.create(GlobalFormatters.class);
-	private static final GlobalMessages messages = GWT.create(GlobalMessages.class);
+	public static final int PAGE_SIZE = 15;
+	public static final GlobalConstants constants = GWT.create(GlobalConstants.class);
+	public static final GlobalFormatters formatters = GWT.create(GlobalFormatters.class);
+	public static final GlobalMessages messages = GWT.create(GlobalMessages.class);
 
     // formatters
-    private static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
-    private static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
+	public static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
+	public static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
 
-    private RecipeView recipeView;
+	// presenters
+	private List<AbstractPresenter> presenters = new ArrayList<AbstractPresenter>();
     private LocaleWidget localeWidget;
+	private TabsWidget tabsWidget;
     
 	public void onModuleLoad() {
-		recipeView = new RecipeView();
 
 		localeWidget = new LocaleWidget();
 		RootPanel.get("nav").add(localeWidget);
+
+		presenters.add(new IngredientPresenter(localeWidget.getCurrentLanguage()));
+		presenters.add(new RecipePresenter(localeWidget.getCurrentLanguage()));
 		
 		// tabs
-		RootPanel.get("tabs").add(new TabsWidget());
+		tabsWidget = new TabsWidget();
+		RootPanel.get("tabs").add(tabsWidget);
 
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
 			public void onValueChange(ValueChangeEvent<String> event) {
-				String historyToken = event.getValue();
-				if (historyToken.equalsIgnoreCase("basic")) {
-					getRecipe();
-				} else if (historyToken.equalsIgnoreCase("search")) {
-					recipeView.setVisible(false);
-					search();
-				} else {
-					getRecipe();
+				String[] historyTokens = event.getValue().split("&");
+
+				// screen name should be first token
+				String screenName = historyTokens[0];
+
+				// get parameters
+				Map<String, String> parameters = new HashMap<String, String>();
+				for (int i = 1; i < historyTokens.length; i++) {
+					String[] param = historyTokens[i].split("=");
+					parameters.put(param[0], param[1]);
+				}
+
+				// notify and let presenters handle screen change
+				for (AbstractPresenter presenter : presenters) {
+					presenter.handleScreenChange(screenName, parameters);
 				}
 			}
 		});
 
 		// init current history state
 		History.fireCurrentHistoryState();
-	}
-	private void getRecipe() {
-		// get parameter
-		long recipeId = -1;
-		String parameter = Window.Location.getParameter("recipe");
-		try {
-			recipeId = Long.parseLong(parameter);
-		} catch (Exception e) {
-			
-		}
-
-		recipeService.getRecipe(recipeId, localeWidget.getCurrentLanguage(), new AsyncCallback<RecipeDto>() {
-			@Override
-			public void onSuccess(RecipeDto recipe) {
-				recipeView.displayRecipe(recipe);
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
-			}
-		});
 	}
 
 	private void search() {
@@ -119,26 +117,18 @@ public class KuharijaEntry implements EntryPoint {
 				
 				@Override
 				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
+					// TODO
+					Window.alert(caught.getMessage());
 				}
 			});
 		}
 	}
 
-	public static GlobalConstants getConstants() {
-		return constants;
-	}
-	
-	public static NumberFormat getNumberFormat() {
-		return numberFormat;
-	}
-
-	public static GlobalMessages getMessages() {
-		return messages;
-	}
-
-	public static DateTimeFormat getDateformat() {
-		return dateFormat;
+	/** Loads custom javascript library. */
+	public static void addScript(String url) {
+	    Element e = DOM.createElement("script");
+	    e.setAttribute("language", "JavaScript");
+	    e.setAttribute("src", url);
+	    DOM.appendChild(RootPanel.get().getElement(), e);
 	}
 }

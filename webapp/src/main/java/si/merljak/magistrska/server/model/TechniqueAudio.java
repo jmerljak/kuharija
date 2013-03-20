@@ -6,12 +6,10 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
 @Entity
-@Table(name="technique_audio")
 @DiscriminatorValue("T")
 public class TechniqueAudio extends Audio implements Serializable {
 
