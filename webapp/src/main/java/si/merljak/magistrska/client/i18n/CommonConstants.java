@@ -79,6 +79,38 @@ public interface CommonConstants extends Constants {
 	Map<String, String> unitMap();
 	
 	@DefaultStringMapValue({
+		"DIDYOUKNOW", "Did you know?",
+		"HEALTHINFO", "Healty info",
+		"IMPORTANT", "Important",
+		"TIP", "Useful tip",
+		"VARIATION", "Variation"})
+	Map<String, String> appendixMap();
+	
+	@DefaultStringMapValue({
+		"STARTER", "Starter",
+		"MAIN", "Main course",
+		"DESERT", "Desert",
+		"MEAT", "Meat",
+		"VEGETERIAN", "Vegeterian"})
+	Map<String, String> categoryMap();
+	
+	@DefaultStringMapValue({
+		"ALLYEAR", "All year",
+		"SPRING", "Spring",
+		"SPRING_EARLY", "Early spring",
+		"SPRING_LATE", "Late spring",
+		"SUMMER", "summer",
+		"SUMMER_EARLY", "Early summer",
+		"SUMMER_LATE", "Late summer",
+		"AUTUMN", "Autumn",
+		"AUTUMN_EARLY", "Early autumn",
+		"AUTUMN_LATE", "Late autumn",
+		"WINTER", "Winter",
+		"WINTER_EARLY", "Early winter",
+		"WINTER_LATE", "Late winter"})
+	Map<String, String> seasonMap();
+	
+	@DefaultStringMapValue({
 		"SPOON", "spoon",
 		"FORK", "fork",
 		"KNIFE", "knife",
