@@ -20,11 +20,11 @@ public class SearchView extends AbstractView {
 		initWidget(main);
 	}
 
-	public void displaySearchResults(List<String> results) {
+	public void displaySearchResults(List<Long> results) {
 		main.clear();
 		main.add(new Heading(2, constants.search()));
-		for (String result : results) {
-			main.add(new Label(result));
+		for (Long result : results) {
+			main.add(new Label(Long.toString(result)));
 		}
 		setVisible(true);
 	}

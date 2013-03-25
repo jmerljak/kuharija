@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import si.merljak.magistrska.client.KuharijaEntry;
+import si.merljak.magistrska.common.SearchParameters;
+import si.merljak.magistrska.common.enumeration.Category;
+import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
+import si.merljak.magistrska.common.enumeration.Season;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -24,18 +28,46 @@ public class SearchPresenter extends AbstractPresenter {
 	@Override
 	protected void parseParameters(String screenName, Map<String, String> parameters) {
 		if (parameters.containsKey("q")) {
-			try {
-				search(parameters.get("q"));
-			} catch (Exception e) {
+			String searchString = parameters.get("q");
+			SearchParameters searchParameters = new SearchParameters(searchString, language);
 
-			}
+			try {
+				int page = Integer.parseInt(parameters.get("page"));
+				searchParameters.setPage(page);
+			} catch (Exception e) { /* ignore */ }
+			try {
+				int pageSize = Integer.parseInt(parameters.get("pageSize"));
+				searchParameters.setPageSize(pageSize);
+			} catch (Exception e) { /* ignore */ }
+			try {
+				Difficulty difficulty = Difficulty.valueOf(parameters.get("difficulty").toUpperCase());
+				searchParameters.setDifficulty(difficulty);
+			} catch (Exception e) { /* ignore */ }
+			try {
+				Category category = Category.valueOf(parameters.get("category").toUpperCase());
+				searchParameters.setCategory(category);
+			} catch (Exception e) { /* ignore */ }
+			try {
+				Season season = Season.valueOf(parameters.get("season").toUpperCase());
+				searchParameters.setSeason(season);
+			} catch (Exception e) { /* ignore */ }
+			try {
+				// TODO parse multiple ingredients
+				String ingredients = parameters.get("ingredient").toUpperCase();
+				searchParameters.addIngredient(ingredients);
+				searchParameters.addIngredient("EGGS");
+			} catch (Exception e) { /* ignore */ }
+
+			search(searchParameters);
+		} else {
+			// show search
 		}
 	}
 
-	private void search(String searchString) {
-		KuharijaEntry.searchService.basicSearch(searchString, 1, 15, new AsyncCallback<List<String>>() {
+	private void search(SearchParameters searchParameters) {
+		KuharijaEntry.searchService.search(searchParameters, new AsyncCallback<List<Long>>() {
 			@Override
-			public void onSuccess(List<String> results) {
+			public void onSuccess(List<Long> results) {
 				searchView.displaySearchResults(results);
 			}
 			

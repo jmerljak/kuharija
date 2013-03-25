@@ -1,7 +1,8 @@
 package si.merljak.magistrska.common;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
@@ -10,15 +11,16 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 public class SearchParameters implements Serializable {
 
+	private static final int PAGE_SIZE = 15;
 	private static final long serialVersionUID = 3967849192762799943L;
 
 	private String searchString;
 	private int page = 1;
-	private int pageSize = 15;
+	private int pageSize = PAGE_SIZE;
 	private Category category;
 	private Season season;
 	private Difficulty difficulty;
-	private List<String> ingredients;
+	private Set<String> ingredients = new HashSet<String>();
 	private Language language;
 
 	SearchParameters() {}
@@ -31,7 +33,7 @@ public class SearchParameters implements Serializable {
 	public SearchParameters(String searchString, Language language, int pageSize) {
 		this.searchString = searchString;
 		this.language = language;
-		this.pageSize = pageSize;
+		setPageSize(pageSize);
 	}
 
 	public String getSearchString() {
@@ -47,7 +49,7 @@ public class SearchParameters implements Serializable {
 	}
 
 	public void setPage(int page) {
-		this.page = page;
+		this.page = page > 0 ? page : 1;
 	}
 
 	public int getPageSize() {
@@ -55,7 +57,7 @@ public class SearchParameters implements Serializable {
 	}
 
 	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
+		this.pageSize = pageSize > 0 ? pageSize : PAGE_SIZE;
 	}
 
 	public Category getCategory() {
@@ -82,12 +84,12 @@ public class SearchParameters implements Serializable {
 		this.difficulty = difficulty;
 	}
 
-	public List<String> getIngredients() {
+	public Set<String> getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(List<String> ingredients) {
-		this.ingredients = ingredients;
+	public void addIngredient(String ingredient) {
+		this.ingredients.add(ingredient);
 	}
 
 	public Language getLanguage() {
