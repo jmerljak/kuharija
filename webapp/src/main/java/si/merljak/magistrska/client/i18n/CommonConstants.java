@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.google.gwt.i18n.client.Constants;
 
-public interface GlobalConstants extends Constants {
+public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Recipe")
 	String recipe();
@@ -17,6 +17,9 @@ public interface GlobalConstants extends Constants {
 
 	@DefaultStringValue("Tools")
 	String tools();
+
+	@DefaultStringValue("Search")
+	String search();
 
 	@DefaultStringValue("Preparation time")
 	String preparationTime();
@@ -74,60 +77,6 @@ public interface GlobalConstants extends Constants {
 		"PAIR", "pair of",
 		"PINCH", "pinch"})
 	Map<String, String> unitMap();
-	
-	@DefaultStringMapValue({
-		"SUGAR", "sugar",
-		"FLOUR", "flour",
-		"SALT", "salt",
-		"PEPPER", "peper",
-		"OIL", "oil",
-		"BUTTER", "butter",
-		"EGGS", "eggs",
-		"ONION", "onion",
-		"VINEGAR", "vinegar",
-		"MARGARINE", "margarine",
-		"MILK", "milk",
-		"OREGANO", "oregano",
-		"BASIL", "basil",
-		"GARLIC", "garlic",
-		"VANILLA", "vanilla",
-		"CINNAMON", "cinnamon",
-		"CHEESE", "cheese",
-		"PEAS", "peas",
-		"CORN", "corn",
-		"BEANS", "beans",
-		"TUNA", "tuna",
-		"MUSHROOMS", "mushrooms",
-		"TOMATO", "tomato",
-		"TOMATO_SAUCE", "tomato sauce",
-		"BREAD", "bread",
-		"BREAD_CRUMBS", "bread crumbs",
-		"BAKING_POWDER", "baking powder",
-		"SUGAR_POWDER", "sugar powder",
-		"LEMON", "lemon",
-		"LEMON_JUICE", "lemon juice",
-		"ORANGE", "orange",
-		"ORANGE_JUICE", "orange juice",
-		"CLOVES", "cloves",
-		"NUTMEG", "nutmeg",
-		"CHIVES", "chives",
-		"CELERY", "celery",
-		"PARSLEY", "parsley",
-		"SAGE", "sage",
-		"CUCURBITA", "cucurbita",
-		"KAKI", "kaki",
-		"CREAM", "cream",
-		"FRANKFURTERS", "frankfurters",
-		"PUFF_PASTRY", "puff pastry",
-		"MELON", "melon",
-		"WATERMELON", "watermelon",
-		"RICE", "rice",
-		"PASTA", "pasta",
-		"SALMON", "salmon",
-		"COD", "cod",
-		"WATER", "water",
-		"SUGAR_CUBE", "sugar cube"})
-	Map<String, String> ingredientMap();
 	
 	@DefaultStringMapValue({
 		"SPOON", "spoon",

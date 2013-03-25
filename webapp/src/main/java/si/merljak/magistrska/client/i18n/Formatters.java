@@ -2,7 +2,7 @@ package si.merljak.magistrska.client.i18n;
 
 import com.google.gwt.i18n.client.Constants;
 
-public interface GlobalFormatters extends Constants {
+public interface Formatters extends Constants {
 	@DefaultStringValue("MM/dd/yyyy")
 	String dateFormat();
 
