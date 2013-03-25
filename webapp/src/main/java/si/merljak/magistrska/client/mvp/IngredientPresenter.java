@@ -19,23 +19,23 @@ public class IngredientPresenter extends AbstractPresenter {
 	
 	@Override
 	protected boolean isPresenterForScreen(String screenName) {
-		return screenName != null && screenName.equalsIgnoreCase("ingredient");
+		return screenName != null && screenName.equalsIgnoreCase("ingredients");
 	}
 
 	@Override
 	protected void parseParameters(String screenName, Map<String, String> parameters) {
 		if (parameters.containsKey("name")) {
-			getIngredient(parameters.get("name"));
+			getIngredient(parameters.get("name").toUpperCase());
 		} else {
 			ingredientView.displayIngredientsIndex();
 		}
 	}
 
-	private void getIngredient(String name) {
+	private void getIngredient(final String name) {
 		KuharijaEntry.ingredientService.getIngredient(name, new AsyncCallback<IngredientDto>() {
 			@Override
 			public void onSuccess(IngredientDto ingredient) {
-				ingredientView.displayIngredient(ingredient);
+				ingredientView.displayIngredient(ingredient, name);
 			}
 	
 			@Override

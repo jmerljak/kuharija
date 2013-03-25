@@ -30,6 +30,7 @@ import si.merljak.magistrska.server.model.Comment;
 import si.merljak.magistrska.server.model.Ingredient;
 import si.merljak.magistrska.server.model.ProcedureStep;
 import si.merljak.magistrska.server.model.Recipe;
+import si.merljak.magistrska.server.model.RecipeDetails;
 import si.merljak.magistrska.server.model.RecipeIngredient;
 import si.merljak.magistrska.server.model.RecipeTool;
 import si.merljak.magistrska.server.model.Subtitle;
@@ -58,9 +59,11 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 				return null;
 			}
 			
-			RecipeDto recipe = new RecipeDto(recipeEntity.getTitle(), recipeEntity.getAuthor(), recipeEntity.getImageUrl(), 
-											 recipeEntity.getDifficulty(), recipeEntity.getPreparationTime(), 
-											 recipeEntity.getNumberOfMeals(), recipeEntity.getMetaData());
+			RecipeDetails details = recipeEntity.getDetails().iterator().next();
+			
+			RecipeDto recipe = new RecipeDto(details.getHeading(), details.getSubHeading(), recipeEntity.getAuthor(), recipeEntity.getImageUrl(), 
+											 recipeEntity.getDifficulty(), details.getTimeNeeded(),
+											 recipeEntity.getNumberOfMeals(), recipeEntity.getMealUnit());
 
 			for (RecipeIngredient recipeIngredient : recipeEntity.getIngredients()) {
 				Ingredient ingredient = recipeIngredient.getIngredient();

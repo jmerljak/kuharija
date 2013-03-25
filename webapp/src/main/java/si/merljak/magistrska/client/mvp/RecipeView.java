@@ -1,7 +1,7 @@
 package si.merljak.magistrska.client.mvp;
 
 import si.merljak.magistrska.client.KuharijaEntry;
-import si.merljak.magistrska.client.i18n.GlobalConstants;
+import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.widgets.AudioWidget;
 import si.merljak.magistrska.client.widgets.IngredientsWidget;
 import si.merljak.magistrska.client.widgets.VideoWidget;
@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class RecipeView extends AbstractView {
 
 	// constants & formatters
-	private static final GlobalConstants constants = KuharijaEntry.constants;
+	private static final CommonConstants constants = KuharijaEntry.constants;
 	private static final DateTimeFormat dateFormat = KuharijaEntry.dateFormat;
 
 	// panels
@@ -71,7 +71,7 @@ public class RecipeView extends AbstractView {
 		}
 
 		// titles
-		title.getElement().setInnerHTML(recipe.getTitle());
+		title.getElement().setInnerHTML(recipe.getHeading());
 		titleTools.getElement().setInnerHTML(constants.tools());
 		titleComments.getElement().setInnerHTML(constants.comments());
 

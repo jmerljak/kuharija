@@ -3,6 +3,8 @@ package si.merljak.magistrska.server.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,7 +16,10 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
+import si.merljak.magistrska.common.enumeration.MealUnit;
+import si.merljak.magistrska.common.enumeration.Season;
 
 @Entity
 public class Recipe implements Serializable {
@@ -24,9 +29,6 @@ public class Recipe implements Serializable {
 	@Id
 	@GeneratedValue
 	private long id;
-
-	@NotNull
-	private String title;
 
 	@NotNull
 	@Size(max = 50)
@@ -39,10 +41,14 @@ public class Recipe implements Serializable {
 	private Difficulty difficulty;
 
 	@NotNull
-	private String preparationTime;
+	private int numberOfMeals;
 
 	@NotNull
-	private int numberOfMeals;
+	@Enumerated(EnumType.STRING)
+	private MealUnit mealUnit;
+
+	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
+	private Set<RecipeDetails> details;
 
 	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
 	private Set<RecipeIngredient> ingredients;
@@ -71,27 +77,28 @@ public class Recipe implements Serializable {
 	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
 	private Set<Comment> comments;
 
-	private String metaData;
+	@Enumerated(EnumType.STRING)
+	@ElementCollection(targetClass = Category.class)
+	@Column(name="category")
+	private Set<Category> categories;
+
+	@Enumerated(EnumType.STRING)
+	@ElementCollection(targetClass = Season.class)
+	@Column(name="season")
+	private Set<Season> seasons;
 
 	protected Recipe() {}
 
-	public Recipe(String title, String author, String imageUrl,
-			Difficulty difficulty, String preparationTime, int numberOfMeals, String metaData) {
-		this.title = title;
+	public Recipe(String author, String imageUrl,
+			Difficulty difficulty, int numberOfMeals) {
 		this.author = author;
 		this.imageUrl = imageUrl;
 		this.difficulty = difficulty;
-		this.preparationTime = preparationTime;
 		this.numberOfMeals = numberOfMeals;
-		this.metaData = metaData;
 	}
 
 	public long getId() {
 		return id;
-	}
-
-	public String getTitle() {
-		return title;
 	}
 
 	public String getAuthor() {
@@ -106,12 +113,16 @@ public class Recipe implements Serializable {
 		return difficulty;
 	}
 
-	public String getPreparationTime() {
-		return preparationTime;
-	}
-
 	public int getNumberOfMeals() {
 		return numberOfMeals;
+	}
+
+	public MealUnit getMealUnit() {
+		return mealUnit;
+	}
+
+	public Set<RecipeDetails> getDetails() {
+		return details;
 	}
 
 	public Set<RecipeIngredient> getIngredients() {
@@ -148,9 +159,5 @@ public class Recipe implements Serializable {
 
 	public Set<Comment> getComments() {
 		return comments;
-	}
-
-	public String getMetaData() {
-		return metaData;
 	}
 }

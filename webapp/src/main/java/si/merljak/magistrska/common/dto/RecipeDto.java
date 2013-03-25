@@ -5,18 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import si.merljak.magistrska.common.enumeration.Difficulty;
+import si.merljak.magistrska.common.enumeration.MealUnit;
 
 public class RecipeDto implements Serializable {
 
 	private static final long serialVersionUID = 3663171145467465776L;
 
-	private String title;
+	private String heading;
+	private String subHeading;
 	private String author;
 	private String imageUrl;
 	private Difficulty difficulty;
 	private String preparationTime;
 	private int numberOfMeals;
-	private String metaData;
+	private MealUnit mealUnit;
 
 	private List<RecipeIngredientDto> ingredients = new ArrayList<RecipeIngredientDto>();
 	private List<ToolDto> tools = new ArrayList<ToolDto>();
@@ -29,19 +31,24 @@ public class RecipeDto implements Serializable {
 
 	RecipeDto() {}
 
-	public RecipeDto(String title, String author, String imageUrl, Difficulty difficulty, 
-			String preparationTime, int numberOfMeals, String metaData) {
-		this.title = title;
+	public RecipeDto(String heading, String subHeading, String author, String imageUrl, Difficulty difficulty, 
+			String preparationTime, int numberOfMeals, MealUnit mealUnit) {
+		this.heading = heading;
+		this.subHeading = subHeading;
 		this.author = author;
 		this.imageUrl = imageUrl;
 		this.difficulty = difficulty;
 		this.preparationTime = preparationTime;
 		this.numberOfMeals = numberOfMeals;
-		this.metaData = metaData;
+		this.mealUnit = mealUnit;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getHeading() {
+		return heading;
+	}
+
+	public String getSubHeading() {
+		return subHeading;
 	}
 
 	public String getAuthor() {
@@ -64,8 +71,8 @@ public class RecipeDto implements Serializable {
 		return numberOfMeals;
 	}
 
-	public String getMetaData() {
-		return metaData;
+	public MealUnit getMealUnit() {
+		return mealUnit;
 	}
 
 	public void addIngredient(RecipeIngredientDto recipeIngredientDto) {

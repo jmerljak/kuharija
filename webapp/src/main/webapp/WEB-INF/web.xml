@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    	 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5"
-         xmlns="http://java.sun.com/xml/ns/javaee">
-
-  <!-- Servlets -->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <servlet>
     <servlet-name>ingredientServlet</servlet-name>
     <servlet-class>si.merljak.magistrska.server.IngredientServiceImpl</servlet-class>
@@ -17,7 +12,6 @@
     <servlet-name>searchServlet</servlet-name>
     <servlet-class>si.merljak.magistrska.server.SearchServiceImpl</servlet-class>
   </servlet>
-  
   <servlet-mapping>
     <servlet-name>ingredientServlet</servlet-name>
     <url-pattern>/magistrska/ingredient</url-pattern>
@@ -30,10 +24,7 @@
     <servlet-name>searchServlet</servlet-name>
     <url-pattern>/magistrska/search</url-pattern>
   </servlet-mapping>
-  
-  <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-
 </web-app>

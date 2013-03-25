@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import si.merljak.magistrska.client.rpc.SearchService;
+import si.merljak.magistrska.common.SearchParameters;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -29,6 +30,12 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		// TODO Auto-generated method stub
 		return new ArrayList<String>(Arrays.asList("polde", "jure", "miha"));
 		
+	}
+
+	@Override
+	public List<String> search(SearchParameters searchParameters) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

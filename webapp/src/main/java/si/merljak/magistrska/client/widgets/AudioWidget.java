@@ -1,7 +1,7 @@
 package si.merljak.magistrska.client.widgets;
 
 import si.merljak.magistrska.client.KuharijaEntry;
-import si.merljak.magistrska.client.i18n.GlobalMessages;
+import si.merljak.magistrska.client.i18n.CommonMessages;
 import si.merljak.magistrska.common.dto.AudioDto;
 
 import com.google.gwt.core.client.GWT;
@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Label;
 
 public class AudioWidget extends Composite {
 
-	private static final GlobalMessages messages = KuharijaEntry.messages;
+	private static final CommonMessages messages = KuharijaEntry.messages;
 
 	private Audio audioWidget;
 

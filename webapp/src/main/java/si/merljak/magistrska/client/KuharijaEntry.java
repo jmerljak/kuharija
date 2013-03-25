@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import si.merljak.magistrska.client.i18n.GlobalConstants;
-import si.merljak.magistrska.client.i18n.GlobalFormatters;
-import si.merljak.magistrska.client.i18n.GlobalMessages;
+import si.merljak.magistrska.client.i18n.CommonConstants;
+import si.merljak.magistrska.client.i18n.CommonMessages;
+import si.merljak.magistrska.client.i18n.Formatters;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.client.mvp.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
+import si.merljak.magistrska.client.mvp.SearchPresenter;
 import si.merljak.magistrska.client.rpc.IngredientService;
 import si.merljak.magistrska.client.rpc.IngredientServiceAsync;
 import si.merljak.magistrska.client.rpc.RecipeService;
@@ -29,9 +30,6 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class KuharijaEntry implements EntryPoint {
@@ -42,10 +40,9 @@ public class KuharijaEntry implements EntryPoint {
 	public static final SearchServiceAsync searchService = GWT.create(SearchService.class);
 
 	// constants
-	public static final int PAGE_SIZE = 15;
-	public static final GlobalConstants constants = GWT.create(GlobalConstants.class);
-	public static final GlobalFormatters formatters = GWT.create(GlobalFormatters.class);
-	public static final GlobalMessages messages = GWT.create(GlobalMessages.class);
+	public static final CommonConstants constants = GWT.create(CommonConstants.class);
+	public static final Formatters formatters = GWT.create(Formatters.class);
+	public static final CommonMessages messages = GWT.create(CommonMessages.class);
 
     // formatters
 	public static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
@@ -63,6 +60,7 @@ public class KuharijaEntry implements EntryPoint {
 
 		presenters.add(new IngredientPresenter(localeWidget.getCurrentLanguage()));
 		presenters.add(new RecipePresenter(localeWidget.getCurrentLanguage()));
+		presenters.add(new SearchPresenter(localeWidget.getCurrentLanguage()));
 		
 		// tabs
 		tabsWidget = new TabsWidget();
@@ -92,36 +90,6 @@ public class KuharijaEntry implements EntryPoint {
 
 		// init current history state
 		History.fireCurrentHistoryState();
-	}
-
-	private void search() {
-		String searchParam = Window.Location.getParameter("searchFor");
-		if (searchParam != null) {
-			int page;
-			try {
-				page = Integer.parseInt(Window.Location.getParameter("page"));
-			} catch (Exception e) {
-				page = 1;
-			}
-			
-			searchService.basicSearch(searchParam, page, PAGE_SIZE, new AsyncCallback<List<String>>() {
-				@Override
-				public void onSuccess(List<String> results) {
-					RootPanel commentsPanel = RootPanel.get("searchWrapper");
-					commentsPanel.setVisible(true);
-					commentsPanel.clear();
-					for (String result : results) {
-						commentsPanel.add(new Label(result));
-					}
-				}
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO
-					Window.alert(caught.getMessage());
-				}
-			});
-		}
 	}
 
 	/** Loads custom javascript library. */
