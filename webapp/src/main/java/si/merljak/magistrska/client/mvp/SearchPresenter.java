@@ -55,20 +55,19 @@ public class SearchPresenter extends AbstractPresenter {
 				// TODO parse multiple ingredients
 				String ingredients = parameters.get("ingredient").toUpperCase();
 				searchParameters.addIngredient(ingredients);
-				searchParameters.addIngredient("EGGS");
 			} catch (Exception e) { /* ignore */ }
 
 			search(searchParameters);
 		} else {
-			// show search
+			searchView.clearSearchResults();
 		}
 	}
 
-	private void search(SearchParameters searchParameters) {
+	private void search(final SearchParameters searchParameters) {
 		KuharijaEntry.searchService.search(searchParameters, new AsyncCallback<List<Long>>() {
 			@Override
 			public void onSuccess(List<Long> results) {
-				searchView.displaySearchResults(results);
+				searchView.displaySearchResults(results, searchParameters);
 			}
 			
 			@Override

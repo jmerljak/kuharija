@@ -9,7 +9,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("search")
 public interface SearchService extends RemoteService {
-	List<String> basicSearch(String searchString, int page, int pageSize);
-
 	List<Long> search(SearchParameters searchParameters);
 }

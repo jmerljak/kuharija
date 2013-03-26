@@ -2,10 +2,10 @@ package si.merljak.magistrska.server;
 
 import static si.merljak.magistrska.server.model.QIngredient.ingredient;
 import static si.merljak.magistrska.server.model.QRecipe.recipe;
+import static si.merljak.magistrska.server.model.QRecipeDetails.recipeDetails;
 import static si.merljak.magistrska.server.model.QRecipeIngredient.recipeIngredient;
+import static si.merljak.magistrska.server.model.QRecipeText.recipeText;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -35,18 +35,8 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 	private EntityManager em;
 
 	@Override
-	public List<String> basicSearch(String searchString, int page, int pageSize) {
-		log.info("searchinge for: " + searchString + ", page: " + page + ", pageSize: " + pageSize);
-		// TODO Auto-generated method stub
-		return new ArrayList<String>(Arrays.asList("polde", "jure", "miha"));
-		
-	}
-
-	@Override
 	public List<Long> search(SearchParameters searchParameters) {
 		log.info("searchinge for parameters: " + searchParameters.toString());
-
-		JPAQuery query = new JPAQuery(em).from(recipe);
 
 		// parameters
 		int page = searchParameters.getPage();
@@ -59,6 +49,13 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		Language language = searchParameters.getLanguage();
 
 		// build query
+		JPAQuery query = new JPAQuery(em).from(recipe);
+		query.innerJoin(recipe.details, recipeDetails);
+		query.innerJoin(recipe.texts, recipeText);
+		query.where(recipeDetails.heading.like("%"+searchString+"%")
+				.or(recipeDetails.subHeading.like("%"+searchString+"%"))
+				.or(recipeText.content.like("%"+searchString+"%")));
+
 		if (difficulty != null) {
 			query.where(recipe.difficulty.eq(difficulty));
 		}
