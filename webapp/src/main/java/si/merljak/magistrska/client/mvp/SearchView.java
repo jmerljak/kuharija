@@ -2,8 +2,8 @@ package si.merljak.magistrska.client.mvp;
 
 import java.util.List;
 
-import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.common.SearchParameters;
+import si.merljak.magistrska.common.dto.RecipeBasicDto;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.core.client.GWT;
@@ -14,16 +14,15 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class SearchView extends AbstractView {
-
-	// constants & formatters
-	private static final CommonConstants constants = GWT.create(CommonConstants.class);
 
 	private static final RootPanel main = RootPanel.get("searchWrapper");
 	
@@ -58,11 +57,22 @@ public class SearchView extends AbstractView {
 		initWidget(main);
 	}
 
-	public void displaySearchResults(List<Long> results, SearchParameters parameters) {
+	public void displaySearchResults(List<RecipeBasicDto> results, SearchParameters parameters) {
 		searchBox.setText(parameters.getSearchString());
 		resultsPanel.clear();
-		for (Long result : results) {
-			resultsPanel.add(new Label(Long.toString(result)));
+		for (RecipeBasicDto result : results) {
+			Image image = new Image(GWT.getHostPageBaseURL() + "img/recipe/" + result.getImageUrl());
+			image.setWidth("250px");
+			Anchor link = new Anchor(result.getHeading(), "#recipe&id=" + result.getId());
+			link.setStyleName("blocklink");
+
+			FlowPanel recipe = new FlowPanel();
+			recipe.setStyleName("resultEntry");
+			recipe.add(link);
+			recipe.add(image);
+			recipe.add(new Label(localizeEnum(result.getDifficulty())));
+			recipe.add(new Label(result.getPreparationTime()));
+			resultsPanel.add(recipe);
 		}
 		setVisible(true);
 	}

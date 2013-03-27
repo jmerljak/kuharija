@@ -5,6 +5,7 @@ import java.util.Map;
 
 import si.merljak.magistrska.client.KuharijaEntry;
 import si.merljak.magistrska.common.SearchParameters;
+import si.merljak.magistrska.common.dto.RecipeBasicDto;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
@@ -64,9 +65,9 @@ public class SearchPresenter extends AbstractPresenter {
 	}
 
 	private void search(final SearchParameters searchParameters) {
-		KuharijaEntry.searchService.search(searchParameters, new AsyncCallback<List<Long>>() {
+		KuharijaEntry.searchService.search(searchParameters, new AsyncCallback<List<RecipeBasicDto>>() {
 			@Override
-			public void onSuccess(List<Long> results) {
+			public void onSuccess(List<RecipeBasicDto> results) {
 				searchView.displaySearchResults(results, searchParameters);
 			}
 			

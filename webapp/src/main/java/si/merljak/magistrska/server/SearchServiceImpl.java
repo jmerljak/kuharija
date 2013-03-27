@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import si.merljak.magistrska.client.rpc.SearchService;
 import si.merljak.magistrska.common.SearchParameters;
+import si.merljak.magistrska.common.dto.QRecipeBasicDto;
+import si.merljak.magistrska.common.dto.RecipeBasicDto;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
@@ -24,6 +26,7 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPASubQuery;
 
 public class SearchServiceImpl extends RemoteServiceServlet implements SearchService {
 
@@ -35,8 +38,8 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 	private EntityManager em;
 
 	@Override
-	public List<Long> search(SearchParameters searchParameters) {
-		log.info("searchinge for parameters: " + searchParameters.toString());
+	public List<RecipeBasicDto> search(SearchParameters searchParameters) {
+		log.info("searching for: " + searchParameters.getSearchString());
 
 		// parameters
 		int page = searchParameters.getPage();
@@ -49,39 +52,43 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		Language language = searchParameters.getLanguage();
 
 		// build query
-		JPAQuery query = new JPAQuery(em).from(recipe);
-		query.innerJoin(recipe.details, recipeDetails);
-		query.innerJoin(recipe.texts, recipeText);
-		query.where(recipeDetails.heading.like("%"+searchString+"%")
+		JPASubQuery subquery = new JPASubQuery().from(recipe);
+		subquery.innerJoin(recipe.details, recipeDetails);
+		subquery.innerJoin(recipe.texts, recipeText);
+		subquery.where(recipeDetails.heading.like("%"+searchString+"%")
 				.or(recipeDetails.subHeading.like("%"+searchString+"%"))
 				.or(recipeText.content.like("%"+searchString+"%")));
 
 		if (difficulty != null) {
-			query.where(recipe.difficulty.eq(difficulty));
+			subquery.where(recipe.difficulty.eq(difficulty));
 		}
 
 		if (season != null) {
-			query.where(recipe.seasons.contains(season)
+			subquery.where(recipe.seasons.contains(season)
 					.or(recipe.seasons.contains(Season.ALLYEAR)));
 		}
 
 		if (category != null) {
-			query.where(recipe.categories.contains(category));
+			subquery.where(recipe.categories.contains(category));
 		}
 
 		if (ingredients != null && !ingredients.isEmpty()) {
-			query.innerJoin(recipe.ingredients, recipeIngredient)
+			subquery.innerJoin(recipe.ingredients, recipeIngredient)
 				 .innerJoin(recipeIngredient.ingredient, ingredient)
 				 .with(ingredient.name.in(ingredients));
 		}
 
-		List<Long> list = query.limit(pageSize)
-								 .offset((page -1) * pageSize)
-								 .distinct()
-								 .orderBy(recipe.id.asc())
-								 .list(recipe.id);
+		subquery.limit(pageSize)
+				.offset((page -1) * pageSize)
+				.distinct()
+				.orderBy(recipe.id.asc());
 
-		return list;
+		JPAQuery query = new JPAQuery(em).from(recipe);
+		query.innerJoin(recipe.details, recipeDetails);
+		query.where(recipeDetails.language.eq(language));
+		query.where(recipe.id.in(subquery.list(recipe.id)));
+
+		return query.list(new QRecipeBasicDto(recipe.id, recipeDetails.heading, recipe.imageUrl, recipe.difficulty, recipeDetails.timeNeeded));
 	}
 
 }

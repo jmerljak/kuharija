@@ -80,6 +80,7 @@ public class KuharijaEntry implements EntryPoint {
 					String[] param = historyTokens[i].split("=");
 					parameters.put(param[0], param[1]);
 				}
+				// TODO catch exception
 
 				// notify and let presenters handle screen change
 				for (AbstractPresenter presenter : presenters) {

@@ -20,3 +20,12 @@ body {
 	-webkit-column-count: 3;
 	column-count: 3;
 }
+
+.resultEntry {
+	display: inline-block;
+	margin: 1em;
+}
+
+.blocklink {
+	display: block;
+}
