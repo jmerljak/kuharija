@@ -112,8 +112,8 @@
 				<configuration>
 					<!-- Exclude client only classes from the deployment. As these classes 
 						compile down to JavaScript, they are not needed at runtime. They would only 
-						introduce runtime dependencies to GWT development libraries.
-          			<packagingExcludes>**/client/widgets/**/*.class</packagingExcludes> -->
+						introduce runtime dependencies to GWT development libraries. -->
+          			<packagingExcludes>**/client/**/*.class</packagingExcludes>
 				</configuration>
 			</plugin>
 

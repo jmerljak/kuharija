@@ -1,4 +1,4 @@
-package si.merljak.magistrska.client.rpc;
+package si.merljak.magistrska.common.rpc;
 
 import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.dto.StepDto;

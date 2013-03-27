@@ -15,7 +15,6 @@ import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import si.merljak.magistrska.client.rpc.SearchService;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.QRecipeBasicDto;
 import si.merljak.magistrska.common.dto.RecipeBasicDto;
@@ -23,6 +22,7 @@ import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.enumeration.Season;
+import si.merljak.magistrska.common.rpc.SearchService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.jpa.impl.JPAQuery;

@@ -12,7 +12,6 @@ import javax.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import si.merljak.magistrska.client.rpc.RecipeService;
 import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
@@ -24,6 +23,7 @@ import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.ToolDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 import si.merljak.magistrska.common.enumeration.Language;
+import si.merljak.magistrska.common.rpc.RecipeService;
 import si.merljak.magistrska.server.model.Appendix;
 import si.merljak.magistrska.server.model.Audio;
 import si.merljak.magistrska.server.model.Comment;
