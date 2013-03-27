@@ -1,0 +1,1 @@
+mvn querydsl:jpa-export

@@ -34,6 +34,8 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901.jdbc4</version>
 		</dependency>
+
+		<!-- querydsl -->
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
@@ -114,51 +116,19 @@
           			<packagingExcludes>**/client/widgets/**/*.class</packagingExcludes> -->
 				</configuration>
 			</plugin>
-			
-			<!--<plugin>
-		      <groupId>com.mysema.maven</groupId>
-		      <artifactId>apt-maven-plugin</artifactId>
-		      <version>1.0.8</version>
-		      <executions>
-		        <execution>
-		          <configuration>
-		            <outputDirectory>target/generated-sources</outputDirectory>
-		            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-		          </configuration>
-		        </execution>
-		      </executions>
-		      <dependencies>
-	            <dependency>
-	                <groupId>com.mysema.querydsl</groupId>
-	                <artifactId>querydsl-apt</artifactId>
-	                <version>${querydsl.version}</version>
-	            </dependency>
-	            <dependency>
-	                <groupId>com.mysema.querydsl</groupId>
-	                <artifactId>querydsl-jpa</artifactId>
-	                <classifier>apt</classifier>
-	                <version>${querydsl.version}</version>
-	            </dependency>
-		      </dependencies>
-		    </plugin>
+
+			<!-- querydsl generation -->
 		    <plugin>
 			  <groupId>com.mysema.querydsl</groupId>
 			  <artifactId>querydsl-maven-plugin</artifactId>
 			  <version>${querydsl.version}</version>  
-			  <executions>
-			    <execution>    
-			      <goals>
-			        <goal>jpa-export</goal>
-			      </goals>
-			      <configuration>
-			        <targetFolder>target/generated-sources/java</targetFolder>
-			        <packages>
-			          <package>si.merljak.magistrska.server.model</package>
-			        </packages>
-			      </configuration>      
-			    </execution>
-			  </executions>
-			</plugin> -->
+		      <configuration>
+		        <targetFolder>target/generated-sources/java</targetFolder>
+		        <packages>
+		          <package>si.merljak.magistrska.server.model</package>
+		        </packages>
+		      </configuration>
+			</plugin>
 
 			<!-- JBoss AS plugin to deploy war -->
 			<plugin>
