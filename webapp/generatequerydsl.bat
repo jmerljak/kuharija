@@ -1,1 +1,1 @@
-mvn querydsl:jpa-export
+mvn apt:process
