@@ -1,5 +1,5 @@
 package si.merljak.magistrska.common.enumeration;
 
 public enum MealUnit {
-	PERSON, SERVING_PLATE;
+	PERSON, PIECE, SERVING_PLATE, BAKING_TRAY;
 }

@@ -19,7 +19,8 @@ public enum Unit {
 
 	PIECE(UnitType.PIECE),
 	PAIR(UnitType.PIECE),
-	PINCH(UnitType.UNCOUNTABLE);
+	PINCH(UnitType.UNCOUNTABLE),
+	SOME(UnitType.UNCOUNTABLE);
 	
 
 	private UnitType unitType;

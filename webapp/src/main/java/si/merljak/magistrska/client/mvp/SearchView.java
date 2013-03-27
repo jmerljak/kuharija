@@ -60,11 +60,14 @@ public class SearchView extends AbstractView {
 	public void displaySearchResults(List<RecipeBasicDto> results, SearchParameters parameters) {
 		searchBox.setText(parameters.getSearchString());
 		resultsPanel.clear();
+
+		if (results.isEmpty()) {
+			resultsPanel.add(new Label(constants.searchNoResults()));
+		}
+
 		for (RecipeBasicDto result : results) {
 			Image image = new Image(GWT.getHostPageBaseURL() + "img/recipe/" + result.getImageUrl());
-			image.setWidth("250px");
 			Anchor link = new Anchor(result.getHeading(), "#recipe&id=" + result.getId());
-			link.setStyleName("blocklink");
 
 			FlowPanel recipe = new FlowPanel();
 			recipe.setStyleName("resultEntry");

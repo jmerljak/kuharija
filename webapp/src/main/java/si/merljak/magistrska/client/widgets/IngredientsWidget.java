@@ -121,7 +121,7 @@ public class IngredientsWidget extends Composite {
 
 				Anchor label = new Anchor(
 						ingredientNameString,
-						"#ingredient&name=" + ingredientName);
+						"#ingredients&name=" + ingredientName);
 				ingredientsList.add(new ListItem(label, new Label(" " + constants.unitMap().get(unit.name()))));
 				continue;
 			}
@@ -135,7 +135,7 @@ public class IngredientsWidget extends Composite {
 			
 			Anchor label = new Anchor(
 					ingredientNameString + " " + numberFormat.format(amount) + " " + constants.unitMap().get(unit.name()),
-					"#ingredient&name=" + ingredientName);
+					"#ingredients&name=" + ingredientName);
 			ingredientsList.add(new ListItem(label));
 		}
 		

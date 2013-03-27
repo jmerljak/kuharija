@@ -21,6 +21,9 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Search")
 	String search();
 
+	@DefaultStringValue("No results")
+	String searchNoResults();
+
 	@DefaultStringValue("Preparation time")
 	String preparationTime();
 	
@@ -75,7 +78,8 @@ public interface CommonConstants extends Constants {
 		"F", "°F",
 		"PIECE", "x",
 		"PAIR", "pair of",
-		"PINCH", "pinch"})
+		"PINCH", "pinch",
+		"SOME", ""})
 	Map<String, String> unitMap();
 	
 	@DefaultStringMapValue({

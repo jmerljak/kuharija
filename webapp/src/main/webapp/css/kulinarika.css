@@ -26,6 +26,11 @@ body {
 	margin: 1em;
 }
 
-.blocklink {
+.resultEntry img {
+	max-height: 160px;
+	max-width: 200px;
+}
+
+.resultEntry a {
 	display: block;
 }
