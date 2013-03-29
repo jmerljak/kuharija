@@ -51,9 +51,8 @@ public class IngredientView extends AbstractView {
 			main.add(new Image(GWT.getHostPageBaseURL() + "img/" + ingredient.getImageUrl()));
 			main.add(new Label(constants.ingredientDescriptionMap().get(ingredient.getName() + "_DESC")));
 			String localizedName = ingredientMap.get(ingredient.getName()).toLowerCase();
+			main.add(new Anchor(messages.searchByIngredient(localizedName), SearchPresenter.buildSearchByIngredientUrl(ingredient.getName())));
 			main.add(new Anchor(messages.ingredientReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl() + localizedName, "_blank"));
-			main.add(new Anchor("search for more!", "#search&ingredient=" + localizedName));
-			// search for recepies with this ingredient
 		}
 
 		setVisible(true);
@@ -90,8 +89,8 @@ public class IngredientView extends AbstractView {
 
 		String currentLetter = null;
 		UnorderedList ul = null;
-		for (String ingredientName : values) {
-			String firstLetter = String.valueOf(ingredientName.charAt(0));
+		for (String localizedName : values) {
+			String firstLetter = String.valueOf(localizedName.charAt(0));
 			if (currentLetter == null || !firstLetter.equalsIgnoreCase(currentLetter)) {
 				// new first letter, add heading and new unordered list instance
 				currentLetter = firstLetter.toUpperCase();
@@ -99,7 +98,7 @@ public class IngredientView extends AbstractView {
 				ingredientsIndex.add(new Heading(3, currentLetter));
 				ingredientsIndex.add(ul);
 			}
-			ul.add(new ListItem(new Anchor(ingredientName, "#ingredients&name=" + inverseMap.get(ingredientName).toLowerCase())));
+			ul.add(new ListItem(new Anchor(localizedName, IngredientPresenter.buildIngredientUrl(inverseMap.get(localizedName)))));
 		}
 	}
 

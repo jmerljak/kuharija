@@ -5,6 +5,7 @@ import java.util.List;
 import si.merljak.magistrska.client.KuharijaEntry;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
+import si.merljak.magistrska.client.mvp.IngredientPresenter;
 import si.merljak.magistrska.common.dto.RecipeIngredientDto;
 import si.merljak.magistrska.common.enumeration.Unit;
 
@@ -25,6 +26,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
+// TODO cleanup, refactorize
 public class IngredientsWidget extends Composite {
 	private static final CommonConstants constants = KuharijaEntry.constants;
 	private static final IngredientsConstants ingredientsConstants = GWT.create(IngredientsConstants.class);
@@ -119,9 +121,7 @@ public class IngredientsWidget extends Composite {
 					unit = unit.getNonMetricUnit();
 				}
 
-				Anchor label = new Anchor(
-						ingredientNameString,
-						"#ingredients&name=" + ingredientName);
+				Anchor label = new Anchor(ingredientNameString, IngredientPresenter.buildIngredientUrl(ingredientName));
 				ingredientsList.add(new ListItem(label, new Label(" " + constants.unitMap().get(unit.name()))));
 				continue;
 			}
@@ -135,7 +135,7 @@ public class IngredientsWidget extends Composite {
 			
 			Anchor label = new Anchor(
 					ingredientNameString + " " + numberFormat.format(amount) + " " + constants.unitMap().get(unit.name()),
-					"#ingredients&name=" + ingredientName);
+					IngredientPresenter.buildIngredientUrl(ingredientName));
 			ingredientsList.add(new ListItem(label));
 		}
 		

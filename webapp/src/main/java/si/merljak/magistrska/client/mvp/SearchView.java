@@ -3,13 +3,12 @@ package si.merljak.magistrska.client.mvp;
 import java.util.List;
 
 import si.merljak.magistrska.common.SearchParameters;
-import si.merljak.magistrska.common.dto.RecipeBasicDto;
+import si.merljak.magistrska.common.dto.RecipeDto;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.History;
@@ -35,10 +34,10 @@ public class SearchView extends AbstractView {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				Window.alert("aaa");
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					String searchString = searchBox.getValue().trim();
-					History.newItem("search&q=" + searchString);
-				}
+//				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+//					String searchString = searchBox.getValue().trim();
+//					History.newItem("search&q=" + searchString);
+//				}
 			}
 		});
 		searchButton.addClickHandler(new ClickHandler() {
@@ -57,7 +56,7 @@ public class SearchView extends AbstractView {
 		initWidget(main);
 	}
 
-	public void displaySearchResults(List<RecipeBasicDto> results, SearchParameters parameters) {
+	public void displaySearchResults(List<RecipeDto> results, SearchParameters parameters) {
 		searchBox.setText(parameters.getSearchString());
 		resultsPanel.clear();
 
@@ -65,9 +64,9 @@ public class SearchView extends AbstractView {
 			resultsPanel.add(new Label(constants.searchNoResults()));
 		}
 
-		for (RecipeBasicDto result : results) {
+		for (RecipeDto result : results) {
 			Image image = new Image(GWT.getHostPageBaseURL() + "img/recipe/" + result.getImageUrl());
-			Anchor link = new Anchor(result.getHeading(), "#recipe&id=" + result.getId());
+			Anchor link = new Anchor(result.getHeading(), RecipePresenter.buildRecipeUrl(result.getId()));
 
 			FlowPanel recipe = new FlowPanel();
 			recipe.setStyleName("resultEntry");

@@ -1,18 +1,19 @@
 package si.merljak.magistrska.server;
 
+import static si.merljak.magistrska.server.model.QIngredient.ingredient;
+
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import si.merljak.magistrska.common.dto.IngredientDto;
+import si.merljak.magistrska.common.dto.QIngredientDto;
 import si.merljak.magistrska.common.rpc.IngredientService;
-import si.merljak.magistrska.server.model.Ingredient;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 public class IngredientServiceImpl extends RemoteServiceServlet implements IngredientService {
 
@@ -25,16 +26,12 @@ public class IngredientServiceImpl extends RemoteServiceServlet implements Ingre
 
 	@Override
 	public IngredientDto getIngredient(String name) {
-		log.info("executing getIngredient: " + name);
+		log.debug("executing getIngredient: " + name);
 
-		try {
-			TypedQuery<Ingredient> query = em.createQuery("SELECT i FROM Ingredient i WHERE i.name = :name", Ingredient.class);
-			query.setParameter("name", name);
-			Ingredient recipeEntity = query.getSingleResult();
-			return new IngredientDto(recipeEntity.getName(), recipeEntity.getImageUrl());
-		} catch (NoResultException e) {
-			return null;
-		}
+		return new JPAQuery(em)
+					.from(ingredient)
+					.where(ingredient.name.equalsIgnoreCase(name))
+					.uniqueResult(new QIngredientDto(ingredient.name, ingredient.imageUrl));
 	}
 
 }

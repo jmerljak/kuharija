@@ -16,7 +16,7 @@ import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
 import si.merljak.magistrska.common.dto.RecipeIngredientDto;
-import si.merljak.magistrska.common.dto.RecipeDto;
+import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.StepDto;
 import si.merljak.magistrska.common.dto.SubtitleDto;
 import si.merljak.magistrska.common.dto.TextDto;
@@ -50,7 +50,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 	private EntityManager em;
 
 	@Override
-	public RecipeDto getRecipe(long recipeId, Language language) {
+	public RecipeDetailsDto getRecipe(long recipeId, Language language) {
 		log.info("executing getRecipe for id: " + recipeId + " and language: " + language);
 
 		try {
@@ -61,7 +61,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 			
 			RecipeDetails details = recipeEntity.getDetails().iterator().next();
 			
-			RecipeDto recipe = new RecipeDto(details.getHeading(), details.getSubHeading(), recipeEntity.getAuthor(), recipeEntity.getImageUrl(), 
+			RecipeDetailsDto recipe = new RecipeDetailsDto(details.getHeading(), details.getSubHeading(), recipeEntity.getAuthor(), recipeEntity.getImageUrl(), 
 											 recipeEntity.getDifficulty(), details.getTimeNeeded(),
 											 recipeEntity.getNumberOfMeals(), recipeEntity.getMealUnit());
 

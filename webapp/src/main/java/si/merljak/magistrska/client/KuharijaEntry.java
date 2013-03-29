@@ -14,6 +14,7 @@ import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.mvp.SearchPresenter;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.TabsWidget;
+import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.IngredientService;
 import si.merljak.magistrska.common.rpc.IngredientServiceAsync;
 import si.merljak.magistrska.common.rpc.RecipeService;
@@ -58,9 +59,10 @@ public class KuharijaEntry implements EntryPoint {
 		localeWidget = new LocaleWidget();
 		RootPanel.get("nav").add(localeWidget);
 
-		presenters.add(new IngredientPresenter(localeWidget.getCurrentLanguage()));
-		presenters.add(new RecipePresenter(localeWidget.getCurrentLanguage()));
-		presenters.add(new SearchPresenter(localeWidget.getCurrentLanguage()));
+		Language language = localeWidget.getCurrentLanguage();
+		presenters.add(new IngredientPresenter(language, ingredientService));
+		presenters.add(new RecipePresenter(language));
+		presenters.add(new SearchPresenter(language, searchService));
 		
 		// tabs
 		tabsWidget = new TabsWidget();
@@ -78,9 +80,12 @@ public class KuharijaEntry implements EntryPoint {
 				Map<String, String> parameters = new HashMap<String, String>();
 				for (int i = 1; i < historyTokens.length; i++) {
 					String[] param = historyTokens[i].split("=");
-					parameters.put(param[0], param[1]);
+					if (param.length > 1) {
+						parameters.put(param[0], param[1]);
+					} else {
+						parameters.put(param[0], "");
+					}
 				}
-				// TODO catch exception
 
 				// notify and let presenters handle screen change
 				for (AbstractPresenter presenter : presenters) {

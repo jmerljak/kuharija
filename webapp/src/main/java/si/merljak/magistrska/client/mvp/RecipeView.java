@@ -8,7 +8,7 @@ import si.merljak.magistrska.client.widgets.VideoWidget;
 import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
-import si.merljak.magistrska.common.dto.RecipeDto;
+import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.StepDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.ToolDto;
@@ -63,7 +63,7 @@ public class RecipeView extends AbstractView {
 		commentsPanel.clear();
 	}
 
-	public void displayRecipe(RecipeDto recipe) {
+	public void displayRecipe(RecipeDetailsDto recipe) {
 		clearAll();
 		if (recipe == null) {
 			// TODO handle it

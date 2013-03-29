@@ -46,7 +46,7 @@ public class Technique implements Serializable {
 	private Set<TechniqueVideo> videos;
 
 	@ManyToMany
-	private Set<Recipe> recipies;
+	private Set<Recipe> recipes;
 
 	private String metaData;
 

@@ -42,6 +42,6 @@ public abstract class AbstractPresenter {
 	/** Parses parameters and activates view. */
 	protected abstract void parseParameters(String screenName, Map<String, String> parameters);
 
-	/** Hides view and all its widgets. */ 
+	/** Hides view and all of its widgets. */ 
 	protected abstract void hideView();
 }
