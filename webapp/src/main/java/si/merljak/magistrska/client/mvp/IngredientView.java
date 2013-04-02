@@ -44,7 +44,7 @@ public class IngredientView extends AbstractView {
 			main.add(new HTML(messages.ingredientNotFoundTry(name.toLowerCase())));
 		} else {
 			main.add(new Heading(2, ingredientMap.get(ingredient.getName())));
-			main.add(new Image(GWT.getHostPageBaseURL() + "img/" + ingredient.getImageUrl()));
+			main.add(new Image(GWT.getHostPageBaseURL() + "img/ingredient/" + ingredient.getImageUrl()));
 			main.add(new Label(constants.ingredientDescriptionMap().get(ingredient.getName() + "_DESC")));
 			String localizedName = ingredientMap.get(ingredient.getName()).toLowerCase();
 			main.add(new Anchor(messages.searchByIngredient(localizedName), SearchPresenter.buildSearchByIngredientUrl(ingredient.getName())));

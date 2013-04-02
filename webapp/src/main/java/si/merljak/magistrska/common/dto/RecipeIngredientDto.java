@@ -2,6 +2,8 @@ package si.merljak.magistrska.common.dto;
 
 import java.io.Serializable;
 
+import com.mysema.query.annotations.QueryProjection;
+
 import si.merljak.magistrska.common.enumeration.Unit;
 
 public class RecipeIngredientDto implements Serializable {
@@ -16,6 +18,7 @@ public class RecipeIngredientDto implements Serializable {
 
 	RecipeIngredientDto() {}
 
+	@QueryProjection
 	public RecipeIngredientDto(long ingredientId, String name, String imageUrl, Unit unit, Double amount) {
 		this.ingredientId = ingredientId;
 		this.name = name;
