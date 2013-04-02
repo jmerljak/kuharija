@@ -1,6 +1,6 @@
 package si.merljak.magistrska.client.widgets;
 
-import si.merljak.magistrska.client.KuharijaEntry;
+import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
 import si.merljak.magistrska.common.dto.SubtitleDto;
@@ -16,8 +16,8 @@ import com.google.gwt.user.client.ui.Label;
 
 public class VideoWidget extends Composite {
 
-	private static final CommonConstants constants = KuharijaEntry.constants;
-	private static final CommonMessages messages = KuharijaEntry.messages;
+	private static final CommonConstants constants = Kuharija.constants;
+	private static final CommonMessages messages = Kuharija.messages;
 
 	private Video videoWidget;
 

@@ -13,7 +13,6 @@ import si.merljak.magistrska.client.mvp.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.mvp.SearchPresenter;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
-import si.merljak.magistrska.client.widgets.TabsWidget;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.IngredientService;
 import si.merljak.magistrska.common.rpc.IngredientServiceAsync;
@@ -33,40 +32,37 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootPanel;
 
-public class KuharijaEntry implements EntryPoint {
+public class Kuharija implements EntryPoint {
 
-	// remote service proxies
-	public static final IngredientServiceAsync ingredientService = GWT.create(IngredientService.class);
-	public static final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
-	public static final SearchServiceAsync searchService = GWT.create(SearchService.class);
+	// remote services
+	private static final IngredientServiceAsync ingredientService = GWT.create(IngredientService.class);
+	private static final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
+	private static final SearchServiceAsync searchService = GWT.create(SearchService.class);
 
-	// constants
+	// common constants
 	public static final CommonConstants constants = GWT.create(CommonConstants.class);
-	public static final Formatters formatters = GWT.create(Formatters.class);
 	public static final CommonMessages messages = GWT.create(CommonMessages.class);
 
     // formatters
+	public static final Formatters formatters = GWT.create(Formatters.class);
 	public static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
 	public static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
 
 	// presenters
 	private List<AbstractPresenter> presenters = new ArrayList<AbstractPresenter>();
-    private LocaleWidget localeWidget;
-	private TabsWidget tabsWidget;
+
+	// widgets
+	private LocaleWidget localeWidget;
     
 	public void onModuleLoad() {
 
 		localeWidget = new LocaleWidget();
 		RootPanel.get("nav").add(localeWidget);
-
 		Language language = localeWidget.getCurrentLanguage();
+
 		presenters.add(new IngredientPresenter(language, ingredientService));
-		presenters.add(new RecipePresenter(language));
+		presenters.add(new RecipePresenter(language, recipeService));
 		presenters.add(new SearchPresenter(language, searchService));
-		
-		// tabs
-		tabsWidget = new TabsWidget();
-		RootPanel.get("tabs").add(tabsWidget);
 
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {

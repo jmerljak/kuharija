@@ -2,13 +2,10 @@ package si.merljak.magistrska.client.mvp;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import si.merljak.magistrska.client.KuharijaEntry;
-import si.merljak.magistrska.client.i18n.CommonMessages;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.common.dto.IngredientDto;
@@ -29,7 +26,6 @@ public class IngredientView extends AbstractView {
 	// constants & formatters
 	private static final IngredientsConstants constants = GWT.create(IngredientsConstants.class);
 	private static final UrlConstants urlConstants = GWT.create(UrlConstants.class);
-	private static final CommonMessages messages = KuharijaEntry.messages;
 	private static final Map<String, String> ingredientMap = constants.ingredientMap();
 
 	private static final RootPanel main = RootPanel.get("ingredientWrapper");
@@ -100,12 +96,5 @@ public class IngredientView extends AbstractView {
 			}
 			ul.add(new ListItem(new Anchor(localizedName, IngredientPresenter.buildIngredientUrl(inverseMap.get(localizedName)))));
 		}
-	}
-
-	/** Locale sensitive string comparator */
-	class LocaleSensitiveComparator implements Comparator<String> {
-		public native int compare(String source, String target) /*-{
-			return source.localeCompare(target);
-		}-*/;
 	}
 }

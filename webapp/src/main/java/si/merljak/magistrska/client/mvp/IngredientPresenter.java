@@ -15,7 +15,7 @@ public class IngredientPresenter extends AbstractPresenter {
 	public static final String SCREEN_NAME = "ingredients";
 	public static final String PARAMETER_INGREDIENT = "name";
 
-	// rpc service
+	// remote service
 	private IngredientServiceAsync ingredientService;
 
 	// view

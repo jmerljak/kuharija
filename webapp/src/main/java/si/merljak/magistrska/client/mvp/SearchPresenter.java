@@ -26,7 +26,7 @@ public class SearchPresenter extends AbstractPresenter {
 	public static final String PARAMETER_INGREDIENT = "ingredient";
 	public static final String PARAMETER_SEASON = "season";
 
-	// rpc service
+	// remote service
 	private SearchServiceAsync searchService;
 
 	// view
@@ -76,6 +76,7 @@ public class SearchPresenter extends AbstractPresenter {
 				// TODO parse multiple ingredients
 				String ingredients = parameters.get(PARAMETER_INGREDIENT).toUpperCase();
 				searchParameters.addIngredient(ingredients);
+				searchParameters.addIngredient("CHEESE");
 			} catch (Exception e) { /* ignore */ }
 
 			search(searchParameters);

@@ -3,7 +3,7 @@ package si.merljak.magistrska.client.widgets;
 import java.util.HashMap;
 import java.util.Map;
 
-import si.merljak.magistrska.client.KuharijaEntry;
+import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 
 import com.github.gwtbootstrap.client.ui.NavTabs;
@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class TabsWidget extends Composite {
 
 	// constants & roles
-	private static final CommonConstants constants = KuharijaEntry.constants;
+	private static final CommonConstants constants = Kuharija.constants;
 	private static final TabRole TAB_ROLE = Roles.getTabRole();
 
 	// panels

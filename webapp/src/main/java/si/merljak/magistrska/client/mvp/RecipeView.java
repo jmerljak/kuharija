@@ -1,9 +1,9 @@
 package si.merljak.magistrska.client.mvp;
 
-import si.merljak.magistrska.client.KuharijaEntry;
-import si.merljak.magistrska.client.i18n.CommonConstants;
+import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.widgets.AudioWidget;
 import si.merljak.magistrska.client.widgets.IngredientsWidget;
+import si.merljak.magistrska.client.widgets.TabsWidget;
 import si.merljak.magistrska.client.widgets.VideoWidget;
 import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
@@ -31,8 +31,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class RecipeView extends AbstractView {
 
 	// constants & formatters
-	private static final CommonConstants constants = KuharijaEntry.constants;
-	private static final DateTimeFormat dateFormat = KuharijaEntry.dateFormat;
+	private static final DateTimeFormat dateFormat = Kuharija.dateFormat;
 
 	// panels
 	private static final RootPanel title = RootPanel.get("recipeTitle");
@@ -47,9 +46,15 @@ public class RecipeView extends AbstractView {
 	private static final RootPanel panelVideo = RootPanel.get("video");
 	private static final RootPanel commentsPanel = RootPanel.get("comments");
 
+	// widgets
+	private TabsWidget tabsWidget = new TabsWidget();
+
 	public RecipeView () {
 		initWidget(RootPanel.get("recipeWrapper"));
 		Roles.getMainRole().set(getElement());
+		
+		// tabs
+		RootPanel.get("tabs").add(tabsWidget);
 	}
 
 	public void clearAll() {

@@ -2,7 +2,7 @@ package si.merljak.magistrska.client.widgets;
 
 import java.util.List;
 
-import si.merljak.magistrska.client.KuharijaEntry;
+import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.mvp.IngredientPresenter;
@@ -28,9 +28,9 @@ import com.google.gwt.user.client.ui.TextBox;
 
 // TODO cleanup, refactorize
 public class IngredientsWidget extends Composite {
-	private static final CommonConstants constants = KuharijaEntry.constants;
+	private static final CommonConstants constants = Kuharija.constants;
 	private static final IngredientsConstants ingredientsConstants = GWT.create(IngredientsConstants.class);
-	private static final NumberFormat numberFormat = KuharijaEntry.numberFormat;
+	private static final NumberFormat numberFormat = Kuharija.numberFormat;
 
 	private Heading heading = new Heading(2, constants.ingredients());
 	private UnorderedList ingredientsList = new UnorderedList();

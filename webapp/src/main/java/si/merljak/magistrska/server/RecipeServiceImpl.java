@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -15,9 +14,8 @@ import org.slf4j.LoggerFactory;
 import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
-import si.merljak.magistrska.common.dto.RecipeIngredientDto;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
-import si.merljak.magistrska.common.dto.StepDto;
+import si.merljak.magistrska.common.dto.RecipeIngredientDto;
 import si.merljak.magistrska.common.dto.SubtitleDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.ToolDto;
@@ -28,7 +26,6 @@ import si.merljak.magistrska.server.model.Appendix;
 import si.merljak.magistrska.server.model.Audio;
 import si.merljak.magistrska.server.model.Comment;
 import si.merljak.magistrska.server.model.Ingredient;
-import si.merljak.magistrska.server.model.ProcedureStep;
 import si.merljak.magistrska.server.model.Recipe;
 import si.merljak.magistrska.server.model.RecipeDetails;
 import si.merljak.magistrska.server.model.RecipeIngredient;
@@ -50,8 +47,8 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 	private EntityManager em;
 
 	@Override
-	public RecipeDetailsDto getRecipe(long recipeId, Language language) {
-		log.info("executing getRecipe for id: " + recipeId + " and language: " + language);
+	public RecipeDetailsDto getRecipeDetails(long recipeId, Language language) {
+		log.debug("executing getRecipe for id: " + recipeId + " and language: " + language);
 
 		try {
 			Recipe recipeEntity = em.find(Recipe.class, recipeId);
@@ -114,25 +111,6 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	public StepDto getStep(long recipeId, Language language, int page) {
-		try {
-			Recipe recipeEntity = em.find(Recipe.class, recipeId);
-			TypedQuery<ProcedureStep> query = em.createQuery("SELECT s FROM ProcedureStep s " +
-					"WHERE s.recipe = :recipe " +
-					"AND s.language = :language " +
-					"AND s.page = :page", ProcedureStep.class);
-			query.setParameter("recipe", recipeEntity);
-			query.setParameter("language", language);
-			query.setParameter("page", page);
-
-			ProcedureStep singleResult = query.getSingleResult();
-			return new StepDto(singleResult.getLanguage(), singleResult.getPage(), singleResult.getContent(), singleResult.getImageUrl());
-		} catch (NoResultException e) {
-			return null;
 		}
 	}
 }
