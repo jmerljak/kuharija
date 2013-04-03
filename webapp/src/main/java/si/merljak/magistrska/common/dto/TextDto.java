@@ -2,6 +2,8 @@ package si.merljak.magistrska.common.dto;
 
 import java.io.Serializable;
 
+import com.mysema.query.annotations.QueryProjection;
+
 import si.merljak.magistrska.common.enumeration.Language;
 
 public class TextDto implements Serializable {
@@ -14,6 +16,7 @@ public class TextDto implements Serializable {
 
 	TextDto() {}
 
+	@QueryProjection
 	public TextDto(Language language, String content, String metadata) {
 		this.language = language;
 		this.content = content;

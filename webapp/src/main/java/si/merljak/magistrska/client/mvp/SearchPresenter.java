@@ -106,6 +106,10 @@ public class SearchPresenter extends AbstractPresenter {
 		}
 	}
 
+	/** 
+	 * Searches for recipes and displays results.
+	 * @param searchParameters search parameters
+	 */
 	private void search(final SearchParameters searchParameters) {
 		searchService.search(searchParameters, new AsyncCallback<List<RecipeDto>>() {
 			@Override
@@ -142,7 +146,7 @@ public class SearchPresenter extends AbstractPresenter {
 	 */
 	public static String buildSearchByCategoryUrl(Category category) {
 		return "#" + SCREEN_NAME + 
-			   "&" + PARAMETER_CATEGORY + "=" + category.name();
+			   "&" + PARAMETER_CATEGORY + "=" + category.name().toLowerCase();
 	}
 
 	/**
@@ -152,7 +156,7 @@ public class SearchPresenter extends AbstractPresenter {
 	 */
 	public static String buildSearchByDifficultyUrl(Difficulty difficulty) {
 		return "#" + SCREEN_NAME + 
-			   "&" + PARAMETER_DIFFICULTY + "=" + difficulty.name();
+			   "&" + PARAMETER_DIFFICULTY + "=" + difficulty.name().toLowerCase();
 	}
 
 	/**

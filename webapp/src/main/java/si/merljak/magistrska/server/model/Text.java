@@ -10,15 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
 @Entity
-@Table(name="texts")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name="dtype", discriminatorType=DiscriminatorType.STRING, length=1)
 public abstract class Text {
 

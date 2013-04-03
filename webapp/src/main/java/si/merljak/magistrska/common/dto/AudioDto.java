@@ -3,6 +3,8 @@ package si.merljak.magistrska.common.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import com.mysema.query.annotations.QueryProjection;
+
 import si.merljak.magistrska.common.enumeration.Language;
 
 public class AudioDto implements Serializable {
@@ -14,6 +16,7 @@ public class AudioDto implements Serializable {
 
 	AudioDto() {}
 
+	@QueryProjection
 	public AudioDto(Language language, List<String> urls) {
 		this.language = language;
 		this.urls = urls;

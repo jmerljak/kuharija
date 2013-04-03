@@ -3,6 +3,8 @@ package si.merljak.magistrska.common.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.mysema.query.annotations.QueryProjection;
+
 public class CommentDto implements Serializable {
 
 	private static final long serialVersionUID = -6686847920153154747L;
@@ -13,6 +15,7 @@ public class CommentDto implements Serializable {
 
 	CommentDto() {}
 
+	@QueryProjection
 	public CommentDto(String user, Date date, String content) {
 		this.user = user;
 		this.date = date;

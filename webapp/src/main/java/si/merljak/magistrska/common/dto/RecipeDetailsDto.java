@@ -7,10 +7,13 @@ import java.util.List;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.MealUnit;
 
+import com.mysema.query.annotations.QueryProjection;
+
 public class RecipeDetailsDto implements Serializable {
 
 	private static final long serialVersionUID = 3663171145467465776L;
 
+	private long id;
 	private String heading;
 	private String subHeading;
 	private String author;
@@ -21,18 +24,21 @@ public class RecipeDetailsDto implements Serializable {
 	private MealUnit mealUnit;
 
 	private List<RecipeIngredientDto> ingredients = new ArrayList<RecipeIngredientDto>();
+
 	private List<ToolDto> tools = new ArrayList<ToolDto>();
 	private List<TextDto> texts = new ArrayList<TextDto>();
 	private List<AudioDto> audios = new ArrayList<AudioDto>();
 	private List<VideoDto> videos = new ArrayList<VideoDto>();
 	private List<CommentDto> comments = new ArrayList<CommentDto>();
-	private List<AppendixDto> appendices = new ArrayList<AppendixDto>();
+	private List<AppendixDto> appendencies = new ArrayList<AppendixDto>();
 	private List<StepDto> steps = new ArrayList<StepDto>();
 
 	RecipeDetailsDto() {}
 
-	public RecipeDetailsDto(String heading, String subHeading, String author, String imageUrl, Difficulty difficulty, 
+	@QueryProjection
+	public RecipeDetailsDto(long id, String heading, String subHeading, String author, String imageUrl, Difficulty difficulty, 
 			String preparationTime, int numberOfMeals, MealUnit mealUnit) {
+		this.id = id;
 		this.heading = heading;
 		this.subHeading = subHeading;
 		this.author = author;
@@ -41,6 +47,10 @@ public class RecipeDetailsDto implements Serializable {
 		this.preparationTime = preparationTime;
 		this.numberOfMeals = numberOfMeals;
 		this.mealUnit = mealUnit;
+	}
+
+	public long getId() {
+		return id;
 	}
 
 	public String getHeading() {
@@ -99,6 +109,10 @@ public class RecipeDetailsDto implements Serializable {
 		return texts;
 	}
 
+	public void setTexts(List<TextDto> texts) {
+		this.texts = texts;
+	}
+
 	public void addAudio(AudioDto audioDto) {
 		audios.add(audioDto);
 	}
@@ -123,12 +137,12 @@ public class RecipeDetailsDto implements Serializable {
 		return comments;
 	}
 
-	public void addAppendix(AppendixDto appendix) {
-		appendices.add(appendix);
+	public List<AppendixDto> getAppendencies() {
+		return appendencies;
 	}
 
-	public List<AppendixDto> getAppendices() {
-		return appendices;
+	public void setAppendencies(List<AppendixDto> appendencies) {
+		this.appendencies = appendencies;
 	}
 
 	public void addStep(StepDto step) {
@@ -137,6 +151,18 @@ public class RecipeDetailsDto implements Serializable {
 
 	public List<StepDto> getSteps() {
 		return steps;
+	}
+
+	public void setIngredients(List<RecipeIngredientDto> ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	public void setTools(List<ToolDto> tools) {
+		this.tools = tools;
+	}
+
+	public void setVideos(List<VideoDto> videos) {
+		this.videos = videos;
 	}
 
 }

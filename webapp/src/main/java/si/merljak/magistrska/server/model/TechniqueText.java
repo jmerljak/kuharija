@@ -6,11 +6,13 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
 @Entity
 @DiscriminatorValue("T")
+@Table(name="technique_text")
 public class TechniqueText extends Text implements Serializable {
 
 	private static final long serialVersionUID = 4638433047831556247L;

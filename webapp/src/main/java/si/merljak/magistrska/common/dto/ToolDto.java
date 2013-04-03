@@ -2,17 +2,26 @@ package si.merljak.magistrska.common.dto;
 
 import java.io.Serializable;
 
+import com.mysema.query.annotations.QueryProjection;
+
 public class ToolDto implements Serializable {
 
 	private static final long serialVersionUID = -872342731145957913L;
 
 	private String title;
 	private String imageUrl;
-	private int quantity;
+	private Integer quantity;
 
 	ToolDto() {}
 
-	public ToolDto(String title, String imageUrl, int quantity) {
+	@QueryProjection
+	public ToolDto(String title, String imageUrl) {
+		this.title = title;
+		this.imageUrl = imageUrl;
+	}
+
+	@QueryProjection
+	public ToolDto(String title, String imageUrl, Integer quantity) {
 		this.title = title;
 		this.imageUrl = imageUrl;
 		this.quantity = quantity;
@@ -26,7 +35,7 @@ public class ToolDto implements Serializable {
 		return imageUrl;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 }

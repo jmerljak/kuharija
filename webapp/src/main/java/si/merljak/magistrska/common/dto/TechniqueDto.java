@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysema.query.annotations.QueryProjection;
+
 import si.merljak.magistrska.common.enumeration.Difficulty;
 
 public class TechniqueDto implements Serializable {
@@ -22,6 +24,7 @@ public class TechniqueDto implements Serializable {
 
 	TechniqueDto() {}
 
+	@QueryProjection
 	public TechniqueDto(String title, String imageUrl, Difficulty difficulty, String metaData) {
 		this.title = title;
 		this.imageUrl = imageUrl;

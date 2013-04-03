@@ -10,7 +10,6 @@ public class RecipeIngredientDto implements Serializable {
 
 	private static final long serialVersionUID = -1928823939332422508L;
 
-	private long ingredientId;
 	private String name;
 	private String imageUrl;
 	private Unit unit;
@@ -19,16 +18,11 @@ public class RecipeIngredientDto implements Serializable {
 	RecipeIngredientDto() {}
 
 	@QueryProjection
-	public RecipeIngredientDto(long ingredientId, String name, String imageUrl, Unit unit, Double amount) {
-		this.ingredientId = ingredientId;
+	public RecipeIngredientDto(String name, String imageUrl, Unit unit, Double amount) {
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.unit = unit;
 		this.amount = amount;
-	}
-
-	public long getIngredientId() {
-		return ingredientId;
 	}
 
 	public String getName() {

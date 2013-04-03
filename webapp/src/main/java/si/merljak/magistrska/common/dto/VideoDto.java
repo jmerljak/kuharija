@@ -3,6 +3,8 @@ package si.merljak.magistrska.common.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import com.mysema.query.annotations.QueryProjection;
+
 import si.merljak.magistrska.common.enumeration.Language;
 
 public class VideoDto implements Serializable {
@@ -16,6 +18,7 @@ public class VideoDto implements Serializable {
 
 	VideoDto() {}
 
+	@QueryProjection
 	public VideoDto(Language language, List<String> urls, String posterUrl, List<SubtitleDto> subtitles) {
 		this.language = language;
 		this.urls = urls;

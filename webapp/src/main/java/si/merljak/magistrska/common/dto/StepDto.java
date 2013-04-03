@@ -2,6 +2,8 @@ package si.merljak.magistrska.common.dto;
 
 import java.io.Serializable;
 
+import com.mysema.query.annotations.QueryProjection;
+
 import si.merljak.magistrska.common.enumeration.Language;
 
 public class StepDto implements Serializable {
@@ -15,6 +17,7 @@ public class StepDto implements Serializable {
 
 	StepDto() {}
 
+	@QueryProjection
 	public StepDto(Language language, int page, String content, String imageUrl) {
 		this.language = language;
 		this.page = page;

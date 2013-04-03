@@ -3,7 +3,6 @@ package si.merljak.magistrska.server.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
@@ -13,9 +12,6 @@ public class Tool implements Serializable {
 	private static final long serialVersionUID = -8350467055363888698L;
 
 	@Id
-	@GeneratedValue
-	private long id;
-
 	@NotNull
 	private String name;
 
@@ -26,10 +22,6 @@ public class Tool implements Serializable {
 	public Tool(String name, String imageUrl) {
 		this.name = name;
 		this.imageUrl = imageUrl;
-	}
-
-	public long getId() {
-		return id;
 	}
 
 	public String getName() {

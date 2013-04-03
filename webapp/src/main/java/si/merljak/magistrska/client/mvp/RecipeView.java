@@ -112,7 +112,7 @@ public class RecipeView extends AbstractView {
 			commentsPanel.add(new Label(dateFormat.format(comment.getDate()) + " - " + comment.getUser() + ": " + comment.getContent()));
 		}
 		
-		for (AppendixDto appendix : recipe.getAppendices()) {
+		for (AppendixDto appendix : recipe.getAppendencies()) {
 			commentsPanel.add(new Label(appendix.getContent()));
 		}
 

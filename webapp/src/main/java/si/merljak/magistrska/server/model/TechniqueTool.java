@@ -4,33 +4,32 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="technique_tool")
-@IdClass(TechniqueToolId.class)
 public class TechniqueTool implements Serializable {
 
 	private static final long serialVersionUID = -6450812763794194567L;
 
 	@Id
+	@GeneratedValue
+	private long id;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Technique technique;
 
-	@Id
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Tool tool;
 
-	@NotNull
-	private int quantity;
+	private Integer quantity;
 
 	protected TechniqueTool() {}
 
-	public TechniqueTool(Technique technique, Tool tool, int quantity) {
+	public TechniqueTool(Technique technique, Tool tool, Integer quantity) {
 		this.technique = technique;
 		this.tool = tool;
 		this.quantity = quantity;
@@ -40,7 +39,7 @@ public class TechniqueTool implements Serializable {
 		return tool;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 }

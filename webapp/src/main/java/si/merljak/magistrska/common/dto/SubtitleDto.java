@@ -2,6 +2,8 @@ package si.merljak.magistrska.common.dto;
 
 import java.io.Serializable;
 
+import com.mysema.query.annotations.QueryProjection;
+
 import si.merljak.magistrska.common.enumeration.Language;
 
 public class SubtitleDto implements Serializable {
@@ -13,6 +15,7 @@ public class SubtitleDto implements Serializable {
 
 	SubtitleDto() {}
 
+	@QueryProjection
 	public SubtitleDto(Language language, String url) {
 		this.language = language;
 		this.url = url;

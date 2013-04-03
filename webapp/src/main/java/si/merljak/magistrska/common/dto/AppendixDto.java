@@ -2,6 +2,8 @@ package si.merljak.magistrska.common.dto;
 
 import java.io.Serializable;
 
+import com.mysema.query.annotations.QueryProjection;
+
 import si.merljak.magistrska.common.enumeration.AppendixType;
 import si.merljak.magistrska.common.enumeration.Language;
 
@@ -15,6 +17,7 @@ public class AppendixDto implements Serializable {
 
 	AppendixDto() {}
 
+	@QueryProjection
 	public AppendixDto(AppendixType type, Language language, String content) {
 		this.type = type;
 		this.language = language;

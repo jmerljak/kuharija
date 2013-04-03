@@ -4,33 +4,32 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="recipe_tool")
-@IdClass(RecipeToolId.class)
 public class RecipeTool implements Serializable {
 
 	private static final long serialVersionUID = 3035885493363533907L;
 
 	@Id
+	@GeneratedValue
+	private long id;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Recipe recipe;
 
-	@Id
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Tool tool;
 
-	@NotNull
-	private int quantity;
+	private Integer quantity;
 
 	protected RecipeTool() {}
 
-	public RecipeTool(Recipe recipe, Tool tool, int quantity) {
+	public RecipeTool(Recipe recipe, Tool tool, Integer quantity) {
 		this.recipe = recipe;
 		this.tool = tool;
 		this.quantity = quantity;
@@ -40,7 +39,7 @@ public class RecipeTool implements Serializable {
 		return tool;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 }
