@@ -21,10 +21,10 @@ public class SearchPresenter extends AbstractPresenter {
 	public static final String PARAMETER_SEARCH_STRING = "q";
 	public static final String PARAMETER_PAGE = "page";
 	public static final String PARAMETER_PAGE_SIZE = "pageSize";
-	public static final String PARAMETER_CATEGORY = "category";
-	public static final String PARAMETER_DIFFICULTY = "difficulty";
-	public static final String PARAMETER_INGREDIENT = "ingredient";
-	public static final String PARAMETER_SEASON = "season";
+	public static final String PARAMETER_CATEGORY = "categories";
+	public static final String PARAMETER_DIFFICULTY = "difficulties";
+	public static final String PARAMETER_INGREDIENT = "ingredients";
+	public static final String PARAMETER_SEASON = "seasons";
 
 	// remote service
 	private SearchServiceAsync searchService;
@@ -49,35 +49,58 @@ public class SearchPresenter extends AbstractPresenter {
 		} else {
 			SearchParameters searchParameters = new SearchParameters(parameters.get(PARAMETER_SEARCH_STRING), language);
 
-			try {
-				int page = Integer.parseInt(parameters.get(PARAMETER_PAGE));
-				searchParameters.setPage(page);
-			} catch (Exception e) { /* ignore */ }
-			try {
-				int pageSize = Integer.parseInt(parameters.get(PARAMETER_PAGE_SIZE));
-				searchParameters.setPageSize(pageSize);
-			} catch (Exception e) { /* ignore */ }
-			try {
-				// TODO parse multiple difficulties
-				Difficulty difficulty = Difficulty.valueOf(parameters.get(PARAMETER_DIFFICULTY).toUpperCase());
-				searchParameters.setDifficulty(difficulty);
-			} catch (Exception e) { /* ignore */ }
-			try {
-				// TODO parse multiple categories
-				Category category = Category.valueOf(parameters.get(PARAMETER_CATEGORY).toUpperCase());
-				searchParameters.setCategory(category);
-			} catch (Exception e) { /* ignore */ }
-			try {
-				// TODO parse multiple seasons
-				Season season = Season.valueOf(parameters.get(PARAMETER_SEASON).toUpperCase());
-				searchParameters.setSeason(season);
-			} catch (Exception e) { /* ignore */ }
-			try {
-				// TODO parse multiple ingredients
-				String ingredients = parameters.get(PARAMETER_INGREDIENT).toUpperCase();
-				searchParameters.addIngredient(ingredients);
-				searchParameters.addIngredient("CHEESE");
-			} catch (Exception e) { /* ignore */ }
+			if (parameters.containsKey(PARAMETER_PAGE)) {
+				try {
+					int page = Integer.parseInt(parameters.get(PARAMETER_PAGE));
+					searchParameters.setPage(page);
+				} catch (Exception e) { /* ignore */ }
+			}
+
+			if (parameters.containsKey(PARAMETER_PAGE_SIZE)) {
+				try {
+					int pageSize = Integer.parseInt(parameters.get(PARAMETER_PAGE_SIZE));
+					searchParameters.setPageSize(pageSize);
+				} catch (Exception e) { /* ignore */ }
+			}
+
+			if (parameters.containsKey(PARAMETER_DIFFICULTY)) {
+				String[] difficulties = parameters.get(PARAMETER_DIFFICULTY).toUpperCase().split(",");
+				for (int i = 0; i < difficulties.length; i++) {
+					try {
+						Difficulty difficulty = Difficulty.valueOf(difficulties[i]);
+						searchParameters.addDifficulty(difficulty);
+					} catch (Exception e) { /* ignore */ }
+				}
+			}
+
+			if (parameters.containsKey(PARAMETER_CATEGORY)) {
+				String[] categories = parameters.get(PARAMETER_CATEGORY).toUpperCase().split(",");
+				for (int i = 0; i < categories.length; i++) {
+					try {
+						Category category = Category.valueOf(categories[i]);
+						searchParameters.addCategory(category);
+					} catch (Exception e) { /* ignore */ }
+				}
+			}
+
+			if (parameters.containsKey(PARAMETER_SEASON)) {
+				String[] seasons = parameters.get(PARAMETER_SEASON).toUpperCase().split(",");
+				for (int i = 0; i < seasons.length; i++) {
+					try {
+						Season season = Season.valueOf(seasons[i]);
+						searchParameters.addSeason(season);
+					} catch (Exception e) { /* ignore */ }
+				}
+			}
+
+			if (parameters.containsKey(PARAMETER_INGREDIENT)) {
+				String[] ingredients = parameters.get(PARAMETER_INGREDIENT).toUpperCase().split(",");
+				for (int i = 0; i < ingredients.length; i++) {
+					try {
+						searchParameters.addIngredient(ingredients[i]);
+					} catch (Exception e) { /* ignore */ }
+				}
+			}
 
 			search(searchParameters);
 		}

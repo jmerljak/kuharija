@@ -11,15 +11,15 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 public class SearchParameters implements Serializable {
 
-	private static final int PAGE_SIZE = 15;
+	private static final int DEFAULT_PAGE_SIZE = 15;
 	private static final long serialVersionUID = 3967849192762799943L;
 
 	private String searchString;
 	private int page = 1;
-	private int pageSize = PAGE_SIZE;
-	private Category category;
-	private Season season;
-	private Difficulty difficulty;
+	private int pageSize = DEFAULT_PAGE_SIZE;
+	private Set<Difficulty> difficulties = new HashSet<Difficulty>();
+	private Set<Category> categories = new HashSet<Category>();
+	private Set<Season> seasons = new HashSet<Season>();
 	private Set<String> ingredients = new HashSet<String>();
 	private Language language;
 
@@ -57,31 +57,31 @@ public class SearchParameters implements Serializable {
 	}
 
 	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize > 0 ? pageSize : PAGE_SIZE;
+		this.pageSize = pageSize > 0 ? pageSize : DEFAULT_PAGE_SIZE;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Set<Difficulty> getDifficulties() {
+		return difficulties;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void addDifficulty(Difficulty difficulty) {
+		difficulties.add(difficulty);
 	}
 
-	public Season getSeason() {
-		return season;
+	public Set<Category> getCategories() {
+		return categories;
 	}
 
-	public void setSeason(Season season) {
-		this.season = season;
+	public void addCategory(Category category) {
+		categories.add(category);
 	}
 
-	public Difficulty getDifficulty() {
-		return difficulty;
+	public Set<Season> getSeasons() {
+		return seasons;
 	}
 
-	public void setDifficulty(Difficulty difficulty) {
-		this.difficulty = difficulty;
+	public void addSeason(Season season) {
+		seasons.add(season);
 	}
 
 	public Set<String> getIngredients() {
@@ -89,7 +89,7 @@ public class SearchParameters implements Serializable {
 	}
 
 	public void addIngredient(String ingredient) {
-		this.ingredients.add(ingredient);
+		ingredients.add(ingredient);
 	}
 
 	public Language getLanguage() {

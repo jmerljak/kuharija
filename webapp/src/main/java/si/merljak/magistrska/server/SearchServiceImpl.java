@@ -1,9 +1,7 @@
 package si.merljak.magistrska.server;
 
-import static si.merljak.magistrska.server.model.QIngredient.ingredient;
 import static si.merljak.magistrska.server.model.QRecipe.recipe;
 import static si.merljak.magistrska.server.model.QRecipeDetails.recipeDetails;
-import static si.merljak.magistrska.server.model.QRecipeIngredient.recipeIngredient;
 import static si.merljak.magistrska.server.model.QRecipeText.recipeText;
 
 import java.util.List;
@@ -25,6 +23,7 @@ import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPASubQuery;
 
@@ -45,9 +44,9 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		int page = searchParameters.getPage();
 		int pageSize = searchParameters.getPageSize();
 		String searchString = searchParameters.getSearchString();
-		Difficulty difficulty = searchParameters.getDifficulty();
-		Category category = searchParameters.getCategory();
-		Season season = searchParameters.getSeason();
+		Set<Difficulty> difficulties = searchParameters.getDifficulties();
+		Set<Category> categories = searchParameters.getCategories();
+		Set<Season> seasons = searchParameters.getSeasons();
 		Set<String> ingredients = searchParameters.getIngredients();
 		Language language = searchParameters.getLanguage();
 
@@ -63,37 +62,50 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 					   .or(recipeText.content.like(searchString)));
 		}
 
-		if (difficulty != null) {
-			subquery.where(recipe.difficulty.eq(difficulty));
+		if (!difficulties.isEmpty()) {
+			subquery.where(recipe.difficulty.in(difficulties));
 		}
 
-		if (season != null) {
-			// TODO searching within multiple seasons
-			subquery.where(recipe.seasons.contains(season)
-					.or(recipe.seasons.contains(Season.ALLYEAR)));
+		if (!seasons.isEmpty()) {
+			BooleanBuilder seasonsFilter = new BooleanBuilder();
+			for (Season season : seasons) {
+				// searching for recipes for ANY of listed seasons
+				seasonsFilter.or(recipe.seasons.any().eq(season));
+			}
+
+			// include those with season not specified?
+//			seasonsFilter.or(recipe.seasons.isEmpty());
+//			seasonsFilter.or(recipe.seasons.any().eq(Season.ALLYEAR));
+
+			subquery.where(seasonsFilter);
 		}
 
-		if (category != null) {
-			// TODO searching within multiple categories
-			subquery.where(recipe.categories.contains(category));
+		if (!categories.isEmpty()) {
+			BooleanBuilder categoriesFilter = new BooleanBuilder();
+			for (Category category : categories) {
+				// searching for recipes in ANY of listed categories
+				categoriesFilter.or(recipe.categories.any().eq(category));
+			}
+			subquery.where(categoriesFilter);
 		}
 
-		if (ingredients != null && !ingredients.isEmpty()) {
-			// TODO searching OR <-> AND
-			subquery.innerJoin(recipe.ingredients, recipeIngredient)
-				 .innerJoin(recipeIngredient.ingredient, ingredient)
-				 .with(ingredient.name.in(ingredients));
+		if (!ingredients.isEmpty()) {
+			BooleanBuilder ingredientsFilter = new BooleanBuilder();
+			for (String ingredientName : ingredients) {
+				// searching for recipes with ALL listed ingredients
+				ingredientsFilter.and(recipe.ingredients.any().ingredient.name.eq(ingredientName));
+			}
+			subquery.where(ingredientsFilter);
 		}
-
-		subquery.limit(pageSize)
-				.offset((page -1) * pageSize)
-				.distinct()
-				.orderBy(recipe.id.asc());
 
 		JPAQuery query = new JPAQuery(em).from(recipe);
 		query.innerJoin(recipe.details, recipeDetails)
 			 .where(recipeDetails.language.eq(language));
 		query.where(recipe.id.in(subquery.list(recipe.id)));
+		query.limit(pageSize)
+		 	 .offset((page -1) * pageSize)
+		 	 .distinct()
+			 .orderBy(recipe.id.asc());
 
 		return query.list(new QRecipeDto(recipe.id, recipeDetails.heading, recipe.imageUrl, recipe.difficulty, recipeDetails.timeNeeded));
 	}
