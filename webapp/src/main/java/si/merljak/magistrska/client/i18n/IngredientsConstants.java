@@ -103,7 +103,18 @@ public interface IngredientsConstants extends CommonConstants {
 		"VINEGAR", "Vinegar",
 		"WATER", "Water",
 		"WATERMELON", "Watermelon",
-		"YEAST", "Yeast"})
+		"YEAST", "Yeast",
+		"SESAME", "Sesame",
+		"LINSEED", "Linseed",
+		"PEANUT", "Peanut",
+		"PEANUT_MILLED", "Milled peanut",
+		"ALMOND", "Almond",
+		"ALMOND_MILLED", "Milled almond",
+		"RAISINS", "Raisins",
+		"OATMEAL", "Oatmeal",
+		"APPLE", "Apple",
+		"APPLE_JUICE", "Apple juice",
+		"APPLE_SLICES", "Apple slices"})
 	Map<String, String> ingredientMap();
 
 	@DefaultStringMapValue({
@@ -197,6 +208,17 @@ public interface IngredientsConstants extends CommonConstants {
 		"VINEGAR_DESC", "vinegar",
 		"WATERMELON_DESC", "watermelon",
 		"WATER_DESC", "water",
-		"YEAST_DESC", "Yeast"})
+		"YEAST_DESC", "Yeast",
+		"SESAME_DESC", "Sesame",
+		"LINSEED_DESC", "Linseed",
+		"PEANUT_DESC", "Peanut",
+		"PEANUT_MILLED_DESC", "Milled peanut",
+		"ALMOND_DESC", "Almond",
+		"ALMOND_MILLED_DESC", "Milled almond",
+		"RAISINS_DESC", "Raisins",
+		"OATMEAL_DESC", "Oatmeal",
+		"APPLE_DESC", "Apple",
+		"APPLE_JUICE_DESC", "Apple juice",
+		"APPLE_SLICES_DESC", "Apple slices"})
 	Map<String, String> ingredientDescriptionMap();
 }
