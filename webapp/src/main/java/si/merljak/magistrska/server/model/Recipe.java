@@ -47,14 +47,11 @@ public class Recipe implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private MealUnit mealUnit;
 
-	@Size(max = 50)
-	private String timePreparation;
+	private Integer timePreparation;
 
-	@Size(max = 50)
-	private String timeCooking;
+	private Integer timeCooking;
 
-	@Size(max = 50)
-	private String timeOverall;
+	private Integer timeOverall;
 
 	@OneToMany(mappedBy = "recipe")
 	private Set<RecipeDetails> details;
@@ -130,15 +127,15 @@ public class Recipe implements Serializable {
 		return mealUnit;
 	}
 
-	public String getTimePreparation() {
+	public Integer getTimePreparation() {
 		return timePreparation;
 	}
 
-	public String getTimeCooking() {
+	public Integer getTimeCooking() {
 		return timeCooking;
 	}
 
-	public String getTimeOverall() {
+	public Integer getTimeOverall() {
 		return timeOverall;
 	}
 

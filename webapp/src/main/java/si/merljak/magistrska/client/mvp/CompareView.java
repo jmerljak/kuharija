@@ -44,9 +44,9 @@ public class CompareView extends AbstractView {
 			resultsPanel.setWidget(0, column, link);
 			resultsPanel.setWidget(1, column, image);
 			resultsPanel.setText(2, column, localizeEnum(result.getDifficulty()));
-			resultsPanel.setText(3, column, result.getTimePreparation());
-			resultsPanel.setText(4, column, result.getTimeCooking());
-			resultsPanel.setText(5, column, result.getTimeOverall());
+			resultsPanel.setText(3, column, timeFromMinutes(result.getTimePreparation()));
+			resultsPanel.setText(4, column, timeFromMinutes(result.getTimeCooking()));
+			resultsPanel.setText(5, column, timeFromMinutes(result.getTimeOverall()));
 			resultsPanel.setText(6, column, result.getAuthor());
 			UnorderedList ingredients = new UnorderedList();
 			for (RecipeIngredientDto ingredient : result.getIngredients()) {

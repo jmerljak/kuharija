@@ -7,6 +7,7 @@ import java.util.Set;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
+import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 
 public class SearchParameters implements Serializable {
@@ -22,6 +23,7 @@ public class SearchParameters implements Serializable {
 	private Set<Season> seasons = new HashSet<Season>();
 	private Set<String> ingredients = new HashSet<String>();
 	private Language language;
+	private RecipeSortKey sortKey = RecipeSortKey.ID;
 
 	SearchParameters() {}
 
@@ -94,5 +96,13 @@ public class SearchParameters implements Serializable {
 
 	public Language getLanguage() {
 		return language;
+	}
+
+	public RecipeSortKey getSortKey() {
+		return sortKey;
+	}
+
+	public void setSortKey(RecipeSortKey sortKey) {
+		this.sortKey = sortKey != null ? sortKey : RecipeSortKey.ID;
 	}
 }

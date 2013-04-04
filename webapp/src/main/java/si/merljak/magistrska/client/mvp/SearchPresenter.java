@@ -8,6 +8,7 @@ import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
+import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 
@@ -25,6 +26,7 @@ public class SearchPresenter extends AbstractPresenter {
 	public static final String PARAMETER_DIFFICULTY = "difficulties";
 	public static final String PARAMETER_INGREDIENT = "ingredients";
 	public static final String PARAMETER_SEASON = "seasons";
+	public static final String PARAMETER_SORT_BY = "sortby";
 
 	// remote service
 	private SearchServiceAsync searchService;
@@ -102,6 +104,13 @@ public class SearchPresenter extends AbstractPresenter {
 				}
 			}
 
+			if (parameters.containsKey(PARAMETER_SORT_BY)) {
+				try {
+					RecipeSortKey sortKey = RecipeSortKey.valueOf(parameters.get(PARAMETER_SORT_BY).toUpperCase());
+					searchParameters.setSortKey(sortKey);
+				} catch (Exception e) { /* ignore */ }
+			}
+
 			search(searchParameters);
 		}
 	}
@@ -176,7 +185,7 @@ public class SearchPresenter extends AbstractPresenter {
 	 */
 	public static String buildSearchByCategoryUrl(Season season) {
 		return "#" + SCREEN_NAME + 
-			   "&" + PARAMETER_SEASON + "=" + season.name();
+			   "&" + PARAMETER_SEASON + "=" + season.name().toLowerCase();
 	}
 
 }

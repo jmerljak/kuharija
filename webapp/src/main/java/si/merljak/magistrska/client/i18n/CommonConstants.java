@@ -28,7 +28,13 @@ public interface CommonConstants extends Constants {
 	String searchNoResults();
 
 	@DefaultStringValue("Preparation time")
-	String preparationTime();
+	String timePreparation();
+
+	@DefaultStringValue("Cooking time")
+	String timeCooking();
+
+	@DefaultStringValue("Cooking time")
+	String timeOverall();
 	
 	@DefaultStringValue("Number of meals")
 	String numberOfMeals();

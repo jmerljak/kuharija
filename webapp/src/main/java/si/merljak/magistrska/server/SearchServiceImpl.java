@@ -19,6 +19,7 @@ import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
+import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchService;
 
@@ -49,17 +50,18 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		Set<Season> seasons = searchParameters.getSeasons();
 		Set<String> ingredients = searchParameters.getIngredients();
 		Language language = searchParameters.getLanguage();
+		RecipeSortKey sortKey = searchParameters.getSortKey();
 
 		// build query
 		JPASubQuery subquery = new JPASubQuery().from(recipe);
 
 		if (searchString != null) {
-			searchString = "%" + searchString.trim() + "%";
+			searchString = "%" + searchString.trim().toLowerCase() + "%";
 			subquery.innerJoin(recipe.details, recipeDetails);
 			subquery.innerJoin(recipe.texts, recipeText);
-			subquery.where(recipeDetails.heading.like(searchString)
-					   .or(recipeDetails.subHeading.like(searchString))
-					   .or(recipeText.content.like(searchString)));
+			subquery.where(recipeDetails.heading.lower().like(searchString)
+					   .or(recipeDetails.subHeading.lower().like(searchString))
+					   .or(recipeText.content.lower().like(searchString)));
 		}
 
 		if (!difficulties.isEmpty()) {
@@ -98,14 +100,32 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 			subquery.where(ingredientsFilter);
 		}
 
+		// main query
 		JPAQuery query = new JPAQuery(em).from(recipe);
 		query.innerJoin(recipe.details, recipeDetails)
-			 .where(recipeDetails.language.eq(language));
-		query.where(recipe.id.in(subquery.list(recipe.id)));
+			 .where(recipeDetails.language.eq(language))
+			 .where(recipe.id.in(subquery.list(recipe.id)))
+		 	 .distinct();
+
+		// paging
 		query.limit(pageSize)
-		 	 .offset((page -1) * pageSize)
-		 	 .distinct()
-			 .orderBy(recipe.id.asc());
+		 	 .offset((page -1) * pageSize);
+
+		// sorting
+		switch (sortKey) {
+		case ID:
+			query.orderBy(recipe.id.asc());
+			break;
+		case TITLE:
+			query.orderBy(recipeDetails.heading.asc());
+			break;
+		case TIMEOVERALL:
+			query.orderBy(recipe.timeOverall.asc());
+			break;
+		case DIFFICULTY:
+			query.orderBy(recipe.difficulty.asc());
+			break;
+		}
 
 		return query.list(new QRecipeDto(recipe.id, recipeDetails.heading, recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 	}

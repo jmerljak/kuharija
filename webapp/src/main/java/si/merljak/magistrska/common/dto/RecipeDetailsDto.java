@@ -19,14 +19,13 @@ public class RecipeDetailsDto implements Serializable {
 	private String author;
 	private String imageUrl;
 	private Difficulty difficulty;
-	private String timePreparation;
-	private String timeCooking;
-	private String timeOverall;
+	private Integer timePreparation;
+	private Integer timeCooking;
+	private int timeOverall;
 	private int numberOfMeals;
 	private MealUnit mealUnit;
 
 	private List<RecipeIngredientDto> ingredients = new ArrayList<RecipeIngredientDto>();
-
 	private List<ToolDto> tools = new ArrayList<ToolDto>();
 	private List<TextDto> texts = new ArrayList<TextDto>();
 	private List<AudioDto> audios = new ArrayList<AudioDto>();
@@ -39,7 +38,7 @@ public class RecipeDetailsDto implements Serializable {
 
 	@QueryProjection
 	public RecipeDetailsDto(long id, String heading, String subHeading, String author, String imageUrl, Difficulty difficulty, 
-			String timePreparation, String timeCooking, String timeOverall, int numberOfMeals, MealUnit mealUnit) {
+			Integer timePreparation, Integer timeCooking, int timeOverall, int numberOfMeals, MealUnit mealUnit) {
 		this.id = id;
 		this.heading = heading;
 		this.subHeading = subHeading;
@@ -85,15 +84,15 @@ public class RecipeDetailsDto implements Serializable {
 		return mealUnit;
 	}
 
-	public String getTimePreparation() {
+	public Integer getTimePreparation() {
 		return timePreparation;
 	}
 
-	public String getTimeCooking() {
+	public Integer getTimeCooking() {
 		return timeCooking;
 	}
 
-	public String getTimeOverall() {
+	public int getTimeOverall() {
 		return timeOverall;
 	}
 

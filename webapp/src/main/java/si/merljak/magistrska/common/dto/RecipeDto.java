@@ -14,13 +14,13 @@ public class RecipeDto implements Serializable {
 	private String heading;
 	private String imageUrl;
 	private Difficulty difficulty;
-	private String timeOverall;
+	private int timeOverall;
 
 	RecipeDto() {}
 
 	@QueryProjection
 	public RecipeDto(long id, String heading, String imageUrl, 
-			Difficulty difficulty, String timeOverall) {
+			Difficulty difficulty, int timeOverall) {
 		this.id = id;
 		this.heading = heading;
 		this.imageUrl = imageUrl;
@@ -44,7 +44,7 @@ public class RecipeDto implements Serializable {
 		return difficulty;
 	}
 
-	public String getTimeOverall() {
+	public int getTimeOverall() {
 		return timeOverall;
 	}
 

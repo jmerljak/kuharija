@@ -73,7 +73,7 @@ public class SearchView extends AbstractView {
 			recipe.add(link);
 			recipe.add(image);
 			recipe.add(new Label(localizeEnum(result.getDifficulty())));
-			recipe.add(new Label(result.getTimeOverall()));
+			recipe.add(new Label(timeFromMinutes(result.getTimeOverall())));
 			resultsPanel.add(recipe);
 		}
 		setVisible(true);
