@@ -19,6 +19,9 @@ public class VideoWidget extends Composite {
 	private static final CommonConstants constants = Kuharija.constants;
 	private static final CommonMessages messages = Kuharija.messages;
 
+	protected static final String VIDEO_FOLDER = GWT.getHostPageBaseURL() + "video/";
+	protected static final String SUBTITLE_FOLDER = GWT.getHostPageBaseURL() + "video/";
+
 	private Video videoWidget;
 
 	public VideoWidget(VideoDto videoDto) {
@@ -32,7 +35,7 @@ public class VideoWidget extends Composite {
 			for (String srcUrl : videoDto.getUrls()) {
 				String fileExt = srcUrl.substring(srcUrl.length() - 3, srcUrl.length());
 				String videoType = fileExt.equalsIgnoreCase("mp4") ? VideoElement.TYPE_MP4 : VideoElement.TYPE_WEBM;
-				videoWidget.addSource(GWT.getHostPageBaseURL() + "video/" + srcUrl, videoType);
+				videoWidget.addSource(VIDEO_FOLDER + srcUrl, videoType);
 			}
 
 			// subtitles
@@ -44,7 +47,7 @@ public class VideoWidget extends Composite {
 			    trackElement.setAttribute("kind", "subtitle");
 				trackElement.setAttribute("srclang", language);
 			    trackElement.setAttribute("label", constants.languageMap().get(language));
-			    trackElement.setAttribute("src", GWT.getHostPageBaseURL() + "video/" + subtitle.getUrl());
+			    trackElement.setAttribute("src", SUBTITLE_FOLDER + subtitle.getUrl());
 			    DOM.appendChild(videoWidget.getElement(), trackElement);
 			}
 

@@ -9,6 +9,7 @@ import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
 import si.merljak.magistrska.client.i18n.Formatters;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
+import si.merljak.magistrska.client.mvp.ComparePresenter;
 import si.merljak.magistrska.client.mvp.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.mvp.SearchPresenter;
@@ -63,6 +64,7 @@ public class Kuharija implements EntryPoint {
 		presenters.add(new IngredientPresenter(language, ingredientService));
 		presenters.add(new RecipePresenter(language, recipeService));
 		presenters.add(new SearchPresenter(language, searchService));
+		presenters.add(new ComparePresenter(language, recipeService));
 
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {

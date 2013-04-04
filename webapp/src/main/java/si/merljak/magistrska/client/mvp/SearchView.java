@@ -64,7 +64,8 @@ public class SearchView extends AbstractView {
 		}
 
 		for (RecipeDto result : results) {
-			Image image = new Image(RECIPE_IMG_FOLDER + result.getImageUrl());
+			Image image = new Image(RECIPE_THUMB_IMG_FOLDER + result.getImageUrl());
+			image.setAltText(result.getHeading());
 			Anchor link = new Anchor(result.getHeading(), RecipePresenter.buildRecipeUrl(result.getId()));
 
 			FlowPanel recipe = new FlowPanel();

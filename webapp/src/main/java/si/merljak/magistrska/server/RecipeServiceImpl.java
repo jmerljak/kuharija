@@ -12,6 +12,7 @@ import static si.merljak.magistrska.server.model.QTool.tool;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -62,8 +63,9 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 			return null;
 		}
 
-		JPAQuery recipeQuery = new JPAQuery(em).from(recipe).where(recipe.eq(recipeEntity));
-		RecipeDetailsDto recipeDto = recipeQuery.innerJoin(recipe.details, recipeDetails)
+		RecipeDetailsDto recipeDto = new JPAQuery(em).from(recipe)
+												.where(recipe.eq(recipeEntity))
+												.innerJoin(recipe.details, recipeDetails)
 												.with(recipeDetails.language.eq(language))
 												.uniqueResult(new QRecipeDetailsDto(recipe.id, recipeDetails.heading, 
 													recipeDetails.subHeading, recipe.author, recipe.imageUrl, recipe.difficulty, 
@@ -129,5 +131,29 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 		}
 
 		return recipeDto;
+	}
+
+	@Override
+	public List<RecipeDetailsDto> getRecipes(Set<Long> recipeIdList, Language language) {
+		log.debug("executing getRecipes for ids: " + recipeIdList.toString() + " and language: " + language);
+
+		List<RecipeDetailsDto> list = new JPAQuery(em).from(recipe)
+								.where(recipe.id.in(recipeIdList))
+								.innerJoin(recipe.details, recipeDetails)
+								.with(recipeDetails.language.eq(language))
+								.list(new QRecipeDetailsDto(recipe.id, recipeDetails.heading, 
+									recipeDetails.subHeading, recipe.author, recipe.imageUrl, recipe.difficulty, 
+									recipe.timePreparation, recipe.timeCooking, recipe.timeOverall,
+									recipe.numberOfMeals, recipe.mealUnit));
+		
+		for (RecipeDetailsDto r : list) {
+			r.setIngredients(new JPAQuery(em).from(recipeIngredient)
+								.where(recipeIngredient.recipe.id.eq(r.getId()))
+								.innerJoin(recipeIngredient.ingredient, ingredient)
+								.orderBy(recipeIngredient.id.asc())
+								.list(new QRecipeIngredientDto(ingredient.name, ingredient.imageUrl, recipeIngredient.unit, recipeIngredient.amount)));
+		}
+
+		return list;
 	}
 }

@@ -14,6 +14,8 @@ public class AudioWidget extends Composite {
 
 	private static final CommonMessages messages = Kuharija.messages;
 
+	protected static final String AUDIO_FOLDER = GWT.getHostPageBaseURL() + "audio/";
+
 	private Audio audioWidget;
 
 	public AudioWidget(AudioDto audioDto) {
@@ -25,7 +27,7 @@ public class AudioWidget extends Composite {
 			for (String srcUrl : audioDto.getUrls()) {
 				String fileExt = srcUrl.substring(srcUrl.length() - 3, srcUrl.length());
 				String audioType = fileExt.equalsIgnoreCase("mp3") ? AudioElement.TYPE_MP3 : AudioElement.TYPE_OGG;
-				audioWidget.addSource(GWT.getHostPageBaseURL() + "audio/" + srcUrl, audioType);
+				audioWidget.addSource(AUDIO_FOLDER + srcUrl, audioType);
 			}
 
 			initWidget(audioWidget);
