@@ -35,11 +35,6 @@ public abstract class Details {
 	@Size(max = 100)
 	protected String subHeading;
 
-	@NotNull
-	@Size(max = 100)
-	protected String timeNeeded;
-
-
 	@Column(insertable=false, updatable=false)
 	protected String dtype;
 
@@ -53,10 +48,6 @@ public abstract class Details {
 
 	public String getSubHeading() {
 		return subHeading;
-	}
-
-	public String getTimeNeeded() {
-		return timeNeeded;
 	}
 
 }

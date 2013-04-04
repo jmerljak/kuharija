@@ -2,7 +2,9 @@ package si.merljak.magistrska.client.i18n;
 
 import java.util.Map;
 
-public interface IngredientsConstants extends CommonConstants {
+import com.google.gwt.i18n.client.Constants;
+
+public interface IngredientsConstants extends Constants {
 
 	@DefaultStringValue("Ingredients")
 	String ingredients();

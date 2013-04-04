@@ -19,7 +19,9 @@ public class RecipeDetailsDto implements Serializable {
 	private String author;
 	private String imageUrl;
 	private Difficulty difficulty;
-	private String preparationTime;
+	private String timePreparation;
+	private String timeCooking;
+	private String timeOverall;
 	private int numberOfMeals;
 	private MealUnit mealUnit;
 
@@ -37,14 +39,16 @@ public class RecipeDetailsDto implements Serializable {
 
 	@QueryProjection
 	public RecipeDetailsDto(long id, String heading, String subHeading, String author, String imageUrl, Difficulty difficulty, 
-			String preparationTime, int numberOfMeals, MealUnit mealUnit) {
+			String timePreparation, String timeCooking, String timeOverall, int numberOfMeals, MealUnit mealUnit) {
 		this.id = id;
 		this.heading = heading;
 		this.subHeading = subHeading;
 		this.author = author;
 		this.imageUrl = imageUrl;
 		this.difficulty = difficulty;
-		this.preparationTime = preparationTime;
+		this.timePreparation = timePreparation;
+		this.timeCooking = timeCooking;
+		this.timeOverall = timeOverall;
 		this.numberOfMeals = numberOfMeals;
 		this.mealUnit = mealUnit;
 	}
@@ -73,16 +77,24 @@ public class RecipeDetailsDto implements Serializable {
 		return difficulty;
 	}
 
-	public String getPreparationTime() {
-		return preparationTime;
-	}
-
 	public int getNumberOfMeals() {
 		return numberOfMeals;
 	}
 
 	public MealUnit getMealUnit() {
 		return mealUnit;
+	}
+
+	public String getTimePreparation() {
+		return timePreparation;
+	}
+
+	public String getTimeCooking() {
+		return timeCooking;
+	}
+
+	public String getTimeOverall() {
+		return timeOverall;
 	}
 
 	public void addIngredient(RecipeIngredientDto recipeIngredientDto) {

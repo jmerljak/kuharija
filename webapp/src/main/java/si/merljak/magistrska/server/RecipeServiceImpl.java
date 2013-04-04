@@ -1,12 +1,20 @@
 package si.merljak.magistrska.server;
 
+import static si.merljak.magistrska.server.model.QAppendix.appendix;
+import static si.merljak.magistrska.server.model.QIngredient.ingredient;
+import static si.merljak.magistrska.server.model.QRecipe.recipe;
+import static si.merljak.magistrska.server.model.QRecipeDetails.recipeDetails;
+import static si.merljak.magistrska.server.model.QRecipeIngredient.recipeIngredient;
+import static si.merljak.magistrska.server.model.QRecipeText.recipeText;
+import static si.merljak.magistrska.server.model.QRecipeTool.recipeTool;
+import static si.merljak.magistrska.server.model.QTool.tool;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +22,11 @@ import org.slf4j.LoggerFactory;
 import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
+import si.merljak.magistrska.common.dto.QAppendixDto;
+import si.merljak.magistrska.common.dto.QRecipeDetailsDto;
+import si.merljak.magistrska.common.dto.QRecipeIngredientDto;
+import si.merljak.magistrska.common.dto.QTextDto;
+import si.merljak.magistrska.common.dto.QToolDto;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.RecipeIngredientDto;
 import si.merljak.magistrska.common.dto.SubtitleDto;
@@ -22,20 +35,14 @@ import si.merljak.magistrska.common.dto.ToolDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeService;
-import si.merljak.magistrska.server.model.Appendix;
 import si.merljak.magistrska.server.model.Audio;
 import si.merljak.magistrska.server.model.Comment;
-import si.merljak.magistrska.server.model.Ingredient;
 import si.merljak.magistrska.server.model.Recipe;
-import si.merljak.magistrska.server.model.RecipeDetails;
-import si.merljak.magistrska.server.model.RecipeIngredient;
-import si.merljak.magistrska.server.model.RecipeTool;
 import si.merljak.magistrska.server.model.Subtitle;
-import si.merljak.magistrska.server.model.Text;
-import si.merljak.magistrska.server.model.Tool;
 import si.merljak.magistrska.server.model.Video;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeService {
 
@@ -50,67 +57,77 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 	public RecipeDetailsDto getRecipeDetails(long recipeId, Language language) {
 		log.debug("executing getRecipe for id: " + recipeId + " and language: " + language);
 
-		try {
-			Recipe recipeEntity = em.find(Recipe.class, recipeId);
-			if (recipeEntity == null) {
-				return null;
-			}
-			
-			RecipeDetails details = recipeEntity.getDetails().iterator().next();
-			
-			RecipeDetailsDto recipe = new RecipeDetailsDto(details.getHeading(), details.getSubHeading(), recipeEntity.getAuthor(), recipeEntity.getImageUrl(), 
-											 recipeEntity.getDifficulty(), details.getTimeNeeded(),
-											 recipeEntity.getNumberOfMeals(), recipeEntity.getMealUnit());
-
-			for (RecipeIngredient recipeIngredient : recipeEntity.getIngredients()) {
-				Ingredient ingredient = recipeIngredient.getIngredient();
-				recipe.addIngredient(new RecipeIngredientDto(ingredient.getId(), ingredient.getName(), ingredient.getImageUrl(), recipeIngredient.getUnit(), recipeIngredient.getAmount()));
-			}
-
-			for (RecipeTool recipeTool : recipeEntity.getTools()) {
-				Tool tool = recipeTool.getTool();
-				recipe.addTool(new ToolDto(tool.getName(), tool.getImageUrl(), recipeTool.getQuantity()));
-			}
-
-			TypedQuery<Text> query = em.createQuery("SELECT t FROM Text t " +
-													"WHERE t.recipe = :recipe " +
-													"AND t.language = :language", Text.class);
-			query.setParameter("recipe", recipeEntity);
-			query.setParameter("language", language);
-			for (Text text : query.getResultList()) {
-				recipe.addText(new TextDto(text.getLanguage(), text.getContent(), text.getMetadata()));
-			}
-
-			for (Audio audio : recipeEntity.getAudios()) {
-				List<String> audioUrls = new ArrayList<String>();
-				audioUrls.addAll(Arrays.asList(audio.getUrls().split(";")));
-				recipe.addAudio(new AudioDto(audio.getLanguage(), audioUrls));
-			}
-
-			for (Video video : recipeEntity.getVideos()) {
-				List<SubtitleDto> subtitles = new ArrayList<SubtitleDto>();
-				for (Subtitle subtitle : video.getSubtitles()) {
-					subtitles.add(new SubtitleDto(subtitle.getLanguage(), subtitle.getUrl()));
-				}
-
-				List<String> videoUrls = new ArrayList<String>();
-				videoUrls.addAll(Arrays.asList(video.getUrls().split(";")));
-				recipe.addVideo(new VideoDto(video.getLanguage(), videoUrls, video.getPosterUrl(), subtitles));
-			}
-
-			for (Comment comment : recipeEntity.getComments()) {
-				String user = comment.getUser() != null ? comment.getUser().getName() : "anonymous";
-				recipe.addComment(new CommentDto(user, comment.getDate(), comment.getContent()));
-			}
-
-			for (Appendix appendix : recipeEntity.getAppendices()) {
-				recipe.addAppendix(new AppendixDto(appendix.getType(), appendix.getLanguage(), appendix.getContent()));
-			}
-
-			return recipe;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			throw new RuntimeException(e);
+		Recipe recipeEntity = em.find(Recipe.class, recipeId);
+		if (recipeEntity == null) {
+			return null;
 		}
+
+		JPAQuery recipeQuery = new JPAQuery(em).from(recipe).where(recipe.eq(recipeEntity));
+		RecipeDetailsDto recipeDto = recipeQuery.innerJoin(recipe.details, recipeDetails)
+												.with(recipeDetails.language.eq(language))
+												.uniqueResult(new QRecipeDetailsDto(recipe.id, recipeDetails.heading, 
+													recipeDetails.subHeading, recipe.author, recipe.imageUrl, recipe.difficulty, 
+													recipe.timePreparation, recipe.timeCooking, recipe.timeOverall,
+													recipe.numberOfMeals, recipe.mealUnit));
+
+		if (recipeDto == null) {
+			// TODO try show recipe in the default language?
+			return null;
+		}
+
+		// ingredients
+		List<RecipeIngredientDto> ingredients = new JPAQuery(em).from(recipeIngredient)
+							.where(recipeIngredient.recipe.eq(recipeEntity))
+							.innerJoin(recipeIngredient.ingredient, ingredient)
+							.orderBy(recipeIngredient.id.asc())
+							.list(new QRecipeIngredientDto(ingredient.name, ingredient.imageUrl, recipeIngredient.unit, recipeIngredient.amount));
+		recipeDto.setIngredients(ingredients);
+
+		// tools
+		List<ToolDto> tools = new JPAQuery(em).from(recipeTool)
+							.where(recipeTool.recipe.eq(recipeEntity))
+							.innerJoin(recipeTool.tool, tool)
+							.orderBy(recipeTool.id.asc())
+							.list(new QToolDto(tool.name, tool.imageUrl, recipeTool.quantity));
+		recipeDto.setTools(tools);
+
+		// texts
+		List<TextDto> texts = new JPAQuery(em).from(recipeText)
+							.where(recipeText.recipe.eq(recipeEntity), recipeText.language.eq(language))
+							.list(new QTextDto(recipeText.language, recipeText.content, recipeText.metadata));
+		recipeDto.setTexts(texts);
+
+		// appendencies
+		List<AppendixDto> appendencies = new JPAQuery(em).from(appendix)
+						.where(appendix.recipe.eq(recipeEntity), appendix.language.eq(language))
+						.list(new QAppendixDto(appendix.type, appendix.language, appendix.content));
+		recipeDto.setAppendencies(appendencies);
+
+		// audio
+		for (Audio audio : recipeEntity.getAudios()) {
+			List<String> audioUrls = new ArrayList<String>();
+			audioUrls.addAll(Arrays.asList(audio.getUrls().split(";")));
+			recipeDto.addAudio(new AudioDto(audio.getLanguage(), audioUrls));
+		}
+
+		// video
+		for (Video video : recipeEntity.getVideos()) {
+			List<SubtitleDto> subtitles = new ArrayList<SubtitleDto>();
+			for (Subtitle subtitle : video.getSubtitles()) {
+				subtitles.add(new SubtitleDto(subtitle.getLanguage(), subtitle.getUrl()));
+			}
+
+			List<String> videoUrls = new ArrayList<String>();
+			videoUrls.addAll(Arrays.asList(video.getUrls().split(";")));
+			recipeDto.addVideo(new VideoDto(video.getLanguage(), videoUrls, video.getPosterUrl(), subtitles));
+		}
+
+		// comments
+		for (Comment comment : recipeEntity.getComments()) {
+			String user = comment.getUser() != null ? comment.getUser().getName() : "anonymous";
+			recipeDto.addComment(new CommentDto(user, comment.getDate(), comment.getContent()));
+		}
+
+		return recipeDto;
 	}
 }

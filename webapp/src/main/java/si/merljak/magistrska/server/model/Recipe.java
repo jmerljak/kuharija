@@ -47,13 +47,22 @@ public class Recipe implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private MealUnit mealUnit;
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
+	@Size(max = 50)
+	private String timePreparation;
+
+	@Size(max = 50)
+	private String timeCooking;
+
+	@Size(max = 50)
+	private String timeOverall;
+
+	@OneToMany(mappedBy = "recipe")
 	private Set<RecipeDetails> details;
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe")
 	private Set<RecipeIngredient> ingredients;
 
-    @OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe")
 	private Set<RecipeTool> tools;
 
 	@ManyToMany
@@ -62,10 +71,10 @@ public class Recipe implements Serializable {
 	@OneToMany(mappedBy = "recipe")
 	private Set<RecipeText> texts;
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe")
 	private Set<ProcedureStep> steps;
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe")
 	private Set<Appendix> appendices;
 
 	@OneToMany(fetch=FetchType.EAGER, mappedBy = "recipe")
@@ -121,24 +130,20 @@ public class Recipe implements Serializable {
 		return mealUnit;
 	}
 
+	public String getTimePreparation() {
+		return timePreparation;
+	}
+
+	public String getTimeCooking() {
+		return timeCooking;
+	}
+
+	public String getTimeOverall() {
+		return timeOverall;
+	}
+
 	public Set<RecipeDetails> getDetails() {
 		return details;
-	}
-
-	public Set<RecipeIngredient> getIngredients() {
-		return ingredients;
-	}
-
-	public Set<RecipeTool> getTools() {
-		return tools;
-	}
-
-	public Set<Technique> getTechniques() {
-		return techniques;
-	}
-
-	public Set<RecipeText> getTexts() {
-		return texts;
 	}
 
 	public Set<RecipeAudio> getAudios() {
@@ -147,14 +152,6 @@ public class Recipe implements Serializable {
 
 	public Set<RecipeVideo> getVideos() {
 		return videos;
-	}
-
-	public Set<ProcedureStep> getSteps() {
-		return steps;
-	}
-
-	public Set<Appendix> getAppendices() {
-		return appendices;
 	}
 
 	public Set<Comment> getComments() {

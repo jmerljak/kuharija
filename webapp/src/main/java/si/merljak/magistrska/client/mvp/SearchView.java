@@ -6,7 +6,6 @@ import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeDto;
 
 import com.github.gwtbootstrap.client.ui.Heading;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -65,7 +64,7 @@ public class SearchView extends AbstractView {
 		}
 
 		for (RecipeDto result : results) {
-			Image image = new Image(GWT.getHostPageBaseURL() + "img/recipe/" + result.getImageUrl());
+			Image image = new Image(RECIPE_IMG_FOLDER + result.getImageUrl());
 			Anchor link = new Anchor(result.getHeading(), RecipePresenter.buildRecipeUrl(result.getId()));
 
 			FlowPanel recipe = new FlowPanel();
@@ -73,7 +72,7 @@ public class SearchView extends AbstractView {
 			recipe.add(link);
 			recipe.add(image);
 			recipe.add(new Label(localizeEnum(result.getDifficulty())));
-			recipe.add(new Label(result.getPreparationTime()));
+			recipe.add(new Label(result.getTimeOverall()));
 			resultsPanel.add(recipe);
 		}
 		setVisible(true);

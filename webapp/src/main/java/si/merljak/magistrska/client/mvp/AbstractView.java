@@ -11,6 +11,7 @@ import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.enumeration.Unit;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Composite;
 
 public abstract class AbstractView extends Composite {
@@ -18,6 +19,9 @@ public abstract class AbstractView extends Composite {
 	// common constants & formatters
 	protected static final CommonConstants constants = Kuharija.constants;
 	protected static final CommonMessages messages = Kuharija.messages;
+
+	protected static final String INGREDIENT_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/ingredient/";
+	protected static final String RECIPE_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/recipe/";
 
 	protected static String localizeEnum(Category category) {
 		return constants.categoryMap().get(category.name());

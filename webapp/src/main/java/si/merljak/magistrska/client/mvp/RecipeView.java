@@ -15,7 +15,6 @@ import si.merljak.magistrska.common.dto.ToolDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 
 import com.google.gwt.aria.client.Roles;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
@@ -81,11 +80,11 @@ public class RecipeView extends AbstractView {
 		titleComments.getElement().setInnerHTML(constants.comments());
 
 		// recipe info
-		recipeDetailsPanel.add(new Label(constants.preparationTime() + ": " + recipe.getPreparationTime()));
+		recipeDetailsPanel.add(new Label(constants.preparationTime() + ": " + recipe.getTimeOverall()));
 //		recipeDetailsPanel.add(new Label(constants.numberOfMeals() + ": " + recipe.getNumberOfMeals()));
 		recipeDetailsPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
 		recipeDetailsPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
-		recipeDetailsPanel.add(new Image(GWT.getHostPageBaseURL() + "img/" + recipe.getImageUrl()));
+		recipeDetailsPanel.add(new Image(RECIPE_IMG_FOLDER + recipe.getImageUrl()));
 
 		// ingredients
 		ingredientsPanel.add(new IngredientsWidget(recipe.getIngredients(), recipe.getNumberOfMeals()));

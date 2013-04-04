@@ -24,11 +24,10 @@ public class TechniqueDetails extends Details implements Serializable {
 
 	protected TechniqueDetails() {}
 
-	public TechniqueDetails(Technique technique, Language language, String heading, String subHeading, String timeNeeded) {
+	public TechniqueDetails(Technique technique, Language language, String heading, String subHeading) {
 		this.technique = technique;
 		this.language = language;
 		this.heading = heading;
 		this.subHeading = subHeading;
-		this.timeNeeded = timeNeeded;
 	}
 }

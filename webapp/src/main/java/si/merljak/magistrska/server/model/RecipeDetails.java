@@ -24,11 +24,10 @@ public class RecipeDetails extends Details implements Serializable {
 
 	protected RecipeDetails() {}
 
-	public RecipeDetails( Recipe recipe, Language language, String heading, String subHeading, String timeNeeded) {
+	public RecipeDetails( Recipe recipe, Language language, String heading, String subHeading) {
 		this.recipe = recipe;
 		this.language = language;
 		this.heading = heading;
 		this.subHeading = subHeading;
-		this.timeNeeded = timeNeeded;
 	}
 }

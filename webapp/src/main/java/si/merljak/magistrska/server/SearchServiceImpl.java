@@ -107,7 +107,7 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		 	 .distinct()
 			 .orderBy(recipe.id.asc());
 
-		return query.list(new QRecipeDto(recipe.id, recipeDetails.heading, recipe.imageUrl, recipe.difficulty, recipeDetails.timeNeeded));
+		return query.list(new QRecipeDto(recipe.id, recipeDetails.heading, recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 	}
 
 }
