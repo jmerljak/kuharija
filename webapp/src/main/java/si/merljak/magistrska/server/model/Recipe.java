@@ -60,7 +60,7 @@ public class Recipe implements Serializable {
 	private Set<RecipeIngredient> ingredients;
 
     @OneToMany(mappedBy = "recipe")
-	private Set<RecipeTool> tools;
+	private Set<RecipeUtensil> utensils;
 
 	@ManyToMany
 	private Set<Technique> techniques;

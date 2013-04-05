@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Tool implements Serializable {
+public class Utensil implements Serializable {
 
 	private static final long serialVersionUID = -8350467055363888698L;
 
@@ -17,9 +17,9 @@ public class Tool implements Serializable {
 
 	private String imageUrl;
 
-	protected Tool() {}
+	protected Utensil() {}
 
-	public Tool(String name, String imageUrl) {
+	public Utensil(String name, String imageUrl) {
 		this.name = name;
 		this.imageUrl = imageUrl;
 	}

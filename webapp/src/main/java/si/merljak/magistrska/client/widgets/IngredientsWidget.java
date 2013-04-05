@@ -6,7 +6,7 @@ import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.mvp.IngredientPresenter;
-import si.merljak.magistrska.common.dto.RecipeIngredientDto;
+import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.enumeration.Unit;
 
 import com.github.gwtbootstrap.client.ui.Heading;
@@ -38,12 +38,12 @@ public class IngredientsWidget extends Composite {
 	private Button buttonMinus = new Button("-");
 	private TextBox textBox = new TextBox();
 	
-	private List<RecipeIngredientDto> ingredients;
+	private List<IngredientDto> ingredients;
 	private int numOfPeopleBase;
 	private int numOfPeople;
-	private CheckBox convertToNonMetric = new CheckBox();
+	private CheckBox convertToNonMetric = new CheckBox("non metric");
 
-	public IngredientsWidget(List<RecipeIngredientDto> ingredients, int numOfMeals) {
+	public IngredientsWidget(List<IngredientDto> ingredients, int numOfMeals) {
 		this.ingredients = ingredients;
 		this.numOfPeopleBase = numOfMeals;
 		this.numOfPeople = numOfMeals;
@@ -110,7 +110,7 @@ public class IngredientsWidget extends Composite {
 		removeStyleName("control-group error");
 
 		ingredientsList.clear();
-		for (RecipeIngredientDto ingredient : ingredients) {
+		for (IngredientDto ingredient : ingredients) {
 			Double amount = ingredient.getAmount();
 			Unit unit = ingredient.getUnit();
 			final String ingredientName = ingredient.getName();

@@ -4,7 +4,7 @@ import java.util.List;
 
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
-import si.merljak.magistrska.common.dto.RecipeIngredientDto;
+import si.merljak.magistrska.common.dto.IngredientDto;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
@@ -49,7 +49,7 @@ public class CompareView extends AbstractView {
 			resultsPanel.setText(5, column, timeFromMinutes(result.getTimeOverall()));
 			resultsPanel.setText(6, column, result.getAuthor());
 			UnorderedList ingredients = new UnorderedList();
-			for (RecipeIngredientDto ingredient : result.getIngredients()) {
+			for (IngredientDto ingredient : result.getIngredients()) {
 				ingredients.add(new ListItem(new Label(ingredientsConstants.ingredientMap().get(ingredient.getName()))));
 			}
 			resultsPanel.setWidget(7, column, ingredients);

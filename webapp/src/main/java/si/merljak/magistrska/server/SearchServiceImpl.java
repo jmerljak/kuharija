@@ -120,10 +120,10 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 			query.orderBy(recipeDetails.heading.asc());
 			break;
 		case TIMEOVERALL:
-			query.orderBy(recipe.timeOverall.asc());
+			query.orderBy(recipe.timeOverall.asc(), recipeDetails.heading.asc());
 			break;
 		case DIFFICULTY:
-			query.orderBy(recipe.difficulty.asc());
+			query.orderBy(recipe.difficulty.asc(), recipeDetails.heading.asc());
 			break;
 		}
 

@@ -17,7 +17,7 @@ public class TechniqueDto implements Serializable {
 	private Difficulty difficulty;
 	private String metaData;
 
-	private List<ToolDto> tools = new ArrayList<ToolDto>();
+	private List<UtensilDto> utensils = new ArrayList<UtensilDto>();
 	private List<TextDto> texts = new ArrayList<TextDto>();
 	private List<AudioDto> audios = new ArrayList<AudioDto>();
 	private List<VideoDto> videos = new ArrayList<VideoDto>();
@@ -48,12 +48,12 @@ public class TechniqueDto implements Serializable {
 		return metaData;
 	}
 
-	public void addTool(ToolDto toolDto) {
-		tools.add(toolDto);
+	public void addUtensil(UtensilDto utensilDto) {
+		utensils.add(utensilDto);
 	}
 
-	public List<ToolDto> getTools() {
-		return tools;
+	public List<UtensilDto> getUtensils() {
+		return utensils;
 	}
 
 	public void addText(TextDto textDto) {

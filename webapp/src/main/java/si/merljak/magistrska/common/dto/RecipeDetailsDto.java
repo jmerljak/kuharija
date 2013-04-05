@@ -25,8 +25,8 @@ public class RecipeDetailsDto implements Serializable {
 	private int numberOfMeals;
 	private MealUnit mealUnit;
 
-	private List<RecipeIngredientDto> ingredients = new ArrayList<RecipeIngredientDto>();
-	private List<ToolDto> tools = new ArrayList<ToolDto>();
+	private List<IngredientDto> ingredients = new ArrayList<IngredientDto>();
+	private List<UtensilDto> utensils = new ArrayList<UtensilDto>();
 	private List<TextDto> texts = new ArrayList<TextDto>();
 	private List<AudioDto> audios = new ArrayList<AudioDto>();
 	private List<VideoDto> videos = new ArrayList<VideoDto>();
@@ -96,20 +96,20 @@ public class RecipeDetailsDto implements Serializable {
 		return timeOverall;
 	}
 
-	public void addIngredient(RecipeIngredientDto recipeIngredientDto) {
-		ingredients.add(recipeIngredientDto);
+	public void addIngredient(IngredientDto ingredientDto) {
+		ingredients.add(ingredientDto);
 	}
 
-	public List<RecipeIngredientDto> getIngredients() {
+	public List<IngredientDto> getIngredients() {
 		return ingredients;
 	}
 
-	public void addTool(ToolDto toolDto) {
-		tools.add(toolDto);
+	public void addUtensil(UtensilDto utensilDto) {
+		utensils.add(utensilDto);
 	}
 
-	public List<ToolDto> getTools() {
-		return tools;
+	public List<UtensilDto> getUtensils() {
+		return utensils;
 	}
 
 	public void addText(TextDto textDto) {
@@ -164,12 +164,12 @@ public class RecipeDetailsDto implements Serializable {
 		return steps;
 	}
 
-	public void setIngredients(List<RecipeIngredientDto> ingredients) {
+	public void setIngredients(List<IngredientDto> ingredients) {
 		this.ingredients = ingredients;
 	}
 
-	public void setTools(List<ToolDto> tools) {
-		this.tools = tools;
+	public void setUtensils(List<UtensilDto> utensils) {
+		this.utensils = utensils;
 	}
 
 	public void setVideos(List<VideoDto> videos) {

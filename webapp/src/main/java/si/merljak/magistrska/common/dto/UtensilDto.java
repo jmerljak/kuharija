@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.mysema.query.annotations.QueryProjection;
 
-public class ToolDto implements Serializable {
+public class UtensilDto implements Serializable {
 
 	private static final long serialVersionUID = -872342731145957913L;
 
@@ -12,16 +12,16 @@ public class ToolDto implements Serializable {
 	private String imageUrl;
 	private Integer quantity;
 
-	ToolDto() {}
+	UtensilDto() {}
 
 	@QueryProjection
-	public ToolDto(String title, String imageUrl) {
+	public UtensilDto(String title, String imageUrl) {
 		this.title = title;
 		this.imageUrl = imageUrl;
 	}
 
 	@QueryProjection
-	public ToolDto(String title, String imageUrl, Integer quantity) {
+	public UtensilDto(String title, String imageUrl, Integer quantity) {
 		this.title = title;
 		this.imageUrl = imageUrl;
 		this.quantity = quantity;

@@ -10,8 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="technique_tool")
-public class TechniqueTool implements Serializable {
+@Table(name="technique_urensil")
+public class TechniqueUtensil implements Serializable {
 
 	private static final long serialVersionUID = -6450812763794194567L;
 
@@ -23,20 +23,20 @@ public class TechniqueTool implements Serializable {
 	private Technique technique;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	private Tool tool;
+	private Utensil utensil;
 
 	private Integer quantity;
 
-	protected TechniqueTool() {}
+	protected TechniqueUtensil() {}
 
-	public TechniqueTool(Technique technique, Tool tool, Integer quantity) {
+	public TechniqueUtensil(Technique technique, Utensil utensil, Integer quantity) {
 		this.technique = technique;
-		this.tool = tool;
+		this.utensil = utensil;
 		this.quantity = quantity;
 	}
 
-	public Tool getTool() {
-		return tool;
+	public Utensil getTool() {
+		return utensil;
 	}
 
 	public Integer getQuantity() {

@@ -122,27 +122,4 @@ public interface CommonConstants extends Constants {
 		"WINTER_EARLY", "Early winter",
 		"WINTER_LATE", "Late winter"})
 	Map<String, String> seasonMap();
-	
-	@DefaultStringMapValue({
-		"SPOON", "spoon",
-		"FORK", "fork",
-		"KNIFE", "knife",
-		"KNIFE_SMALL", "knife (small)",
-		"KNIFE_LARGE", "knife (large)",
-		"KNIFE_WHEEL", "wheel knife",
-		"COOKING_POT", "cooking pot",
-		"BAKING_TRAY", "baking tray",
-		"BAKING_TRAY_SMALL", "baking tray (small)",
-		"BAKING_TRAY_LARGE", "baking tray (large)",
-		"OVEN", "oven",
-		"SQUEEZER", "squeezer",
-		"BLENDER", "blender",
-		"CUP", "cup",
-		"ROLLING_PIN", "rolling pin",
-		"PASTRY_BRUSH", "pastry brush",
-		"TOOTHPICKS", "toothpicks",
-		"PLATE", "plate",
-		"PLATE_SERVING", "serving plate",
-		"PLANK", "plank"})
-	Map<String, String> toolsMap();
 }

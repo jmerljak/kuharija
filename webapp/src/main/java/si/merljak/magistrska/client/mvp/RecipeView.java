@@ -1,7 +1,10 @@
 package si.merljak.magistrska.client.mvp;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.i18n.UtensilsConstants;
+import si.merljak.magistrska.client.widgets.AppendixWidget;
 import si.merljak.magistrska.client.widgets.AudioWidget;
+import si.merljak.magistrska.client.widgets.CommentWidget;
 import si.merljak.magistrska.client.widgets.IngredientsWidget;
 import si.merljak.magistrska.client.widgets.TabsWidget;
 import si.merljak.magistrska.client.widgets.VideoWidget;
@@ -11,14 +14,13 @@ import si.merljak.magistrska.common.dto.CommentDto;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.StepDto;
 import si.merljak.magistrska.common.dto.TextDto;
-import si.merljak.magistrska.common.dto.ToolDto;
+import si.merljak.magistrska.common.dto.UtensilDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.Button;
@@ -30,7 +32,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class RecipeView extends AbstractView {
 
 	// constants & formatters
-	private static final DateTimeFormat dateFormat = Kuharija.dateFormat;
+	private UtensilsConstants utensilsConstants = Kuharija.utensilsConstants;
 
 	// panels
 	private static final RootPanel title = RootPanel.get("recipeTitle");
@@ -91,14 +93,14 @@ public class RecipeView extends AbstractView {
 		// ingredients
 		ingredientsPanel.add(new IngredientsWidget(recipe.getIngredients(), recipe.getNumberOfMeals()));
 
-		// tools
-		for (ToolDto tool : recipe.getTools()) {
-			toolsPanel.add(new Label(tool.getQuantity() + "x " + constants.toolsMap().get(tool.getTitle())));
+		// utensils
+		for (UtensilDto tool : recipe.getUtensils()) {
+			toolsPanel.add(new Label(tool.getQuantity() + "x " + utensilsConstants.utensilsMap().get(tool.getTitle()).toLowerCase()));
 		}
 
 		// texts
 		for (TextDto text : recipe.getTexts()) {
-			panelBasic.add(new HTML(text.getContent() + " (" + constants.languageMap().get(text.getLanguage().name()) + ")"));
+			panelBasic.add(new HTML(text.getContent()));
 		}
 
 		for (AudioDto audioDto : recipe.getAudios()) {
@@ -110,11 +112,11 @@ public class RecipeView extends AbstractView {
 		}
 
 		for (CommentDto comment : recipe.getComments()) {
-			commentsPanel.add(new Label(dateFormat.format(comment.getDate()) + " - " + comment.getUser() + ": " + comment.getContent()));
+			commentsPanel.add(new CommentWidget(comment));
 		}
 		
 		for (AppendixDto appendix : recipe.getAppendencies()) {
-			commentsPanel.add(new Label(appendix.getContent()));
+			commentsPanel.add(new AppendixWidget(appendix));
 		}
 
 		setVisible(true);

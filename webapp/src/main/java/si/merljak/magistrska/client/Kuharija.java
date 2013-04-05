@@ -8,6 +8,7 @@ import java.util.Map;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
 import si.merljak.magistrska.client.i18n.Formatters;
+import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.client.mvp.ComparePresenter;
 import si.merljak.magistrska.client.mvp.IngredientPresenter;
@@ -22,6 +23,7 @@ import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
 import si.merljak.magistrska.common.rpc.SearchService;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 
+import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -31,6 +33,8 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class Kuharija implements EntryPoint {
@@ -43,22 +47,27 @@ public class Kuharija implements EntryPoint {
 	// common constants
 	public static final CommonConstants constants = GWT.create(CommonConstants.class);
 	public static final CommonMessages messages = GWT.create(CommonMessages.class);
+	public static final UtensilsConstants utensilsConstants = GWT.create(UtensilsConstants.class);
 
     // formatters
 	public static final Formatters formatters = GWT.create(Formatters.class);
 	public static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
 	public static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
+	public static final DateTimeFormat timestampFormat = DateTimeFormat.getFormat(formatters.timestampFormat());
 
 	// presenters
 	private List<AbstractPresenter> presenters = new ArrayList<AbstractPresenter>();
 
 	// widgets
 	private LocaleWidget localeWidget;
+	private Breadcrumbs breadcrumbs;
     
 	public void onModuleLoad() {
+		breadcrumbs = new Breadcrumbs("→");
 
 		localeWidget = new LocaleWidget();
 		RootPanel.get("nav").add(localeWidget);
+		RootPanel.get("nav").add(breadcrumbs);
 		Language language = localeWidget.getCurrentLanguage();
 
 		presenters.add(new IngredientPresenter(language, ingredientService));
@@ -89,6 +98,9 @@ public class Kuharija implements EntryPoint {
 				for (AbstractPresenter presenter : presenters) {
 					presenter.handleScreenChange(screenName, parameters);
 				}
+				breadcrumbs.clear();
+				breadcrumbs.add(new Anchor("home", "#home"));
+				breadcrumbs.add(new Label(screenName));
 			}
 		});
 

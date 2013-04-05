@@ -6,8 +6,8 @@ import static si.merljak.magistrska.server.model.QRecipe.recipe;
 import static si.merljak.magistrska.server.model.QRecipeDetails.recipeDetails;
 import static si.merljak.magistrska.server.model.QRecipeIngredient.recipeIngredient;
 import static si.merljak.magistrska.server.model.QRecipeText.recipeText;
-import static si.merljak.magistrska.server.model.QRecipeTool.recipeTool;
-import static si.merljak.magistrska.server.model.QTool.tool;
+import static si.merljak.magistrska.server.model.QRecipeUtensil.recipeUtensil;
+import static si.merljak.magistrska.server.model.QUtensil.utensil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,16 +23,16 @@ import org.slf4j.LoggerFactory;
 import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
+import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.dto.QAppendixDto;
+import si.merljak.magistrska.common.dto.QIngredientDto;
 import si.merljak.magistrska.common.dto.QRecipeDetailsDto;
-import si.merljak.magistrska.common.dto.QRecipeIngredientDto;
 import si.merljak.magistrska.common.dto.QTextDto;
-import si.merljak.magistrska.common.dto.QToolDto;
+import si.merljak.magistrska.common.dto.QUtensilDto;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
-import si.merljak.magistrska.common.dto.RecipeIngredientDto;
 import si.merljak.magistrska.common.dto.SubtitleDto;
 import si.merljak.magistrska.common.dto.TextDto;
-import si.merljak.magistrska.common.dto.ToolDto;
+import si.merljak.magistrska.common.dto.UtensilDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeService;
@@ -78,20 +78,20 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 		}
 
 		// ingredients
-		List<RecipeIngredientDto> ingredients = new JPAQuery(em).from(recipeIngredient)
+		List<IngredientDto> ingredients = new JPAQuery(em).from(recipeIngredient)
 							.where(recipeIngredient.recipe.eq(recipeEntity))
 							.innerJoin(recipeIngredient.ingredient, ingredient)
 							.orderBy(recipeIngredient.id.asc())
-							.list(new QRecipeIngredientDto(ingredient.name, ingredient.imageUrl, recipeIngredient.unit, recipeIngredient.amount));
+							.list(new QIngredientDto(ingredient.name, ingredient.imageUrl, recipeIngredient.unit, recipeIngredient.amount));
 		recipeDto.setIngredients(ingredients);
 
-		// tools
-		List<ToolDto> tools = new JPAQuery(em).from(recipeTool)
-							.where(recipeTool.recipe.eq(recipeEntity))
-							.innerJoin(recipeTool.tool, tool)
-							.orderBy(recipeTool.id.asc())
-							.list(new QToolDto(tool.name, tool.imageUrl, recipeTool.quantity));
-		recipeDto.setTools(tools);
+		// utensils
+		List<UtensilDto> utensils = new JPAQuery(em).from(recipeUtensil)
+							.where(recipeUtensil.recipe.eq(recipeEntity))
+							.innerJoin(recipeUtensil.utensil, utensil)
+							.orderBy(recipeUtensil.id.asc())
+							.list(new QUtensilDto(utensil.name, utensil.imageUrl, recipeUtensil.quantity));
+		recipeDto.setUtensils(utensils);
 
 		// texts
 		List<TextDto> texts = new JPAQuery(em).from(recipeText)
@@ -126,6 +126,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 
 		// comments
 		for (Comment comment : recipeEntity.getComments()) {
+			// sort by date
 			String user = comment.getUser() != null ? comment.getUser().getName() : "anonymous";
 			recipeDto.addComment(new CommentDto(user, comment.getDate(), comment.getContent()));
 		}
@@ -151,7 +152,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 								.where(recipeIngredient.recipe.id.eq(r.getId()))
 								.innerJoin(recipeIngredient.ingredient, ingredient)
 								.orderBy(recipeIngredient.id.asc())
-								.list(new QRecipeIngredientDto(ingredient.name, ingredient.imageUrl, recipeIngredient.unit, recipeIngredient.amount)));
+								.list(new QIngredientDto(ingredient.name, ingredient.imageUrl, recipeIngredient.unit, recipeIngredient.amount)));
 		}
 
 		return list;

@@ -6,7 +6,7 @@ public interface Formatters extends Constants {
 	@DefaultStringValue("MM/dd/yyyy")
 	String dateFormat();
 
-	@DefaultStringValue("MM/dd/yyyy HH:mm:ss")
+	@DefaultStringValue("MM/dd/yyyy HH:mm")
 	String timestampFormat();
 
 	@DefaultStringValue("#,##0.00")

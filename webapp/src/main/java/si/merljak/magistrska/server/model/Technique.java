@@ -34,7 +34,7 @@ public class Technique implements Serializable {
 	private Difficulty difficulty;
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy = "technique")
-	private Set<TechniqueTool> tools;
+	private Set<TechniqueUtensil> utensils;
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy = "technique")
 	private Set<TechniqueText> texts;
@@ -75,8 +75,8 @@ public class Technique implements Serializable {
 		return difficulty;
 	}
 
-	public Set<TechniqueTool> getTools() {
-		return tools;
+	public Set<TechniqueUtensil> getUtensils() {
+		return utensils;
 	}
 
 	public Set<TechniqueText> getTexts() {
