@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="recipe_urensil")
+@Table(name="recipe_utensil")
 public class RecipeUtensil implements Serializable {
 
 	private static final long serialVersionUID = 3035885493363533907L;

@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="technique_urensil")
+@Table(name="technique_utensil")
 public class TechniqueUtensil implements Serializable {
 
 	private static final long serialVersionUID = -6450812763794194567L;
