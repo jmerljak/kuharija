@@ -49,6 +49,7 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		Set<Category> categories = searchParameters.getCategories();
 		Set<Season> seasons = searchParameters.getSeasons();
 		Set<String> ingredients = searchParameters.getIngredients();
+		String utensil = searchParameters.getUtensil();
 		Language language = searchParameters.getLanguage();
 		RecipeSortKey sortKey = searchParameters.getSortKey();
 
@@ -98,6 +99,10 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 				ingredientsFilter.and(recipe.ingredients.any().ingredient.name.eq(ingredientName));
 			}
 			subquery.where(ingredientsFilter);
+		}
+
+		if (utensil != null) {
+			subquery.where(recipe.utensils.any().utensil.name.eq(utensil));
 		}
 
 		// main query

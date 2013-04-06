@@ -97,7 +97,7 @@ public interface UtensilsConstants extends Constants {
 		"SIEVE", "Sieve",
 		"SLOTTED_SPOON", "Slotted spoon",
 		"SPATULA", "Spatula",
-		"SUGAR_THERMOMETER", "Sugar thermometer",
+		"SUGAR_THERMOMETER", "Candy thermometer",
 		"TIN_OPENER", "Tin opener",
 		"TONGS", "Tongs",
 		"TOOTHPICKS", "Toothpicks",

@@ -27,6 +27,7 @@ public class UtensilView extends AbstractView {
 	private static final UtensilsConstants constants = GWT.create(UtensilsConstants.class);
 	private static final UrlConstants urlConstants = GWT.create(UrlConstants.class);
 	private static final Map<String, String> utensilMap = constants.utensilsMap();
+	private static final Map<String, String> utensilsDescriptionMap = constants.utensilsDescriptionMap();
 
 	private static final RootPanel main = RootPanel.get("utensilWrapper");
 	private FlowPanel utensilsIndex;
@@ -43,10 +44,17 @@ public class UtensilView extends AbstractView {
 			main.add(new Heading(2, messages.oops()));
 			main.add(new HTML(messages.utensilNotFoundTry()));
 		} else {
-			main.add(new Heading(2, utensilMap.get(utensil.getName())));
-			main.add(new Image(UTENSIL_IMG_FOLDER + utensil.getImageUrl()));
-			main.add(new Label(constants.utensilsDescriptionMap().get(utensil.getName() + "_DESC")));
-			String localizedName = utensilMap.get(utensil.getName()).toLowerCase();
+			String utensilName = utensil.getName();
+			String localizedName = utensilMap.get(utensilName);
+			String localizedDescription = utensilsDescriptionMap.get(utensilName + "_DESC");
+	
+			Image img = new Image(UTENSIL_IMG_FOLDER + utensil.getImageUrl());
+			img.setAltText(localizedName);
+
+			main.add(new Heading(2, localizedName));
+			main.add(img);
+			main.add(new Label(localizedDescription));
+			main.add(new Anchor(messages.searchByUtensil(localizedName.toLowerCase()), SearchPresenter.buildSearchByUtensilUrl(utensilName)));
 			main.add(new Anchor(messages.utensilReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl() + localizedName, "_blank"));
 		}
 

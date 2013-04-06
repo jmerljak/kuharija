@@ -27,6 +27,7 @@ public class IngredientView extends AbstractView {
 	private static final IngredientsConstants constants = GWT.create(IngredientsConstants.class);
 	private static final UrlConstants urlConstants = GWT.create(UrlConstants.class);
 	private static final Map<String, String> ingredientMap = constants.ingredientMap();
+	private static final Map<String, String> ingredientDescriptionMap = constants.ingredientDescriptionMap();
 
 	private static final RootPanel main = RootPanel.get("ingredientWrapper");
 	private FlowPanel ingredientsIndex;
@@ -43,11 +44,18 @@ public class IngredientView extends AbstractView {
 			main.add(new Heading(2, messages.oops()));
 			main.add(new HTML(messages.ingredientNotFoundTry(name.toLowerCase())));
 		} else {
-			main.add(new Heading(2, ingredientMap.get(ingredient.getName())));
-			main.add(new Image(INGREDIENT_IMG_FOLDER + ingredient.getImageUrl()));
-			main.add(new Label(constants.ingredientDescriptionMap().get(ingredient.getName() + "_DESC")));
-			String localizedName = ingredientMap.get(ingredient.getName()).toLowerCase();
-			main.add(new Anchor(messages.searchByIngredient(localizedName), SearchPresenter.buildSearchByIngredientUrl(ingredient.getName())));
+			String ingredientName = ingredient.getName();
+			String localizedName = ingredientMap.get(ingredientName);
+			String localizedDescription = ingredientDescriptionMap.get(ingredientName + "_DESC");
+
+			// TODO check for null url
+			Image img = new Image(INGREDIENT_IMG_FOLDER + ingredient.getImageUrl());
+			img.setAltText(localizedName);
+
+			main.add(new Heading(2, localizedName));
+			main.add(img);
+			main.add(new Label(localizedDescription));
+			main.add(new Anchor(messages.searchByIngredient(localizedName.toLowerCase()), SearchPresenter.buildSearchByIngredientUrl(ingredientName)));
 			main.add(new Anchor(messages.ingredientReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl() + localizedName, "_blank"));
 		}
 

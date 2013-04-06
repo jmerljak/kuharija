@@ -22,10 +22,11 @@ public class SearchPresenter extends AbstractPresenter {
 	public static final String PARAMETER_SEARCH_STRING = "q";
 	public static final String PARAMETER_PAGE = "page";
 	public static final String PARAMETER_PAGE_SIZE = "pageSize";
-	public static final String PARAMETER_CATEGORY = "categories";
-	public static final String PARAMETER_DIFFICULTY = "difficulties";
-	public static final String PARAMETER_INGREDIENT = "ingredients";
-	public static final String PARAMETER_SEASON = "seasons";
+	public static final String PARAMETER_CATEGORY = "category";
+	public static final String PARAMETER_DIFFICULTY = "difficulty";
+	public static final String PARAMETER_INGREDIENT = "ingredient";
+	public static final String PARAMETER_SEASON = "season";
+	public static final String PARAMETER_UTENSIL = "utensil";
 	public static final String PARAMETER_SORT_BY = "sortby";
 
 	// remote service
@@ -102,6 +103,10 @@ public class SearchPresenter extends AbstractPresenter {
 						searchParameters.addIngredient(ingredients[i]);
 					} catch (Exception e) { /* ignore */ }
 				}
+			}
+
+			if (parameters.containsKey(PARAMETER_UTENSIL)) {
+				searchParameters.setUtensil(parameters.get(PARAMETER_UTENSIL).toUpperCase());
 			}
 
 			if (parameters.containsKey(PARAMETER_SORT_BY)) {
@@ -183,9 +188,19 @@ public class SearchPresenter extends AbstractPresenter {
 	 * @param season season enumerator
 	 * @return history token
 	 */
-	public static String buildSearchByCategoryUrl(Season season) {
+	public static String buildSearchBySeasonUrl(Season season) {
 		return "#" + SCREEN_NAME + 
 			   "&" + PARAMETER_SEASON + "=" + season.name().toLowerCase();
+	}
+
+	/**
+	 * Builds proper history token for search by utensil.
+	 * @param utensilName utensil's name
+	 * @return history token
+	 */
+	public static String buildSearchByUtensilUrl(String utensilName) {
+		return "#" + SCREEN_NAME + 
+			   "&" + PARAMETER_UTENSIL + "=" + utensilName.toLowerCase();
 	}
 
 }

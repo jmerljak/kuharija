@@ -21,6 +21,9 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("Find recipes with {0}")
 	String searchByIngredient(String name);
 
+	@DefaultMessage("Find recipes with {0}")
+	String searchByUtensil(String name);
+
 	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 audio tag.")
 	String htmlAudioNotSupported();
 

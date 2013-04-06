@@ -22,6 +22,7 @@ public class SearchParameters implements Serializable {
 	private Set<Category> categories = new HashSet<Category>();
 	private Set<Season> seasons = new HashSet<Season>();
 	private Set<String> ingredients = new HashSet<String>();
+	private String utensil;
 	private Language language;
 	private RecipeSortKey sortKey = RecipeSortKey.ID;
 
@@ -92,6 +93,14 @@ public class SearchParameters implements Serializable {
 
 	public void addIngredient(String ingredient) {
 		ingredients.add(ingredient);
+	}
+
+	public String getUtensil() {
+		return utensil;
+	}
+
+	public void setUtensil(String utensil) {
+		this.utensil = utensil;
 	}
 
 	public Language getLanguage() {

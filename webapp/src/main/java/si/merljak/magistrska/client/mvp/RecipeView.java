@@ -23,6 +23,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Location;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
@@ -94,8 +95,9 @@ public class RecipeView extends AbstractView {
 		ingredientsPanel.add(new IngredientsWidget(recipe.getIngredients(), recipe.getNumberOfMeals()));
 
 		// utensils
-		for (UtensilDto tool : recipe.getUtensils()) {
-			toolsPanel.add(new Label(tool.getQuantity() + "x " + utensilsConstants.utensilsMap().get(tool.getName()).toLowerCase()));
+		for (UtensilDto utensil : recipe.getUtensils()) {
+			String name = utensil.getName();
+			toolsPanel.add(new Anchor(utensil.getQuantity() + "x " + utensilsConstants.utensilsMap().get(name).toLowerCase(), UtensilPresenter.buildUtensilUrl(name)));
 		}
 
 		// texts
