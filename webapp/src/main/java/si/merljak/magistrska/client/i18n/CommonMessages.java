@@ -11,6 +11,12 @@ public interface CommonMessages extends Messages {
 
 	@DefaultMessage("Read more about {0} on Wikipedia")
 	String ingredientReadMoreOnWikipedia(String name);
+	
+	@DefaultMessage("Utensil not found. See <a href=\"#utensils\">index of utensils</a>.")
+	String utensilNotFoundTry();
+
+	@DefaultMessage("Read more about {0} on Wikipedia")
+	String utensilReadMoreOnWikipedia(String name);
 
 	@DefaultMessage("Find recipes with {0}")
 	String searchByIngredient(String name);

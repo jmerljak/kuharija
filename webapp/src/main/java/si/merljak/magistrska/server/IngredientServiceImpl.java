@@ -1,6 +1,7 @@
 package si.merljak.magistrska.server;
 
 import static si.merljak.magistrska.server.model.QIngredient.ingredient;
+import static si.merljak.magistrska.server.model.QUtensil.utensil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.dto.QIngredientDto;
+import si.merljak.magistrska.common.dto.QUtensilDto;
+import si.merljak.magistrska.common.dto.UtensilDto;
 import si.merljak.magistrska.common.rpc.IngredientService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -32,6 +35,16 @@ public class IngredientServiceImpl extends RemoteServiceServlet implements Ingre
 					.from(ingredient)
 					.where(ingredient.name.equalsIgnoreCase(name))
 					.uniqueResult(new QIngredientDto(ingredient.name, ingredient.imageUrl));
+	}
+
+	@Override
+	public UtensilDto getUtensil(String name) {
+		log.debug("executing getUtensil: " + name);
+
+		return new JPAQuery(em)
+					.from(utensil)
+					.where(utensil.name.equalsIgnoreCase(name))
+					.uniqueResult(new QUtensilDto(utensil.name, utensil.imageUrl));
 	}
 
 }

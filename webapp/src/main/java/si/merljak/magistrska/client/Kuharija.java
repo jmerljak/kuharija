@@ -14,6 +14,7 @@ import si.merljak.magistrska.client.mvp.ComparePresenter;
 import si.merljak.magistrska.client.mvp.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.mvp.SearchPresenter;
+import si.merljak.magistrska.client.mvp.UtensilPresenter;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.IngredientService;
@@ -71,6 +72,7 @@ public class Kuharija implements EntryPoint {
 		Language language = localeWidget.getCurrentLanguage();
 
 		presenters.add(new IngredientPresenter(language, ingredientService));
+		presenters.add(new UtensilPresenter(language, ingredientService));
 		presenters.add(new RecipePresenter(language, recipeService));
 		presenters.add(new SearchPresenter(language, searchService));
 		presenters.add(new ComparePresenter(language, recipeService));

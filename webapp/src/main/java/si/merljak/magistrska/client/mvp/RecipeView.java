@@ -95,7 +95,7 @@ public class RecipeView extends AbstractView {
 
 		// utensils
 		for (UtensilDto tool : recipe.getUtensils()) {
-			toolsPanel.add(new Label(tool.getQuantity() + "x " + utensilsConstants.utensilsMap().get(tool.getTitle()).toLowerCase()));
+			toolsPanel.add(new Label(tool.getQuantity() + "x " + utensilsConstants.utensilsMap().get(tool.getName()).toLowerCase()));
 		}
 
 		// texts

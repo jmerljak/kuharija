@@ -8,27 +8,27 @@ public class UtensilDto implements Serializable {
 
 	private static final long serialVersionUID = -872342731145957913L;
 
-	private String title;
+	private String name;
 	private String imageUrl;
 	private Integer quantity;
 
 	UtensilDto() {}
 
 	@QueryProjection
-	public UtensilDto(String title, String imageUrl) {
-		this.title = title;
+	public UtensilDto(String name, String imageUrl) {
+		this.name = name;
 		this.imageUrl = imageUrl;
 	}
 
 	@QueryProjection
-	public UtensilDto(String title, String imageUrl, Integer quantity) {
-		this.title = title;
+	public UtensilDto(String name, String imageUrl, Integer quantity) {
+		this.name = name;
 		this.imageUrl = imageUrl;
 		this.quantity = quantity;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
 	public String getImageUrl() {
