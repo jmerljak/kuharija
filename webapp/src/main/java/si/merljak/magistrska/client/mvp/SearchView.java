@@ -4,6 +4,7 @@ import java.util.List;
 
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeDto;
+import si.merljak.magistrska.common.dto.RecipeListDto;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,7 +12,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -57,11 +57,10 @@ public class SearchView extends AbstractView {
 	}
 
 	private void doSearch() {
-		String searchString = searchBox.getValue().trim();
-		History.newItem("search&q=" + searchString);
+		SearchPresenter.doSearch(searchBox.getValue());
 	}
 
-	public void displaySearchResults(List<RecipeDto> results, SearchParameters parameters) {
+	public void displaySearchResults(RecipeListDto results, SearchParameters parameters) {
 		// clear old data
 		resultsPanel.clear();
 
@@ -69,24 +68,30 @@ public class SearchView extends AbstractView {
 		searchBox.setText(parameters.getSearchString());
 		// TODO filters, sorting
 
-		if (results.isEmpty()) {
+		List<RecipeDto> recipes = results.getRecipes();
+		if (recipes.isEmpty()) {
 			resultsPanel.add(new Label(constants.searchNoResults()));
 		}
 
-		for (RecipeDto result : results) {
-			Image image = new Image(RECIPE_THUMB_IMG_FOLDER + result.getImageUrl());
-			image.setAltText(result.getHeading());
-			Anchor link = new Anchor(result.getHeading(), RecipePresenter.buildRecipeUrl(result.getId()));
+		for (RecipeDto recipe : recipes) {
+			Image image = new Image(RECIPE_THUMB_IMG_FOLDER + recipe.getImageUrl());
+			image.setAltText(recipe.getHeading());
+			Anchor link = new Anchor(recipe.getHeading(), RecipePresenter.buildRecipeUrl(recipe.getId()));
 
-			FlowPanel recipe = new FlowPanel();
-			recipe.setStyleName("resultEntry");
-			recipe.add(link);
-			recipe.add(image);
-			recipe.add(new Label(localizeEnum(result.getDifficulty())));
-			recipe.add(new Label(timeFromMinutes(result.getTimeOverall())));
+			FlowPanel resultEntry = new FlowPanel();
+			resultEntry.setStyleName("resultEntry");
+			resultEntry.add(link);
+			resultEntry.add(image);
+			resultEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
+			resultEntry.add(new Label(timeFromMinutes(recipe.getTimeOverall())));
 
-			resultsPanel.add(recipe);
+			resultsPanel.add(resultEntry);
 		}
+
+		// paging
+		long pageCount = (results.getAllCount() - 1) / parameters.getPageSize() + 1;
+		resultsPanel.add(new Label("page " + parameters.getPage() + " of " + pageCount));
+
 		setVisible(true);
 	}
 

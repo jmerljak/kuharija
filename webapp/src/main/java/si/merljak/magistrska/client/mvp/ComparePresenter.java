@@ -74,9 +74,9 @@ public class ComparePresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper history token for recipes comparison.
+	 * Builds proper anchor URL for recipes comparison.
 	 * @param recipeIdList list of recipe IDs
-	 * @return history token
+	 * @return anchor URL
 	 */
 	public static String buildCompareUrl(Set<Long> recipeIdList) {
 		String url = "#" + SCREEN_NAME + "&" + PARAMETER_RECIPE_ID_LIST + "=";

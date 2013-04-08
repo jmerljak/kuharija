@@ -60,9 +60,9 @@ public class IngredientPresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper history token for ingredient.
+	 * Builds proper anchor URL for ingredient.
 	 * @param name ingredient's name
-	 * @return history token
+	 * @return anchor URL
 	 */
 	public static String buildIngredientUrl(String name) {
 		return "#" + SCREEN_NAME +

@@ -67,9 +67,9 @@ public class RecipePresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper history token for recipe.
+	 * Builds proper anchor URL for recipe.
 	 * @param id recipe's id
-	 * @return history token
+	 * @return anchor URL
 	 */
 	public static String buildRecipeUrl(long id) {
 		return "#" + SCREEN_NAME +

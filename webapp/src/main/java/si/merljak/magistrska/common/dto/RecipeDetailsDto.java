@@ -96,24 +96,20 @@ public class RecipeDetailsDto implements Serializable {
 		return timeOverall;
 	}
 
-	public void addIngredient(IngredientDto ingredientDto) {
-		ingredients.add(ingredientDto);
-	}
-
 	public List<IngredientDto> getIngredients() {
 		return ingredients;
 	}
 
-	public void addUtensil(UtensilDto utensilDto) {
-		utensils.add(utensilDto);
+	public void setIngredients(List<IngredientDto> ingredients) {
+		this.ingredients = ingredients;
 	}
 
 	public List<UtensilDto> getUtensils() {
 		return utensils;
 	}
 
-	public void addText(TextDto textDto) {
-		texts.add(textDto);
+	public void setUtensils(List<UtensilDto> utensils) {
+		this.utensils = utensils;
 	}
 
 	public List<TextDto> getTexts() {
@@ -162,18 +158,6 @@ public class RecipeDetailsDto implements Serializable {
 
 	public List<StepDto> getSteps() {
 		return steps;
-	}
-
-	public void setIngredients(List<IngredientDto> ingredients) {
-		this.ingredients = ingredients;
-	}
-
-	public void setUtensils(List<UtensilDto> utensils) {
-		this.utensils = utensils;
-	}
-
-	public void setVideos(List<VideoDto> videos) {
-		this.videos = videos;
 	}
 
 }

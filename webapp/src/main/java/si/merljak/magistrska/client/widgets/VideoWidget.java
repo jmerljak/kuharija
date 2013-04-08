@@ -28,7 +28,7 @@ public class VideoWidget extends Composite {
 		if (Video.isSupported()) {
 			videoWidget = Video.createIfSupported();
 			videoWidget.setControls(true);
-			videoWidget.setPoster(GWT.getHostPageBaseURL() + "video/" + videoDto.getPosterUrl());
+			videoWidget.setPoster(VIDEO_FOLDER + videoDto.getPosterUrl());
 			videoWidget.setWidth("100%");
 
 			// add all available sources (webm, mp4, ...)

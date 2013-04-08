@@ -60,9 +60,9 @@ public class UtensilPresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper history token for utensil.
+	 * Builds proper anchor URL for utensil.
 	 * @param name utensil's name
-	 * @return history token
+	 * @return anchor URL
 	 */
 	public static String buildUtensilUrl(String name) {
 		return "#" + SCREEN_NAME +

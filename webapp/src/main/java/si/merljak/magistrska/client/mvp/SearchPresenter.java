@@ -1,10 +1,9 @@
 package si.merljak.magistrska.client.mvp;
 
-import java.util.List;
 import java.util.Map;
 
 import si.merljak.magistrska.common.SearchParameters;
-import si.merljak.magistrska.common.dto.RecipeDto;
+import si.merljak.magistrska.common.dto.RecipeListDto;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
@@ -12,6 +11,7 @@ import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -125,9 +125,9 @@ public class SearchPresenter extends AbstractPresenter {
 	 * @param searchParameters search parameters
 	 */
 	private void search(final SearchParameters searchParameters) {
-		searchService.search(searchParameters, new AsyncCallback<List<RecipeDto>>() {
+		searchService.search(searchParameters, new AsyncCallback<RecipeListDto>() {
 			@Override
-			public void onSuccess(List<RecipeDto> results) {
+			public void onSuccess(RecipeListDto results) {
 				searchView.displaySearchResults(results, searchParameters);
 			}
 			
@@ -144,19 +144,17 @@ public class SearchPresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper history token for generic search.
+	 * Initiates search for search string.
 	 * @param searchString search string
-	 * @return history token
 	 */
-	public static String buildSearchUrl(String searchString) {
-		return "#" + SCREEN_NAME + 
-			   "&" + PARAMETER_SEARCH_STRING + "=" + searchString.toLowerCase();
+	public static void doSearch(String searchString) {
+		History.newItem(SCREEN_NAME + "&" + PARAMETER_SEARCH_STRING + "=" + searchString.trim().toLowerCase());
 	}
 
 	/**
-	 * Builds proper history token for search by category.
+	 * Builds proper anchor URL for search by category.
 	 * @param category category enumerator
-	 * @return history token
+	 * @return anchor URL
 	 */
 	public static String buildSearchByCategoryUrl(Category category) {
 		return "#" + SCREEN_NAME + 
@@ -164,9 +162,9 @@ public class SearchPresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper history token for search by difficulty.
+	 * Builds proper anchor URL for search by difficulty.
 	 * @param difficulty difficulty enumerator
-	 * @return history token
+	 * @return anchor URL
 	 */
 	public static String buildSearchByDifficultyUrl(Difficulty difficulty) {
 		return "#" + SCREEN_NAME + 
@@ -174,9 +172,9 @@ public class SearchPresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper history token for search by ingredient.
+	 * Builds proper anchor URL for search by ingredient.
 	 * @param ingredientName ingredient's name
-	 * @return history token
+	 * @return anchor URL
 	 */
 	public static String buildSearchByIngredientUrl(String ingredientName) {
 		return "#" + SCREEN_NAME + 
@@ -184,9 +182,9 @@ public class SearchPresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper history token for search by season.
+	 * Builds proper anchor URL for search by season.
 	 * @param season season enumerator
-	 * @return history token
+	 * @return anchor URL
 	 */
 	public static String buildSearchBySeasonUrl(Season season) {
 		return "#" + SCREEN_NAME + 
@@ -194,9 +192,9 @@ public class SearchPresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper history token for search by utensil.
+	 * Builds proper anchor URL for search by utensil.
 	 * @param utensilName utensil's name
-	 * @return history token
+	 * @return anchor URL
 	 */
 	public static String buildSearchByUtensilUrl(String utensilName) {
 		return "#" + SCREEN_NAME + 

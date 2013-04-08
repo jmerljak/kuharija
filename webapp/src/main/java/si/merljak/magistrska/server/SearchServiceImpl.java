@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.QRecipeDto;
 import si.merljak.magistrska.common.dto.RecipeDto;
+import si.merljak.magistrska.common.dto.RecipeListDto;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Language;
@@ -38,7 +39,7 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 	private EntityManager em;
 
 	@Override
-	public List<RecipeDto> search(SearchParameters searchParameters) {
+	public RecipeListDto search(SearchParameters searchParameters) {
 		log.info("searching for: " + searchParameters.getSearchString());
 
 		// parameters
@@ -109,8 +110,10 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		JPAQuery query = new JPAQuery(em).from(recipe);
 		query.innerJoin(recipe.details, recipeDetails)
 			 .where(recipeDetails.language.eq(language))
-			 .where(recipe.id.in(subquery.list(recipe.id)))
-		 	 .distinct();
+			 .where(recipe.id.in(subquery.list(recipe.id)));
+
+		// count all results regardless of paging and sorting
+		long allCount = query.countDistinct();
 
 		// paging
 		query.limit(pageSize)
@@ -132,7 +135,8 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 			break;
 		}
 
-		return query.list(new QRecipeDto(recipe.id, recipeDetails.heading, recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
+		List<RecipeDto> recipes = query.listDistinct(new QRecipeDto(recipe.id, recipeDetails.heading, recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
+		return new RecipeListDto(recipes, allCount);
 	}
 
 }
