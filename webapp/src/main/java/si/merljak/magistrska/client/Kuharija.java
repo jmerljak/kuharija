@@ -77,7 +77,7 @@ public class Kuharija implements EntryPoint {
 
 		presenters.add(new IngredientPresenter(language, ingredientService));
 		presenters.add(new UtensilPresenter(language, ingredientService));
-		presenters.add(new RecipePresenter(language, recipeService));
+		presenters.add(new RecipePresenter(language, recipeService, userService));
 		presenters.add(new SearchPresenter(language, searchService));
 		presenters.add(new ComparePresenter(language, recipeService));
 		presenters.add(new LoginPresenter(language, userService));

@@ -7,6 +7,7 @@ import java.util.Map;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
+import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -20,13 +21,15 @@ public class RecipePresenter extends AbstractPresenter {
 
 	// remote service
 	private RecipeServiceAsync recipeService;
+	private UserServiceAsync userService;
 
 	private long recipeId;
     private RecipeView recipeView = new RecipeView();
 
-	public RecipePresenter(Language language, RecipeServiceAsync recipeService) {
+	public RecipePresenter(Language language, RecipeServiceAsync recipeService, UserServiceAsync userService) {
 		super(language);
 		this.recipeService = recipeService;
+		this.userService = userService;
 	}
 
 	private final List<String> screenNames = Arrays.asList("recipe", "basic", "video", "audio");
@@ -54,6 +57,34 @@ public class RecipePresenter extends AbstractPresenter {
 				recipeView.displayRecipe(recipe);
 			}
 
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+			}
+		});
+	}
+
+	private void bookmark(boolean add) {
+		userService.bookmarkRecipe(null, recipeId, add, new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+			}
+		});
+	}
+
+	private void comment(String content) {
+		userService.commentRecipe(null, recipeId, content, new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {
+				// TODO Auto-generated method stub
+			}
+			
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert(caught.getMessage());

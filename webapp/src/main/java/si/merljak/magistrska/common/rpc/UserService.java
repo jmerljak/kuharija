@@ -32,29 +32,17 @@ public interface UserService extends RemoteService {
 
 	/** 
 	 * Bookmarks recipe.
+	 * @param username user's username
 	 * @param recipeId recipe ID
 	 * @param add <em>true</em> to add a bookmark or <em>false</em> to remove it
 	 */
-	void bookmarkRecipe(long recipeId, boolean add);
-
-	/** 
-	 * Bookmarks technique.
-	 * @param techniqueId technique ID
-	 * @param add <em>true</em> to add a bookmark or <em>false</em> to remove it
-	 */
-	void bookmarkTechnique(long techniqueId, boolean add);
+	void bookmarkRecipe(String username, long recipeId, boolean add);
 
 	/** 
 	 * Adds comment to recipe.
+	 * @param username user's username
 	 * @param recipeId recipe ID
 	 * @param content comment body
 	 */
-	void commentRecipe(long recipeId, String content);
-
-	/** 
-	 * Adds comment to technique.
-	 * @param techniqueId technique ID
-	 * @param content comment body
-	 */
-	void commentTechnique(long techniqueId, String content);
+	void commentRecipe(String username, long recipeId, String content);
 }
