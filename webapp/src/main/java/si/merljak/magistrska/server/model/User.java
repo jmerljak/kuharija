@@ -21,7 +21,10 @@ public class User implements Serializable {
 	private String username;
 
 	@NotNull
-	private String password;
+	private Byte[] password;
+
+	@NotNull
+	private Byte[] salt;
 
 	@NotNull
 	private String name;
@@ -35,11 +38,12 @@ public class User implements Serializable {
 
 	protected User() {}
 
-	public User(String username, String password, String name, String email) {
+	public User(String username, Byte[] password, Byte[] salt, String name, String email) {
 		this.username = username;
+		this.password = password;
+		this.salt = salt;
 		this.name = name;
 		this.email = email;
-		this.password = password;
 	}
 
 	public String getUsername() {

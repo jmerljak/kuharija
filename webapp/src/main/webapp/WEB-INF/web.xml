@@ -12,6 +12,11 @@
     <servlet-name>searchServlet</servlet-name>
     <servlet-class>si.merljak.magistrska.server.SearchServiceImpl</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>userServlet</servlet-name>
+    <servlet-class>si.merljak.magistrska.server.UserServiceImpl</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>ingredientServlet</servlet-name>
     <url-pattern>/magistrska/ingredient</url-pattern>
@@ -23,6 +28,10 @@
   <servlet-mapping>
     <servlet-name>searchServlet</servlet-name>
     <url-pattern>/magistrska/search</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>userServlet</servlet-name>
+    <url-pattern>/magistrska/user</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

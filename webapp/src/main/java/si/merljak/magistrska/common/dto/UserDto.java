@@ -2,6 +2,8 @@ package si.merljak.magistrska.common.dto;
 
 import java.io.Serializable;
 
+import com.mysema.query.annotations.QueryProjection;
+
 public class UserDto implements Serializable {
 
 	private static final long serialVersionUID = 644407345016869943L;
@@ -13,6 +15,7 @@ public class UserDto implements Serializable {
 
 	UserDto() {}
 
+	@QueryProjection
 	public UserDto(String username, String name, String email, String metadata) {
 		this.username = username;
 		this.name = name;

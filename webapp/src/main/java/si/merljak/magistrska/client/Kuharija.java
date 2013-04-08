@@ -12,6 +12,7 @@ import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.client.mvp.ComparePresenter;
 import si.merljak.magistrska.client.mvp.IngredientPresenter;
+import si.merljak.magistrska.client.mvp.LoginPresenter;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.mvp.SearchPresenter;
 import si.merljak.magistrska.client.mvp.UtensilPresenter;
@@ -23,6 +24,8 @@ import si.merljak.magistrska.common.rpc.RecipeService;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
 import si.merljak.magistrska.common.rpc.SearchService;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
+import si.merljak.magistrska.common.rpc.UserService;
+import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.google.gwt.core.client.EntryPoint;
@@ -44,6 +47,7 @@ public class Kuharija implements EntryPoint {
 	private static final IngredientServiceAsync ingredientService = GWT.create(IngredientService.class);
 	private static final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
 	private static final SearchServiceAsync searchService = GWT.create(SearchService.class);
+	private static final UserServiceAsync userService = GWT.create(UserService.class);
 
 	// common constants
 	public static final CommonConstants constants = GWT.create(CommonConstants.class);
@@ -76,6 +80,7 @@ public class Kuharija implements EntryPoint {
 		presenters.add(new RecipePresenter(language, recipeService));
 		presenters.add(new SearchPresenter(language, searchService));
 		presenters.add(new ComparePresenter(language, recipeService));
+		presenters.add(new LoginPresenter(language, userService));
 
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
