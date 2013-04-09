@@ -22,21 +22,30 @@ import si.merljak.magistrska.common.rpc.IngredientService;
 import si.merljak.magistrska.common.rpc.IngredientServiceAsync;
 import si.merljak.magistrska.common.rpc.RecipeService;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
+import si.merljak.magistrska.common.rpc.RecommendationService;
+import si.merljak.magistrska.common.rpc.RecommendationServiceAsync;
 import si.merljak.magistrska.common.rpc.SearchService;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 import si.merljak.magistrska.common.rpc.UserService;
 import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.geolocation.client.Geolocation;
+import com.google.gwt.geolocation.client.Position;
+import com.google.gwt.geolocation.client.Position.Coordinates;
+import com.google.gwt.geolocation.client.PositionError;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -48,6 +57,7 @@ public class Kuharija implements EntryPoint {
 	private static final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
 	private static final SearchServiceAsync searchService = GWT.create(SearchService.class);
 	private static final UserServiceAsync userService = GWT.create(UserService.class);
+	private static final RecommendationServiceAsync recommendationService = GWT.create(RecommendationService.class);
 
 	// common constants
 	public static final CommonConstants constants = GWT.create(CommonConstants.class);
@@ -68,6 +78,9 @@ public class Kuharija implements EntryPoint {
 	private Breadcrumbs breadcrumbs;
     
 	public void onModuleLoad() {
+		// geolocation
+		getGeolocation();
+		
 		breadcrumbs = new Breadcrumbs("→");
 
 		localeWidget = new LocaleWidget();
@@ -113,6 +126,34 @@ public class Kuharija implements EntryPoint {
 
 		// init current history state
 		History.fireCurrentHistoryState();
+	}
+
+	private void getGeolocation() {
+		Geolocation geolocation = Geolocation.getIfSupported();
+		if (geolocation != null) {
+			geolocation.getCurrentPosition(new Callback<Position, PositionError>() {
+				@Override
+				public void onSuccess(Position position) {
+					Coordinates coordinates = position.getCoordinates();
+					recommendationService.geolocate(coordinates.getLatitude(), coordinates.getLongitude(), new AsyncCallback<String>() {
+							@Override
+							public void onSuccess(String country) {
+//								Window.alert(country);
+							}
+					
+							@Override
+							public void onFailure(Throwable caught) {
+								// do nothing
+							}
+					});
+				}
+				
+				@Override
+				public void onFailure(PositionError reason) {
+					// do nothing
+				}
+			});
+		}
 	}
 
 	/** Loads custom javascript library. */
