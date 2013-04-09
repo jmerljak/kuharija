@@ -1,5 +1,5 @@
 package si.merljak.magistrska.common.enumeration;
 
 public enum Difficulty {
-	EASY, MODERATE, ADVANCED;
+	A_EASY, B_MODERATE, C_ADVANCED;
 }

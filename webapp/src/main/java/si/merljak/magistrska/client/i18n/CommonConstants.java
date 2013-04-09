@@ -61,9 +61,9 @@ public interface CommonConstants extends Constants {
 	// maps - enumerator constants
 
 	@DefaultStringMapValue({
-    	"EASY", "Easy",
-    	"MODERATE", "Moderate",
-    	"ADVANCED", "Advanced"})
+    	"A_EASY", "Easy",
+    	"B_MODERATE", "Moderate",
+    	"C_ADVANCED", "Advanced"})
     Map<String, String> difficultyMap();
 	
 	@DefaultStringMapValue({
