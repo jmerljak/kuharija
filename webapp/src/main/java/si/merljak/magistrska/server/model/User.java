@@ -35,10 +35,6 @@ public class User implements Serializable {
 
 	private String email;
 
-	private String timeZone;
-
-	private String countryCode;
-
 	private String preferences;
 
 	@ManyToMany
@@ -76,22 +72,6 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getTimeZone() {
-		return timeZone;
-	}
-
-	public void setTimeZone(String timeZone) {
-		this.timeZone = timeZone;
-	}
-
-	public String getCountryCode() {
-		return countryCode;
-	}
-
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
 	}
 
 	public String getPreferences() {

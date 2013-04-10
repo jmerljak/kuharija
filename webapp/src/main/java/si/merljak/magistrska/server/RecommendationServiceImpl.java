@@ -68,7 +68,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.from(recipe)
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
-											.where(recipe.metadata.contains("timeofday:" + localTime))
+											.where(recipe.metadata.contains("timeofday=" + localTime))
 											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
@@ -92,13 +92,13 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 		}
 
 		// local specialties
-		String country = personalizationService.getCounty(username, latitude, longitude);
+		String country = personalizationService.getCountry(username, latitude, longitude);
 		if (country != null && !country.isEmpty()) {
 			List<RecipeDto> localRecipe = new JPAQuery(em)
 											.from(recipe)
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
-											.where(recipe.metadata.contains("origin:" + country))
+											.where(recipe.metadata.contains("origin=" + country))
 											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));

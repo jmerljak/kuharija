@@ -80,7 +80,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 					
 			return query
 					.where(user.password.eq(ArrayUtils.toObject(encryptedPassword)))
-					.uniqueResult(new QUserDto(user.username, user.name, user.preferences));
+					.uniqueResult(new QUserDto(user.username, user.name, user.email, user.preferences));
 		} catch (Exception e) {
 			log.error("Could not log in!", e);
 			throw new RuntimeException("Could not log in!");

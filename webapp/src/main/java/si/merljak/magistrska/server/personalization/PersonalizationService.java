@@ -39,9 +39,9 @@ public interface PersonalizationService {
 	 * @param username
 	 * @param latitude
 	 * @param longitude
-	 * @return coutry code string or {@code null} if neither username nor coordinates specified
+	 * @return country code string or {@code null} if neither username nor coordinates specified
 	 */
-	String getCounty(String username, Double latitude, Double longitude);
+	String getCountry(String username, Double latitude, Double longitude);
 
 	/**
 	 * Recommends recipe based on user profile (habits, preferences ...)

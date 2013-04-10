@@ -11,26 +11,15 @@ public class UserDto implements Serializable {
 	private String username;
 	private String name;
 	private String email;
-	private String timeZone;
-	private String countryCode;
 	private String preferences;
 
 	UserDto() {}
 
 	@QueryProjection
-	public UserDto(String username, String name, String preferences) {
-		this.username = username;
-		this.name = name;
-		this.preferences = preferences;
-	}
-
-	@QueryProjection
-	public UserDto(String username, String name, String email, String timeZone, String countryCode, String preferences) {
+	public UserDto(String username, String name, String email, String preferences) {
 		this.username = username;
 		this.name = name;
 		this.email = email;
-		this.timeZone = timeZone;
-		this.countryCode = countryCode;
 		this.preferences = preferences;
 	}
 
@@ -44,14 +33,6 @@ public class UserDto implements Serializable {
 
 	public String getEmail() {
 		return email;
-	}
-
-	public String getTimeZone() {
-		return timeZone;
-	}
-
-	public String getCountryCode() {
-		return countryCode;
 	}
 
 	public String getPreferences() {

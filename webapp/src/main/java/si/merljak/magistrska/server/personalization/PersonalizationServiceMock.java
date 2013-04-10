@@ -32,7 +32,7 @@ public class PersonalizationServiceMock implements PersonalizationService {
 
 	private static final Logger log = LoggerFactory.getLogger(PersonalizationServiceMock.class);
 	
-	@PersistenceContext
+	@PersistenceContext // TODO assure injection
 	private EntityManager em;
 
 	@Override
@@ -62,7 +62,7 @@ public class PersonalizationServiceMock implements PersonalizationService {
 			southernHemisphere = new JPAQuery(em)
 								.from(user)
 								.where(user.username.eq(username)
-								  .and(user.preferences.contains("hemisphere:south")))
+								  .and(user.preferences.contains("hemisphere=south")))
 								.exists();
 		} else {
 			return null;
@@ -105,10 +105,12 @@ public class PersonalizationServiceMock implements PersonalizationService {
 			if (latitude != null && longitude != null) {
 				timezoneID = WebService.timezone(latitude, longitude).getTimezoneId();
 			} else if (username != null) {
-				timezoneID = new JPAQuery(em)
+				String preferences = new JPAQuery(em)
 									.from(user)
 									.where(user.username.eq(username))
-									.uniqueResult(user.timeZone);
+									.uniqueResult(user.preferences);
+
+				timezoneID = getProperty(preferences, "timezone");
 			} else {
 				return null;
 			}
@@ -131,17 +133,19 @@ public class PersonalizationServiceMock implements PersonalizationService {
 	}
 
 	@Override
-	public String getCounty(String username, Double latitude, Double longitude) {
+	public String getCountry(String username, Double latitude, Double longitude) {
 		log.debug("getting country code for user " + user + " at " + latitude + ", " + longitude);
 	
 		try {
 			if (latitude != null && longitude != null) {
 				return WebService.countryCode(latitude.doubleValue(), longitude.doubleValue());
 			} else if (username != null) {
-				return new JPAQuery(em)
+				String preferences = new JPAQuery(em)
 									.from(user)
 									.where(user.username.eq(username))
-									.uniqueResult(user.countryCode);
+									.uniqueResult(user.preferences);
+				
+				return getProperty(preferences, "country");
 			} else {
 				return null;
 			}
@@ -151,4 +155,21 @@ public class PersonalizationServiceMock implements PersonalizationService {
 		}
 	}
 
+	/** 
+	 * Gets property value from <em>key1=value1;key2=value2;...</em> encoded string
+	 * 
+	 * @param string encoded string
+	 * @param propertyName name of the property
+	 * @return property value or {@code null} if property not found
+	 */
+	private static String getProperty(String string, String propertyName) {
+		String[] properties = string.split(";");
+		for (String property : properties) {
+			String[] param = property.split("=");
+			if (param.length == 2 && param[0].equalsIgnoreCase(propertyName)) {
+				return param[1];
+			}
+		}
+		return null;
+	}
 }
