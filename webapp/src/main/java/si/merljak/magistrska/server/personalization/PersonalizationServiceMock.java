@@ -3,13 +3,21 @@ package si.merljak.magistrska.server.personalization;
 import java.io.IOException;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.geonames.WebService;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.jpa.impl.JPAQuery;
+
 import si.merljak.magistrska.common.enumeration.Season;
+import static si.merljak.magistrska.server.model.QUser.user;
+import static si.merljak.magistrska.server.model.mock.QFridge.fridge;
+
 
 /**
  * This is a mock implementation of personalization service.
@@ -23,6 +31,9 @@ import si.merljak.magistrska.common.enumeration.Season;
 public class PersonalizationServiceMock implements PersonalizationService {
 
 	private static final Logger log = LoggerFactory.getLogger(PersonalizationServiceMock.class);
+	
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public List<String> getIngredientsFromFridge(String username) {
@@ -30,8 +41,10 @@ public class PersonalizationServiceMock implements PersonalizationService {
 			return null;
 		}
 
-		// TODO Auto-generated method stub
-		return null;
+		return new JPAQuery(em)
+					.from(fridge)
+					.where(fridge.user.username.eq(username))
+					.list(fridge.ingredient.name);
 	}
 
 	@Override
@@ -46,15 +59,19 @@ public class PersonalizationServiceMock implements PersonalizationService {
 		if (latitude != null) {
 			southernHemisphere = latitude.doubleValue() < 0.0;
 		} else if (username != null) {
-			// TODO read from database
+			southernHemisphere = new JPAQuery(em)
+								.from(user)
+								.where(user.username.eq(username)
+								  .and(user.preferences.contains("hemisphere:south")))
+								.exists();
 		} else {
 			return null;
 		}
 
 		DateTime date = new DateTime();
 		if (southernHemisphere) {
-			// very dumb way to calculate season on southern hemisphere :)
-			date.plusMonths(6);
+			// dumb way to calculate season in the southern hemisphere :)
+			date = date.plusMonths(6);
 		}
 
 		int monthOfYear = date.getMonthOfYear();
@@ -83,33 +100,55 @@ public class PersonalizationServiceMock implements PersonalizationService {
 
 	@Override
 	public String getLocalTime(String username, Double latitude, Double longitude) {
-		String timezoneID = null;
-		if (latitude != null && longitude != null) {
-			try {
+		log.debug("getting local time for user " + user + " at " + latitude + ", " + longitude);
+
+		try {
+			String timezoneID = null;
+			if (latitude != null && longitude != null) {
 				timezoneID = WebService.timezone(latitude, longitude).getTimezoneId();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} else if (username != null) {
+				timezoneID = new JPAQuery(em)
+									.from(user)
+									.where(user.username.eq(username))
+									.uniqueResult(user.timeZone);
+			} else {
+				return null;
 			}
-		} else if (username != null) {
-			// TODO read from database
-			timezoneID = "CET";
-		} else {
+
+			DateTime date = new DateTime(DateTimeZone.forID(timezoneID));
+			int hourOfDay = date.getHourOfDay();
+			if (hourOfDay < 6 || hourOfDay > 22) {
+				return "night";
+			} else if (hourOfDay < 11) {
+				return "morning";
+			} else if (hourOfDay < 18) {
+				return "midday";
+			} else {
+				return "evening";
+			}
+		} catch (Exception e) {
+			log.error("Could not get local time.", e);
 			return null;
 		}
-
-		// TODO Auto-generated method stub
-		DateTime date = new DateTime(DateTimeZone.forID(timezoneID));
-		return "midday";
 	}
 
 	@Override
 	public String getCounty(String username, Double latitude, Double longitude) {
-		log.debug("location of the user: " + latitude + ", " + longitude);
+		log.debug("getting country code for user " + user + " at " + latitude + ", " + longitude);
 	
 		try {
-			return WebService.countryCode(latitude, longitude);
+			if (latitude != null && longitude != null) {
+				return WebService.countryCode(latitude.doubleValue(), longitude.doubleValue());
+			} else if (username != null) {
+				return new JPAQuery(em)
+									.from(user)
+									.where(user.username.eq(username))
+									.uniqueResult(user.countryCode);
+			} else {
+				return null;
+			}
 		} catch (IOException e) {
+			log.error("Could not get country code.", e);
 			return null;
 		}
 	}

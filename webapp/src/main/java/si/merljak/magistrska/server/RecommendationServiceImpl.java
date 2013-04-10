@@ -2,6 +2,8 @@ package si.merljak.magistrska.server;
 
 import static si.merljak.magistrska.server.model.QRecipe.recipe;
 import static si.merljak.magistrska.server.model.QRecipeDetails.recipeDetails;
+import static si.merljak.magistrska.server.model.QIngredient.ingredient;
+import static si.merljak.magistrska.server.model.QRecipeIngredient.recipeIngredient;
 
 import java.util.List;
 
@@ -43,53 +45,80 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 
 		// recipes from ingredients in user refrigerator
 		List<String> ingredientsFromFridge = personalizationService.getIngredientsFromFridge(username);
-		if (ingredientsFromFridge != null) {
-			RecipeDto recipeFromIngredients = null;
-			// TODO
-			recommendations.addRecommendation(RecommendationType.INGREDIENTS_FROM_FRIDGE, recipeFromIngredients);
+		if (ingredientsFromFridge != null && !ingredientsFromFridge.isEmpty()) {
+			List<RecipeDto> recipesFromIngredients = new JPAQuery(em)
+											.from(recipe)
+											.innerJoin(recipe.details, recipeDetails)
+											.innerJoin(recipe.ingredients, recipeIngredient)
+											.innerJoin(recipeIngredient.ingredient, ingredient)
+											.where(recipeDetails.language.eq(language))
+											.where(ingredient.name.in(ingredientsFromFridge))
+											.limit(2) // limit to few results
+											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
+													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
+
+			recommendations.addRecommendations(RecommendationType.INGREDIENTS_FROM_FRIDGE, recipesFromIngredients);
 		}
 
 		// recipes for time of day
 		String localTime = personalizationService.getLocalTime(username, latitude, longitude);
-		if (localTime != null) {
-			RecipeDto recipeForTimeOfDay = new JPAQuery(em)
+		if (localTime != null && !localTime.isEmpty()) {
+			List<RecipeDto> recipesForTimeOfDay = new JPAQuery(em)
 											.from(recipe)
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
-											.where(recipe.metadata.like("%" + localTime + "%"))
-											.uniqueResult(new QRecipeDto(recipe.id, recipeDetails.heading, 
+											.where(recipe.metadata.contains("timeofday:" + localTime))
+											.limit(2) // limit to few results
+											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 
-			recommendations.addRecommendation(RecommendationType.LOCAL_TIME, recipeForTimeOfDay);
+			recommendations.addRecommendations(RecommendationType.LOCAL_TIME, recipesForTimeOfDay);
 		}
 
 		// recipes for season
 		Season localSeason = personalizationService.getLocalSeason(username, latitude);
 		if (localSeason != null) {
-			RecipeDto recipeForSeason = new JPAQuery(em)
+			List<RecipeDto> recipeForSeason = new JPAQuery(em)
 											.from(recipe)
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.seasons.any().eq(localSeason))
-											.uniqueResult(new QRecipeDto(recipe.id, recipeDetails.heading, 
+											.limit(2) // limit to few results
+											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 			
-			recommendations.addRecommendation(RecommendationType.LOCAL_SEASON, recipeForSeason);
+			recommendations.addRecommendations(RecommendationType.LOCAL_SEASON, recipeForSeason);
 		}
 
 		// local specialties
 		String country = personalizationService.getCounty(username, latitude, longitude);
-		if (country != null) {
-			// TODO
-			recommendations.addRecommendation(RecommendationType.LOCAL_SPECIALTIES, null);
+		if (country != null && !country.isEmpty()) {
+			List<RecipeDto> localRecipe = new JPAQuery(em)
+											.from(recipe)
+											.innerJoin(recipe.details, recipeDetails)
+											.where(recipeDetails.language.eq(language))
+											.where(recipe.metadata.contains("origin:" + country))
+											.limit(2) // limit to few results
+											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
+													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
+
+			recommendations.addRecommendations(RecommendationType.LOCAL_SPECIALTY, localRecipe);
 		}
 
 		// user preferences
 		// TODO
 
 		// featured recipes
-		// TODO
-		
+		List<RecipeDto> localRecipe = new JPAQuery(em)
+									.from(recipe)
+									.innerJoin(recipe.details, recipeDetails)
+									.where(recipeDetails.language.eq(language))
+									.where(recipe.metadata.contains("featured"))
+									.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
+											recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
+
+		recommendations.addRecommendations(RecommendationType.FEATURED, localRecipe);
+
 		return recommendations;
 	}
 
