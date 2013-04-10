@@ -1,8 +1,5 @@
 package si.merljak.magistrska.server.model;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,7 +14,6 @@ import si.merljak.magistrska.common.enumeration.Language;
 
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-@DiscriminatorColumn(name="dtype", discriminatorType=DiscriminatorType.STRING, length=1)
 public abstract class Details {
 
 	@Id
@@ -34,9 +30,6 @@ public abstract class Details {
 
 	@Size(max = 100)
 	protected String subHeading;
-
-	@Column(insertable=false, updatable=false)
-	protected String dtype;
 
 	public Language getLanguage() {
 		return language;

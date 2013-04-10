@@ -1,6 +1,5 @@
 package si.merljak.magistrska.server;
 
-import static si.merljak.magistrska.server.model.QBookmark.bookmark;
 import static si.merljak.magistrska.server.model.QUser.user;
 
 import javax.annotation.Resource;
@@ -15,14 +14,12 @@ import org.slf4j.LoggerFactory;
 import si.merljak.magistrska.common.dto.QUserDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.rpc.UserService;
-import si.merljak.magistrska.server.model.Bookmark;
 import si.merljak.magistrska.server.model.Comment;
 import si.merljak.magistrska.server.model.Recipe;
 import si.merljak.magistrska.server.model.User;
 import si.merljak.magistrska.server.utils.PasswordEncryptionUtils;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 public class UserServiceImpl extends RemoteServiceServlet implements UserService {
@@ -83,7 +80,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 					
 			return query
 					.where(user.password.eq(ArrayUtils.toObject(encryptedPassword)))
-					.uniqueResult(new QUserDto(user.username, user.name, user.email, user.metadata));
+					.uniqueResult(new QUserDto(user.username, user.name, user.preferences));
 		} catch (Exception e) {
 			log.error("Could not log in!", e);
 			throw new RuntimeException("Could not log in!");
@@ -96,17 +93,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 		try {
 			transaction.begin();
-			if (add) {
-				Recipe recipeEntity = em.find(Recipe.class, recipeId);
-				User userEntity = em.find(User.class, username);
-	
-				em.persist(new Bookmark(userEntity, recipeEntity));
-			} else {
-				new JPADeleteClause(em, bookmark)
-					.where(bookmark.recipe.id.eq(recipeId)
-					  .and(bookmark.user.username.eq(username)))
-					.execute(); 
-			}
+			Recipe recipeEntity = em.find(Recipe.class, recipeId);
+			User userEntity = em.find(User.class, username);
+			userEntity.addBookmarks(recipeEntity, add);
+			em.persist(userEntity);
 			transaction.commit();
 		} catch (Exception e) {
 			log.error("Could not " + (add ? "add" : "remove") + " bookmark!", e);
@@ -130,6 +120,4 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			throw new RuntimeException("Could not save comment!");
 		}
 	}
-	
-
 }

@@ -40,7 +40,7 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 
 	@Override
 	public RecipeListDto search(SearchParameters searchParameters) {
-		log.info("searching for: " + searchParameters.getSearchString());
+		log.debug("searching for: " + searchParameters.getSearchString());
 
 		// parameters
 		int page = searchParameters.getPage();
@@ -76,9 +76,7 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 				// searching for recipes for ANY of listed seasons
 				seasonsFilter.or(recipe.seasons.any().eq(season));
 			}
-
 			// include those with season not specified?
-//			seasonsFilter.or(recipe.seasons.isEmpty());
 //			seasonsFilter.or(recipe.seasons.any().eq(Season.ALLYEAR));
 
 			subquery.where(seasonsFilter);

@@ -44,8 +44,6 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -135,17 +133,9 @@ public class Kuharija implements EntryPoint {
 				@Override
 				public void onSuccess(Position position) {
 					Coordinates coordinates = position.getCoordinates();
-					recommendationService.geolocate(coordinates.getLatitude(), coordinates.getLongitude(), new AsyncCallback<String>() {
-							@Override
-							public void onSuccess(String country) {
-//								Window.alert(country);
-							}
-					
-							@Override
-							public void onFailure(Throwable caught) {
-								// do nothing
-							}
-					});
+					// TODO do something with coordinates
+					coordinates.getLatitude();
+					coordinates.getLongitude();
 				}
 				
 				@Override

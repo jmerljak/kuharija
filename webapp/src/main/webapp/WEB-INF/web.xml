@@ -23,23 +23,23 @@
 
     <servlet-mapping>
         <servlet-name>ingredientServlet</servlet-name>
-        <url-pattern>/magistrska/ingredient</url-pattern>
+        <url-pattern>/kuharija/ingredient</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>recipeServlet</servlet-name>
-        <url-pattern>/magistrska/recipe</url-pattern>
+        <url-pattern>/kuharija/recipe</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>recommendationServlet</servlet-name>
-        <url-pattern>/magistrska/recommend</url-pattern>
+        <url-pattern>/kuharija/recommend</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>searchServlet</servlet-name>
-        <url-pattern>/magistrska/search</url-pattern>
+        <url-pattern>/kuharija/search</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>userServlet</servlet-name>
-        <url-pattern>/magistrska/user</url-pattern>
+        <url-pattern>/kuharija/user</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

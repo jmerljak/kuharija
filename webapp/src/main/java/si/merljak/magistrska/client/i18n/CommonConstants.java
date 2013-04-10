@@ -110,16 +110,8 @@ public interface CommonConstants extends Constants {
 	@DefaultStringMapValue({
 		"ALLYEAR", "All year",
 		"SPRING", "Spring",
-		"SPRING_EARLY", "Early spring",
-		"SPRING_LATE", "Late spring",
 		"SUMMER", "summer",
-		"SUMMER_EARLY", "Early summer",
-		"SUMMER_LATE", "Late summer",
 		"AUTUMN", "Autumn",
-		"AUTUMN_EARLY", "Early autumn",
-		"AUTUMN_LATE", "Late autumn",
-		"WINTER", "Winter",
-		"WINTER_EARLY", "Early winter",
-		"WINTER_LATE", "Late winter"})
+		"WINTER", "Winter"})
 	Map<String, String> seasonMap();
 }

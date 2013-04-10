@@ -19,7 +19,7 @@ public interface IngredientService extends RemoteService {
 	/**
 	 * Gets single utensil details.
 	 * @param name utensil's name
-	 * @return single ingredient DTO or <em>null</em> if ingredient not found
+	 * @return single utensil DTO or <em>null</em> if utensil not found
 	 */
 	UtensilDto getUtensil(String name);
 }

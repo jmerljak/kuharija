@@ -2,9 +2,13 @@ package si.merljak.magistrska.server.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -31,7 +35,15 @@ public class User implements Serializable {
 
 	private String email;
 
-	private String metadata;
+	private String timeZone;
+
+	private String countryCode;
+
+	private String preferences;
+
+	@ManyToMany
+	@JoinTable(name = "bookmark", inverseJoinColumns = @JoinColumn(name = "recipe_id"))
+	private Set<Recipe> bookmarks;
 
 	@Version
 	private Date updated;
@@ -54,19 +66,55 @@ public class User implements Serializable {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getEmail() {
 		return email;
 	}
 
-	public void setMetadata(String metadata) {
-		this.metadata = metadata; 
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getMetadata() {
-		return metadata;
+	public String getTimeZone() {
+		return timeZone;
+	}
+
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	public String getPreferences() {
+		return preferences;
+	}
+
+	public void setPreferences(String preferences) {
+		this.preferences = preferences; 
 	}
 
 	public Date getUpdated() {
 		return updated;
+	}
+
+	public Set<Recipe> getBookmarks() {
+		return bookmarks;
+	}
+
+	public void addBookmarks(Recipe recipe, boolean add) {
+		if (add) {
+			bookmarks.add(recipe);
+		} else {
+			bookmarks.remove(recipe);
+		}
 	}
 }
