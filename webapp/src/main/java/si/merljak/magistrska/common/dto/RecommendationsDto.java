@@ -13,11 +13,14 @@ public class RecommendationsDto implements Serializable {
 
 	private Map<RecommendationType, List<RecipeDto>> recommendations = new HashMap<RecommendationType, List<RecipeDto>>();
 
-	public Map<RecommendationType, List<RecipeDto>> getRecommendation() {
+	public Map<RecommendationType, List<RecipeDto>> getRecommendations() {
 		return recommendations;
 	}
 
 	public void addRecommendations(RecommendationType type, List<RecipeDto> recipes) {
-		recommendations.put(type, recipes);
+		// only add non empty lists
+		if (recipes != null && !recipes.isEmpty()) {
+			recommendations.put(type, recipes);
+		}
 	}
 }

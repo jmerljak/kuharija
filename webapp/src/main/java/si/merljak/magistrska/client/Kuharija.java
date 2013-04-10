@@ -11,6 +11,7 @@ import si.merljak.magistrska.client.i18n.Formatters;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.client.mvp.ComparePresenter;
+import si.merljak.magistrska.client.mvp.HomePresenter;
 import si.merljak.magistrska.client.mvp.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.LoginPresenter;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
@@ -74,7 +75,10 @@ public class Kuharija implements EntryPoint {
 	// widgets
 	private LocaleWidget localeWidget;
 	private Breadcrumbs breadcrumbs;
-    
+
+	// user
+	private static Coordinates coordinates;
+
 	public void onModuleLoad() {
 		// geolocation
 		getGeolocation();
@@ -92,6 +96,7 @@ public class Kuharija implements EntryPoint {
 		presenters.add(new SearchPresenter(language, searchService));
 		presenters.add(new ComparePresenter(language, recipeService));
 		presenters.add(new LoginPresenter(language, userService));
+		presenters.add(new HomePresenter(language, recommendationService));
 
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -132,10 +137,7 @@ public class Kuharija implements EntryPoint {
 			geolocation.getCurrentPosition(new Callback<Position, PositionError>() {
 				@Override
 				public void onSuccess(Position position) {
-					Coordinates coordinates = position.getCoordinates();
-					// TODO do something with coordinates
-					coordinates.getLatitude();
-					coordinates.getLongitude();
+					coordinates = position.getCoordinates();
 				}
 				
 				@Override
@@ -152,5 +154,9 @@ public class Kuharija implements EntryPoint {
 	    e.setAttribute("language", "JavaScript");
 	    e.setAttribute("src", url);
 	    DOM.appendChild(RootPanel.get().getElement(), e);
+	}
+
+	public static Coordinates getCoordinates() {
+		return coordinates;
 	}
 }

@@ -74,9 +74,7 @@ public class PersonalizationServiceMock implements PersonalizationService {
 			date = date.plusMonths(6);
 		}
 
-		int monthOfYear = date.getMonthOfYear();
-		log.info("month: " + monthOfYear);
-		switch(monthOfYear) {
+		switch(date.getMonthOfYear()) {
 			case 12:
 			case 1:
 			case 2:

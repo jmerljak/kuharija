@@ -29,6 +29,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 public class RecommendationServiceImpl extends RemoteServiceServlet implements RecommendationService {
 
 	private static final long serialVersionUID = 1636894033893317781L;
+	private static final long LIMIT_PER_RECOMMENDATION_TYPE = 2;
 
 	private static final Logger log = LoggerFactory.getLogger(RecommendationServiceImpl.class);
 	
@@ -53,7 +54,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipeIngredient.ingredient, ingredient)
 											.where(recipeDetails.language.eq(language))
 											.where(ingredient.name.in(ingredientsFromFridge))
-											.limit(2) // limit to few results
+											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 
@@ -68,7 +69,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.metadata.contains("timeofday:" + localTime))
-											.limit(2) // limit to few results
+											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 
@@ -83,7 +84,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.seasons.any().eq(localSeason))
-											.limit(2) // limit to few results
+											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 			
@@ -98,7 +99,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.metadata.contains("origin:" + country))
-											.limit(2) // limit to few results
+											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 
