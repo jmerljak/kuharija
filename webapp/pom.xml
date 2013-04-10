@@ -201,12 +201,6 @@
                             <goal>add-resource</goal>
                         </goals>
                     </execution>-->
-                    <execution>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
                 </executions>
 			</plugin>
 
