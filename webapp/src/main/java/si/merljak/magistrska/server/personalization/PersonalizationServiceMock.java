@@ -1,10 +1,12 @@
 package si.merljak.magistrska.server.personalization;
 
+import static si.merljak.magistrska.server.model.QUser.user;
+import static si.merljak.magistrska.server.model.mock.QFridge.fridge;
+
 import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.geonames.WebService;
 import org.joda.time.DateTime;
@@ -12,11 +14,9 @@ import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-
 import si.merljak.magistrska.common.enumeration.Season;
-import static si.merljak.magistrska.server.model.QUser.user;
-import static si.merljak.magistrska.server.model.mock.QFridge.fridge;
+
+import com.mysema.query.jpa.impl.JPAQuery;
 
 
 /**
@@ -32,8 +32,11 @@ public class PersonalizationServiceMock implements PersonalizationService {
 
 	private static final Logger log = LoggerFactory.getLogger(PersonalizationServiceMock.class);
 	
-	@PersistenceContext // TODO assure injection
 	private EntityManager em;
+
+	public PersonalizationServiceMock(EntityManager entityManager) {
+		this.em = entityManager;
+	}
 
 	@Override
 	public List<String> getIngredientsFromFridge(String username) {
@@ -54,7 +57,7 @@ public class PersonalizationServiceMock implements PersonalizationService {
 	}
 
 	@Override
-	public Season getLocalSeason(String username, Double latitude) {
+	public Season getLocalSeason(String username, Double latitude, Double longitude) {
 		boolean southernHemisphere = false;
 		if (latitude != null) {
 			southernHemisphere = latitude.doubleValue() < 0.0;
@@ -62,7 +65,7 @@ public class PersonalizationServiceMock implements PersonalizationService {
 			southernHemisphere = new JPAQuery(em)
 								.from(user)
 								.where(user.username.eq(username)
-								  .and(user.preferences.contains("hemisphere=south")))
+								  .and(user.preferences.contains("hemisphere=southern")))
 								.exists();
 		} else {
 			return null;
@@ -70,10 +73,12 @@ public class PersonalizationServiceMock implements PersonalizationService {
 
 		DateTime date = new DateTime();
 		if (southernHemisphere) {
-			// dumb way to calculate season in the southern hemisphere :)
+			// not very smart way to calculate seasons in the southern hemisphere :)
+			// just add half a year
 			date = date.plusMonths(6);
 		}
 
+		// dumb way to determine season :)
 		switch(date.getMonthOfYear()) {
 			case 12:
 			case 1:
@@ -158,13 +163,12 @@ public class PersonalizationServiceMock implements PersonalizationService {
 	/** 
 	 * Gets property value from <em>key1=value1;key2=value2;...</em> encoded string
 	 * 
-	 * @param string encoded string
+	 * @param properties encoded string
 	 * @param propertyName name of the property
 	 * @return property value or {@code null} if property not found
 	 */
-	private static String getProperty(String string, String propertyName) {
-		String[] properties = string.split(";");
-		for (String property : properties) {
+	private static String getProperty(String properties, String propertyName) {
+		for (String property : properties.split(";")) {
 			String[] param = property.split("=");
 			if (param.length == 2 && param[0].equalsIgnoreCase(propertyName)) {
 				return param[1];

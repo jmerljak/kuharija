@@ -19,9 +19,10 @@ public interface PersonalizationService {
 	 * 
 	 * @param username
 	 * @param latitude
-	 * @return local season or {@code null} if neither username nor latitude specified
+	 * @param longitude
+	 * @return local season or {@code null} if neither username nor coordinates specified
 	 */
-	Season getLocalSeason(String username, Double latitude);
+	Season getLocalSeason(String username, Double latitude, Double longitude);
 
 	/**
 	 * Determines local time of day based on current user coordinates (if available) or timezone from user profile.
@@ -34,7 +35,7 @@ public interface PersonalizationService {
 	String getLocalTime(String username, Double latitude, Double longitude);
 
 	/**
-	 * Determines origin country based on current user coordinates (if available) or user profile settings.
+	 * Determines origin country based on current user coordinates (if available) or user profile.
 	 * 
 	 * @param username
 	 * @param latitude

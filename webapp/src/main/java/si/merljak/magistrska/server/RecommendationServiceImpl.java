@@ -29,18 +29,22 @@ import com.mysema.query.jpa.impl.JPAQuery;
 public class RecommendationServiceImpl extends RemoteServiceServlet implements RecommendationService {
 
 	private static final long serialVersionUID = 1636894033893317781L;
-	private static final long LIMIT_PER_RECOMMENDATION_TYPE = 2;
+	private static final long LIMIT_PER_RECOMMENDATION_TYPE = 20;
 
 	private static final Logger log = LoggerFactory.getLogger(RecommendationServiceImpl.class);
 	
 	@PersistenceContext
 	private EntityManager em;
 
-	private PersonalizationService personalizationService = new PersonalizationServiceMock();
+	private PersonalizationService personalizationService;
 
 	@Override
 	public RecommendationsDto recommendRecipes(String username, Double latitude, Double longitude, Language language) {
 		log.debug("getting recommendations for user " + username + "at location: " + latitude + ", " + longitude);
+		
+		if (personalizationService == null) {
+			personalizationService = new PersonalizationServiceMock(em);
+		}
 
 		RecommendationsDto recommendations = new RecommendationsDto();
 
@@ -77,9 +81,9 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 		}
 
 		// recipes for season
-		Season localSeason = personalizationService.getLocalSeason(username, latitude);
+		Season localSeason = personalizationService.getLocalSeason(username, latitude, longitude);
 		if (localSeason != null) {
-			List<RecipeDto> recipeForSeason = new JPAQuery(em)
+			List<RecipeDto> recipesForSeason = new JPAQuery(em)
 											.from(recipe)
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
@@ -88,13 +92,13 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 			
-			recommendations.addRecommendations(RecommendationType.LOCAL_SEASON, recipeForSeason);
+			recommendations.addRecommendations(RecommendationType.LOCAL_SEASON, recipesForSeason);
 		}
 
 		// local specialties
 		String country = personalizationService.getCountry(username, latitude, longitude);
 		if (country != null && !country.isEmpty()) {
-			List<RecipeDto> localRecipe = new JPAQuery(em)
+			List<RecipeDto> localRecipes = new JPAQuery(em)
 											.from(recipe)
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
@@ -103,22 +107,35 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 
-			recommendations.addRecommendations(RecommendationType.LOCAL_SPECIALTY, localRecipe);
+			recommendations.addRecommendations(RecommendationType.LOCAL_SPECIALTY, localRecipes);
 		}
 
 		// user preferences
-		// TODO
+		String searchString = personalizationService.recommendRecipe(username);
+		if (searchString != null && !searchString.isEmpty()) {
+			List<RecipeDto> recommendedRecipes = new JPAQuery(em)
+											.from(recipe)
+											.innerJoin(recipe.details, recipeDetails)
+											.where(recipeDetails.language.eq(language))
+											.where(recipe.metadata.contains(searchString))
+											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
+											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
+													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
+
+			recommendations.addRecommendations(RecommendationType.USER_PREFERENCES, recommendedRecipes);
+		}
 
 		// featured recipes
-		List<RecipeDto> localRecipe = new JPAQuery(em)
+		List<RecipeDto> featuredRecipes = new JPAQuery(em)
 									.from(recipe)
 									.innerJoin(recipe.details, recipeDetails)
 									.where(recipeDetails.language.eq(language))
 									.where(recipe.metadata.contains("featured"))
+									.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 									.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 											recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 
-		recommendations.addRecommendations(RecommendationType.FEATURED, localRecipe);
+		recommendations.addRecommendations(RecommendationType.FEATURED, featuredRecipes);
 
 		return recommendations;
 	}
