@@ -11,6 +11,7 @@ import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -50,7 +51,9 @@ public class SearchPresenter extends AbstractPresenter {
 		if (parameters.isEmpty()) {
 			searchView.clearSearchResults();
 		} else {
-			SearchParameters searchParameters = new SearchParameters(parameters.get(PARAMETER_SEARCH_STRING), language);
+			String encodedSearchString = parameters.get(PARAMETER_SEARCH_STRING);
+			String searchString = encodedSearchString != null ? URL.decodePathSegment(encodedSearchString) : null;
+			SearchParameters searchParameters = new SearchParameters(searchString, language);
 
 			if (parameters.containsKey(PARAMETER_PAGE)) {
 				try {
@@ -148,7 +151,10 @@ public class SearchPresenter extends AbstractPresenter {
 	 * @param searchString search string
 	 */
 	public static void doSearch(String searchString) {
-		History.newItem(SCREEN_NAME + "&" + PARAMETER_SEARCH_STRING + "=" + searchString.trim().toLowerCase());
+		if (searchString != null) {
+			String encodedSearchString = URL.encodePathSegment(searchString.trim().toLowerCase());
+			History.newItem(SCREEN_NAME + "&" + PARAMETER_SEARCH_STRING + "=" + encodedSearchString);
+		}
 	}
 
 	/**
