@@ -1,8 +1,8 @@
 package si.merljak.magistrska.server;
 
+import static si.merljak.magistrska.server.model.QIngredient.ingredient;
 import static si.merljak.magistrska.server.model.QRecipe.recipe;
 import static si.merljak.magistrska.server.model.QRecipeDetails.recipeDetails;
-import static si.merljak.magistrska.server.model.QIngredient.ingredient;
 import static si.merljak.magistrska.server.model.QRecipeIngredient.recipeIngredient;
 
 import java.util.List;
@@ -24,6 +24,7 @@ import si.merljak.magistrska.server.personalization.PersonalizationService;
 import si.merljak.magistrska.server.personalization.PersonalizationServiceMock;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 public class RecommendationServiceImpl extends RemoteServiceServlet implements RecommendationService {
@@ -51,13 +52,18 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 		// recipes from ingredients in user refrigerator
 		List<String> ingredientsFromFridge = personalizationService.getIngredientsFromFridge(username);
 		if (ingredientsFromFridge != null && !ingredientsFromFridge.isEmpty()) {
+			JPASubQuery recipesWithMissingIngredient = new JPASubQuery()
+											.from(recipe)
+											.innerJoin(recipe.ingredients, recipeIngredient)
+											.innerJoin(recipeIngredient.ingredient, ingredient)
+											.where(ingredient.name.notIn(ingredientsFromFridge))
+											.distinct();
+			
 			List<RecipeDto> recipesFromIngredients = new JPAQuery(em)
 											.from(recipe)
 											.innerJoin(recipe.details, recipeDetails)
-											.innerJoin(recipe.ingredients, recipeIngredient)
-											.innerJoin(recipeIngredient.ingredient, ingredient)
 											.where(recipeDetails.language.eq(language))
-											.where(ingredient.name.in(ingredientsFromFridge))
+											.where(recipe.id.notIn(recipesWithMissingIngredient.list(recipe.id)))
 											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
