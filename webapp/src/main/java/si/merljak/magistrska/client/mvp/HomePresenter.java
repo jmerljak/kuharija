@@ -39,9 +39,11 @@ public class HomePresenter extends AbstractPresenter {
 
 	
 	private void getRecommendations() {
+		String username = "user1"; // TODO get user
 		Coordinates coordinates = Kuharija.getCoordinates();
-		String username = null; // TODO get user
-		recommendationService.recommendRecipes(username, coordinates.getLatitude(), coordinates.getLongitude(), language, new AsyncCallback<RecommendationsDto>() {
+		Double latitude = coordinates != null ? coordinates.getLatitude() : null;
+		Double longitude = coordinates != null ? coordinates.getLongitude() : null;
+		recommendationService.recommendRecipes(username, latitude, longitude, language, new AsyncCallback<RecommendationsDto>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

@@ -26,11 +26,12 @@ import si.merljak.magistrska.server.personalization.PersonalizationServiceMock;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.expr.NumberExpression;
 
 public class RecommendationServiceImpl extends RemoteServiceServlet implements RecommendationService {
 
 	private static final long serialVersionUID = 1636894033893317781L;
-	private static final long LIMIT_PER_RECOMMENDATION_TYPE = 20;
+	private static final long LIMIT_PER_RECOMMENDATION_TYPE = 2;
 
 	private static final Logger log = LoggerFactory.getLogger(RecommendationServiceImpl.class);
 	
@@ -64,6 +65,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.id.notIn(recipesWithMissingIngredient.list(recipe.id)))
+											.orderBy(NumberExpression.random().asc()) // randomize
 											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
@@ -79,6 +81,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.metadata.contains("timeofday=" + localTime))
+											.orderBy(NumberExpression.random().asc()) // randomize
 											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
@@ -94,6 +97,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.seasons.any().eq(localSeason))
+											.orderBy(NumberExpression.random().asc()) // randomize
 											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
@@ -109,6 +113,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.metadata.contains("origin=" + country))
+											.orderBy(NumberExpression.random().asc()) // randomize
 											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
@@ -124,6 +129,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipe.details, recipeDetails)
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.metadata.contains(searchString))
+											.orderBy(NumberExpression.random().asc()) // randomize
 											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
@@ -137,6 +143,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 									.innerJoin(recipe.details, recipeDetails)
 									.where(recipeDetails.language.eq(language))
 									.where(recipe.metadata.contains("featured"))
+									.orderBy(NumberExpression.random().asc()) // randomize
 									.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
 									.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 											recipe.imageUrl, recipe.difficulty, recipe.timeOverall));

@@ -7,7 +7,7 @@ import si.merljak.magistrska.common.enumeration.Season;
 public interface PersonalizationService {
 
 	/** 
-	 * Returns list of ingredients from user's smart internet-connected refrigerator.
+	 * Returns list of ingredients from user's internet-connected refrigerator and other smart kitchen devices.
 	 * 
 	 * @param username
 	 * @return list of ingredient names or {@code null} if user not found or connection could not be established

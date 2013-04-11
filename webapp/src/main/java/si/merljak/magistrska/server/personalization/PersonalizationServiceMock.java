@@ -52,8 +52,16 @@ public class PersonalizationServiceMock implements PersonalizationService {
 
 	@Override
 	public String recommendRecipe(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		if (username == null) {
+			return null;
+		}
+
+		String preferences = new JPAQuery(em)
+							.from(user)
+							.where(user.username.eq(username))
+							.uniqueResult(user.preferences);
+
+		return getProperty(preferences, "recommended");
 	}
 
 	@Override
