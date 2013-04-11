@@ -9,7 +9,7 @@
 
     <properties>
         <gwt.version>2.5.0</gwt.version>
-        <querydsl.version>2.9.0</querydsl.version>
+        <querydsl.version>3.1.0</querydsl.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -28,7 +28,7 @@
             <scope>provided</scope>
 		</dependency>
 
-		<!-- apache commons -->
+		<!-- utilities -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -39,8 +39,6 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.2</version>
 		</dependency>
-
-		<!-- geonames -->
 		<dependency>
 			<groupId>org.geonames</groupId>
 			<artifactId>geonames</artifactId>

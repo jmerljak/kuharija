@@ -26,8 +26,8 @@ import si.merljak.magistrska.common.rpc.SearchService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.jpa.impl.JPASubQuery;
 
 public class SearchServiceImpl extends RemoteServiceServlet implements SearchService {
 
@@ -108,10 +108,11 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		JPAQuery query = new JPAQuery(em).from(recipe);
 		query.innerJoin(recipe.details, recipeDetails)
 			 .where(recipeDetails.language.eq(language))
-			 .where(recipe.id.in(subquery.list(recipe.id)));
+			 .where(recipe.id.in(subquery.list(recipe.id)))
+			 .distinct();
 
 		// count all results regardless of paging and sorting
-		long allCount = query.countDistinct();
+		long allCount = query.count();
 
 		// paging
 		query.limit(pageSize)
@@ -133,7 +134,7 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 			break;
 		}
 
-		List<RecipeDto> recipes = query.listDistinct(new QRecipeDto(recipe.id, recipeDetails.heading, recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
+		List<RecipeDto> recipes = query.list(new QRecipeDto(recipe.id, recipeDetails.heading, recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 		return new RecipeListDto(recipes, allCount);
 	}
 

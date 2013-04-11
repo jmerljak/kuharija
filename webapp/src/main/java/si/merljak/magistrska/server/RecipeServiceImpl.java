@@ -66,7 +66,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 		RecipeDetailsDto recipeDto = new JPAQuery(em).from(recipe)
 												.where(recipe.eq(recipeEntity))
 												.innerJoin(recipe.details, recipeDetails)
-												.with(recipeDetails.language.eq(language))
+												.on(recipeDetails.language.eq(language))
 												.uniqueResult(new QRecipeDetailsDto(recipe.id, recipeDetails.heading, 
 													recipeDetails.subHeading, recipe.author, recipe.imageUrl, recipe.difficulty, 
 													recipe.timePreparation, recipe.timeCooking, recipe.timeOverall,
@@ -141,7 +141,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 		List<RecipeDetailsDto> list = new JPAQuery(em).from(recipe)
 								.where(recipe.id.in(recipeIdList))
 								.innerJoin(recipe.details, recipeDetails)
-								.with(recipeDetails.language.eq(language))
+								.on(recipeDetails.language.eq(language))
 								.list(new QRecipeDetailsDto(recipe.id, recipeDetails.heading, 
 									recipeDetails.subHeading, recipe.author, recipe.imageUrl, recipe.difficulty, 
 									recipe.timePreparation, recipe.timeCooking, recipe.timeOverall,
