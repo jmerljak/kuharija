@@ -1,30 +1,39 @@
 package si.merljak.magistrska.server;
 
 import static si.merljak.magistrska.server.model.QUser.user;
+import static si.merljak.magistrska.server.model.QSession.session;
+
+import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import si.merljak.magistrska.common.dto.QUserDto;
+import si.merljak.magistrska.common.dto.SessionDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.rpc.UserService;
 import si.merljak.magistrska.server.model.Comment;
 import si.merljak.magistrska.server.model.Recipe;
+import si.merljak.magistrska.server.model.Session;
 import si.merljak.magistrska.server.model.User;
 import si.merljak.magistrska.server.utils.PasswordEncryptionUtils;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 public class UserServiceImpl extends RemoteServiceServlet implements UserService {
 
 	private static final long serialVersionUID = -1972686679692469943L;
+
+	private static final int SESSION_KEY_LENGTH = 50;
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 	
@@ -49,12 +58,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			// generate salt and encrypt password
 			byte[] salt = PasswordEncryptionUtils.generateSalt();
 			byte[] encryptedPassword = PasswordEncryptionUtils.getEncryptedPassword(password, salt);
-			System.out.println("salt:" + salt);
-			System.out.println("encryptedPassword:" + encryptedPassword);
 
 			// persist user entity
 			transaction.begin();
-			em.persist(new User(username, ArrayUtils.toObject(encryptedPassword), ArrayUtils.toObject(salt), name, email));
+			em.persist(new User(username, encryptedPassword, salt, name, email));
 			transaction.commit();
 			// TODO save logged in user?
 		} catch (Exception e) {
@@ -65,25 +72,69 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public UserDto login(String username, String password) {
+	public SessionDto login(String username, String attemptedPassword) {
 		log.debug("logging in user: " + username);
 
-		JPAQuery query = new JPAQuery(em).from(user).where(user.username.eq(username));
-		if (!query.exists()) {
+		User userEntity = new JPAQuery(em)
+								.from(user)
+								.where(user.username.eq(username))
+								.uniqueResult(user);
+
+		if (userEntity == null) {
 			// user does not exists
 			return null;
 		}
 
 		try {
-			byte[] salt = ArrayUtils.toPrimitive(query.uniqueResult(user.salt));
-			byte[] encryptedPassword = PasswordEncryptionUtils.getEncryptedPassword(password, salt);
-					
-			return query
-					.where(user.password.eq(ArrayUtils.toObject(encryptedPassword)))
-					.uniqueResult(new QUserDto(user.username, user.name, user.email, user.preferences));
+			if (PasswordEncryptionUtils.authenticate(attemptedPassword, userEntity.getPassword(), userEntity.getSalt())) {
+				String sessionId = RandomStringUtils.randomAlphanumeric(SESSION_KEY_LENGTH);
+				Date expires = new DateTime().plusMinutes(15).toDate();
+
+				transaction.begin();
+				em.persist(new Session(sessionId, userEntity, expires));
+				transaction.commit();
+
+				UserDto userDto = new UserDto(username, userEntity.getName(), userEntity.getEmail(), userEntity.getPreferences());
+				return new SessionDto(sessionId, expires, userDto);
+			} else {
+				// credentials do not match
+				return null;
+			}
 		} catch (Exception e) {
 			log.error("Could not log in!", e);
 			throw new RuntimeException("Could not log in!");
+		}
+	}
+
+	@Override
+	public UserDto checkSession(String sessionId) {
+		log.debug("checking session " + sessionId);
+
+		return new JPAQuery(em)
+					.from(user)
+					.innerJoin(user.sessions, session)
+					.where(session.id.eq(sessionId)
+					  .and(session.expires.after(new Date())))
+					.uniqueResult(new QUserDto(user.username, user.name, user.email, user.preferences));
+	}
+
+	@Override
+	public void logout(String sessionId) {
+		log.debug("deleting session " + sessionId + " and expired ones");
+
+		try {
+			// delete session and cleanup expired ones
+			transaction.begin();
+			long affected = new JPADeleteClause(em, session)
+							.where(session.id.eq(sessionId)
+							   .or(session.expires.before(new Date())))
+							.execute();
+			transaction.commit();
+
+			log.debug(affected + " rows deleted");
+		} catch (Exception e) {
+			log.error("Could not delete session", e);
+			// ignore
 		}
 	}
 

@@ -1,5 +1,6 @@
 package si.merljak.magistrska.common.rpc;
 
+import si.merljak.magistrska.common.dto.SessionDto;
 import si.merljak.magistrska.common.dto.UserDto;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -24,11 +25,25 @@ public interface UserService extends RemoteService {
 	 * Logs in user.
 	 * 
 	 * @param username
-	 * @param password
+	 * @param attemptedPassword
 	 * 
-	 * @return user details and preferences, or <em>null</em> if username or password is invalid
+	 * @return session and user details, or <em>null</em> if username or password is invalid
 	 */
-	UserDto login(String username, String password);
+	SessionDto login(String username, String attemptedPassword);
+
+	/**
+	 * Checks if session is valid.
+	 * 
+	 * @param sessionId session ID
+	 * @return user details, or <em>null</em> if session not exists or has expired
+	 */
+	UserDto checkSession(String sessionId);
+	
+	/** Logs out user.
+	 * 
+	 * @param sessionID session ID
+	 */
+	void logout(String sessionId);
 
 	/** 
 	 * Bookmarks recipe.

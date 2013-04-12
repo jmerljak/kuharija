@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -25,10 +27,10 @@ public class User implements Serializable {
 	private String username;
 
 	@NotNull
-	private Byte[] password;
+	private byte[] password;
 
 	@NotNull
-	private Byte[] salt;
+	private byte[] salt;
 
 	@NotNull
 	private String name;
@@ -37,16 +39,19 @@ public class User implements Serializable {
 
 	private String preferences;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name = "bookmark", inverseJoinColumns = @JoinColumn(name = "recipe_id"))
 	private Set<Recipe> bookmarks;
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="user")
+	private Set<Session> sessions;
 
 	@Version
 	private Date updated;
 
 	protected User() {}
 
-	public User(String username, Byte[] password, Byte[] salt, String name, String email) {
+	public User(String username, byte[] password, byte[] salt, String name, String email) {
 		this.username = username;
 		this.password = password;
 		this.salt = salt;
@@ -56,6 +61,14 @@ public class User implements Serializable {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public byte[] getPassword() {
+		return password;
+	}
+
+	public byte[] getSalt() {
+		return salt;
 	}
 
 	public String getName() {
@@ -82,10 +95,6 @@ public class User implements Serializable {
 		this.preferences = preferences; 
 	}
 
-	public Date getUpdated() {
-		return updated;
-	}
-
 	public Set<Recipe> getBookmarks() {
 		return bookmarks;
 	}
@@ -96,5 +105,9 @@ public class User implements Serializable {
 		} else {
 			bookmarks.remove(recipe);
 		}
+	}
+
+	public Date getUpdated() {
+		return updated;
 	}
 }
