@@ -1,7 +1,7 @@
 package si.merljak.magistrska.server;
 
-import static si.merljak.magistrska.server.model.QUser.user;
 import static si.merljak.magistrska.server.model.QSession.session;
+import static si.merljak.magistrska.server.model.QUser.user;
 
 import java.util.Date;
 
@@ -34,6 +34,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	private static final long serialVersionUID = -1972686679692469943L;
 
 	private static final int SESSION_KEY_LENGTH = 50;
+	private static final int SESSION_DURATION_IN_MINUTES = 15;
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 	
@@ -44,14 +45,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	private UserTransaction transaction; 
 
 	@Override
-	public void register(String username, String password, String name, String email){
+	public SessionDto register(String username, String password, String name, String email) {
 		log.debug("registering new user: " + username);
 
 		JPAQuery query = new JPAQuery(em).from(user).where(user.username.eq(username));
 		if (query.exists()) {
-			// user already exists, throw exception
-			throw new RuntimeException("User already exists!");
-			// TODO custom exception/messages?
+			// user already exists
+			return null;
 		}
 
 		try {
@@ -59,13 +59,19 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			byte[] salt = PasswordEncryptionUtils.generateSalt();
 			byte[] encryptedPassword = PasswordEncryptionUtils.getEncryptedPassword(password, salt);
 
-			// persist user entity
+			// generate session id and expiration date
+			String sessionId = RandomStringUtils.randomAlphanumeric(SESSION_KEY_LENGTH);
+			Date expires = new DateTime().plusMinutes(SESSION_DURATION_IN_MINUTES).toDate();
+
+			// persist user and session
 			transaction.begin();
-			em.persist(new User(username, encryptedPassword, salt, name, email));
+			User userEntity = new User(username, encryptedPassword, salt, name, email);
+			em.persist(userEntity);
+			em.persist(new Session(sessionId, userEntity, expires));
 			transaction.commit();
-			// TODO save logged in user?
+
+			return new SessionDto(sessionId, expires, new UserDto(username, name, email, null));
 		} catch (Exception e) {
-			// TODO proper handling
 			log.error("Could not register user!", e);
 			throw new RuntimeException("Could not register user!");
 		}

@@ -7,6 +7,7 @@ import si.merljak.magistrska.common.dto.SubtitleDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.dom.client.VideoElement;
 import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.DOM;
@@ -29,6 +30,7 @@ public class VideoWidget extends Composite {
 			videoWidget = Video.createIfSupported();
 			videoWidget.setControls(true);
 			videoWidget.setPoster(VIDEO_FOLDER + videoDto.getPosterUrl());
+			videoWidget.setPreload(MediaElement.PRELOAD_METADATA);
 			videoWidget.setWidth("100%");
 
 			// add all available sources (webm, mp4, ...)

@@ -17,9 +17,10 @@ public interface UserService extends RemoteService {
 	 * @param name custom name to show
 	 * @param user's email (optional)
 	 * 
-	 * @throws RunntimeException if user with given username already exists 
+	 * @return session and user details, or <em>null</em> if user with given username already exists 
+	 * 
 	 */
-	void register(String username, String password, String name, String email);
+	SessionDto register(String username, String password, String name, String email);
 
 	/** 
 	 * Logs in user.

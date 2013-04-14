@@ -6,6 +6,7 @@ import si.merljak.magistrska.common.dto.AudioDto;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AudioElement;
+import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
@@ -22,6 +23,7 @@ public class AudioWidget extends Composite {
 		if (Audio.isSupported()) {
 			audioWidget = Audio.createIfSupported();
 			audioWidget.setControls(true);
+			audioWidget.setPreload(MediaElement.PRELOAD_METADATA);
 
 			// add all available sources (mp3, ogg, ...)
 			for (String srcUrl : audioDto.getUrls()) {
