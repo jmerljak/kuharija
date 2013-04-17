@@ -17,7 +17,7 @@ import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.UtensilDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 
-import com.google.gwt.aria.client.Roles;
+import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
@@ -25,38 +25,50 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 
 public class RecipeView extends AbstractView {
 
-	// constants & formatters
+	// i18n
 	private UtensilsConstants utensilsConstants = Kuharija.utensilsConstants;
-
-	// panels
-	private static final RootPanel title = RootPanel.get("recipeTitle");
-	private static final RootPanel titleTools = RootPanel.get("toolsTitle");
-	private static final RootPanel titleComments = RootPanel.get("commentsTitle");
-	private static final RootPanel recipeDetailsPanel = RootPanel.get("recipeInfo");
-	private static final RootPanel toolsPanel = RootPanel.get("tools");
-	private static final RootPanel ingredientsPanel = RootPanel.get("ingredients");
-	private static final RootPanel panelBasic = RootPanel.get("basic");
-	private static final RootPanel panelSteps = RootPanel.get("steps");
-	private static final RootPanel panelAudio = RootPanel.get("audio");
-	private static final RootPanel panelVideo = RootPanel.get("video");
-	private static final RootPanel commentsPanel = RootPanel.get("comments");
 
 	// widgets
 	private TabsWidget tabsWidget = new TabsWidget();
+	private Heading heading = new Heading(HEADING_SIZE);
+	private FlowPanel recipeDetailsPanel= new FlowPanel();
+	private FlowPanel ingredientsPanel= new FlowPanel();
+	private FlowPanel toolsPanel= new FlowPanel();
+	private FlowPanel panelBasic= new FlowPanel();
+	private FlowPanel panelSteps= new FlowPanel();
+	private FlowPanel panelAudio= new FlowPanel();
+	private FlowPanel panelVideo= new FlowPanel();
+	private FlowPanel commentsPanel= new FlowPanel();
 
 	public RecipeView () {
-		initWidget(RootPanel.get("recipeWrapper"));
-		Roles.getMainRole().set(getElement());
-		
-		// tabs
-		RootPanel.get("tabs").add(tabsWidget);
+		FlowPanel side = new FlowPanel();
+		side.setStyleName("span3");
+		side.add(ingredientsPanel);
+		side.add(toolsPanel);
+
+		FlowPanel center = new FlowPanel();
+		side.setStyleName("span9");
+		side.add(recipeDetailsPanel);
+		side.add(tabsWidget);
+		side.add(panelBasic);
+		side.add(panelSteps);
+		side.add(panelAudio);
+		side.add(panelVideo);
+		side.add(commentsPanel);
+
+		FlowPanel main = new FlowPanel();
+		main.setStyleName("row-fluid");
+		main.add(heading);
+		main.add(side);
+		main.add(center);
+		initWidget(main);
 	}
 
 	public void clearAll() {
@@ -78,9 +90,8 @@ public class RecipeView extends AbstractView {
 		}
 
 		// titles
-		title.getElement().setInnerHTML(recipe.getHeading());
-		titleTools.getElement().setInnerHTML(constants.tools());
-		titleComments.getElement().setInnerHTML(constants.comments());
+		heading.setText(recipe.getHeading());
+		Kuharija.setWindowTitle(recipe.getHeading());
 
 		// recipe info
 		recipeDetailsPanel.add(new Label(constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation())));
@@ -95,6 +106,8 @@ public class RecipeView extends AbstractView {
 		ingredientsPanel.add(new IngredientsWidget(recipe.getIngredients(), recipe.getNumberOfMeals()));
 
 		// utensils
+		toolsPanel.clear();
+		toolsPanel.add(new Heading(HEADING_SIZE + 1, constants.tools()));
 		for (UtensilDto utensil : recipe.getUtensils()) {
 			String name = utensil.getName();
 			toolsPanel.add(new Anchor(utensil.getQuantity() + "x " + utensilsConstants.utensilsMap().get(name).toLowerCase(), UtensilPresenter.buildUtensilUrl(name)));
@@ -116,7 +129,9 @@ public class RecipeView extends AbstractView {
 		for (CommentDto comment : recipe.getComments()) {
 			commentsPanel.add(new CommentWidget(comment));
 		}
-		
+
+		commentsPanel.clear();
+		commentsPanel.add(new Heading(HEADING_SIZE + 1, constants.comments()));
 		for (AppendixDto appendix : recipe.getAppendencies()) {
 			commentsPanel.add(new AppendixWidget(appendix));
 		}

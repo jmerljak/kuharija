@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Composite;
 public abstract class AbstractView extends Composite {
 
 	// string constants, messages & formatters
+	protected static final int HEADING_SIZE = 1;
 	protected static final CommonConstants constants = Kuharija.constants;
 	protected static final CommonMessages messages = Kuharija.messages;
 

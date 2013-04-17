@@ -1,7 +1,5 @@
 package si.merljak.magistrska.client.mvp;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
@@ -11,13 +9,14 @@ import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 
 public class RecipePresenter extends AbstractPresenter {
 
 	// screen and parameters name
 	public static final String SCREEN_NAME = "recipe";
-	public static final String PARAMETER_RECIPE_ID = "id";
-	public static final String PARAMETER_VIEW = "view"; // basic, steps, video, audio
+	private static final String PARAMETER_RECIPE_ID = "id";
+	private static final String PARAMETER_VIEW = "view"; // basic, steps, video, audio
 
 	// remote service
 	private RecipeServiceAsync recipeService;
@@ -32,15 +31,8 @@ public class RecipePresenter extends AbstractPresenter {
 		this.userService = userService;
 	}
 
-	private final List<String> screenNames = Arrays.asList("recipe", "basic", "video", "audio");
-	
 	@Override
-	protected boolean isPresenterForScreen(String screenName) {
-		return screenName != null && screenNames.contains(screenName);
-	}
-
-	@Override
-	protected void parseParameters(String screenName, Map<String, String> parameters) {
+	public Widget parseParameters(Map<String, String> parameters) {
 		// TODO Auto-generated method stub
 		try {
 			recipeId = Long.parseLong(parameters.get(PARAMETER_RECIPE_ID));
@@ -48,6 +40,7 @@ public class RecipePresenter extends AbstractPresenter {
 		} catch (Exception e) {
 			// TODO display 404 page 
 		}
+		return recipeView.asWidget();
 	}
 
 	private void getRecipe(long recipeId) {
@@ -65,7 +58,7 @@ public class RecipePresenter extends AbstractPresenter {
 	}
 
 	private void bookmark(boolean add) {
-		userService.bookmarkRecipe(null, recipeId, add, new AsyncCallback<Void>() {
+		userService.bookmarkRecipe("user1", recipeId, add, new AsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void result) {
 				// TODO Auto-generated method stub
@@ -90,11 +83,6 @@ public class RecipePresenter extends AbstractPresenter {
 				Window.alert(caught.getMessage());
 			}
 		});
-	}
-
-	@Override
-	protected void hideView() {
-		recipeView.hide();
 	}
 
 	/**

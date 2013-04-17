@@ -2,9 +2,10 @@ package si.merljak.magistrska.client.mvp;
 
 import java.util.List;
 
+import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
-import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.IngredientDto;
+import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
@@ -12,19 +13,22 @@ import com.github.gwtbootstrap.client.ui.base.UnorderedList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class CompareView extends AbstractView {
+
+	// constants
 	private static final IngredientsConstants ingredientsConstants = GWT.create(IngredientsConstants.class);
 
-	private static final RootPanel main = RootPanel.get("compareWrapper");
-	
-	private FlexTable resultsPanel = new FlexTable();
+	// widgets
+	private final FlexTable resultsPanel = new FlexTable();
 
 	public CompareView () {
-		main.add(new Heading(2, constants.recipeComparison()));
+		FlowPanel main = new FlowPanel();
+		main.add(new Heading(HEADING_SIZE, constants.recipeComparison()));
 		main.add(resultsPanel);
 		initWidget(main);
 	}
@@ -55,11 +59,15 @@ public class CompareView extends AbstractView {
 			resultsPanel.setWidget(7, column, ingredients);
 			column++;
 		}
-		setVisible(true);
 	}
 
 	public void clearSearchResults() {
 		resultsPanel.removeAllRows();
-		setVisible(true);
+	}
+
+	@Override
+	public Widget asWidget() {
+		Kuharija.setWindowTitle(constants.recipeComparison());
+		return super.asWidget();
 	}
 }

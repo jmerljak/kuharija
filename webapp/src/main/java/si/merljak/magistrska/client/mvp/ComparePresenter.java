@@ -5,17 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 
 public class ComparePresenter extends AbstractPresenter {
 
 	// screen and parameters name
-	private static final String SCREEN_NAME = "compare";
+	public static final String SCREEN_NAME = "compare";
 	private static final String PARAMETER_RECIPE_ID_LIST = "recipes";
 
 	// remote service
@@ -30,12 +31,8 @@ public class ComparePresenter extends AbstractPresenter {
 	}
 
 	@Override
-	protected boolean isPresenterForScreen(String screenName) {
-		return SCREEN_NAME.equalsIgnoreCase(screenName);
-	}
-
-	@Override
-	protected void parseParameters(String screenName, Map<String, String> parameters) {
+	public Widget parseParameters(Map<String, String> parameters) {
+		searchView.setVisible(false);
 		if (parameters.containsKey(PARAMETER_RECIPE_ID_LIST)) {
 			String[] idStringList = parameters.get(PARAMETER_RECIPE_ID_LIST).split(",");
 			Set<Long> recipeIdList = new HashSet<Long>();
@@ -52,6 +49,7 @@ public class ComparePresenter extends AbstractPresenter {
 		} else {
 			searchView.clearSearchResults();
 		}
+		return searchView.asWidget();
 	}
 
 	private void getRecipes(Set<Long> recipeIdList) {
@@ -63,14 +61,9 @@ public class ComparePresenter extends AbstractPresenter {
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
+				Kuharija.handleException(caught);
 			}
 		});
-	}
-
-	@Override
-	protected void hideView() {
-		searchView.hide();
 	}
 
 	/**

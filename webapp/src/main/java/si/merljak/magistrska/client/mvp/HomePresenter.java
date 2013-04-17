@@ -8,8 +8,8 @@ import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecommendationServiceAsync;
 
 import com.google.gwt.geolocation.client.Position.Coordinates;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 
 public class HomePresenter extends AbstractPresenter {
 
@@ -28,38 +28,29 @@ public class HomePresenter extends AbstractPresenter {
 	}
 
 	@Override
-	protected boolean isPresenterForScreen(String screenName) {
-		return SCREEN_NAME.equalsIgnoreCase(screenName);
-	}
-
-	@Override
-	protected void parseParameters(String screenName, Map<String, String> parameters) {
+	public Widget parseParameters(Map<String, String> parameters) {
 		getRecommendations();
+		return homeView.asWidget();
 	}
 
 	
 	private void getRecommendations() {
-		String username = "user1"; // TODO get user
+		String username = null;// TODO = LoginPresenter.getUsername();
 		Coordinates coordinates = Kuharija.getCoordinates();
 		Double latitude = coordinates != null ? coordinates.getLatitude() : null;
 		Double longitude = coordinates != null ? coordinates.getLongitude() : null;
+
 		recommendationService.recommendRecipes(username, latitude, longitude, language, new AsyncCallback<RecommendationsDto>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
-			}
-
 			@Override
 			public void onSuccess(RecommendationsDto result) {
 				homeView.displayRecommendations(result);
 			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				Kuharija.handleException(caught);
+			}
 		});
-	}
-
-	@Override
-	protected void hideView() {
-		homeView.hide();
 	}
 
 }

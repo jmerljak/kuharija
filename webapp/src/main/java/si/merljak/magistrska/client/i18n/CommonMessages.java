@@ -3,11 +3,17 @@ package si.merljak.magistrska.client.i18n;
 import com.google.gwt.i18n.client.Messages;
 
 public interface CommonMessages extends Messages {
+	@DefaultMessage("Hello!")
+	String hello();
+
+	@DefaultMessage("Hello, {0}!")
+	String helloUser(String name);
+
 	@DefaultMessage("Oops!")
 	String oops();
 
-	@DefaultMessage("Ingredient not found. Try <a href=\"#search&q={0}\">search</a> or see <a href=\"#ingredients\">index of ingredients</a>.")
-	String ingredientNotFoundTry(String query);
+	@DefaultMessage("Ingredient not found. See <a href=\"#ingredients\">index of ingredients</a>.")
+	String ingredientNotFoundTry();
 
 	@DefaultMessage("Read more about {0} on Wikipedia")
 	String ingredientReadMoreOnWikipedia(String name);

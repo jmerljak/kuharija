@@ -2,10 +2,12 @@ package si.merljak.magistrska.client.mvp;
 
 import java.util.List;
 
+import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.dto.RecipeListDto;
 
+import com.github.gwtbootstrap.client.ui.Form;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -17,27 +19,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 public class SearchView extends AbstractView {
 
-	private static final RootPanel main = RootPanel.get("searchWrapper");
-	
 	private TextBox searchBox = new TextBox();
-	private Button searchButton = new Button(constants.search());
 	private FlowPanel resultsPanel = new FlowPanel();
 
 	public SearchView () {
-		main.add(new Heading(2, constants.search()));
-		main.add(resultsPanel);
-		initWidget(main);
-
-		RootPanel formPanel = RootPanel.get("searchField");
-		formPanel.setStyleName("input-append");
-		formPanel.add(searchBox);
-		formPanel.add(searchButton);
-
 		searchBox.getElement().setId("appendedInputButtons");
 		searchBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
@@ -47,6 +37,8 @@ public class SearchView extends AbstractView {
 				}
 			}
 		});
+
+		Button searchButton = new Button(constants.search());
 		searchButton.setStyleName("btn");
 		searchButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -54,6 +46,17 @@ public class SearchView extends AbstractView {
 				doSearch();
 			}
 		});
+
+		Form formPanel = new Form();
+		formPanel.setStyleName("input-append");
+		formPanel.add(searchBox);
+		formPanel.add(searchButton);
+
+		FlowPanel main = new FlowPanel();
+		main.add(new Heading(HEADING_SIZE, constants.search()));
+		main.add(formPanel);
+		main.add(resultsPanel);
+		initWidget(main);
 	}
 
 	private void doSearch() {
@@ -76,6 +79,8 @@ public class SearchView extends AbstractView {
 		for (RecipeDto recipe : recipes) {
 			Image image = new Image(RECIPE_THUMB_IMG_FOLDER + recipe.getImageUrl());
 			image.setAltText(recipe.getHeading());
+
+			// TODO check for null URL
 			Anchor link = new Anchor(recipe.getHeading(), RecipePresenter.buildRecipeUrl(recipe.getId()));
 
 			FlowPanel resultEntry = new FlowPanel();
@@ -99,5 +104,11 @@ public class SearchView extends AbstractView {
 		searchBox.setText("");
 		resultsPanel.clear();
 		setVisible(true);
+	}
+
+	@Override
+	public Widget asWidget() {
+		Kuharija.setWindowTitle(constants.search());
+		return super.asWidget();
 	}
 }

@@ -6,6 +6,9 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface CommonConstants extends Constants {
 
+	@DefaultStringValue("Cooking masterpieces")
+	String appTitle();
+
 	@DefaultStringValue("Recipe")
 	String recipe();
 
@@ -57,8 +60,27 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Audio")
 	String tabAudio();
 
+	// login
+	@DefaultStringValue("Log in")
+	String login();
+
+	@DefaultStringValue("Log out")
+	String logout();
+
+	@DefaultStringValue("Username")
+	String username();
+
+	@DefaultStringValue("Password")
+	String password();
+
 
 	// maps - enumerator constants
+
+	@DefaultStringMapValue({
+    	"INCORRECT_USERNAME_PASSWORD", "Incorrect username or password",
+    	"SESSION_EXPIRED", "Session expired. Please, log in again",
+    	"USERNAME_ALREADY_EXISTS", "Username already exists"})
+    Map<String, String> loginErrorMap();
 
 	@DefaultStringMapValue({
     	"A_EASY", "Easy",

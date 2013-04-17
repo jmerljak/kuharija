@@ -2,6 +2,7 @@ package si.merljak.magistrska.client.mvp;
 
 import java.util.Map;
 
+import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeListDto;
 import si.merljak.magistrska.common.enumeration.Category;
@@ -13,22 +14,22 @@ import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 
 public class SearchPresenter extends AbstractPresenter {
 
 	// screen and parameters name
 	public static final String SCREEN_NAME = "search";
-	public static final String PARAMETER_SEARCH_STRING = "q";
-	public static final String PARAMETER_PAGE = "page";
-	public static final String PARAMETER_PAGE_SIZE = "pageSize";
-	public static final String PARAMETER_CATEGORY = "category";
-	public static final String PARAMETER_DIFFICULTY = "difficulty";
-	public static final String PARAMETER_INGREDIENT = "ingredient";
-	public static final String PARAMETER_SEASON = "season";
-	public static final String PARAMETER_UTENSIL = "utensil";
-	public static final String PARAMETER_SORT_BY = "sortby";
+	private static final String PARAMETER_SEARCH_STRING = "q";
+	private static final String PARAMETER_PAGE = "page";
+	private static final String PARAMETER_PAGE_SIZE = "pageSize";
+	private static final String PARAMETER_CATEGORY = "category";
+	private static final String PARAMETER_DIFFICULTY = "difficulty";
+	private static final String PARAMETER_INGREDIENT = "ingredient";
+	private static final String PARAMETER_SEASON = "season";
+	private static final String PARAMETER_UTENSIL = "utensil";
+	private static final String PARAMETER_SORT_BY = "sortby";
 
 	// remote service
 	private SearchServiceAsync searchService;
@@ -42,12 +43,7 @@ public class SearchPresenter extends AbstractPresenter {
 	}
 
 	@Override
-	protected boolean isPresenterForScreen(String screenName) {
-		return SCREEN_NAME.equalsIgnoreCase(screenName);
-	}
-
-	@Override
-	protected void parseParameters(String screenName, Map<String, String> parameters) {
+	public Widget parseParameters(Map<String, String> parameters) {
 		if (parameters.isEmpty()) {
 			searchView.clearSearchResults();
 		} else {
@@ -121,6 +117,7 @@ public class SearchPresenter extends AbstractPresenter {
 
 			search(searchParameters);
 		}
+		return searchView.asWidget();
 	}
 
 	/** 
@@ -136,14 +133,9 @@ public class SearchPresenter extends AbstractPresenter {
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
+				Kuharija.handleException(caught);
 			}
 		});
-	}
-
-	@Override
-	protected void hideView() {
-		searchView.hide();
 	}
 
 	/**

@@ -34,3 +34,12 @@ body {
 .resultEntry a {
 	display: block;
 }
+
+.alertPlaceholder {
+	height: 1em;
+	color: red;
+}
+
+#loginForm {
+	margin-top: 1em;
+}
