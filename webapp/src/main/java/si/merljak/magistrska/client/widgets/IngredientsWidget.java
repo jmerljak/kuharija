@@ -6,6 +6,7 @@ import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.mvp.IngredientPresenter;
+import si.merljak.magistrska.client.utils.Calc;
 import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.enumeration.Unit;
 
@@ -118,7 +119,7 @@ public class IngredientsWidget extends Composite {
 			if (amount == null) {
 				// uncountable
 				if (convertToNonMetric.getValue()) {
-					unit = unit.getNonMetricUnit();
+					unit = Calc.getNonMetricUnit(unit);
 				}
 
 				Anchor label = new Anchor(ingredientNameString, IngredientPresenter.buildIngredientUrl(ingredientName));
@@ -129,8 +130,8 @@ public class IngredientsWidget extends Composite {
 			amount = ingredient.getAmount()  * numOfPeople / numOfPeopleBase;
 			
 			if (convertToNonMetric.getValue()) {
-				amount = unit.convertToNonMetric(amount).doubleValue();
-				unit = unit.getNonMetricUnit();
+				amount = Calc.convertToNonMetric(unit, amount).doubleValue();
+				unit = Calc.getNonMetricUnit(unit);
 			}
 			
 			Anchor label = new Anchor(
