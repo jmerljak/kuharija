@@ -2,9 +2,10 @@ package si.merljak.magistrska.client.mvp;
 
 import si.merljak.magistrska.common.enumeration.LoginError;
 
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Form;
 import com.github.gwtbootstrap.client.ui.Heading;
-import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -26,7 +27,7 @@ import com.google.gwt.user.client.ui.TextBox;
 public class LoginView extends AbstractView implements LoginPresenter.View {
 
 	// widgets
-	private final Paragraph alertPlaceholder = new Paragraph();
+	private final Alert alertPlaceholder = new Alert();
 	private final TextBox usernameBox = new TextBox();
 	private final PasswordTextBox passwordBox = new PasswordTextBox();
 	private final Button loginButton = new Button(constants.login());
@@ -34,8 +35,10 @@ public class LoginView extends AbstractView implements LoginPresenter.View {
 	private LoginPresenter presenter;
 
 	public LoginView() {
-		alertPlaceholder.setStyleName("alertPlaceholder");
+		// alert placeholder with ARIA alert role
+		alertPlaceholder.setClose(false);
 		alertPlaceholder.setVisible(false);
+		Roles.getAlertRole().set(alertPlaceholder.getElement());
 
 		// username input box
 		usernameBox.addKeyUpHandler(new KeyUpHandler() {
@@ -75,37 +78,40 @@ public class LoginView extends AbstractView implements LoginPresenter.View {
 		loginForm.add(passwordBox);
 		loginForm.add(loginButton);
 
-		// main layout
+		// layout
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.login()));
 		main.add(alertPlaceholder);
 		main.add(loginForm);
 		initWidget(main);
-
-		// ARIA role
-		Roles.getAlertRole().set(alertPlaceholder.getElement());
 	}
 
 	@Override
-	public void displayLoginForm(LoginError error) {
-		usernameBox.setValue(""); // leave entered username?
+	public void clear() {
+		usernameBox.setValue("");
 		passwordBox.setValue("");
+		alertPlaceholder.setVisible(false);
+	}
 
-		if (error != null) {
-			alertPlaceholder.setText(constants.loginErrorMap().get(error.name()));
-			alertPlaceholder.setVisible(true);
-		} else {
-			alertPlaceholder.setVisible(false);
-		}
+	@Override
+	public void showError(LoginError error) {
+		passwordBox.setValue("");
+		alertPlaceholder.setType(AlertType.ERROR);
+		alertPlaceholder.setText(constants.loginErrorMap().get(error.name()));
+		alertPlaceholder.setVisible(true);
+	}
+
+	@Override
+	public void showSuccess() {
+		usernameBox.setValue("");
+		passwordBox.setValue("");
+		alertPlaceholder.setType(AlertType.SUCCESS);
+		alertPlaceholder.setText(constants.logginSuccess());
+		alertPlaceholder.setVisible(true);
 	}
 
 	@Override
 	public void setPresenter(LoginPresenter presenter) {
 		this.presenter = presenter;
-	}
-
-	@Override
-	public void displayRegisterForm(LoginError error) {
-		// TODO register not yet implemented
 	}
 }

@@ -30,6 +30,7 @@ public class UtensilDetailsView extends AbstractView {
 	// widgets
 	private final Heading heading = new Heading(HEADING_SIZE);
 	private final FlowPanel content = new FlowPanel();
+	private final Paragraph message404 = new Paragraph(messages.utensilNotFoundTry());
 
 	public UtensilDetailsView () {
 		FlowPanel main = new FlowPanel();
@@ -47,7 +48,7 @@ public class UtensilDetailsView extends AbstractView {
 		if (utensil == null) {
 			// no utensil found
 			heading.setText(messages.oops());
-			content.add(new Paragraph(messages.utensilNotFoundTry()));
+			content.add(message404);
 			Kuharija.setWindowTitle(null);
 		} else {
 			String utensilName = utensil.getName();

@@ -31,6 +31,7 @@ public class IngredientDetailsView extends AbstractView {
 	// widgets
 	private final Heading heading = new Heading(HEADING_SIZE);
 	private final FlowPanel content = new FlowPanel();
+	private final Paragraph message404 = new Paragraph(messages.ingredientNotFoundTry());
 
 	public IngredientDetailsView () {
 		FlowPanel main = new FlowPanel();
@@ -48,7 +49,7 @@ public class IngredientDetailsView extends AbstractView {
 		if (ingredient == null) {
 			// no ingredient found
 			heading.setText(messages.oops());
-			content.add(new Paragraph(messages.ingredientNotFoundTry()));
+			content.add(message404);
 			Kuharija.setWindowTitle(null);
 		} else {
 			String ingredientName = ingredient.getName();

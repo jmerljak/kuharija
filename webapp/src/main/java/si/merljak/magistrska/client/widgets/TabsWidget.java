@@ -24,10 +24,10 @@ public class TabsWidget extends Composite {
 	private static final TabRole TAB_ROLE = Roles.getTabRole();
 
 	// panels
-	private static final RootPanel PANEL_BASIC = RootPanel.get("basic");
-	private static final RootPanel PANEL_STEPS = RootPanel.get("steps");
-	private static final RootPanel PANEL_VIDEO = RootPanel.get("video");
-	private static final RootPanel PANEL_AUDIO = RootPanel.get("audio");
+//	private static final RootPanel PANEL_BASIC = RootPanel.get("basic");
+//	private static final RootPanel PANEL_STEPS = RootPanel.get("steps");
+//	private static final RootPanel PANEL_VIDEO = RootPanel.get("video");
+//	private static final RootPanel PANEL_AUDIO = RootPanel.get("audio");
 
 	private Map <String, ListItem> tabMap = new HashMap<String, ListItem>();
 	private static Map <String, RootPanel> panelMap = new HashMap<String, RootPanel>();
@@ -104,9 +104,9 @@ public class TabsWidget extends Composite {
 
 	static {
 		// panel map
-		panelMap.put("basic", PANEL_BASIC);
-		panelMap.put("steps", PANEL_STEPS);
-		panelMap.put("video", PANEL_VIDEO);
-		panelMap.put("audio", PANEL_AUDIO);
+//		panelMap.put("basic", PANEL_BASIC);
+//		panelMap.put("steps", PANEL_STEPS);
+//		panelMap.put("video", PANEL_VIDEO);
+//		panelMap.put("audio", PANEL_AUDIO);
 	}
 }

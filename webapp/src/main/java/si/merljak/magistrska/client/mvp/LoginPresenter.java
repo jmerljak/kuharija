@@ -11,7 +11,6 @@ import si.merljak.magistrska.common.enumeration.LoginError;
 import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -22,13 +21,15 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 		 * Displays login form and error message (if any).
 		 * @param error enumerator (optional)
 		 */
-		void displayLoginForm(LoginError error);
+		void showError(LoginError error);
+		void showSuccess();
+		void clear();
 
-		/**
-		 * Displays register form and error message (if any).
-		 * @param error enumerator (optional)
-		 */
-		void displayRegisterForm(LoginError error);
+//		/**
+//		 * Displays register form and error message (if any).
+//		 * @param error enumerator (optional)
+//		 */
+//		void displayRegisterForm(LoginError error);
 
 		void setPresenter(LoginPresenter presenter);
 		void hide();
@@ -60,11 +61,9 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
-		if (user == null) {
-			view.displayLoginForm(null);
-		} else {
-			// redirect back to previous screen
-			History.back();
+		view.clear();
+		if (user != null) {
+		    view.showSuccess();
 		}
 		return view.asWidget();
 	}
@@ -78,12 +77,12 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 				public void onSuccess(UserDto userDto) {
 					if (userDto != null) {
 						user = userDto;
-//						view.displayLogedInUser(user);
-						// TODO fire event
+					    view.showSuccess();
+						// TODO fire event to notify others
 					} else {
 						// session expired
 						Cookies.removeCookie(SESSION_COOKIE_NAME);
-						view.displayLoginForm(LoginError.SESSION_EXPIRED);
+						view.showError(LoginError.SESSION_EXPIRED);
 					}
 				}
 				
@@ -110,9 +109,9 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 				if (session != null) {
 					user = session.getUser();
 					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
-//					view.displayLogedInUser(user);
-					// TODO fire event
-					History.back();
+				    view.showSuccess();
+					// TODO fire event to notify others
+//					History.back();
 				} else {
 					// username already exists
 					// view.displayRegisterForm(LoginError.USERNAME_ALREADY_EXISTS);
@@ -139,11 +138,11 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 				if (session != null) {
 					user = session.getUser();
 				    Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
-//					view.displayLogedInUser(user);
-					// TODO fire event
+				    view.showSuccess();
+					// TODO fire event to notify others
 				} else {
 					user = null;
-					view.displayLoginForm(LoginError.INCORRECT_USERNAME_PASSWORD);
+					view.showError(LoginError.INCORRECT_USERNAME_PASSWORD);
 				}
 			}
 			
@@ -166,6 +165,7 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 					// do nothing
 //					view.displayLogedInUser(null);
 					// TODO fire event
+					view.clear();
 				}
 				
 				@Override
