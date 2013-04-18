@@ -16,11 +16,11 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-/** 
+/**
  * Simple view that lists all utensils in a localized and alphabetically sorted index.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public class UtensilIndexView extends AbstractView {
 

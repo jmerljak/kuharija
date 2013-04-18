@@ -3,6 +3,7 @@ package si.merljak.magistrska.client.mvp;
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.handler.LoginHandler;
 import si.merljak.magistrska.client.handler.LogoutHandler;
 import si.merljak.magistrska.common.dto.SessionDto;
 import si.merljak.magistrska.common.dto.UserDto;
@@ -14,25 +15,31 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
-public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
+public class LoginPresenter extends AbstractPresenter implements LoginHandler, LogoutHandler {
 	
-	public interface View {
-		/**
-		 * Displays login form and error message (if any).
-		 * @param error enumerator (optional)
-		 */
-		void showError(LoginError error);
-		void showSuccess();
+	public interface LoginView {
+		/** Clears login form and message. */
 		void clear();
 
-//		/**
-//		 * Displays register form and error message (if any).
-//		 * @param error enumerator (optional)
-//		 */
-//		void displayRegisterForm(LoginError error);
+		/**
+		 * Displays error message.
+		 * @param error enumerator
+		 */
+		void showError(LoginError error);
 
-		void setPresenter(LoginPresenter presenter);
-		void hide();
+		/** Displays login success message. */
+		void showLoginSuccess();
+
+		/** Displays logout success message. */
+		void showLogoutSuccess();
+
+		/** 
+		 * Sets login handler.
+		 * @param loginHandler handler implementation
+		 */
+		void setLoginHandler(LoginHandler loginHandler);
+
+		/** Gets view as widget. */
 		Widget asWidget();
 	}
 
@@ -48,24 +55,24 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 	private static UserDto user;
 	
 	// view
-	View view;
+	private LoginView loginView;
 
 	public LoginPresenter(Language language, UserServiceAsync userService, LoginView view) {
 		super(language);
 		this.userService = userService;
-		this.view = view;
-		view.setPresenter(this);
+		this.loginView = view;
+		view.setLoginHandler(this);
 
 		checkSession();
 	}
 
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
-		view.clear();
+		loginView.clear();
 		if (user != null) {
-		    view.showSuccess();
+		    loginView.showLoginSuccess();
 		}
-		return view.asWidget();
+		return loginView.asWidget();
 	}
 
 	/** Checks if there is valid session. */
@@ -77,12 +84,12 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 				public void onSuccess(UserDto userDto) {
 					if (userDto != null) {
 						user = userDto;
-					    view.showSuccess();
+					    loginView.showLoginSuccess();
 						// TODO fire event to notify others
 					} else {
 						// session expired
 						Cookies.removeCookie(SESSION_COOKIE_NAME);
-						view.showError(LoginError.SESSION_EXPIRED);
+						loginView.showError(LoginError.SESSION_EXPIRED);
 					}
 				}
 				
@@ -109,7 +116,7 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 				if (session != null) {
 					user = session.getUser();
 					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
-				    view.showSuccess();
+				    loginView.showLoginSuccess();
 					// TODO fire event to notify others
 //					History.back();
 				} else {
@@ -125,12 +132,7 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 		});
 	}
 
-	/** 
-	 * Tries to login with provided credentials.
-	 * 
-	 * @param username username
-	 * @param attemptedPassword password
-	 */
+	@Override
 	public void login(String username, String attemptedPassword) {
 		userService.login(username, attemptedPassword, new AsyncCallback<SessionDto>() {
 			@Override
@@ -138,11 +140,11 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 				if (session != null) {
 					user = session.getUser();
 				    Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
-				    view.showSuccess();
+				    loginView.showLoginSuccess();
 					// TODO fire event to notify others
 				} else {
 					user = null;
-					view.showError(LoginError.INCORRECT_USERNAME_PASSWORD);
+					loginView.showError(LoginError.INCORRECT_USERNAME_PASSWORD);
 				}
 			}
 			
@@ -162,10 +164,8 @@ public class LoginPresenter extends AbstractPresenter implements LogoutHandler {
 			userService.logout(sessionId, new AsyncCallback<Void>() {
 				@Override
 				public void onSuccess(Void result) {
-					// do nothing
-//					view.displayLogedInUser(null);
-					// TODO fire event
-					view.clear();
+					loginView.showLogoutSuccess();
+					// TODO fire event to notify others
 				}
 				
 				@Override

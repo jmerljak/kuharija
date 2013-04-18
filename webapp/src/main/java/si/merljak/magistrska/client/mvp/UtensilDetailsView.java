@@ -13,11 +13,11 @@ import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-/** 
+/**
  * Simple view that displays single utensil details.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public class UtensilDetailsView extends AbstractView {
 
@@ -32,15 +32,16 @@ public class UtensilDetailsView extends AbstractView {
 	private final FlowPanel content = new FlowPanel();
 	private final Paragraph message404 = new Paragraph(messages.utensilNotFoundTry());
 
-	public UtensilDetailsView () {
+	public UtensilDetailsView() {
 		FlowPanel main = new FlowPanel();
 		main.add(heading);
 		main.add(content);
 		initWidget(main);
 	}
 
-	/** 
+	/**
 	 * Displays utensil details or shows appropriate message if utensil not found.
+	 * 
 	 * @param utensil DTO or {@code null} if utensil not found
 	 */
 	public void displayUtensil(UtensilDto utensil) {
@@ -59,11 +60,14 @@ public class UtensilDetailsView extends AbstractView {
 			heading.setText(localizedName);
 			Kuharija.setWindowTitle(localizedName);
 
-			// TODO check for null URL
-			Image img = new Image(UTENSIL_IMG_FOLDER + utensil.getImageUrl());
-			img.setAltText(localizedName);
+			// image
+			String imageUrl = utensil.getImageUrl();
+			if (imageUrl != null) {
+				Image img = new Image(UTENSIL_IMG_FOLDER + imageUrl);
+				img.setAltText(localizedName);
+				content.add(img);
+			}
 
-			content.add(img);
 			content.add(new Paragraph(localizedDescription));
 			content.add(new Anchor(messages.searchByUtensil(localizedName.toLowerCase()), SearchPresenter.buildSearchByUtensilUrl(utensilName)));
 			content.add(new Anchor(messages.utensilReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl() + localizedName, "_blank"));

@@ -74,7 +74,10 @@ public interface CommonConstants extends Constants {
 	String password();
 	
 	@DefaultStringValue("You are now logged in.")
-	String logginSuccess();
+	String loginSuccess();
+	
+	@DefaultStringValue("You are now logged out.")
+	String logoutSuccess();
 
 
 	// maps - enumerator constants

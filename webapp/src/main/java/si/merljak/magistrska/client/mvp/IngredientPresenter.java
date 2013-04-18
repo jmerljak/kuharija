@@ -10,11 +10,11 @@ import si.merljak.magistrska.common.rpc.IngredientServiceAsync;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
-/** 
+/**
  * Presenter for ingredients index and details views.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public class IngredientPresenter extends AbstractPresenter {
 
@@ -27,7 +27,7 @@ public class IngredientPresenter extends AbstractPresenter {
 
 	// views
 	private IngredientIndexView indexView = new IngredientIndexView();
-    private IngredientDetailsView detailsView = new IngredientDetailsView();
+	private IngredientDetailsView detailsView = new IngredientDetailsView();
 
 	public IngredientPresenter(Language language, IngredientServiceAsync ingredientService) {
 		super(language);
@@ -53,7 +53,7 @@ public class IngredientPresenter extends AbstractPresenter {
 				detailsView.displayIngredient(ingredient);
 				detailsView.setVisible(true);
 			}
-	
+
 			@Override
 			public void onFailure(Throwable caught) {
 				Kuharija.handleException(caught);
@@ -63,6 +63,7 @@ public class IngredientPresenter extends AbstractPresenter {
 
 	/**
 	 * Builds proper anchor URL for ingredient.
+	 * 
 	 * @param name ingredient's name
 	 * @return anchor URL
 	 */

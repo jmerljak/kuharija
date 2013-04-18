@@ -14,12 +14,12 @@ import si.merljak.magistrska.common.enumeration.Unit;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Composite;
 
-/** 
+/**
  * This is the abstract class that serves as a base for all views.
  * It defines some common constants and convenience methods.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public abstract class AbstractView extends Composite {
 
@@ -59,7 +59,7 @@ public abstract class AbstractView extends Composite {
 		return constants.unitMap().get(unit.name());
 	}
 
-	/** 
+	/**
 	 * Formats time/duration from number of minutes.
 	 * 
 	 * @param minutes duration in minutes
@@ -71,7 +71,7 @@ public abstract class AbstractView extends Composite {
 			int hours = minutes / 60;
 			minutes = minutes % 60;
 			if (hours > 0) {
-				timeString += Integer.toString(hours) + " h "; 
+				timeString += Integer.toString(hours) + " h ";
 			}
 			if (minutes > 0) {
 				timeString += Integer.toString(minutes) + " min";
@@ -88,7 +88,7 @@ public abstract class AbstractView extends Composite {
 	/** Locale sensitive string comparator */
 	protected class LocaleSensitiveComparator implements Comparator<String> {
 		public native int compare(String source, String target) /*-{
-			return source.localeCompare(target);
+	    	return source.localeCompare(target);
 		}-*/;
 	}
 }

@@ -14,11 +14,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-/** 
+/**
  * Simple view that displays single ingredient details.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public class IngredientDetailsView extends AbstractView {
 
@@ -33,15 +33,16 @@ public class IngredientDetailsView extends AbstractView {
 	private final FlowPanel content = new FlowPanel();
 	private final Paragraph message404 = new Paragraph(messages.ingredientNotFoundTry());
 
-	public IngredientDetailsView () {
+	public IngredientDetailsView() {
 		FlowPanel main = new FlowPanel();
 		main.add(heading);
 		main.add(content);
 		initWidget(main);
 	}
 
-	/** 
+	/**
 	 * Displays single ingredient or shows appropriate message if ingredient not found.
+	 * 
 	 * @param ingredient DTO or {@code null} if ingredient not found
 	 */
 	public void displayIngredient(IngredientDto ingredient) {
@@ -59,12 +60,15 @@ public class IngredientDetailsView extends AbstractView {
 			// heading and title
 			heading.setText(localizedName);
 			Kuharija.setWindowTitle(localizedName);
-			
-			// TODO check for null URL
-			Image img = new Image(INGREDIENT_IMG_FOLDER + ingredient.getImageUrl());
-			img.setAltText(localizedName);
 
-			content.add(img);
+			// image
+			String imageUrl = ingredient.getImageUrl();
+			if (imageUrl != null) {
+				Image img = new Image(INGREDIENT_IMG_FOLDER + imageUrl);
+				img.setAltText(localizedName);
+				content.add(img);
+			}
+
 			content.add(new Paragraph(localizedDescription));
 			content.add(new Anchor(messages.searchByIngredient(localizedName.toLowerCase()), SearchPresenter.buildSearchByIngredientUrl(ingredientName)));
 			content.add(new Anchor(messages.ingredientReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl() + localizedName, "_blank"));

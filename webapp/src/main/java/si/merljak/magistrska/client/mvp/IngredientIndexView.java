@@ -16,18 +16,18 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-/** 
+/**
  * Simple view that lists all ingredients in a localized and alphabetically sorted index.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public class IngredientIndexView extends AbstractView {
 
 	// i18n
 	private final IngredientsConstants ingredientsConstants = Kuharija.ingredientsConstants;
 
-	public IngredientIndexView () {
+	public IngredientIndexView() {
 		// generate inverse (localized value -> key) ingredients map
 		Map<String, String> ingredientMap = ingredientsConstants.ingredientMap();
 		Map<String, String> inverseMap = new HashMap<String, String>();

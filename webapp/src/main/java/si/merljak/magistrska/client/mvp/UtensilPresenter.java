@@ -10,11 +10,11 @@ import si.merljak.magistrska.common.rpc.IngredientServiceAsync;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
-/** 
+/**
  * Presenter for utensils index and details views.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public class UtensilPresenter extends AbstractPresenter {
 
@@ -27,7 +27,7 @@ public class UtensilPresenter extends AbstractPresenter {
 
 	// views
 	private UtensilIndexView indexView = new UtensilIndexView();
-    private UtensilDetailsView detailsView = new UtensilDetailsView();
+	private UtensilDetailsView detailsView = new UtensilDetailsView();
 
 	public UtensilPresenter(Language language, IngredientServiceAsync ingredientService) {
 		super(language);
@@ -63,6 +63,7 @@ public class UtensilPresenter extends AbstractPresenter {
 
 	/**
 	 * Builds proper anchor URL for utensil.
+	 * 
 	 * @param name utensil's name
 	 * @return anchor URL
 	 */

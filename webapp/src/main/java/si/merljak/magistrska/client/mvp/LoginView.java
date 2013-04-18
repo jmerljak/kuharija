@@ -1,5 +1,6 @@
 package si.merljak.magistrska.client.mvp;
 
+import si.merljak.magistrska.client.handler.LoginHandler;
 import si.merljak.magistrska.common.enumeration.LoginError;
 
 import com.github.gwtbootstrap.client.ui.Alert;
@@ -18,13 +19,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 
-/** 
+/**
  * Simple view with login form.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
-public class LoginView extends AbstractView implements LoginPresenter.View {
+public class LoginView extends AbstractView implements LoginPresenter.LoginView {
 
 	// widgets
 	private final Alert alertPlaceholder = new Alert();
@@ -32,7 +33,7 @@ public class LoginView extends AbstractView implements LoginPresenter.View {
 	private final PasswordTextBox passwordBox = new PasswordTextBox();
 	private final Button loginButton = new Button(constants.login());
 
-	private LoginPresenter presenter;
+	private LoginHandler handler;
 
 	public LoginView() {
 		// alert placeholder with ARIA alert role
@@ -44,8 +45,8 @@ public class LoginView extends AbstractView implements LoginPresenter.View {
 		usernameBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER && presenter != null) {
-					presenter.login(usernameBox.getText(), passwordBox.getText());
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER && handler != null) {
+					handler.login(usernameBox.getText(), passwordBox.getText());
 				}
 			}
 		});
@@ -54,8 +55,8 @@ public class LoginView extends AbstractView implements LoginPresenter.View {
 		passwordBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER && presenter != null) {
-					presenter.login(usernameBox.getText(), passwordBox.getText());
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER && handler != null) {
+					handler.login(usernameBox.getText(), passwordBox.getText());
 				}
 			}
 		});
@@ -65,7 +66,9 @@ public class LoginView extends AbstractView implements LoginPresenter.View {
 		loginButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				presenter.login(usernameBox.getText(), passwordBox.getText());
+				if (handler != null) {
+					handler.login(usernameBox.getText(), passwordBox.getText());
+				}
 			}
 		});
 
@@ -87,6 +90,11 @@ public class LoginView extends AbstractView implements LoginPresenter.View {
 	}
 
 	@Override
+	public void setLoginHandler(LoginHandler loginHandler) {
+		this.handler = loginHandler;
+	}
+
+	@Override
 	public void clear() {
 		usernameBox.setValue("");
 		passwordBox.setValue("");
@@ -102,16 +110,21 @@ public class LoginView extends AbstractView implements LoginPresenter.View {
 	}
 
 	@Override
-	public void showSuccess() {
+	public void showLoginSuccess() {
 		usernameBox.setValue("");
 		passwordBox.setValue("");
 		alertPlaceholder.setType(AlertType.SUCCESS);
-		alertPlaceholder.setText(constants.logginSuccess());
+		alertPlaceholder.setText(constants.loginSuccess());
 		alertPlaceholder.setVisible(true);
 	}
 
 	@Override
-	public void setPresenter(LoginPresenter presenter) {
-		this.presenter = presenter;
+	public void showLogoutSuccess() {
+		usernameBox.setValue("");
+		passwordBox.setValue("");
+		alertPlaceholder.setType(AlertType.INFO);
+		alertPlaceholder.setText(constants.logoutSuccess());
+		alertPlaceholder.setVisible(true);
+
 	}
 }
