@@ -8,14 +8,16 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AudioElement;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.Audio;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 
 public class AudioWidget extends Composite {
 
-	private static final CommonMessages messages = Kuharija.messages;
+	private final CommonMessages messages = Kuharija.messages;
 
-	protected static final String AUDIO_FOLDER = GWT.getHostPageBaseURL() + "audio/";
+	private final String AUDIO_FOLDER = GWT.getHostPageBaseURL() + "audio/";
 
 	private Audio audioWidget;
 
@@ -28,19 +30,34 @@ public class AudioWidget extends Composite {
 			// add all available sources (mp3, ogg, ...)
 			for (String srcUrl : audioDto.getUrls()) {
 				String fileExt = srcUrl.substring(srcUrl.length() - 3, srcUrl.length());
-				String audioType = fileExt.equalsIgnoreCase("mp3") ? AudioElement.TYPE_MP3 : AudioElement.TYPE_OGG;
-				audioWidget.addSource(AUDIO_FOLDER + srcUrl, audioType);
+				if (fileExt.equalsIgnoreCase("mp3")) {
+					audioWidget.addSource(AUDIO_FOLDER + srcUrl, AudioElement.TYPE_MP3);
+				} else if (fileExt.equalsIgnoreCase("ogg")) {
+					audioWidget.addSource(AUDIO_FOLDER + srcUrl, AudioElement.TYPE_OGG);
+				} else if (fileExt.equalsIgnoreCase("wav")) {
+					audioWidget.addSource(AUDIO_FOLDER + srcUrl, AudioElement.TYPE_WAV);
+				} else {
+					audioWidget.addSource(AUDIO_FOLDER + srcUrl);
+				}
 			}
 
 			initWidget(audioWidget);
 		} else {
-			initWidget(new Label(messages.htmlAudioNotSupported()));
-			// TODO add links for download
+			FlowPanel fallbackPanel = new FlowPanel();
+			fallbackPanel.add(new Label(messages.htmlAudioNotSupported()));
+			// TODO add links for download 
+			// always?
+			for (String srcUrl : audioDto.getUrls()) {
+				fallbackPanel.add(new Anchor(srcUrl, AUDIO_FOLDER + srcUrl));
+			}
 			// remind to upgrade browser
+			initWidget(fallbackPanel);
 		}
 	}
 
 	public void pause() {
-		audioWidget.pause();
+		if (audioWidget != null) {
+			audioWidget.pause();
+		}
 	}
 }

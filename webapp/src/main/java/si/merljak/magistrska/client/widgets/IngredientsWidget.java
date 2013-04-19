@@ -1,6 +1,7 @@
 package si.merljak.magistrska.client.widgets;
 
 import java.util.List;
+import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
@@ -13,49 +14,56 @@ import si.merljak.magistrska.common.enumeration.Unit;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
-// TODO cleanup, refactorize
+/**
+ * Widget displaying recipe ingredients.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
 public class IngredientsWidget extends Composite {
-	private static final CommonConstants constants = Kuharija.constants;
-	private static final IngredientsConstants ingredientsConstants = GWT.create(IngredientsConstants.class);
-	private static final NumberFormat numberFormat = Kuharija.numberFormat;
 
-	private Heading heading = new Heading(2, constants.ingredients());
-	private UnorderedList ingredientsList = new UnorderedList();
-	private Button buttonPlus = new Button("+");
-	private Button buttonMinus = new Button("-");
-	private TextBox textBox = new TextBox();
-	
+	// i18n
+	private final CommonConstants constants = Kuharija.constants;
+	private final IngredientsConstants ingredientsConstants = Kuharija.ingredientsConstants;
+	private final Map<String, String> ingredientMap = ingredientsConstants.ingredientMap();
+	private final Map<String, String> unitMap = constants.unitMap();
+	private final NumberFormat numberFormat = Kuharija.numberFormat;
+
+	// widgets
+	private final Heading heading = new Heading(2, ingredientsConstants.ingredients());
+	private final UnorderedList ingredientsList = new UnorderedList();
+	private final Button buttonPlus = new Button("+");
+	private final Button buttonMinus = new Button("-");
+	private final TextBox numberInput = new TextBox();
+	private final CheckBox nonMetricCheckBox = new CheckBox("non metric");
+
+	// 
 	private List<IngredientDto> ingredients;
 	private int numOfPeopleBase;
 	private int numOfPeople;
-	private CheckBox convertToNonMetric = new CheckBox("non metric");
 
-	public IngredientsWidget(List<IngredientDto> ingredients, int numOfMeals) {
-		this.ingredients = ingredients;
-		this.numOfPeopleBase = numOfMeals;
-		this.numOfPeople = numOfMeals;
-
-		textBox.setStyleName("span7");
-		textBox.getElement().setId("appendedInputButtons");
-		textBox.addKeyUpHandler(new KeyUpHandler() {
+	public IngredientsWidget() {
+		numberInput.setStyleName("span7");
+		numberInput.getElement().setId("appendedInputButtons");
+		numberInput.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				try {
-					numOfPeople = Integer.parseInt(textBox.getText());
+					numOfPeople = Integer.parseInt(numberInput.getText());
 					updateList();
 				} catch (Exception e) {
 					addStyleName("control-group error");
@@ -83,7 +91,7 @@ public class IngredientsWidget extends Composite {
 			}
 		});
 		
-		convertToNonMetric.addClickHandler(new ClickHandler() {
+		nonMetricCheckBox.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				updateList();
@@ -92,7 +100,7 @@ public class IngredientsWidget extends Composite {
 
 		FlowPanel formPanel = new FlowPanel();
 		formPanel.setStyleName("input-append");
-		formPanel.add(textBox);
+		formPanel.add(numberInput);
 		formPanel.add(buttonMinus);
 		formPanel.add(buttonPlus);
 
@@ -100,44 +108,56 @@ public class IngredientsWidget extends Composite {
 		panel.add(heading);
 		panel.add(ingredientsList);
 		panel.add(formPanel);
-		panel.add(convertToNonMetric);
+		panel.add(nonMetricCheckBox);
 		initWidget(panel);
+	}
 
+	public void setIngredients(List<IngredientDto> ingredients, int numOfMeals) {
+		this.ingredients = ingredients;
+		this.numOfPeopleBase = numOfMeals;
+		this.numOfPeople = numOfMeals;
 		updateList();
 	}
 
 	private void updateList() {
-		textBox.setText(numOfPeople + "");
+		numberInput.setText(Integer.toString(numOfPeople));
 		removeStyleName("control-group error");
 
 		ingredientsList.clear();
 		for (IngredientDto ingredient : ingredients) {
+			ListItem listItem = new ListItem();
+			ingredientsList.add(listItem);
+
+			// name
+			String name = ingredient.getName();
+			String localizedName = ingredientMap.get(name).toLowerCase();
+			Anchor ingredientLink = new Anchor(localizedName, IngredientPresenter.buildIngredientUrl(name));
+			listItem.add(ingredientLink);
+
+			// amount & unit
 			Double amount = ingredient.getAmount();
 			Unit unit = ingredient.getUnit();
-			final String ingredientName = ingredient.getName();
-			String ingredientNameString = ingredientsConstants.ingredientMap().get(ingredientName).toLowerCase();
-			if (amount == null) {
-				// uncountable
-				if (convertToNonMetric.getValue()) {
-					unit = Calc.getNonMetricUnit(unit);
-				}
+			boolean convertToNonMetric = nonMetricCheckBox.getValue();
 
-				Anchor label = new Anchor(ingredientNameString, IngredientPresenter.buildIngredientUrl(ingredientName));
-				ingredientsList.add(new ListItem(label, new Label(" " + constants.unitMap().get(unit.name()))));
-				continue;
+			if (amount != null) {
+				double calculatedAmount = amount.doubleValue() * numOfPeople / numOfPeopleBase;
+				if (convertToNonMetric) {
+					calculatedAmount = Calc.convertToNonMetric(unit, calculatedAmount);
+				}
+				String amountString = numberFormat.format(calculatedAmount);
+				Element span = DOM.createSpan();
+				span.setInnerText(" " + amountString + " ");
+				listItem.getElement().appendChild(span);
 			}
-			
-			amount = ingredient.getAmount()  * numOfPeople / numOfPeopleBase;
-			
-			if (convertToNonMetric.getValue()) {
-				amount = Calc.convertToNonMetric(unit, amount).doubleValue();
+
+			if (convertToNonMetric) {
 				unit = Calc.getNonMetricUnit(unit);
 			}
+			String localizedUnitName = unitMap.get(unit.name());
+			Element span = DOM.createSpan();
+			span.setInnerText(" " + localizedUnitName + " ");
+			listItem.getElement().appendChild(span);
 			
-			Anchor label = new Anchor(
-					ingredientNameString + " " + numberFormat.format(amount) + " " + constants.unitMap().get(unit.name()),
-					IngredientPresenter.buildIngredientUrl(ingredientName));
-			ingredientsList.add(new ListItem(label));
 		}
 		
 	}

@@ -35,9 +35,16 @@ public class VideoWidget extends Composite {
 
 			// add all available sources (webm, mp4, ...)
 			for (String srcUrl : videoDto.getUrls()) {
-				String fileExt = srcUrl.substring(srcUrl.length() - 3, srcUrl.length());
-				String videoType = fileExt.equalsIgnoreCase("mp4") ? VideoElement.TYPE_MP4 : VideoElement.TYPE_WEBM;
-				videoWidget.addSource(VIDEO_FOLDER + srcUrl, videoType);
+				String fileExt = srcUrl.substring(srcUrl.length() - 4, srcUrl.length());
+				if (fileExt.equalsIgnoreCase(".mp4")) {
+					videoWidget.addSource(VIDEO_FOLDER + srcUrl, VideoElement.TYPE_MP4);
+				} else if (fileExt.equalsIgnoreCase("webm")) {
+					videoWidget.addSource(VIDEO_FOLDER + srcUrl, VideoElement.TYPE_WEBM);
+				} else if (fileExt.equalsIgnoreCase(".ogg")){
+					videoWidget.addSource(VIDEO_FOLDER + srcUrl, VideoElement.TYPE_OGG);
+				} else {
+					videoWidget.addSource(VIDEO_FOLDER + srcUrl);
+				}
 			}
 
 			// subtitles
@@ -67,6 +74,8 @@ public class VideoWidget extends Composite {
 	}
 
 	public void pause() {
-		videoWidget.pause();
+		if (videoWidget != null) {
+			videoWidget.pause();
+		}
 	}
 }

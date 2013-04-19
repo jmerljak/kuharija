@@ -18,9 +18,6 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Author")
 	String recipeAuthor();
 
-	@DefaultStringValue("Ingredients")
-	String ingredients();
-
 	@DefaultStringValue("Tools")
 	String tools();
 

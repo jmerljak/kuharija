@@ -64,7 +64,7 @@ public class Calc {
 		}
 	}
 
-	public static Number convertToNonMetric(Unit unit, double amount) {
+	public static double convertToNonMetric(Unit unit, double amount) {
 		switch (unit) {
 			case KG:
 				return amount / 0.45359237;

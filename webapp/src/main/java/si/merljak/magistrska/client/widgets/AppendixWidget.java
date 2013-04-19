@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Label;
  * Simple widget for displaying tips, health info, important notes etc.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public class AppendixWidget extends Label {
 
