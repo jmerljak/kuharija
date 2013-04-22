@@ -39,6 +39,9 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Number of meals")
 	String numberOfMeals();
 
+	@DefaultStringValue("Use metric units")
+	String metricUnits();
+
 	@DefaultStringValue("Comments")
 	String comments();
 

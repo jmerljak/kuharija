@@ -4,8 +4,9 @@ import si.merljak.magistrska.common.enumeration.Unit;
 
 public class Calc {
 
-	public static Unit getMetricUnit(Unit unit) {
-		switch (unit) {
+	public static Unit getUnit(Unit unit, boolean toMetric) {
+		if (toMetric) {
+			switch (unit) {
 			case OZ:
 				return Unit.G;
 			case LB:
@@ -21,32 +22,9 @@ public class Calc {
 				return Unit.ML;
 			default:
 				return unit;
-		}
-	}
-
-	public static Number convertToMetric(Unit unit, double amount) {
-		switch (unit) {
-			case OZ:
-				return amount * 28;
-			case LB:
-				return amount * 0.45359237;
-			case F:
-				return (amount - 32.0 ) * 5 / 9;
-			case PT:
-				return amount * 0.473;
-			case CUP:
-				return amount * 2.4;
-			case TABLESPOON:
-				return amount * 15;
-			case TEASPOON:
-				return amount * 5;
-			default:
-				return amount;
-		}
-	}
-
-	public static Unit getNonMetricUnit(Unit unit) {
-		switch (unit) {
+			}
+		} else {
+			switch (unit) {
 			case KG:
 				return Unit.LB;
 			case G:
@@ -61,11 +39,34 @@ public class Calc {
 				return Unit.F;
 			default:
 				return unit;
+			}
 		}
 	}
 
-	public static double convertToNonMetric(Unit unit, double amount) {
-		switch (unit) {
+	public static Double calculateAmount(Unit unit, Double amount, boolean toMetric) {
+		if (amount == null) {
+			return null;
+		} else if (toMetric) {
+			switch (unit) {
+			case OZ:
+				return amount * 28;
+			case LB:
+				return amount * 0.45359237;
+			case F:
+				return (amount - 32.0) * 5 / 9;
+			case PT:
+				return amount * 0.473;
+			case CUP:
+				return amount * 2.4;
+			case TABLESPOON:
+				return amount * 15;
+			case TEASPOON:
+				return amount * 5;
+			default:
+				return amount;
+			}
+		} else {
+			switch (unit) {
 			case KG:
 				return amount / 0.45359237;
 			case G:
@@ -80,6 +81,7 @@ public class Calc {
 				return amount * 9.0 / 5 + 32;
 			default:
 				return amount;
+			}
 		}
 	}
 }

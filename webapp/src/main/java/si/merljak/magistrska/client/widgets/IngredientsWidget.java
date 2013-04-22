@@ -49,12 +49,12 @@ public class IngredientsWidget extends Composite {
 	private final Button buttonPlus = new Button("+");
 	private final Button buttonMinus = new Button("-");
 	private final TextBox numberInput = new TextBox();
-	private final CheckBox nonMetricCheckBox = new CheckBox("non metric");
+	private final CheckBox metricCheckBox = new CheckBox(constants.metricUnits());
 
-	// 
+	// variables
 	private List<IngredientDto> ingredients;
-	private int numOfPeopleBase;
-	private int numOfPeople;
+	private int numOfMealsBase;
+	private int numOfMeals;
 
 	public IngredientsWidget() {
 		numberInput.setStyleName("span7");
@@ -63,7 +63,7 @@ public class IngredientsWidget extends Composite {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				try {
-					numOfPeople = Integer.parseInt(numberInput.getText());
+					numOfMeals = Integer.parseInt(numberInput.getText());
 					updateList();
 				} catch (Exception e) {
 					addStyleName("control-group error");
@@ -75,8 +75,8 @@ public class IngredientsWidget extends Composite {
 		buttonMinus.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				if (numOfPeople > 1) {
-					numOfPeople--;
+				if (numOfMeals > 1) {
+					numOfMeals--;
 					updateList();
 				}
 			}
@@ -86,12 +86,12 @@ public class IngredientsWidget extends Composite {
 		buttonPlus.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				numOfPeople++;
+				numOfMeals++;
 				updateList();
 			}
 		});
-		
-		nonMetricCheckBox.addClickHandler(new ClickHandler() {
+
+		metricCheckBox.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				updateList();
@@ -108,19 +108,20 @@ public class IngredientsWidget extends Composite {
 		panel.add(heading);
 		panel.add(ingredientsList);
 		panel.add(formPanel);
-		panel.add(nonMetricCheckBox);
+		panel.add(metricCheckBox);
 		initWidget(panel);
 	}
 
-	public void setIngredients(List<IngredientDto> ingredients, int numOfMeals) {
+	public void setIngredients(List<IngredientDto> ingredients, int numOfMeals, boolean useMetric) {
 		this.ingredients = ingredients;
-		this.numOfPeopleBase = numOfMeals;
-		this.numOfPeople = numOfMeals;
+		this.numOfMealsBase = numOfMeals;
+		this.numOfMeals = numOfMeals;
+		metricCheckBox.setValue(useMetric);
 		updateList();
 	}
 
 	private void updateList() {
-		numberInput.setText(Integer.toString(numOfPeople));
+		numberInput.setText(Integer.toString(numOfMeals));
 		removeStyleName("control-group error");
 
 		ingredientsList.clear();
@@ -137,22 +138,19 @@ public class IngredientsWidget extends Composite {
 			// amount & unit
 			Double amount = ingredient.getAmount();
 			Unit unit = ingredient.getUnit();
-			boolean convertToNonMetric = nonMetricCheckBox.getValue();
+			boolean useMetric = metricCheckBox.getValue();
 
 			if (amount != null) {
-				double calculatedAmount = amount.doubleValue() * numOfPeople / numOfPeopleBase;
-				if (convertToNonMetric) {
-					calculatedAmount = Calc.convertToNonMetric(unit, calculatedAmount);
-				}
+				double calculatedAmount = amount.doubleValue() * numOfMeals / numOfMealsBase;
+				calculatedAmount = Calc.calculateAmount(unit, calculatedAmount, useMetric);
+
 				String amountString = numberFormat.format(calculatedAmount);
 				Element span = DOM.createSpan();
 				span.setInnerText(" " + amountString + " ");
 				listItem.getElement().appendChild(span);
 			}
 
-			if (convertToNonMetric) {
-				unit = Calc.getNonMetricUnit(unit);
-			}
+			unit = Calc.getUnit(unit, useMetric);
 			String localizedUnitName = unitMap.get(unit.name());
 			Element span = DOM.createSpan();
 			span.setInnerText(" " + localizedUnitName + " ");

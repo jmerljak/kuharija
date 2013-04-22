@@ -62,11 +62,14 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		center.add(mainPanel);
 		center.add(commentsPanel);
 
+		FlowPanel fluid = new FlowPanel();
+		fluid.setStyleName("row-fluid");
+		fluid.add(side);
+		fluid.add(center);
+
 		FlowPanel main = new FlowPanel();
-		main.setStyleName("row-fluid");
 		main.add(heading);
-		main.add(side);
-		main.add(center);
+		main.add(fluid);
 		initWidget(main);
 	}
 
@@ -100,7 +103,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		recipeDetailsPanel.add(new Image(RECIPE_IMG_FOLDER + recipe.getImageUrl()));
 
 		// ingredients
-		ingredientsWidget.setIngredients(recipe.getIngredients(), recipe.getNumberOfMeals());
+		ingredientsWidget.setIngredients(recipe.getIngredients(), recipe.getNumberOfMeals(), true);
 
 		// utensils
 		utensilsWidget.update(recipe.getUtensils());
