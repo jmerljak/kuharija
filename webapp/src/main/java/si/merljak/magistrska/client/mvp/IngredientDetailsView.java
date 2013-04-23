@@ -10,6 +10,7 @@ import si.merljak.magistrska.common.dto.IngredientDto;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -66,6 +67,7 @@ public class IngredientDetailsView extends AbstractView {
 			if (imageUrl != null) {
 				Image img = new Image(INGREDIENT_IMG_FOLDER + imageUrl);
 				img.setAltText(localizedName);
+				img.setType(ImageType.ROUNDED);
 				content.add(img);
 			}
 

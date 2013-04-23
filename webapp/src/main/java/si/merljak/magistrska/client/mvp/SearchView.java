@@ -7,8 +7,11 @@ import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.dto.RecipeListDto;
 
-import com.github.gwtbootstrap.client.ui.Form;
+import com.github.gwtbootstrap.client.ui.AppendButton;
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.Image;
+import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -17,18 +20,18 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SearchView extends AbstractView {
 
-	private TextBox searchBox = new TextBox();
-	private FlowPanel resultsPanel = new FlowPanel();
+	// widgets
+	private final TextBox searchBox = new TextBox();
+	private final FlowPanel resultsPanel = new FlowPanel();
 
 	public SearchView () {
-		searchBox.getElement().setId("appendedInputButtons");
+		searchBox.setTitle("search string");
 		searchBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
@@ -39,7 +42,7 @@ public class SearchView extends AbstractView {
 		});
 
 		Button searchButton = new Button(constants.search());
-		searchButton.setStyleName("btn");
+		searchButton.setStyleName(Constants.BTN);
 		searchButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -47,8 +50,7 @@ public class SearchView extends AbstractView {
 			}
 		});
 
-		Form formPanel = new Form();
-		formPanel.setStyleName("input-append");
+		AppendButton formPanel = new AppendButton();
 		formPanel.add(searchBox);
 		formPanel.add(searchButton);
 
@@ -83,6 +85,7 @@ public class SearchView extends AbstractView {
 			imageUrl = imageUrl != null ? RECIPE_THUMB_IMG_FOLDER + imageUrl : ""; // TODO
 			Image image = new Image(imageUrl);
 			image.setAltText(heading);
+			image.setType(ImageType.POLAROID);
 
 			Anchor link = new Anchor(heading, RecipePresenter.buildRecipeUrl(recipe.getId()));
 			link.getElement().appendChild(image.getElement());

@@ -11,19 +11,20 @@ import si.merljak.magistrska.client.utils.Calc;
 import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.enumeration.Unit;
 
+import com.github.gwtbootstrap.client.ui.AppendButton;
+import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
+import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -46,6 +47,7 @@ public class IngredientsWidget extends Composite {
 	// widgets
 	private final Heading heading = new Heading(2, ingredientsConstants.ingredients());
 	private final UnorderedList ingredientsList = new UnorderedList();
+	private final AppendButton formPanel = new AppendButton();
 	private final Button buttonPlus = new Button("+");
 	private final Button buttonMinus = new Button("-");
 	private final TextBox numberInput = new TextBox();
@@ -57,8 +59,6 @@ public class IngredientsWidget extends Composite {
 	private int numOfMeals;
 
 	public IngredientsWidget() {
-		numberInput.setStyleName("span7");
-		numberInput.getElement().setId("appendedInputButtons");
 		numberInput.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
@@ -66,12 +66,12 @@ public class IngredientsWidget extends Composite {
 					numOfMeals = Integer.parseInt(numberInput.getText());
 					updateList();
 				} catch (Exception e) {
-					addStyleName("control-group error");
+					formPanel.addStyleName("error");
 				}
 			}
 		});
 		
-		buttonMinus.setStyleName("btn");
+		buttonMinus.setStyleName(Constants.BTN);
 		buttonMinus.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -82,7 +82,7 @@ public class IngredientsWidget extends Composite {
 			}
 		});
 
-		buttonPlus.setStyleName("btn");
+		buttonPlus.setStyleName(Constants.BTN);
 		buttonPlus.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -98,8 +98,7 @@ public class IngredientsWidget extends Composite {
 			}
 		});
 
-		FlowPanel formPanel = new FlowPanel();
-		formPanel.setStyleName("input-append");
+		formPanel.addStyleName(Constants.CONTROL_GROUP);
 		formPanel.add(numberInput);
 		formPanel.add(buttonMinus);
 		formPanel.add(buttonPlus);
@@ -122,7 +121,7 @@ public class IngredientsWidget extends Composite {
 
 	private void updateList() {
 		numberInput.setText(Integer.toString(numOfMeals));
-		removeStyleName("control-group error");
+		formPanel.removeStyleName("error");
 
 		ingredientsList.clear();
 		for (IngredientDto ingredient : ingredients) {
@@ -143,19 +142,12 @@ public class IngredientsWidget extends Composite {
 			if (amount != null) {
 				double calculatedAmount = amount.doubleValue() * numOfMeals / numOfMealsBase;
 				calculatedAmount = Calc.calculateAmount(unit, calculatedAmount, useMetric);
-
-				String amountString = numberFormat.format(calculatedAmount);
-				Element span = DOM.createSpan();
-				span.setInnerText(" " + amountString + " ");
-				listItem.getElement().appendChild(span);
+				listItem.add(new InlineLabel(" " + numberFormat.format(calculatedAmount)));
 			}
 
 			unit = Calc.getUnit(unit, useMetric);
 			String localizedUnitName = unitMap.get(unit.name());
-			Element span = DOM.createSpan();
-			span.setInnerText(" " + localizedUnitName + " ");
-			listItem.getElement().appendChild(span);
-			
+			listItem.add(new InlineLabel(" " + localizedUnitName));
 		}
 		
 	}

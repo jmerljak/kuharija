@@ -19,6 +19,7 @@ import si.merljak.magistrska.common.dto.VideoDto;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
@@ -26,7 +27,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -56,19 +56,19 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 
 	public RecipeView() {
 		FlowPanel side = new FlowPanel();
-		side.setStyleName("span3");
+		side.setStyleName(Constants.SPAN + 3);
 		side.add(ingredientsWidget);
 		side.add(utensilsWidget);
 
 		FlowPanel center = new FlowPanel();
-		center.setStyleName("span9");
+		center.setStyleName(Constants.SPAN + 9);
 		center.add(recipeDetailsPanel);
 		center.add(tabsWidget);
 		center.add(mainPanel);
 		center.add(commentsPanel);
 
 		FlowPanel fluid = new FlowPanel();
-		fluid.setStyleName("row-fluid");
+		fluid.setStyleName(Constants.ROW_FLUID);
 		fluid.add(side);
 		fluid.add(center);
 
@@ -136,7 +136,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 
 		// texts
 		for (TextDto text : recipe.getTexts()) {
-			panelBasic.add(new HTML(text.getContent()));
+			panelBasic.add(new Paragraph(text.getContent()));
 		}
 
 		for (AudioDto audioDto : recipe.getAudios()) {
@@ -168,7 +168,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		final int page = step.getPage();
 
 		Button btnPrevious = new Button("← previous");
-		btnPrevious.setStyleName("btn");
+		btnPrevious.setStyleName(Constants.BTN);
 		btnPrevious.setEnabled(page > 1);
 		btnPrevious.addClickHandler(new ClickHandler() {
 			@Override
@@ -179,7 +179,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		});
 
 		Button btnNext = new Button("next →");
-		btnNext.setStyleName("btn");
+		btnNext.setStyleName(Constants.BTN);
 		btnNext.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {

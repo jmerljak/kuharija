@@ -7,6 +7,7 @@ import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Form;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.constants.AlertType;
+import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -62,7 +63,7 @@ public class LoginView extends AbstractView implements LoginPresenter.LoginView 
 		});
 
 		// login button
-		loginButton.setStyleName("btn");
+		loginButton.setStyleName(Constants.BTN);
 		loginButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -80,7 +81,7 @@ public class LoginView extends AbstractView implements LoginPresenter.LoginView 
 		loginForm.add(new Label(constants.password()));
 		loginForm.add(passwordBox);
 		loginForm.add(loginButton);
-
+		
 		// layout
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.login()));

@@ -37,7 +37,6 @@ public class ComparePresenter extends AbstractPresenter {
 
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
-		searchView.setVisible(false);
 		if (parameters.containsKey(PARAMETER_RECIPE_ID_LIST)) {
 			Set<Long> recipeIdList = new HashSet<Long>();
 			for (String idString : splitter.split(parameters.get(PARAMETER_RECIPE_ID_LIST))) {
@@ -57,10 +56,12 @@ public class ComparePresenter extends AbstractPresenter {
 	}
 
 	private void getRecipes(Set<Long> recipeIdList) {
+		searchView.setVisible(false);
 		recipeService.getRecipes(recipeIdList, language, new AsyncCallback<List<RecipeDetailsDto>>() {
 			@Override
 			public void onSuccess(List<RecipeDetailsDto> result) {
 				searchView.displaySearchResults(result);
+				searchView.setVisible(true);
 			}
 			
 			@Override

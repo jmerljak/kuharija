@@ -7,15 +7,14 @@ import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 
 import com.github.gwtbootstrap.client.ui.NavTabs;
+import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.aria.client.SelectedValue;
 import com.google.gwt.aria.client.TabRole;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 
 public class TabsWidget extends Composite {
@@ -40,8 +39,10 @@ public class TabsWidget extends Composite {
 		this.handler = tabChangeHandler;
 		
 		// anchors
-		Anchor anchorBasic = new Anchor(" " + constants.tabBasic(), "#basic");
-		anchorBasic.getElement().insertFirst(getGlyphIcon("icon-list"));
+		IconAnchor anchorBasic = new IconAnchor();
+		anchorBasic.setHref("#basic");
+		anchorBasic.setIcon(IconType.LIST);
+		anchorBasic.setText(" " + constants.tabBasic());
 		anchorBasic.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -52,8 +53,10 @@ public class TabsWidget extends Composite {
 			}
 		});
 
-		Anchor anchorSteps = new Anchor(" " + constants.tabDetails(), "#steps");
-		anchorSteps.getElement().insertFirst(getGlyphIcon("icon-list-alt"));
+		IconAnchor anchorSteps = new IconAnchor();
+		anchorSteps.setHref("#steps");
+		anchorSteps.setIcon(IconType.LIST_ALT);
+		anchorSteps.setText(" " + constants.tabDetails());
 		anchorSteps.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -64,8 +67,10 @@ public class TabsWidget extends Composite {
 			}
 		});
 
-		Anchor anchorVideo = new Anchor(" " + constants.tabVideo(), "#video");
-		anchorVideo.getElement().insertFirst(getGlyphIcon("icon-film"));
+		IconAnchor anchorVideo = new IconAnchor();
+		anchorVideo.setHref("#video");
+		anchorVideo.setIcon(IconType.FILM);
+		anchorVideo.setText(" " + constants.tabVideo());
 		anchorVideo.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -76,8 +81,10 @@ public class TabsWidget extends Composite {
 			}
 		});
 
-		Anchor anchorAudio = new Anchor(" " + constants.tabAudio(), "#audio");
-		anchorAudio.getElement().insertFirst(getGlyphIcon("icon-music"));
+		IconAnchor anchorAudio = new IconAnchor();
+		anchorAudio.setHref("#audio");
+		anchorAudio.setIcon(IconType.MUSIC);
+		anchorAudio.setText(" " + constants.tabAudio());
 		anchorAudio.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -113,17 +120,6 @@ public class TabsWidget extends Composite {
 		navTabs.add(tabVideo);
 		navTabs.add(tabAudio);
 		initWidget(navTabs);
-	}
-
-	/** 
-	 * Creates bootstrap glyph icon element.
-	 * @param cssClass glyph's class name
-	 * @return the created element
-	 */
-	private Element getGlyphIcon(String cssClass) {
-		Element glyphIcon = DOM.createElement("i");
-	    glyphIcon.setAttribute("class", cssClass);
-		return glyphIcon;
 	}
 
 	/**

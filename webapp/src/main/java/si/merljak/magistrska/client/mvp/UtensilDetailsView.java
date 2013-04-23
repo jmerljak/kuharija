@@ -10,6 +10,7 @@ import si.merljak.magistrska.common.dto.UtensilDto;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 
@@ -65,6 +66,7 @@ public class UtensilDetailsView extends AbstractView {
 			if (imageUrl != null) {
 				Image img = new Image(UTENSIL_IMG_FOLDER + imageUrl);
 				img.setAltText(localizedName);
+				img.setType(ImageType.ROUNDED);
 				content.add(img);
 			}
 
