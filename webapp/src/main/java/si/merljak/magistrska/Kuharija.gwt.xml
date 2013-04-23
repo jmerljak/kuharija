@@ -6,6 +6,9 @@
 	<inherits name="com.google.gwt.i18n.I18N"/>
 	<inherits name="com.google.gwt.user.User" />
 
+	<!-- Guava -->
+	<inherits name="com.google.common.base.Base"/>
+
 	<!-- Bootstrap module -->
 	<inherits name="com.github.gwtbootstrap.Bootstrap" />
 

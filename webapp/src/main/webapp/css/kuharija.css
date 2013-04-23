@@ -29,6 +29,7 @@ body {
 .resultEntry img {
 	max-height: 160px;
 	max-width: 200px;
+	display: block;
 }
 
 .resultEntry a {

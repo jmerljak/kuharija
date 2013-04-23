@@ -18,6 +18,7 @@ import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
@@ -30,12 +31,21 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 
+/**
+ * View for recipe details and cooking instructions.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
 public class RecipeView extends AbstractView implements TabChangeHandler {
 
-	// i18n
-
 	// widgets
-	private Heading heading = new Heading(HEADING_SIZE);
+	private final Heading heading = new Heading(HEADING_SIZE);
+	private final TabsWidget tabsWidget = new TabsWidget(this);
+	private final UtensilsWidget utensilsWidget = new UtensilsWidget();
+	private final IngredientsWidget ingredientsWidget = new IngredientsWidget();
+
+	private Paragraph notFoundMessage = new Paragraph("recipe not found, try select different language or search");
 	private FlowPanel recipeDetailsPanel = new FlowPanel();
 	private SimplePanel mainPanel = new SimplePanel();
 	private FlowPanel panelBasic = new FlowPanel();
@@ -43,17 +53,12 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 	private FlowPanel panelAudio = new FlowPanel();
 	private FlowPanel panelVideo = new FlowPanel();
 	private FlowPanel commentsPanel = new FlowPanel();
-	private final UtensilsWidget utensilsWidget = new UtensilsWidget();
-	private final IngredientsWidget ingredientsWidget = new IngredientsWidget();
 
 	public RecipeView() {
 		FlowPanel side = new FlowPanel();
 		side.setStyleName("span3");
 		side.add(ingredientsWidget);
 		side.add(utensilsWidget);
-		
-		TabsWidget tabsWidget = new TabsWidget(this);
-		tabsWidget.setActiveTab(TabsWidget.TAB_BASIC);
 
 		FlowPanel center = new FlowPanel();
 		center.setStyleName("span9");
@@ -67,8 +72,11 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		fluid.add(side);
 		fluid.add(center);
 
+		notFoundMessage.setVisible(false);
+
 		FlowPanel main = new FlowPanel();
 		main.add(heading);
+		main.add(notFoundMessage);
 		main.add(fluid);
 		initWidget(main);
 	}
@@ -82,11 +90,29 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		commentsPanel.clear();
 	}
 
-	public void displayRecipe(RecipeDetailsDto recipe) {
+	public void displayRecipe(RecipeDetailsDto recipe, String view) {
 		clearAll();
+		notFoundMessage.setVisible(recipe == null);
 		if (recipe == null) {
+			heading.setText(messages.oops());
+			Kuharija.setWindowTitle(null);
 			// TODO handle it
 			return;
+		}
+
+		// TODO display user preferred / default view
+		if (view == null || view.equalsIgnoreCase("basic")) {
+			tabsWidget.setActiveTab(TabsWidget.TAB_BASIC);
+			onTabChange(TabsWidget.TAB_BASIC);
+		} else if (view.equalsIgnoreCase("steps")) {
+			tabsWidget.setActiveTab(TabsWidget.TAB_STEPS);
+			onTabChange(TabsWidget.TAB_STEPS);
+		} else if (view.equalsIgnoreCase("video")) {
+			tabsWidget.setActiveTab(TabsWidget.TAB_VIDEO);
+			onTabChange(TabsWidget.TAB_VIDEO);
+		} else if (view.equalsIgnoreCase("audio")) {
+			tabsWidget.setActiveTab(TabsWidget.TAB_AUDIO);
+			onTabChange(TabsWidget.TAB_AUDIO);
 		}
 
 		// titles

@@ -2,12 +2,12 @@ package si.merljak.magistrska.client.mvp;
 
 import java.util.Map;
 
+import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
 import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -33,54 +33,56 @@ public class RecipePresenter extends AbstractPresenter {
 
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
-		// TODO Auto-generated method stub
 		try {
 			recipeId = Long.parseLong(parameters.get(PARAMETER_RECIPE_ID));
-			getRecipe(recipeId);
+			String view = parameters.get(PARAMETER_VIEW);
+			getRecipe(recipeId, view);
 		} catch (Exception e) {
 			// TODO display 404 page 
 		}
 		return recipeView.asWidget();
 	}
 
-	private void getRecipe(long recipeId) {
+	private void getRecipe(long recipeId, final String view) {
 		recipeService.getRecipeDetails(recipeId, language, new AsyncCallback<RecipeDetailsDto>() {
 			@Override
 			public void onSuccess(RecipeDetailsDto recipe) {
-				recipeView.displayRecipe(recipe);
+				recipeView.displayRecipe(recipe, view);
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
+				Kuharija.handleException(caught);
 			}
 		});
 	}
 
-	private void bookmark(boolean add) {
+	public void bookmark(boolean add) {
+		// TODO get user
 		userService.bookmarkRecipe("user1", recipeId, add, new AsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void result) {
-				// TODO Auto-generated method stub
+				// TODO show as bookmarked / non bookmarked
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
+				Kuharija.handleException(caught);
 			}
 		});
 	}
 
-	private void comment(String content) {
+	public void comment(String content) {
+		// TODO get user
 		userService.commentRecipe(null, recipeId, content, new AsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void result) {
-				// TODO Auto-generated method stub
+				// TODO display comment
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
+				Kuharija.handleException(caught);
 			}
 		});
 	}

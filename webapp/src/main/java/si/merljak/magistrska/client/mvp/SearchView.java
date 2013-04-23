@@ -77,16 +77,19 @@ public class SearchView extends AbstractView {
 		}
 
 		for (RecipeDto recipe : recipes) {
-			Image image = new Image(RECIPE_THUMB_IMG_FOLDER + recipe.getImageUrl());
-			image.setAltText(recipe.getHeading());
+			String heading = recipe.getHeading();
+			String imageUrl = recipe.getImageUrl();
 
-			// TODO check for null URL
-			Anchor link = new Anchor(recipe.getHeading(), RecipePresenter.buildRecipeUrl(recipe.getId()));
+			imageUrl = imageUrl != null ? RECIPE_THUMB_IMG_FOLDER + imageUrl : ""; // TODO
+			Image image = new Image(imageUrl);
+			image.setAltText(heading);
+
+			Anchor link = new Anchor(heading, RecipePresenter.buildRecipeUrl(recipe.getId()));
+			link.getElement().appendChild(image.getElement());
 
 			FlowPanel resultEntry = new FlowPanel();
 			resultEntry.setStyleName("resultEntry");
 			resultEntry.add(link);
-			resultEntry.add(image);
 			resultEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
 			resultEntry.add(new Label(timeFromMinutes(recipe.getTimeOverall())));
 

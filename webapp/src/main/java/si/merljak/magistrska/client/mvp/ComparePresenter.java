@@ -10,6 +10,8 @@ import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -25,6 +27,9 @@ public class ComparePresenter extends AbstractPresenter {
 	// view
     private CompareView searchView = new CompareView();
 
+    // utils
+    private final Splitter splitter = Splitter.on(",").omitEmptyStrings().trimResults();
+    
 	public ComparePresenter(Language language, RecipeServiceAsync recipeService) {
 		super(language);
 		this.recipeService = recipeService;
@@ -34,11 +39,10 @@ public class ComparePresenter extends AbstractPresenter {
 	public Widget parseParameters(Map<String, String> parameters) {
 		searchView.setVisible(false);
 		if (parameters.containsKey(PARAMETER_RECIPE_ID_LIST)) {
-			String[] idStringList = parameters.get(PARAMETER_RECIPE_ID_LIST).split(",");
 			Set<Long> recipeIdList = new HashSet<Long>();
-			for (int i = 0; i < idStringList.length; i++) {
+			for (String idString : splitter.split(parameters.get(PARAMETER_RECIPE_ID_LIST))) {
 				try {
-					recipeIdList.add(Long.parseLong(idStringList[i]));
+					recipeIdList.add(Long.parseLong(idString));
 				} catch (Exception e) { /* ignore */ }
 			}
 			if (!recipeIdList.isEmpty()) {
@@ -72,11 +76,8 @@ public class ComparePresenter extends AbstractPresenter {
 	 * @return anchor URL
 	 */
 	public static String buildCompareUrl(Set<Long> recipeIdList) {
-		String url = "#" + SCREEN_NAME + "&" + PARAMETER_RECIPE_ID_LIST + "=";
-		for (Long id : recipeIdList) {
-			url += id.toString() + ",";
-		}
-		return url;
+		return "#" + SCREEN_NAME + 
+			   "&" + PARAMETER_RECIPE_ID_LIST + "=" + Joiner.on(",").skipNulls().join(recipeIdList);
 	}
 
 }

@@ -44,6 +44,11 @@
 			<artifactId>geonames</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava-gwt</artifactId>
+		    <version>14.0.1</version>
+		</dependency>
 
 		<!-- postgres driver -->
 		<dependency>
