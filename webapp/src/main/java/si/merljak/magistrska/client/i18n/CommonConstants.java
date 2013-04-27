@@ -60,6 +60,15 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Audio")
 	String tabAudio();
 
+	@DefaultStringValue("Download audio")
+	String downloadAudio();
+
+	@DefaultStringValue("Download video")
+	String downloadVideo();
+
+	@DefaultStringValue("Download subtitle")
+	String downloadSubtitle();
+
 	// login
 	@DefaultStringValue("Log in")
 	String login();

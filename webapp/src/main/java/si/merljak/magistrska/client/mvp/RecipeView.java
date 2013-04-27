@@ -23,10 +23,13 @@ import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
+import com.google.gwt.media.client.Audio;
+import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -62,7 +65,6 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 
 		FlowPanel center = new FlowPanel();
 		center.setStyleName(Constants.SPAN + 9);
-		center.add(recipeDetailsPanel);
 		center.add(tabsWidget);
 		center.add(mainPanel);
 		center.add(commentsPanel);
@@ -77,6 +79,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		FlowPanel main = new FlowPanel();
 		main.add(heading);
 		main.add(notFoundMessage);
+		main.add(recipeDetailsPanel);
 		main.add(fluid);
 		initWidget(main);
 	}
@@ -120,6 +123,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		Kuharija.setWindowTitle(recipe.getHeading());
 
 		// recipe info
+		recipeDetailsPanel.add(new Label(recipe.getSubHeading()));
 		recipeDetailsPanel.add(new Label(constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation())));
 		recipeDetailsPanel.add(new Label(constants.timeCooking() + ": " + timeFromMinutes(recipe.getTimeCooking())));
 		recipeDetailsPanel.add(new Label(constants.timeOverall() + ": " + timeFromMinutes(recipe.getTimeOverall())));
@@ -139,10 +143,16 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 			panelBasic.add(new Paragraph(text.getContent()));
 		}
 
+		if (!Audio.isSupported()) {
+			panelAudio.add(new HTML(messages.htmlAudioNotSupported()));
+		}
 		for (AudioDto audioDto : recipe.getAudios()) {
 			panelAudio.add(new AudioWidget(audioDto));
 		}
 
+		if (!Video.isSupported()) {
+			panelVideo.add(new HTML(messages.htmlVideoNotSupported()));
+		}
 		for (VideoDto videoDto : recipe.getVideos()) {
 			panelVideo.add(new VideoWidget(videoDto));
 		}

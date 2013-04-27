@@ -47,8 +47,6 @@ import com.google.gwt.geolocation.client.Position.Coordinates;
 import com.google.gwt.geolocation.client.PositionError;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
@@ -206,14 +204,6 @@ public class Kuharija implements EntryPoint {
 		} else {
 			Document.get().setTitle(constants.appTitle());
 		}
-	}
-
-	/** Loads custom javascript library. */
-	public static void addScript(String url, Element parent) {
-	    Element e = DOM.createElement("script");
-	    e.setAttribute("language", "JavaScript");
-	    e.setAttribute("src", url);
-	    DOM.appendChild(parent, e);
 	}
 
 	public static Coordinates getCoordinates() {

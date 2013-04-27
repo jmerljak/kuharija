@@ -1,9 +1,10 @@
 package si.merljak.magistrska.client.widgets;
 
 import si.merljak.magistrska.client.Kuharija;
-import si.merljak.magistrska.client.i18n.CommonMessages;
+import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.common.dto.AudioDto;
 
+import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AudioElement;
 import com.google.gwt.dom.client.MediaElement;
@@ -11,48 +12,88 @@ import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 
+/**
+ * Audio widget with player (if HTML5 audio supported) and links for file download.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
 public class AudioWidget extends Composite {
 
-	private final CommonMessages messages = Kuharija.messages;
+	// i18n
+	private final CommonConstants constants = Kuharija.constants;
 
-	private final String AUDIO_FOLDER = GWT.getHostPageBaseURL() + "audio/";
+	// constants
+	private static final String MP3 = "mp3";
+	private static final String OGG = "ogg";
+	private static final String WAV = "wav";
+	private static final String AUDIO_FOLDER = GWT.getHostPageBaseURL() + "audio/";
 
+	// widgets
 	private Audio audioWidget;
 
+	/**
+	 * Audio widget with player (if HTML5 audio supported) and links for file download.
+	 * 
+	 * @param audioDto audio DTO
+	 */
 	public AudioWidget(AudioDto audioDto) {
+		FlowPanel main = new FlowPanel();
+		FlowPanel links = new FlowPanel();
+		links.add(new InlineLabel(constants.downloadAudio()));
+
 		if (Audio.isSupported()) {
 			audioWidget = Audio.createIfSupported();
+			audioWidget.setAutoplay(false);
 			audioWidget.setControls(true);
 			audioWidget.setPreload(MediaElement.PRELOAD_METADATA);
+			main.add(audioWidget);
+		} else {
+			// add a flash player?
+		}
 
-			// add all available sources (mp3, ogg, ...)
-			for (String srcUrl : audioDto.getUrls()) {
-				String fileExt = srcUrl.substring(srcUrl.length() - 3, srcUrl.length());
-				if (fileExt.equalsIgnoreCase("mp3")) {
+		// add all available sources (mp3, ogg, ...)
+		for (String srcUrl : audioDto.getUrls()) {
+			Anchor downloadLink = new Anchor("", AUDIO_FOLDER + srcUrl);
+			// start download immediately (no need for right click → save as)
+			downloadLink.getElement().setAttribute("download", srcUrl);
+
+			String lowerCaseName = srcUrl.toLowerCase();
+			if (lowerCaseName.endsWith(MP3)) {
+				downloadLink.setText(MP3);
+				if (audioWidget != null) {
 					audioWidget.addSource(AUDIO_FOLDER + srcUrl, AudioElement.TYPE_MP3);
-				} else if (fileExt.equalsIgnoreCase("ogg")) {
+				}
+			} else if (lowerCaseName.endsWith(OGG)) {
+				downloadLink.setText(OGG);
+				if (audioWidget != null) {
 					audioWidget.addSource(AUDIO_FOLDER + srcUrl, AudioElement.TYPE_OGG);
-				} else if (fileExt.equalsIgnoreCase("wav")) {
+				}
+			} else if (lowerCaseName.endsWith(WAV)) {
+				downloadLink.setText(WAV);
+				if (audioWidget != null) {
 					audioWidget.addSource(AUDIO_FOLDER + srcUrl, AudioElement.TYPE_WAV);
-				} else {
+				}
+			} else {
+				downloadLink.setText(srcUrl);
+				if (audioWidget != null) {
 					audioWidget.addSource(AUDIO_FOLDER + srcUrl);
 				}
 			}
 
-			initWidget(audioWidget);
-		} else {
-			FlowPanel fallbackPanel = new FlowPanel();
-			fallbackPanel.add(new Label(messages.htmlAudioNotSupported()));
-			// TODO add links for download 
-			// always?
-			for (String srcUrl : audioDto.getUrls()) {
-				fallbackPanel.add(new Anchor(srcUrl, AUDIO_FOLDER + srcUrl));
-			}
-			// remind to upgrade browser
-			initWidget(fallbackPanel);
+			links.add(downloadLink);
+			links.add(new InlineLabel(" | "));
 		}
+
+		// remove last delimiter or label if no links
+		links.remove(links.getWidgetCount() - 1);
+		if (links.getWidgetCount() > 0) {
+			main.add(links);
+		}
+
+		initWidget(main);
+		setStyleName("audioWidget");
 	}
 
 	public void pause() {

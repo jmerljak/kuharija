@@ -30,9 +30,9 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("Find recipes with {0}")
 	String searchByUtensil(String name);
 
-	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 audio tag.")
+	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 audio tag. We recommend <a href=\"http://browser-update.org/update.html\">upgrading your browser</a>.")
 	String htmlAudioNotSupported();
 
-	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 video tag.")
+	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 video tag. We recommend <a href=\"http://browser-update.org/update.html\">upgrading your browser</a>.")
 	String htmlVideoNotSupported();
 }
