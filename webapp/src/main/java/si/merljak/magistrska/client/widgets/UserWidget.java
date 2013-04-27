@@ -8,6 +8,7 @@ import si.merljak.magistrska.client.mvp.LoginPresenter;
 import si.merljak.magistrska.common.dto.UserDto;
 
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -21,7 +22,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * Widget displaying hello to user and login link or logout button.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public class UserWidget extends Composite {
 
@@ -41,13 +42,14 @@ public class UserWidget extends Composite {
 	public UserWidget(LogoutHandler logoutHandler) {
 		this.handler = logoutHandler;
 
-		FlowPanel main = new FlowPanel(); 
+		FlowPanel main = new FlowPanel();
 		main.add(userLabel);
 		main.add(loginLogoutHolder);
 		initWidget(main);
 
 		loginLogoutHolder.setWidget(loginLink);
-		logoutButton.setStyleName("btn-link");
+		logoutButton.setStyleName(Constants.BTN);
+		logoutButton.addStyleDependentName("link");
 		logoutButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -61,9 +63,10 @@ public class UserWidget extends Composite {
 		Roles.getStatusRole().set(userLabel.getElement());
 	}
 
-	/** 
-	 * Displays hello to user and logout button. If user is not logged in, 
+	/**
+	 * Displays hello to user and logout button. If user is not logged in,
 	 * generic hello and login link are displayed instead.
+	 * 
 	 * @param user DTO (nullable)
 	 */
 	public void displayUser(UserDto user) {

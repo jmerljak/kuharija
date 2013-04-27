@@ -14,6 +14,7 @@ import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 
 /**
  * Simple view that displays single ingredient details.
@@ -72,8 +73,8 @@ public class IngredientDetailsView extends AbstractView {
 			}
 
 			content.add(new Paragraph(localizedDescription));
-			content.add(new Anchor(messages.searchByIngredient(localizedName.toLowerCase()), SearchPresenter.buildSearchByIngredientUrl(ingredientName)));
-			content.add(new Anchor(messages.ingredientReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl() + localizedName, "_blank"));
+			content.add(new HTML(messages.searchByIngredient(localizedName.toLowerCase(), SearchPresenter.buildSearchByIngredientUrl(ingredientName))));
+			content.add(new Anchor(messages.ingredientReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl(localizedName), "_blank"));
 		}
 	}
 }

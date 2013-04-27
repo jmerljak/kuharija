@@ -17,6 +17,13 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Presenter for generic search.
+ * Use provided static methods for building proper anchor URL.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
 public class SearchPresenter extends AbstractPresenter {
 
 	// screen and parameters name
@@ -35,7 +42,7 @@ public class SearchPresenter extends AbstractPresenter {
 	private SearchServiceAsync searchService;
 
 	// view
-    private SearchView searchView = new SearchView();
+    private final SearchView searchView = new SearchView();
 
 	public SearchPresenter(Language language, SearchServiceAsync searchService) {
 		super(language);

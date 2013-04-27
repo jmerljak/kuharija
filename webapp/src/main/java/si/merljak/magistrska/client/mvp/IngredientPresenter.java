@@ -26,8 +26,8 @@ public class IngredientPresenter extends AbstractPresenter {
 	private IngredientServiceAsync ingredientService;
 
 	// views
-	private IngredientIndexView indexView = new IngredientIndexView();
-	private IngredientDetailsView detailsView = new IngredientDetailsView();
+	private final IngredientIndexView indexView = new IngredientIndexView();
+	private final IngredientDetailsView detailsView = new IngredientDetailsView();
 
 	public IngredientPresenter(Language language, IngredientServiceAsync ingredientService) {
 		super(language);

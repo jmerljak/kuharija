@@ -24,6 +24,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Generic search view.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
 public class SearchView extends AbstractView {
 
 	// widgets
@@ -31,7 +37,8 @@ public class SearchView extends AbstractView {
 	private final FlowPanel resultsPanel = new FlowPanel();
 
 	public SearchView () {
-		searchBox.setTitle("search string");
+		searchBox.setTitle(constants.searchQuery());
+		searchBox.getElement().setAttribute("placeholder", constants.searchQuery());
 		searchBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
@@ -81,9 +88,11 @@ public class SearchView extends AbstractView {
 		for (RecipeDto recipe : recipes) {
 			String heading = recipe.getHeading();
 			String imageUrl = recipe.getImageUrl();
+			if (imageUrl == null) {
+				imageUrl = RECIPE_IMG_FALLBACK;
+			}
 
-			imageUrl = imageUrl != null ? RECIPE_THUMB_IMG_FOLDER + imageUrl : ""; // TODO
-			Image image = new Image(imageUrl);
+			Image image = new Image(RECIPE_THUMB_IMG_FOLDER + imageUrl);
 			image.setAltText(heading);
 			image.setType(ImageType.POLAROID);
 

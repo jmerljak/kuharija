@@ -11,8 +11,10 @@ import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 
 /**
  * Simple view that displays single utensil details.
@@ -71,8 +73,8 @@ public class UtensilDetailsView extends AbstractView {
 			}
 
 			content.add(new Paragraph(localizedDescription));
-			content.add(new Anchor(messages.searchByUtensil(localizedName.toLowerCase()), SearchPresenter.buildSearchByUtensilUrl(utensilName)));
-			content.add(new Anchor(messages.utensilReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl() + localizedName, "_blank"));
+			content.add(new HTML(messages.searchByUtensil(localizedName.toLowerCase(), SearchPresenter.buildSearchByUtensilUrl(utensilName))));
+			content.add(new Anchor(messages.utensilReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl(URL.encodeQueryString(localizedName)), "_blank"));
 		}
 	}
 }

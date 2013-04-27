@@ -48,7 +48,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 	private final UtensilsWidget utensilsWidget = new UtensilsWidget();
 	private final IngredientsWidget ingredientsWidget = new IngredientsWidget();
 
-	private Paragraph notFoundMessage = new Paragraph("recipe not found, try select different language or search");
+	private Paragraph notFoundMessage = new Paragraph(messages.recipeNotFoundTry());
 	private FlowPanel recipeDetailsPanel = new FlowPanel();
 	private SimplePanel mainPanel = new SimplePanel();
 	private FlowPanel panelBasic = new FlowPanel();
@@ -222,5 +222,10 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 			mainPanel.setWidget(panelAudio);
 			break;
 		}
+	}
+
+	public void setBookmarked(boolean isBookmarked) {
+		// TODO Auto-generated method stub
+		
 	}
 }

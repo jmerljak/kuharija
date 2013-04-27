@@ -24,6 +24,9 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Search")
 	String search();
 
+	@DefaultStringValue("Search string")
+	String searchQuery();
+
 	@DefaultStringValue("No results")
 	String searchNoResults();
 
@@ -47,6 +50,12 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Difficulty")
 	String difficulty();
+
+	@DefaultStringValue("Seasons")
+	String seasons();
+
+	@DefaultStringValue("Categories")
+	String categories();
 
 	@DefaultStringValue("Basic description")
 	String tabBasic();

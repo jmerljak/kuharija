@@ -1,11 +1,11 @@
 package si.merljak.magistrska.client.i18n;
 
-import com.google.gwt.i18n.client.Constants;
+import com.google.gwt.i18n.client.Messages;
 
-public interface UrlConstants extends Constants {
+public interface UrlConstants extends Messages {
 
-	@DefaultStringValue("http://en.wikipedia.org/w/index.php?search=")
-	String localWikipediaSearchUrl();
+	@DefaultMessage("http://en.wikipedia.org/w/index.php?search={0}")
+	String localWikipediaSearchUrl(String query);
 	
 	// TODO localize internal urls?
 }

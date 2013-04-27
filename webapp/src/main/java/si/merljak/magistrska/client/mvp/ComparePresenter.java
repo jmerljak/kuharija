@@ -15,6 +15,12 @@ import com.google.common.base.Splitter;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Presenter for recipe comparison.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
 public class ComparePresenter extends AbstractPresenter {
 
 	// screen and parameters name
@@ -25,11 +31,11 @@ public class ComparePresenter extends AbstractPresenter {
 	private RecipeServiceAsync recipeService;
 
 	// view
-    private CompareView searchView = new CompareView();
+	private final CompareView view = new CompareView();
 
-    // utils
-    private final Splitter splitter = Splitter.on(",").omitEmptyStrings().trimResults();
-    
+	// utils
+	private final Splitter splitter = Splitter.on(",").omitEmptyStrings().trimResults();
+
 	public ComparePresenter(Language language, RecipeServiceAsync recipeService) {
 		super(language);
 		this.recipeService = recipeService;
@@ -37,33 +43,37 @@ public class ComparePresenter extends AbstractPresenter {
 
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
+		Set<Long> recipeIdList = new HashSet<Long>();
 		if (parameters.containsKey(PARAMETER_RECIPE_ID_LIST)) {
-			Set<Long> recipeIdList = new HashSet<Long>();
 			for (String idString : splitter.split(parameters.get(PARAMETER_RECIPE_ID_LIST))) {
 				try {
 					recipeIdList.add(Long.parseLong(idString));
 				} catch (Exception e) { /* ignore */ }
 			}
-			if (!recipeIdList.isEmpty()) {
-				getRecipes(recipeIdList);
-			} else {
-				searchView.clearSearchResults();
-			}
-		} else {
-			searchView.clearSearchResults();
 		}
-		return searchView.asWidget();
+
+		if (recipeIdList.isEmpty()) {
+			view.displayResults(null);
+		} else {
+			getRecipes(recipeIdList);
+		}
+		return view.asWidget();
 	}
 
+	/**
+	 * Gets recipes by IDs.
+	 * 
+	 * @param recipeIdList ID list
+	 */
 	private void getRecipes(Set<Long> recipeIdList) {
-		searchView.setVisible(false);
+		view.setVisible(false);
 		recipeService.getRecipes(recipeIdList, language, new AsyncCallback<List<RecipeDetailsDto>>() {
 			@Override
-			public void onSuccess(List<RecipeDetailsDto> result) {
-				searchView.displaySearchResults(result);
-				searchView.setVisible(true);
+			public void onSuccess(List<RecipeDetailsDto> recipes) {
+				view.displayResults(recipes);
+				view.setVisible(true);
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
 				Kuharija.handleException(caught);
@@ -73,6 +83,7 @@ public class ComparePresenter extends AbstractPresenter {
 
 	/**
 	 * Builds proper anchor URL for recipes comparison.
+	 * 
 	 * @param recipeIdList list of recipe IDs
 	 * @return anchor URL
 	 */
@@ -80,5 +91,4 @@ public class ComparePresenter extends AbstractPresenter {
 		return "#" + SCREEN_NAME + 
 			   "&" + PARAMETER_RECIPE_ID_LIST + "=" + Joiner.on(",").skipNulls().join(recipeIdList);
 	}
-
 }

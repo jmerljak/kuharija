@@ -39,3 +39,8 @@ body {
 #loginForm {
 	margin-top: 1em;
 }
+
+#compareView img {
+	max-height: 240px;
+	max-width: 300px;
+}

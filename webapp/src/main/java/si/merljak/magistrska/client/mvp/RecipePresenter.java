@@ -23,7 +23,7 @@ public class RecipePresenter extends AbstractPresenter {
 	private UserServiceAsync userService;
 
 	private long recipeId;
-    private RecipeView recipeView = new RecipeView();
+    private final RecipeView recipeView = new RecipeView();
 
 	public RecipePresenter(Language language, RecipeServiceAsync recipeService, UserServiceAsync userService) {
 		super(language);
@@ -38,11 +38,17 @@ public class RecipePresenter extends AbstractPresenter {
 			String view = parameters.get(PARAMETER_VIEW);
 			getRecipe(recipeId, view);
 		} catch (Exception e) {
-			// TODO display 404 page 
+			recipeView.displayRecipe(null, null);
 		}
 		return recipeView.asWidget();
 	}
 
+	/** 
+	 * Gets recipe by ID.
+	 * 
+	 * @param recipeId recipe ID
+	 * @param view
+	 */
 	private void getRecipe(long recipeId, final String view) {
 		recipeService.getRecipeDetails(recipeId, language, new AsyncCallback<RecipeDetailsDto>() {
 			@Override
@@ -57,12 +63,13 @@ public class RecipePresenter extends AbstractPresenter {
 		});
 	}
 
-	public void bookmark(boolean add) {
+	/** Bookmarks / removes user bookmark. */
+	public void bookmark(final boolean isBookmarked) {
 		// TODO get user
-		userService.bookmarkRecipe("user1", recipeId, add, new AsyncCallback<Void>() {
+		userService.bookmarkRecipe("user1", recipeId, isBookmarked, new AsyncCallback<Void>() {
 			@Override
-			public void onSuccess(Void result) {
-				// TODO show as bookmarked / non bookmarked
+			public void onSuccess(Void nothing) {
+				recipeView.setBookmarked(isBookmarked);
 			}
 			
 			@Override
@@ -72,11 +79,12 @@ public class RecipePresenter extends AbstractPresenter {
 		});
 	}
 
+	/** Adds user comment. */
 	public void comment(String content) {
 		// TODO get user
 		userService.commentRecipe(null, recipeId, content, new AsyncCallback<Void>() {
 			@Override
-			public void onSuccess(Void result) {
+			public void onSuccess(Void nothing) {
 				// TODO display comment
 			}
 			

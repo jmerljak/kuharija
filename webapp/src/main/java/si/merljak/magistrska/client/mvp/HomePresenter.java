@@ -20,7 +20,7 @@ public class HomePresenter extends AbstractPresenter {
 	private RecommendationServiceAsync recommendationService;
 
 	// view
-    private HomeView homeView = new HomeView();
+    private final HomeView homeView = new HomeView();
 
 	public HomePresenter(Language language, RecommendationServiceAsync recommendationService) {
 		super(language);

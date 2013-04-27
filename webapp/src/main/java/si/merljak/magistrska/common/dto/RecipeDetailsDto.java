@@ -2,16 +2,20 @@ package si.merljak.magistrska.common.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.MealUnit;
+import si.merljak.magistrska.common.enumeration.Season;
 
 import com.mysema.query.annotations.QueryProjection;
 
 public class RecipeDetailsDto implements Serializable {
 
-	private static final long serialVersionUID = 3663171145467465776L;
+	private static final long serialVersionUID = 6396061562369739274L;
 
 	private long id;
 	private String heading;
@@ -33,6 +37,8 @@ public class RecipeDetailsDto implements Serializable {
 	private List<CommentDto> comments = new ArrayList<CommentDto>();
 	private List<AppendixDto> appendencies = new ArrayList<AppendixDto>();
 	private List<StepDto> steps = new ArrayList<StepDto>();
+	private Set<Season> seasons = new HashSet<Season>();
+	private Set<Category> categories = new HashSet<Category>();
 
 	RecipeDetailsDto() {}
 
@@ -158,6 +164,22 @@ public class RecipeDetailsDto implements Serializable {
 
 	public List<StepDto> getSteps() {
 		return steps;
+	}
+
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
+	public Set<Season> getSeasons() {
+		return seasons;
+	}
+
+	public void setSeasons(Set<Season> seasons) {
+		this.seasons = seasons;
 	}
 
 }

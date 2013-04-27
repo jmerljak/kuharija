@@ -26,8 +26,8 @@ public class UtensilPresenter extends AbstractPresenter {
 	private IngredientServiceAsync ingredientService;
 
 	// views
-	private UtensilIndexView indexView = new UtensilIndexView();
-	private UtensilDetailsView detailsView = new UtensilDetailsView();
+	private final UtensilIndexView indexView = new UtensilIndexView();
+	private final UtensilDetailsView detailsView = new UtensilDetailsView();
 
 	public UtensilPresenter(Language language, IngredientServiceAsync ingredientService) {
 		super(language);

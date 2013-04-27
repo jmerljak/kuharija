@@ -21,6 +21,11 @@ public abstract class AbstractPresenter {
 		this.language = language;
 	}
 
-	/** Parses parameters and returns proper view. */
+	/**
+	 * Parses URL parameters and returns proper view.
+	 * 
+	 * @param parameters URL parameters
+	 * @return proper view as a widget
+	 */
 	public abstract Widget parseParameters(Map<String, String> parameters);
 }
