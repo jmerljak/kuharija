@@ -17,6 +17,7 @@ import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -49,6 +50,10 @@ public class SearchPresenter extends AbstractPresenter {
 	// view
     private final SearchView searchView = new SearchView();
 
+    // utils
+    private static final Joiner joiner = Joiner.on(",").skipNulls();
+	private static final Splitter splitter = Splitter.on(",").omitEmptyStrings().trimResults();
+
 	public SearchPresenter(Language language, SearchServiceAsync searchService) {
 		super(language);
 		this.searchService = searchService;
@@ -66,53 +71,46 @@ public class SearchPresenter extends AbstractPresenter {
 
 			if (parameters.containsKey(PARAMETER_PAGE)) {
 				try {
-					int page = Integer.parseInt(parameters.get(PARAMETER_PAGE));
+					long page = Long.parseLong(parameters.get(PARAMETER_PAGE));
 					searchParameters.setPage(page);
 				} catch (Exception e) { /* ignore */ }
 			}
 
 			if (parameters.containsKey(PARAMETER_PAGE_SIZE)) {
 				try {
-					int pageSize = Integer.parseInt(parameters.get(PARAMETER_PAGE_SIZE));
+					long pageSize = Long.parseLong(parameters.get(PARAMETER_PAGE_SIZE));
 					searchParameters.setPageSize(pageSize);
 				} catch (Exception e) { /* ignore */ }
 			}
 
 			if (parameters.containsKey(PARAMETER_DIFFICULTY)) {
-				String[] difficulties = parameters.get(PARAMETER_DIFFICULTY).toUpperCase().split(",");
-				for (int i = 0; i < difficulties.length; i++) {
+				for (String difficulty : splitter.split(parameters.get(PARAMETER_DIFFICULTY).toUpperCase())) {
 					try {
-						Difficulty difficulty = Difficulty.valueOf(difficulties[i]);
-						searchParameters.addDifficulty(difficulty);
+						searchParameters.addDifficulty(Difficulty.valueOf(difficulty));
 					} catch (Exception e) { /* ignore */ }
 				}
 			}
 
 			if (parameters.containsKey(PARAMETER_CATEGORY)) {
-				String[] categories = parameters.get(PARAMETER_CATEGORY).toUpperCase().split(",");
-				for (int i = 0; i < categories.length; i++) {
+				for (String category : splitter.split(parameters.get(PARAMETER_CATEGORY).toUpperCase())) {
 					try {
-						Category category = Category.valueOf(categories[i]);
-						searchParameters.addCategory(category);
+						searchParameters.addCategory(Category.valueOf(category));
 					} catch (Exception e) { /* ignore */ }
 				}
 			}
 
 			if (parameters.containsKey(PARAMETER_SEASON)) {
-				String[] seasons = parameters.get(PARAMETER_SEASON).toUpperCase().split(",");
-				for (int i = 0; i < seasons.length; i++) {
+				for (String season : splitter.split(parameters.get(PARAMETER_SEASON).toUpperCase())) {
 					try {
-						Season season = Season.valueOf(seasons[i]);
-						searchParameters.addSeason(season);
+						searchParameters.addSeason(Season.valueOf(season));
 					} catch (Exception e) { /* ignore */ }
 				}
 			}
 
 			if (parameters.containsKey(PARAMETER_INGREDIENT)) {
-				String[] ingredients = parameters.get(PARAMETER_INGREDIENT).toUpperCase().split(",");
-				for (int i = 0; i < ingredients.length; i++) {
+				for (String ingredient : splitter.split(parameters.get(PARAMETER_INGREDIENT).toUpperCase())) {
 					try {
-						searchParameters.addIngredient(ingredients[i]);
+						searchParameters.addIngredient(ingredient);
 					} catch (Exception e) { /* ignore */ }
 				}
 			}
@@ -170,8 +168,8 @@ public class SearchPresenter extends AbstractPresenter {
 	 */
 	public static void doSearch(SearchParameters searchParameters) {
 		// parameters
-		Integer page = searchParameters.getPage();
-		Integer pageSize = searchParameters.getPageSize();
+		Long page = searchParameters.getPage();
+		Long pageSize = searchParameters.getPageSize();
 		String searchString = searchParameters.getSearchString();
 		Set<Difficulty> difficulties = searchParameters.getDifficulties();
 		Set<Category> categories = searchParameters.getCategories();
@@ -198,7 +196,7 @@ public class SearchPresenter extends AbstractPresenter {
 			for (Difficulty difficulty : difficulties) {
 				difficultyStrings.add(difficulty.name().toLowerCase());
 			}
-			parametersMap.put(PARAMETER_DIFFICULTY, Joiner.on(",").skipNulls().join(difficultyStrings));
+			parametersMap.put(PARAMETER_DIFFICULTY, joiner.join(difficultyStrings));
 		}
 
 		if (!categories.isEmpty()) {
@@ -206,7 +204,7 @@ public class SearchPresenter extends AbstractPresenter {
 			for (Category category : categories) {
 				categoryStrings.add(category.name().toLowerCase());
 			}
-			parametersMap.put(PARAMETER_CATEGORY, Joiner.on(",").skipNulls().join(categoryStrings));
+			parametersMap.put(PARAMETER_CATEGORY, joiner.join(categoryStrings));
 		}
 
 		if (!seasons.isEmpty()) {
@@ -214,11 +212,11 @@ public class SearchPresenter extends AbstractPresenter {
 			for (Season season : seasons) {
 				seasonStrings.add(season.name().toLowerCase());
 			}
-			parametersMap.put(PARAMETER_SEASON, Joiner.on(",").skipNulls().join(seasonStrings));
+			parametersMap.put(PARAMETER_SEASON, joiner.join(seasonStrings));
 		}
 
 		if (!ingredients.isEmpty()) {
-			parametersMap.put(PARAMETER_INGREDIENT, Joiner.on(",").skipNulls().join(ingredients).toLowerCase());
+			parametersMap.put(PARAMETER_INGREDIENT, joiner.join(ingredients).toLowerCase());
 		}
 
 		if (utensil != null) {

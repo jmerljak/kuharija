@@ -12,5 +12,5 @@ public interface PagingHandler {
 	 * 
 	 * @param page new page
 	 */
-	void onPageChange(int page);
+	void onPageChange(long page);
 }

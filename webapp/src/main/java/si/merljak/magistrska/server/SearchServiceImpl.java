@@ -43,8 +43,8 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		log.debug("searching for: " + searchParameters.getSearchString());
 
 		// parameters
-		int page = searchParameters.getPage();
-		int pageSize = searchParameters.getPageSize();
+		long page = searchParameters.getPage();
+		long pageSize = searchParameters.getPageSize();
 		String searchString = searchParameters.getSearchString();
 		Set<Difficulty> difficulties = searchParameters.getDifficulties();
 		Set<Category> categories = searchParameters.getCategories();

@@ -12,13 +12,14 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 public class SearchParameters implements Serializable {
 
-	public static final int DEFAULT_PAGE_SIZE = 15;
+	private static final long serialVersionUID = 2847174317378294785L;
+
+	public static final long DEFAULT_PAGE_SIZE = 15L;
 	public static final RecipeSortKey DEFAULT_SORT_KEY = RecipeSortKey.ID;
-	private static final long serialVersionUID = 3967849192762799943L;
 
 	private String searchString;
-	private int page = 1;
-	private int pageSize = DEFAULT_PAGE_SIZE;
+	private long page = 1;
+	private long pageSize = DEFAULT_PAGE_SIZE;
 	private Set<Difficulty> difficulties = new HashSet<Difficulty>();
 	private Set<Category> categories = new HashSet<Category>();
 	private Set<Season> seasons = new HashSet<Season>();
@@ -34,7 +35,7 @@ public class SearchParameters implements Serializable {
 		this.language = language;
 	}
 
-	public SearchParameters(String searchString, Language language, int pageSize) {
+	public SearchParameters(String searchString, Language language, long pageSize) {
 		this.searchString = searchString;
 		this.language = language;
 		setPageSize(pageSize);
@@ -48,19 +49,19 @@ public class SearchParameters implements Serializable {
 		this.searchString = searchString;
 	}
 
-	public int getPage() {
+	public long getPage() {
 		return page;
 	}
 
-	public void setPage(int page) {
+	public void setPage(long page) {
 		this.page = page > 0 ? page : 1;
 	}
 
-	public int getPageSize() {
+	public long getPageSize() {
 		return pageSize;
 	}
 
-	public void setPageSize(int pageSize) {
+	public void setPageSize(long pageSize) {
 		this.pageSize = pageSize > 0 ? pageSize : DEFAULT_PAGE_SIZE;
 	}
 

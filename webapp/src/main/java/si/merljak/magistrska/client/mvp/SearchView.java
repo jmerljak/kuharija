@@ -145,6 +145,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 
 		// paging
 		pagingWidget.setPage(searchParameters.getPage(), searchParameters.getPageSize(), results.getAllCount());
+		pagingWidget.setVisible(results.getAllCount() > 0);
 	}
 
 	/** 
@@ -168,26 +169,32 @@ public class SearchView extends AbstractView implements PagingHandler {
 		}
 
 		for (Difficulty difficulty : difficulties) {
+			// TODO
 			advancedFilters.add(new Label(localizeEnum(difficulty)));
 		}
 
 		for (Category category : categories) {
+			// TODO
 			advancedFilters.add(new Label(localizeEnum(category)));
 		}
 
 		for (Season season : seasons) {
+			// TODO
 			advancedFilters.add(new Label(localizeEnum(season)));
 		}
 
 		for (String ingredient : ingredients) {
+			// TODO
 			advancedFilters.add(new Label(ingredientMap.get(ingredient)));
 		}
 
 		if (utensil != null) {
+			// TODO
 			advancedFilters.add(new Label(utensilMap.get(utensil)));
 		}
 
 		if (sortKey != null && sortKey != SearchParameters.DEFAULT_SORT_KEY) {
+			// TODO
 			advancedFilters.add(new Label(constants.sortKeyMap().get(sortKey.name())));
 		}
 
@@ -199,10 +206,11 @@ public class SearchView extends AbstractView implements PagingHandler {
 		searchBox.setText("");
 		advancedFilters.clear();
 		resultsPanel.clear();
+		pagingWidget.setVisible(false);
 	}
 
 	@Override
-	public void onPageChange(int page) {
+	public void onPageChange(long page) {
 		searchParameters.setPage(page);
 		doSearch();
 	}

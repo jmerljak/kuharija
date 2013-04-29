@@ -30,10 +30,6 @@ public class PagingWidget extends Composite {
 	// i18n
 	private final CommonConstants constants = Kuharija.constants;
 	private final CommonMessages messages = Kuharija.messages;
-	private final IconAnchor firstPageAnchor = new IconAnchor();
-	private final IconAnchor previousPageAnchor = new IconAnchor();
-	private final IconAnchor nextPageAnchor = new IconAnchor();
-	private final IconAnchor lastPageAnchor = new IconAnchor();
 
 	// handler
 	private PagingHandler handler;
@@ -41,10 +37,14 @@ public class PagingWidget extends Composite {
 	// widgets
 	private final TextBox pageBox = new TextBox();
 	private final InlineLabel pageCount = new InlineLabel();
+	private final IconAnchor firstPageAnchor = new IconAnchor();
+	private final IconAnchor previousPageAnchor = new IconAnchor();
+	private final IconAnchor nextPageAnchor = new IconAnchor();
+	private final IconAnchor lastPageAnchor = new IconAnchor();
 
 	// variables
-	private int page = 1;
-	private int allPages = 1;
+	private long page = 1;
+	private long allPages = 1;
 
 	public PagingWidget(PagingHandler pagingHandler) {
 		this.handler = pagingHandler;
@@ -76,7 +76,7 @@ public class PagingWidget extends Composite {
 			public void onKeyUp(KeyUpEvent event) {
 				if (handler != null && event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 					try {
-						int newPage = Integer.parseInt(pageBox.getText());
+						long newPage = Long.parseLong(pageBox.getText());
 						if (newPage > allPages) {
 							newPage = allPages;
 						} else if (newPage < 1) {
@@ -135,9 +135,9 @@ public class PagingWidget extends Composite {
 	 * @param allCount all results count (regardless page size)
 	 * 
 	 */
-	public void setPage(int page, int pageSize, long allCount) {
+	public void setPage(long page, long pageSize, long allCount) {
 		this.page = page;
-		this.allPages = (int) ((allCount - 1) / pageSize + 1);
+		this.allPages = (allCount - 1) / pageSize + 1;
 
 		firstPageAnchor.setEnabled(page > 1);
 		previousPageAnchor.setEnabled(page > 1);
