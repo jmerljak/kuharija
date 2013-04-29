@@ -45,7 +45,7 @@ public class IngredientsWidget extends Composite {
 	private final NumberFormat numberFormat = Kuharija.numberFormat;
 
 	// widgets
-	private final Heading heading = new Heading(2, ingredientsConstants.ingredients());
+	private final Heading heading = new Heading(2, constants.ingredients());
 	private final UnorderedList ingredientsList = new UnorderedList();
 	private final AppendButton formPanel = new AppendButton();
 	private final Button buttonPlus = new Button("+");

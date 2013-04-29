@@ -5,12 +5,6 @@ import java.util.Map;
 import com.google.gwt.i18n.client.Constants;
 
 public interface UtensilsConstants extends Constants {
-
-	@DefaultStringValue("Utensils")
-	String utensils();
-
-	@DefaultStringValue("Index of food preparation utensils")
-	String utensilsIndex();
 	
 	@DefaultStringMapValue({
 		"APPLE_CORER", "Apple corer",

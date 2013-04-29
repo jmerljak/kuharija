@@ -86,7 +86,7 @@ public class CompareView extends AbstractView {
 			compareTable.setText(ROW_TIME_COOKING, 0, constants.timeCooking());
 			compareTable.setText(ROW_TIME_OVERALL, 0, constants.timeOverall());
 			compareTable.setText(ROW_AUTHOR, 0, constants.recipeAuthor());
-			compareTable.setText(ROW_INGREDIENTS, 0, ingredientsConstants.ingredients());
+			compareTable.setText(ROW_INGREDIENTS, 0, constants.ingredients());
 			compareTable.setText(ROW_SEASONS, 0, constants.seasons());
 			compareTable.setText(ROW_CATEGORIES, 0, constants.categories());
 

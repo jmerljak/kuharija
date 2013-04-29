@@ -1,6 +1,10 @@
 package si.merljak.magistrska.client.mvp;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.common.SearchParameters;
@@ -12,6 +16,7 @@ import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 
+import com.google.common.base.Joiner;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -19,7 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Presenter for generic search.
- * Use provided static methods for building proper anchor URL.
+ * Use provided static methods for building proper anchor URL or initiating search.
  * 
  * @author Jakob Merljak
  * 
@@ -154,6 +159,75 @@ public class SearchPresenter extends AbstractPresenter {
 			String encodedSearchString = URL.encodePathSegment(searchString.trim().toLowerCase());
 			History.newItem(SCREEN_NAME + "&" + PARAMETER_SEARCH_STRING + "=" + encodedSearchString);
 		}
+	}
+
+	/**
+	 * Initiates search for search parameters.
+	 * @param searchParameters search parameters
+	 */
+	public static void doSearch(SearchParameters searchParameters) {
+		// parameters
+		Integer page = searchParameters.getPage();
+		Integer pageSize = searchParameters.getPageSize();
+		String searchString = searchParameters.getSearchString();
+		Set<Difficulty> difficulties = searchParameters.getDifficulties();
+		Set<Category> categories = searchParameters.getCategories();
+		Set<Season> seasons = searchParameters.getSeasons();
+		Set<String> ingredients = searchParameters.getIngredients();
+		String utensil = searchParameters.getUtensil();
+		RecipeSortKey sortKey = searchParameters.getSortKey();
+
+		Map<String, String> parametersMap = new HashMap<String, String>();
+		if (page > 1) {
+			parametersMap.put(PARAMETER_PAGE, page.toString());
+		}
+
+		if (pageSize != SearchParameters.DEFAULT_PAGE_SIZE) {
+			parametersMap.put(PARAMETER_PAGE_SIZE, pageSize.toString());
+		}
+
+		if (searchString != null && !searchString.isEmpty()) {
+			parametersMap.put(PARAMETER_SEARCH_STRING, URL.encodePathSegment(searchString));
+		}
+
+		if (difficulties != null && !difficulties.isEmpty()) {
+			List<String> difficultyStrings = new ArrayList<String>();
+			for (Difficulty difficulty : difficulties) {
+				difficultyStrings.add(difficulty.name().toLowerCase());
+			}
+			parametersMap.put(PARAMETER_DIFFICULTY, Joiner.on(",").skipNulls().join(difficultyStrings));
+		}
+
+		if (categories != null && !categories.isEmpty()) {
+			List<String> categoryStrings = new ArrayList<String>();
+			for (Category category : categories) {
+				categoryStrings.add(category.name().toLowerCase());
+			}
+			parametersMap.put(PARAMETER_CATEGORY, Joiner.on(",").skipNulls().join(categoryStrings));
+		}
+
+		if (seasons != null && !seasons.isEmpty()) {
+			List<String> seasonStrings = new ArrayList<String>();
+			for (Season season : seasons) {
+				seasonStrings.add(season.name().toLowerCase());
+			}
+			parametersMap.put(PARAMETER_SEASON, Joiner.on(",").skipNulls().join(seasonStrings));
+		}
+
+		if (ingredients != null && !ingredients.isEmpty()) {
+			parametersMap.put(PARAMETER_INGREDIENT, Joiner.on(",").skipNulls().join(ingredients));
+		}
+
+		if (utensil != null) {
+			parametersMap.put(PARAMETER_UTENSIL, utensil.toLowerCase());
+		}
+
+		if (sortKey != null && sortKey != SearchParameters.DEFAULT_SORT_KEY) {
+			parametersMap.put(PARAMETER_SORT_BY, sortKey.name().toLowerCase());
+		}
+
+		String parametersString = Joiner.on("&").withKeyValueSeparator("=").join(parametersMap);
+		History.newItem(Joiner.on("&").join(SCREEN_NAME, parametersString));
 	}
 
 	/**

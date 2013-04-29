@@ -19,7 +19,7 @@ import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.mvp.SearchPresenter;
 import si.merljak.magistrska.client.mvp.UtensilPresenter;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
-import si.merljak.magistrska.client.widgets.MainNav;
+import si.merljak.magistrska.client.widgets.MainMenuWidget;
 import si.merljak.magistrska.client.widgets.UserWidget;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.IngredientService;
@@ -103,10 +103,10 @@ public class Kuharija implements EntryPoint {
 		localeWidget = new LocaleWidget();
 		RootPanel.get("nav").add(localeWidget);
 		RootPanel.get("nav").add(breadcrumbs);
-		RootPanel.get("nav").add(new MainNav());
+		RootPanel.get("nav").add(new MainMenuWidget());
 		Language language = localeWidget.getCurrentLanguage();
 
-		// TODO refactoriae MVP architecture!
+		// TODO refactorize MVP architecture!
 		LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView());
 		presenters.put(IngredientPresenter.SCREEN_NAME, new IngredientPresenter(language, ingredientService));
 		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, ingredientService));
@@ -146,7 +146,7 @@ public class Kuharija implements EntryPoint {
 				}
 
 				breadcrumbs.clear();
-				breadcrumbs.add(new Anchor("home", "#home"));
+				breadcrumbs.add(new Anchor(constants.home(), "#" + HomePresenter.SCREEN_NAME));
 				breadcrumbs.add(new Label(screenName));
 			}
 		});

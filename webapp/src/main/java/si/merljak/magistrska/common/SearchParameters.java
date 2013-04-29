@@ -12,7 +12,8 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 public class SearchParameters implements Serializable {
 
-	private static final int DEFAULT_PAGE_SIZE = 15;
+	public static final int DEFAULT_PAGE_SIZE = 15;
+	public static final RecipeSortKey DEFAULT_SORT_KEY = RecipeSortKey.ID;
 	private static final long serialVersionUID = 3967849192762799943L;
 
 	private String searchString;
@@ -24,7 +25,7 @@ public class SearchParameters implements Serializable {
 	private Set<String> ingredients = new HashSet<String>();
 	private String utensil;
 	private Language language;
-	private RecipeSortKey sortKey = RecipeSortKey.ID;
+	private RecipeSortKey sortKey = DEFAULT_SORT_KEY;
 
 	SearchParameters() {}
 
@@ -112,6 +113,6 @@ public class SearchParameters implements Serializable {
 	}
 
 	public void setSortKey(RecipeSortKey sortKey) {
-		this.sortKey = sortKey != null ? sortKey : RecipeSortKey.ID;
+		this.sortKey = sortKey != null ? sortKey : DEFAULT_SORT_KEY;
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.UtensilPresenter;
 import si.merljak.magistrska.common.dto.UtensilDto;
@@ -24,11 +25,12 @@ import com.google.gwt.user.client.ui.FlowPanel;
 public class UtensilsWidget extends Composite {
 
 	// i18n
+	private final CommonConstants constants = Kuharija.constants;
 	private final UtensilsConstants utensilsConstants = Kuharija.utensilsConstants;
 	private final Map<String, String> utensilsMap = utensilsConstants.utensilsMap();
 
 	// widgets
-	private final Heading heading = new Heading(2, utensilsConstants.utensils());
+	private final Heading heading = new Heading(2, constants.utensils());
 	private final UnorderedList utensilsList = new UnorderedList();
 
 	public UtensilsWidget() {

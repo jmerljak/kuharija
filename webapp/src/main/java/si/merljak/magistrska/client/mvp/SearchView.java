@@ -36,6 +36,8 @@ public class SearchView extends AbstractView {
 	private final TextBox searchBox = new TextBox();
 	private final FlowPanel resultsPanel = new FlowPanel();
 
+	private SearchParameters searchParameters;
+
 	public SearchView () {
 		searchBox.setTitle(constants.searchQuery());
 		searchBox.getElement().setAttribute("placeholder", constants.searchQuery());
@@ -69,10 +71,14 @@ public class SearchView extends AbstractView {
 	}
 
 	private void doSearch() {
-		SearchPresenter.doSearch(searchBox.getValue());
+		searchParameters.setSearchString(searchBox.getValue());
+		// TODO apply advanced filters
+		SearchPresenter.doSearch(searchParameters);
 	}
 
 	public void displaySearchResults(RecipeListDto results, SearchParameters parameters) {
+		searchParameters = parameters;
+
 		// clear old data
 		resultsPanel.clear();
 

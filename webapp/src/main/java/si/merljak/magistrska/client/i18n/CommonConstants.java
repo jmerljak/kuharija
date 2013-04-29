@@ -9,6 +9,9 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Cooking masterpieces")
 	String appTitle();
 
+	@DefaultStringValue("Home")
+	String home();
+
 	@DefaultStringValue("Recipe")
 	String recipe();
 
@@ -20,6 +23,18 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Tools")
 	String tools();
+
+	@DefaultStringValue("Ingredients")
+	String ingredients();
+
+	@DefaultStringValue("Index of ingredients")
+	String ingredientsIndex();
+
+	@DefaultStringValue("Utensils")
+	String utensils();
+
+	@DefaultStringValue("Index of food preparation utensils")
+	String utensilsIndex();
 
 	@DefaultStringValue("Search")
 	String search();

@@ -6,14 +6,6 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface IngredientsConstants extends Constants {
 
-	@DefaultStringValue("Ingredients")
-	String ingredients();
-
-	@DefaultStringValue("Index of ingredients")
-	String ingredientsIndex();
-	
-	// maps - enumerator constants
-
 	@DefaultStringMapValue({
 		"BACON", "Bacon",
 		"BAKING_POWDER", "Baking powder",

@@ -60,14 +60,14 @@ public class IngredientIndexView extends AbstractView {
 
 		// initialize view
 		FlowPanel main = new FlowPanel();
-		main.add(new Heading(HEADING_SIZE, ingredientsConstants.ingredientsIndex()));
+		main.add(new Heading(HEADING_SIZE, constants.ingredientsIndex()));
 		main.add(ingredientsIndex);
 		initWidget(main);
 	}
 
 	@Override
 	public Widget asWidget() {
-		Kuharija.setWindowTitle(ingredientsConstants.ingredientsIndex());
+		Kuharija.setWindowTitle(constants.ingredientsIndex());
 		return super.asWidget();
 	}
 }

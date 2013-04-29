@@ -29,8 +29,8 @@ public class TabsWidget extends Composite {
 	public static final int TAB_VIDEO = 3;
 	public static final int TAB_AUDIO = 4;
 
-	private static final CommonConstants constants = Kuharija.constants;
-	private static final TabRole TAB_ROLE = Roles.getTabRole();
+	private final CommonConstants constants = Kuharija.constants;
+	private final TabRole TAB_ROLE = Roles.getTabRole();
 
 	private Map <Integer, ListItem> tabMap = new HashMap<Integer, ListItem>();
 	private TabChangeHandler handler;

@@ -60,14 +60,14 @@ public class UtensilIndexView extends AbstractView {
 
 		// initialize view
 		FlowPanel main = new FlowPanel();
-		main.add(new Heading(HEADING_SIZE, utensilsConstants.utensilsIndex()));
+		main.add(new Heading(HEADING_SIZE, constants.utensilsIndex()));
 		main.add(utensilsIndex);
 		initWidget(main);
 	}
 
 	@Override
 	public Widget asWidget() {
-		Kuharija.setWindowTitle(utensilsConstants.utensilsIndex());
+		Kuharija.setWindowTitle(constants.utensilsIndex());
 		return super.asWidget();
 	}
 }
