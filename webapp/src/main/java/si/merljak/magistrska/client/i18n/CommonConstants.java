@@ -12,6 +12,21 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Home")
 	String home();
 
+	@DefaultStringValue("Page")
+	String page();
+	
+	@DefaultStringValue("Previous page")
+	String pagePrevious();
+	
+	@DefaultStringValue("Next page")
+	String pageNext();
+	
+	@DefaultStringValue("First page")
+	String pageFirst();
+	
+	@DefaultStringValue("Last page")
+	String pageLast();
+
 	@DefaultStringValue("Recipe")
 	String recipe();
 
@@ -42,6 +57,12 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Search string")
 	String searchQuery();
 
+	@DefaultStringValue("Advanced search")
+	String searchFilters();
+
+	@DefaultStringValue("Clear filters")
+	String searchFiltersClear();
+
 	@DefaultStringValue("No results")
 	String searchNoResults();
 
@@ -51,7 +72,7 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Cooking time")
 	String timeCooking();
 
-	@DefaultStringValue("Cooking time")
+	@DefaultStringValue("Time overall")
 	String timeOverall();
 	
 	@DefaultStringValue("h")
@@ -181,4 +202,11 @@ public interface CommonConstants extends Constants {
 		"AUTUMN", "Autumn",
 		"WINTER", "Winter"})
 	Map<String, String> seasonMap();
+
+	@DefaultStringMapValue({
+		"ID", "Id",
+		"TITLE", "Title",
+		"TIMEOVERALL", "Time overall",
+		"DIFFICULTY", "Difficulty"})
+	Map<String, String> sortKeyMap();
 }

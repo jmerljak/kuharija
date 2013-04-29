@@ -11,7 +11,10 @@ public interface CommonMessages extends Messages {
 
 	@DefaultMessage("Oops!")
 	String oops();
-	
+
+	@DefaultMessage(" of {0}")
+	String ofPages(Number allPages);
+
 	@DefaultMessage("Recipe not found or has no content in english. Select some other language or try <a href=\"#search\">search</a>.")
 	String recipeNotFoundTry();
 

@@ -1,17 +1,28 @@
 package si.merljak.magistrska.client.mvp;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.handler.PagingHandler;
+import si.merljak.magistrska.client.i18n.IngredientsConstants;
+import si.merljak.magistrska.client.i18n.UtensilsConstants;
+import si.merljak.magistrska.client.widgets.PagingWidget;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.dto.RecipeListDto;
+import si.merljak.magistrska.common.enumeration.Category;
+import si.merljak.magistrska.common.enumeration.Difficulty;
+import si.merljak.magistrska.common.enumeration.RecipeSortKey;
+import si.merljak.magistrska.common.enumeration.Season;
 
 import com.github.gwtbootstrap.client.ui.AppendButton;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -30,12 +41,22 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Jakob Merljak
  * 
  */
-public class SearchView extends AbstractView {
+public class SearchView extends AbstractView implements PagingHandler {
+
+	// i18n
+	private final IngredientsConstants ingredientsConstants = GWT.create(IngredientsConstants.class);
+	private final Map<String, String> ingredientMap = ingredientsConstants.ingredientMap();
+	private final UtensilsConstants utensilsConstants = Kuharija.utensilsConstants;
+	private final Map<String, String> utensilMap = utensilsConstants.utensilsMap();
 
 	// widgets
 	private final TextBox searchBox = new TextBox();
+	private final FlowPanel advancedFilters = new FlowPanel();
+	private final Button clearFiltersButton = new Button(constants.searchFiltersClear());
 	private final FlowPanel resultsPanel = new FlowPanel();
+	private final PagingWidget pagingWidget = new PagingWidget(this);
 
+	// variables
 	private SearchParameters searchParameters;
 
 	public SearchView () {
@@ -63,28 +84,36 @@ public class SearchView extends AbstractView {
 		formPanel.add(searchBox);
 		formPanel.add(searchButton);
 
+		clearFiltersButton.setStyleName(Constants.BTN);
+		clearFiltersButton.addStyleDependentName("link");
+		clearFiltersButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				searchParameters = new SearchParameters(null, null);
+				advancedFilters.clear();
+				doSearch();
+			}
+		});
+		
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.search()));
 		main.add(formPanel);
+		main.add(advancedFilters);
 		main.add(resultsPanel);
+		main.add(pagingWidget);
 		initWidget(main);
 	}
 
 	private void doSearch() {
 		searchParameters.setSearchString(searchBox.getValue());
-		// TODO apply advanced filters
 		SearchPresenter.doSearch(searchParameters);
 	}
 
 	public void displaySearchResults(RecipeListDto results, SearchParameters parameters) {
-		searchParameters = parameters;
-
 		// clear old data
-		resultsPanel.clear();
+		clearSearchResults();
 
-		// display search string, filters, sorting
-		searchBox.setText(parameters.getSearchString());
-		// TODO filters, sorting
+		setSearchParameters(parameters);
 
 		List<RecipeDto> recipes = results.getRecipes();
 		if (recipes.isEmpty()) {
@@ -115,16 +144,67 @@ public class SearchView extends AbstractView {
 		}
 
 		// paging
-		long pageCount = (results.getAllCount() - 1) / parameters.getPageSize() + 1;
-		resultsPanel.add(new Label("page " + parameters.getPage() + " of " + pageCount));
-
-		setVisible(true);
+		pagingWidget.setPage(searchParameters.getPage(), searchParameters.getPageSize(), results.getAllCount());
 	}
+
+	/** 
+	 * Display search string, filters, sorting etc.
+	 * 
+	 * @param searchParameters
+	 */
+	private void setSearchParameters(SearchParameters parameters) {
+		searchParameters = parameters;
+
+		String searchString = searchParameters.getSearchString();
+		Set<Difficulty> difficulties = searchParameters.getDifficulties();
+		Set<Category> categories = searchParameters.getCategories();
+		Set<Season> seasons = searchParameters.getSeasons();
+		Set<String> ingredients = searchParameters.getIngredients();
+		String utensil = searchParameters.getUtensil();
+		RecipeSortKey sortKey = searchParameters.getSortKey();
+
+		if (searchString != null) {
+			searchBox.setText(searchString);
+		}
+
+		for (Difficulty difficulty : difficulties) {
+			advancedFilters.add(new Label(localizeEnum(difficulty)));
+		}
+
+		for (Category category : categories) {
+			advancedFilters.add(new Label(localizeEnum(category)));
+		}
+
+		for (Season season : seasons) {
+			advancedFilters.add(new Label(localizeEnum(season)));
+		}
+
+		for (String ingredient : ingredients) {
+			advancedFilters.add(new Label(ingredientMap.get(ingredient)));
+		}
+
+		if (utensil != null) {
+			advancedFilters.add(new Label(utensilMap.get(utensil)));
+		}
+
+		if (sortKey != null && sortKey != SearchParameters.DEFAULT_SORT_KEY) {
+			advancedFilters.add(new Label(constants.sortKeyMap().get(sortKey.name())));
+		}
+
+		advancedFilters.add(clearFiltersButton);
+	}
+
 
 	public void clearSearchResults() {
 		searchBox.setText("");
+		advancedFilters.clear();
 		resultsPanel.clear();
-		setVisible(true);
+	}
+
+	@Override
+	public void onPageChange(int page) {
+		searchParameters.setPage(page);
+		doSearch();
 	}
 
 	@Override

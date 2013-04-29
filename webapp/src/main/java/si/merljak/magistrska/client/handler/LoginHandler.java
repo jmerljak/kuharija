@@ -1,6 +1,5 @@
 package si.merljak.magistrska.client.handler;
 
-
 public interface LoginHandler {
 	/** 
 	 * Tries to login with provided credentials.

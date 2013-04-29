@@ -58,6 +58,7 @@ public class SearchPresenter extends AbstractPresenter {
 	public Widget parseParameters(Map<String, String> parameters) {
 		if (parameters.isEmpty()) {
 			searchView.clearSearchResults();
+			searchView.setVisible(true);
 		} else {
 			String encodedSearchString = parameters.get(PARAMETER_SEARCH_STRING);
 			String searchString = encodedSearchString != null ? URL.decodePathSegment(encodedSearchString) : null;
@@ -137,10 +138,12 @@ public class SearchPresenter extends AbstractPresenter {
 	 * @param searchParameters search parameters
 	 */
 	private void search(final SearchParameters searchParameters) {
+		searchView.setVisible(false);
 		searchService.search(searchParameters, new AsyncCallback<RecipeListDto>() {
 			@Override
 			public void onSuccess(RecipeListDto results) {
 				searchView.displaySearchResults(results, searchParameters);
+				searchView.setVisible(true);
 			}
 			
 			@Override
@@ -190,7 +193,7 @@ public class SearchPresenter extends AbstractPresenter {
 			parametersMap.put(PARAMETER_SEARCH_STRING, URL.encodePathSegment(searchString));
 		}
 
-		if (difficulties != null && !difficulties.isEmpty()) {
+		if (!difficulties.isEmpty()) {
 			List<String> difficultyStrings = new ArrayList<String>();
 			for (Difficulty difficulty : difficulties) {
 				difficultyStrings.add(difficulty.name().toLowerCase());
@@ -198,7 +201,7 @@ public class SearchPresenter extends AbstractPresenter {
 			parametersMap.put(PARAMETER_DIFFICULTY, Joiner.on(",").skipNulls().join(difficultyStrings));
 		}
 
-		if (categories != null && !categories.isEmpty()) {
+		if (!categories.isEmpty()) {
 			List<String> categoryStrings = new ArrayList<String>();
 			for (Category category : categories) {
 				categoryStrings.add(category.name().toLowerCase());
@@ -206,7 +209,7 @@ public class SearchPresenter extends AbstractPresenter {
 			parametersMap.put(PARAMETER_CATEGORY, Joiner.on(",").skipNulls().join(categoryStrings));
 		}
 
-		if (seasons != null && !seasons.isEmpty()) {
+		if (!seasons.isEmpty()) {
 			List<String> seasonStrings = new ArrayList<String>();
 			for (Season season : seasons) {
 				seasonStrings.add(season.name().toLowerCase());
@@ -214,8 +217,8 @@ public class SearchPresenter extends AbstractPresenter {
 			parametersMap.put(PARAMETER_SEASON, Joiner.on(",").skipNulls().join(seasonStrings));
 		}
 
-		if (ingredients != null && !ingredients.isEmpty()) {
-			parametersMap.put(PARAMETER_INGREDIENT, Joiner.on(",").skipNulls().join(ingredients));
+		if (!ingredients.isEmpty()) {
+			parametersMap.put(PARAMETER_INGREDIENT, Joiner.on(",").skipNulls().join(ingredients).toLowerCase());
 		}
 
 		if (utensil != null) {
