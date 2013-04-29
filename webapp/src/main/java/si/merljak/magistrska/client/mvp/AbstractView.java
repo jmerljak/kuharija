@@ -1,6 +1,8 @@
 package si.merljak.magistrska.client.mvp;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
@@ -11,6 +13,7 @@ import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.enumeration.Unit;
 
+import com.google.common.base.Joiner;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Composite;
 
@@ -67,18 +70,20 @@ public abstract class AbstractView extends Composite {
 	 * @return time string, <em>e.g. '1 h 23 min', '3 h' or '45 min'</em>, or empty string if parameter is {@code null}
 	 */
 	protected static String timeFromMinutes(Integer minutes) {
-		String timeString = "";
+		List<String> timeStrings = new ArrayList<String>();
 		if (minutes != null) {
 			int hours = minutes / 60;
 			minutes = minutes % 60;
 			if (hours > 0) {
-				timeString += Integer.toString(hours) + " h ";
+				timeStrings.add(Integer.toString(hours));
+				timeStrings.add(constants.timeHour());
 			}
 			if (minutes > 0) {
-				timeString += Integer.toString(minutes) + " min";
+				timeStrings.add(Integer.toString(minutes));
+				timeStrings.add(constants.timeMinute());
 			}
 		}
-		return timeString;
+		return Joiner.on(" ").join(timeStrings);
 	}
 
 	/** Hides view and all of its widgets. */

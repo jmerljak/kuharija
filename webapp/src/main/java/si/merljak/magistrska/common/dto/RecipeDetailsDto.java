@@ -170,16 +170,16 @@ public class RecipeDetailsDto implements Serializable {
 		return categories;
 	}
 
-	public void setCategories(Set<Category> categories) {
-		this.categories = categories;
+	public void addCategories(Set<Category> categories) {
+		this.categories.addAll(categories);
 	}
 
 	public Set<Season> getSeasons() {
 		return seasons;
 	}
 
-	public void setSeasons(Set<Season> seasons) {
-		this.seasons = seasons;
+	public void addSeasons(Set<Season> seasons) {
+		this.seasons.addAll(seasons);
 	}
 
 }

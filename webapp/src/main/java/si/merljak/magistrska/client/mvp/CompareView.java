@@ -10,10 +10,10 @@ import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Season;
 
+import com.github.gwtbootstrap.client.ui.Badge;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
-import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
@@ -130,14 +130,26 @@ public class CompareView extends AbstractView {
 				// categories
 				FlowPanel categories = new FlowPanel();
 				for (Category category : result.getCategories()) {
-					categories.add(new Anchor(localizeEnum(category), SearchPresenter.buildSearchByCategoryUrl(category)));
+					Badge categoryBadge = new Badge(localizeEnum(category));
+					categoryBadge.setStylePrimaryName("category");
+					categoryBadge.addStyleDependentName(category.name().toLowerCase());
+					categoryBadge.setWordWrap(false);
+					Anchor categoryAnchor = new Anchor("", SearchPresenter.buildSearchByCategoryUrl(category));
+					categoryAnchor.getElement().appendChild(categoryBadge.getElement());
+					categories.add(categoryAnchor);
 				}
 				compareTable.setWidget(ROW_CATEGORIES, column, categories);
 
 				// seasons
 				FlowPanel seasons = new FlowPanel();
 				for (Season season : result.getSeasons()) {
-					seasons.add(new Anchor(localizeEnum(season), SearchPresenter.buildSearchBySeasonUrl(season)));
+					Badge seasonBadge = new Badge(localizeEnum(season));
+					seasonBadge.setStylePrimaryName("season");
+					seasonBadge.setWordWrap(false);
+					seasonBadge.addStyleDependentName(season.name().toLowerCase());
+					Anchor seasonAnchor = new Anchor("", SearchPresenter.buildSearchBySeasonUrl(season));
+					seasonAnchor.getElement().appendChild(seasonBadge.getElement());
+					seasons.add(seasonAnchor);
 				}
 				compareTable.setWidget(ROW_SEASONS, column, seasons);
 

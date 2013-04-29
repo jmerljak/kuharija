@@ -16,7 +16,10 @@ import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.StepDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.VideoDto;
+import si.merljak.magistrska.common.enumeration.Category;
+import si.merljak.magistrska.common.enumeration.Season;
 
+import com.github.gwtbootstrap.client.ui.Badge;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
@@ -27,6 +30,7 @@ import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Location;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -131,6 +135,27 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		recipeDetailsPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
 		recipeDetailsPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
 		recipeDetailsPanel.add(new Image(RECIPE_IMG_FOLDER + recipe.getImageUrl()));
+
+		// categories & seasons
+		for (Category category : recipe.getCategories()) {
+			Badge categoryBadge = new Badge(localizeEnum(category));
+			categoryBadge.setStylePrimaryName("category");
+			categoryBadge.addStyleDependentName(category.name().toLowerCase());
+			categoryBadge.setWordWrap(false);
+			Anchor categoryAnchor = new Anchor("", SearchPresenter.buildSearchByCategoryUrl(category));
+			categoryAnchor.getElement().appendChild(categoryBadge.getElement());
+			recipeDetailsPanel.add(categoryAnchor);
+		}
+
+		for (Season season : recipe.getSeasons()) {
+			Badge seasonBadge = new Badge(localizeEnum(season));
+			seasonBadge.setStylePrimaryName("season");
+			seasonBadge.addStyleDependentName(season.name().toLowerCase());
+			seasonBadge.setWordWrap(false);
+			Anchor seasonAnchor = new Anchor("", SearchPresenter.buildSearchBySeasonUrl(season));
+			seasonAnchor.getElement().appendChild(seasonBadge.getElement());
+			recipeDetailsPanel.add(seasonAnchor);
+		}
 
 		// ingredients
 		ingredientsWidget.setIngredients(recipe.getIngredients(), recipe.getNumberOfMeals(), true);

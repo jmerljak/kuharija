@@ -86,12 +86,12 @@ public class Recipe implements Serializable {
 	private Set<Comment> comments;
 
 	@Enumerated(EnumType.STRING)
-	@ElementCollection(targetClass = Category.class)
+	@ElementCollection(fetch=FetchType.EAGER, targetClass = Category.class)
 	@Column(name="category")
 	private Set<Category> categories;
 
 	@Enumerated(EnumType.STRING)
-	@ElementCollection(targetClass = Season.class)
+	@ElementCollection(fetch=FetchType.EAGER, targetClass = Season.class)
 	@Column(name="season")
 	private Set<Season> seasons;
 
@@ -159,5 +159,13 @@ public class Recipe implements Serializable {
 
 	public Set<Comment> getComments() {
 		return comments;
+	}
+
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	public Set<Season> getSeasons() {
+		return seasons;
 	}
 }

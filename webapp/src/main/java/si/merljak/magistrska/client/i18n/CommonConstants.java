@@ -39,6 +39,12 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Cooking time")
 	String timeOverall();
 	
+	@DefaultStringValue("h")
+	String timeHour();
+
+	@DefaultStringValue("min")
+	String timeMinute();
+
 	@DefaultStringValue("Number of meals")
 	String numberOfMeals();
 

@@ -126,10 +126,14 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 
 		// comments
 		for (Comment comment : recipeEntity.getComments()) {
-			// sort by date
+			// TODO sort by date
 			String user = comment.getUser() != null ? comment.getUser().getName() : "anonymous";
 			recipeDto.addComment(new CommentDto(user, comment.getDate(), comment.getContent()));
 		}
+
+		// categories & seasons
+		recipeDto.addCategories(recipeEntity.getCategories());
+		recipeDto.addSeasons(recipeEntity.getSeasons());
 
 		return recipeDto;
 	}
@@ -147,9 +151,22 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 									recipe.timePreparation, recipe.timeCooking, recipe.timeOverall,
 									recipe.numberOfMeals, recipe.mealUnit));
 		
-		for (RecipeDetailsDto r : list) {
-			r.setIngredients(new JPAQuery(em).from(recipeIngredient)
-								.where(recipeIngredient.recipe.id.eq(r.getId()))
+		for (RecipeDetailsDto recipeDto : list) {
+			Recipe uniqueResult = new JPAQuery(em).from(recipe)
+								.where(recipe.id.eq(recipeDto.getId())).uniqueResult(recipe);
+			recipeDto.addSeasons(uniqueResult.getSeasons());
+			recipeDto.addCategories(uniqueResult.getCategories());
+			
+//			recipeDto.setSeasons(new JPAQuery(em).from(recipe)
+//					.where(recipe.id.eq(recipeDto.getId()))
+//					.uniqueResult(recipe.seasons));
+//
+//			recipeDto.setCategories(new JPAQuery(em).from(recipe)
+//								.where(recipe.id.eq(recipeDto.getId()))
+//								.uniqueResult(recipe.categories));
+
+			recipeDto.setIngredients(new JPAQuery(em).from(recipeIngredient)
+								.where(recipeIngredient.recipe.id.eq(recipeDto.getId()))
 								.innerJoin(recipeIngredient.ingredient, ingredient)
 								.orderBy(recipeIngredient.id.asc())
 								.list(new QIngredientDto(ingredient.name, ingredient.imageUrl, recipeIngredient.unit, recipeIngredient.amount)));
