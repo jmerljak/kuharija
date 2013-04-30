@@ -17,6 +17,7 @@ import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Joiner.MapJoiner;
 import com.google.common.base.Splitter;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.History;
@@ -53,6 +54,7 @@ public class SearchPresenter extends AbstractPresenter {
     // utils
     private static final Joiner joiner = Joiner.on(",").skipNulls();
 	private static final Splitter splitter = Splitter.on(",").omitEmptyStrings().trimResults();
+	private static final MapJoiner keyValueJoiner = Joiner.on("&").withKeyValueSeparator("=");
 
 	public SearchPresenter(Language language, SearchServiceAsync searchService) {
 		super(language);
@@ -109,14 +111,14 @@ public class SearchPresenter extends AbstractPresenter {
 
 			if (parameters.containsKey(PARAMETER_INGREDIENT)) {
 				for (String ingredient : splitter.split(parameters.get(PARAMETER_INGREDIENT).toUpperCase())) {
-					try {
-						searchParameters.addIngredient(ingredient);
-					} catch (Exception e) { /* ignore */ }
+					searchParameters.addIngredient(ingredient);
 				}
 			}
 
 			if (parameters.containsKey(PARAMETER_UTENSIL)) {
-				searchParameters.setUtensil(parameters.get(PARAMETER_UTENSIL).toUpperCase());
+				for (String utensil : splitter.split(parameters.get(PARAMETER_UTENSIL).toUpperCase())) {
+					searchParameters.addUtensil(utensil);
+				}
 			}
 
 			if (parameters.containsKey(PARAMETER_SORT_BY)) {
@@ -175,7 +177,7 @@ public class SearchPresenter extends AbstractPresenter {
 		Set<Category> categories = searchParameters.getCategories();
 		Set<Season> seasons = searchParameters.getSeasons();
 		Set<String> ingredients = searchParameters.getIngredients();
-		String utensil = searchParameters.getUtensil();
+		Set<String> utensils = searchParameters.getUtensils();
 		RecipeSortKey sortKey = searchParameters.getSortKey();
 
 		Map<String, String> parametersMap = new HashMap<String, String>();
@@ -219,16 +221,20 @@ public class SearchPresenter extends AbstractPresenter {
 			parametersMap.put(PARAMETER_INGREDIENT, joiner.join(ingredients).toLowerCase());
 		}
 
-		if (utensil != null) {
-			parametersMap.put(PARAMETER_UTENSIL, utensil.toLowerCase());
+		if (!utensils.isEmpty()) {
+			parametersMap.put(PARAMETER_UTENSIL, joiner.join(utensils).toLowerCase());
 		}
 
 		if (sortKey != null && sortKey != SearchParameters.DEFAULT_SORT_KEY) {
 			parametersMap.put(PARAMETER_SORT_BY, sortKey.name().toLowerCase());
 		}
 
-		String parametersString = Joiner.on("&").withKeyValueSeparator("=").join(parametersMap);
-		History.newItem(Joiner.on("&").join(SCREEN_NAME, parametersString));
+		String parametersString = keyValueJoiner.join(parametersMap);
+		if (parametersString.isEmpty()) {
+			History.newItem(SCREEN_NAME);
+		} else {
+			History.newItem(SCREEN_NAME + "&" + parametersString);
+		}
 	}
 
 	/**

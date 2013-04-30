@@ -12,19 +12,19 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 public class SearchParameters implements Serializable {
 
-	private static final long serialVersionUID = 2847174317378294785L;
+	private static final long serialVersionUID = 2817702799360224889L;
 
 	public static final long DEFAULT_PAGE_SIZE = 15L;
 	public static final RecipeSortKey DEFAULT_SORT_KEY = RecipeSortKey.ID;
 
-	private String searchString;
 	private long page = 1;
 	private long pageSize = DEFAULT_PAGE_SIZE;
-	private Set<Difficulty> difficulties = new HashSet<Difficulty>();
-	private Set<Category> categories = new HashSet<Category>();
-	private Set<Season> seasons = new HashSet<Season>();
-	private Set<String> ingredients = new HashSet<String>();
-	private String utensil;
+	private String searchString;
+	private Set<Difficulty> difficulties = new HashSet<Difficulty>(0);
+	private Set<Category> categories = new HashSet<Category>(0);
+	private Set<Season> seasons = new HashSet<Season>(0);
+	private Set<String> ingredients = new HashSet<String>(0);
+	private Set<String> utensils = new HashSet<String>(0);
 	private Language language;
 	private RecipeSortKey sortKey = DEFAULT_SORT_KEY;
 
@@ -73,12 +73,20 @@ public class SearchParameters implements Serializable {
 		difficulties.add(difficulty);
 	}
 
+	public void removeDifficulty(Difficulty difficulty) {
+		difficulties.remove(difficulty);
+	}
+
 	public Set<Category> getCategories() {
 		return categories;
 	}
 
 	public void addCategory(Category category) {
 		categories.add(category);
+	}
+
+	public void removeCategory(Category category) {
+		categories.remove(category);
 	}
 
 	public Set<Season> getSeasons() {
@@ -89,6 +97,10 @@ public class SearchParameters implements Serializable {
 		seasons.add(season);
 	}
 
+	public void removeSeason(Season season) {
+		seasons.remove(season);
+	}
+
 	public Set<String> getIngredients() {
 		return ingredients;
 	}
@@ -97,12 +109,20 @@ public class SearchParameters implements Serializable {
 		ingredients.add(ingredient);
 	}
 
-	public String getUtensil() {
-		return utensil;
+	public void removeIngredient(String ingredient) {
+		ingredients.remove(ingredient);
 	}
 
-	public void setUtensil(String utensil) {
-		this.utensil = utensil;
+	public Set<String> getUtensils() {
+		return utensils;
+	}
+
+	public void addUtensil(String utensil) {
+		this.utensils.add(utensil);
+	}
+
+	public void removeUtensil(String utensil) {
+		this.utensils.remove(utensil);
 	}
 
 	public Language getLanguage() {

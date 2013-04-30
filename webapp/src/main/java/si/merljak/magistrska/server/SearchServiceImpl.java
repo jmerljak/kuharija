@@ -50,7 +50,7 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		Set<Category> categories = searchParameters.getCategories();
 		Set<Season> seasons = searchParameters.getSeasons();
 		Set<String> ingredients = searchParameters.getIngredients();
-		String utensil = searchParameters.getUtensil();
+		Set<String> utensils = searchParameters.getUtensils();
 		Language language = searchParameters.getLanguage();
 		RecipeSortKey sortKey = searchParameters.getSortKey();
 
@@ -100,8 +100,13 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 			subquery.where(ingredientsFilter);
 		}
 
-		if (utensil != null) {
-			subquery.where(recipe.utensils.any().utensil.name.eq(utensil));
+		if (!utensils.isEmpty()) {
+			BooleanBuilder utensilsFilter = new BooleanBuilder();
+			for (String utensilName : utensils) {
+				// searching for recipes with ALL listed utensils
+				utensilsFilter.and(recipe.utensils.any().utensil.name.eq(utensilName));
+			}
+			subquery.where(utensilsFilter);
 		}
 
 		// main query

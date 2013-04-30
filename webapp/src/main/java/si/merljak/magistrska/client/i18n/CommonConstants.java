@@ -60,11 +60,17 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Advanced search")
 	String searchFilters();
 
-	@DefaultStringValue("Clear filters")
+	@DefaultStringValue("Show")
+	String searchFiltersShow();
+
+	@DefaultStringValue("Clear and hide")
 	String searchFiltersClear();
 
 	@DefaultStringValue("No results")
 	String searchNoResults();
+	
+	@DefaultStringValue("Sort by: ")
+	String sortBy();
 
 	@DefaultStringValue("Preparation time")
 	String timePreparation();
@@ -204,7 +210,7 @@ public interface CommonConstants extends Constants {
 	Map<String, String> seasonMap();
 
 	@DefaultStringMapValue({
-		"ID", "Id",
+		"ID", "Default",
 		"TITLE", "Title",
 		"TIMEOVERALL", "Time overall",
 		"DIFFICULTY", "Difficulty"})
