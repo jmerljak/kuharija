@@ -81,7 +81,7 @@ public class LoginView extends AbstractView implements LoginPresenter.LoginView 
 		loginForm.add(new Label(constants.password()));
 		loginForm.add(passwordBox);
 		loginForm.add(loginButton);
-		
+
 		// layout
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.login()));

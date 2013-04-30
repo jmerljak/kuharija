@@ -9,7 +9,7 @@
 
     <properties>
         <gwt.version>2.5.1</gwt.version>
-        <querydsl.version>3.1.0</querydsl.version>
+        <querydsl.version>3.1.1</querydsl.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -50,12 +50,19 @@
 		    <version>14.0.1</version>
 		</dependency>
 
-		<!-- postgres driver -->
+		<!-- URL rewriting
+		<dependency>
+		    <groupId>org.tuckey</groupId>
+		    <artifactId>urlrewritefilter</artifactId>
+		    <version>4.0.3</version>
+		</dependency> -->
+
+		<!-- postgres driver
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901.jdbc4</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- querydsl -->
 		<dependency>
@@ -197,6 +204,7 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>${gwt.version}</version>
 				<configuration>
+					<module>si.merljak.magistrska.Kuharija</module>
 					<inplace>true</inplace>
 					<logLevel>INFO</logLevel>
 					<extraJvmArgs>-Xmx512m</extraJvmArgs>

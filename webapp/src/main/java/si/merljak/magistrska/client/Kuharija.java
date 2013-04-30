@@ -10,14 +10,14 @@ import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
-import si.merljak.magistrska.client.mvp.ComparePresenter;
 import si.merljak.magistrska.client.mvp.HomePresenter;
-import si.merljak.magistrska.client.mvp.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.LoginPresenter;
 import si.merljak.magistrska.client.mvp.LoginView;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.mvp.SearchPresenter;
-import si.merljak.magistrska.client.mvp.UtensilPresenter;
+import si.merljak.magistrska.client.mvp.compare.ComparePresenter;
+import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
+import si.merljak.magistrska.client.mvp.utensil.UtensilPresenter;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.MainMenuWidget;
 import si.merljak.magistrska.client.widgets.UserWidget;
@@ -32,6 +32,8 @@ import si.merljak.magistrska.common.rpc.SearchService;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 import si.merljak.magistrska.common.rpc.UserService;
 import si.merljak.magistrska.common.rpc.UserServiceAsync;
+import si.merljak.magistrska.common.rpc.UtensilService;
+import si.merljak.magistrska.common.rpc.UtensilServiceAsync;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.google.common.base.Splitter;
@@ -62,6 +64,7 @@ public class Kuharija implements EntryPoint {
 	private static final RecipeServiceAsync recipeService = GWT.create(RecipeService.class);
 	private static final SearchServiceAsync searchService = GWT.create(SearchService.class);
 	private static final UserServiceAsync userService = GWT.create(UserService.class);
+	private static final UtensilServiceAsync utensilService = GWT.create(UtensilService.class);
 	private static final RecommendationServiceAsync recommendationService = GWT.create(RecommendationService.class);
 
 	// i18n
@@ -91,9 +94,6 @@ public class Kuharija implements EntryPoint {
 	// user
 	private static Coordinates coordinates;
 
-	boolean isSessionCheckComplete = false;
-	boolean isGeolocateComplete = false;
-
 	public void onModuleLoad() {
 		mainPanel = RootPanel.get("main");
 		Roles.getMainRole().set(mainPanel.getElement());
@@ -113,7 +113,7 @@ public class Kuharija implements EntryPoint {
 		// TODO refactorize MVP architecture!
 		LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView());
 		presenters.put(IngredientPresenter.SCREEN_NAME, new IngredientPresenter(language, ingredientService));
-		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, ingredientService));
+		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, utensilService));
 		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, userService));
 		presenters.put(SearchPresenter.SCREEN_NAME, new SearchPresenter(language, searchService));
 		presenters.put(ComparePresenter.SCREEN_NAME, new ComparePresenter(language, recipeService));
@@ -167,32 +167,20 @@ public class Kuharija implements EntryPoint {
 
 	/** Tries to get user's location. */
 	private void geolocate() {
-		Geolocation geolocation = Geolocation.getIfSupported();
-		if (geolocation != null) {
+		if (Geolocation.isSupported()) {
+			Geolocation geolocation = Geolocation.getIfSupported();
 			geolocation.getCurrentPosition(new Callback<Position, PositionError>() {
 				@Override
 				public void onSuccess(Position position) {
 					coordinates = position.getCoordinates();
-					isGeolocateComplete = true;
-					if (isSessionCheckComplete) {
-						fireCurrentHistory();
-					}
+					// TODO personalize
 				}
 				
 				@Override
 				public void onFailure(PositionError reason) {
 					// ignore
-					isGeolocateComplete = true;
-					if (isSessionCheckComplete) {
-						fireCurrentHistory();
-					}
 				}
 			});
-		} else {
-			isGeolocateComplete = true;
-			if (isSessionCheckComplete) {
-				fireCurrentHistory();
-			}
 		}
 	}
 

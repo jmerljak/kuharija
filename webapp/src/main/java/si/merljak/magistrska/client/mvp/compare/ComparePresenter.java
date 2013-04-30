@@ -1,4 +1,4 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.compare;
 
 import java.util.HashSet;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;

@@ -1,11 +1,12 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.utensil;
 
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.common.dto.UtensilDto;
 import si.merljak.magistrska.common.enumeration.Language;
-import si.merljak.magistrska.common.rpc.IngredientServiceAsync;
+import si.merljak.magistrska.common.rpc.UtensilServiceAsync;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -23,15 +24,15 @@ public class UtensilPresenter extends AbstractPresenter {
 	private static final String PARAMETER_UTENSIL = "name";
 
 	// remote service
-	private IngredientServiceAsync ingredientService;
+	private UtensilServiceAsync utensilService;
 
 	// views
 	private final UtensilIndexView indexView = new UtensilIndexView();
 	private final UtensilDetailsView detailsView = new UtensilDetailsView();
 
-	public UtensilPresenter(Language language, IngredientServiceAsync ingredientService) {
+	public UtensilPresenter(Language language, UtensilServiceAsync utensilService) {
 		super(language);
-		this.ingredientService = ingredientService;
+		this.utensilService = utensilService;
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class UtensilPresenter extends AbstractPresenter {
 	/** Gets utensil by name. */
 	private void getUtensil(String name) {
 		detailsView.setVisible(false);
-		ingredientService.getUtensil(name, new AsyncCallback<UtensilDto>() {
+		utensilService.getUtensil(name, new AsyncCallback<UtensilDto>() {
 			@Override
 			public void onSuccess(UtensilDto utensil) {
 				detailsView.displayUtensil(utensil);

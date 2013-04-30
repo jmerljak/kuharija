@@ -1,7 +1,6 @@
 package si.merljak.magistrska.common.rpc;
 
 import si.merljak.magistrska.common.dto.IngredientDto;
-import si.merljak.magistrska.common.dto.UtensilDto;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -15,11 +14,4 @@ public interface IngredientService extends RemoteService {
 	 * @return single ingredient DTO or <em>null</em> if ingredient not found
 	 */
 	IngredientDto getIngredient(String name);
-
-	/**
-	 * Gets single utensil details.
-	 * @param name utensil's name
-	 * @return single utensil DTO or <em>null</em> if utensil not found
-	 */
-	UtensilDto getUtensil(String name);
 }

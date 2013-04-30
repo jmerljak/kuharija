@@ -1,4 +1,4 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.utensil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
+import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.utils.LocaleSensitiveComparator;
 
 import com.github.gwtbootstrap.client.ui.Heading;

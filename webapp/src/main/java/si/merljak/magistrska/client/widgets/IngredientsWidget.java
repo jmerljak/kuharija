@@ -6,7 +6,7 @@ import java.util.Map;
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
-import si.merljak.magistrska.client.mvp.IngredientPresenter;
+import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
 import si.merljak.magistrska.client.utils.Calc;
 import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.enumeration.Unit;

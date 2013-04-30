@@ -8,8 +8,6 @@
     <title>Kuharske mojstrovine</title>
    	<link rel="icon" href="favicon.ico">
 
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.css">
     <link rel="stylesheet" href="css/kuharija.css">
 
     <!-- <link rel="stylesheet" href="css/playr.css">
@@ -26,7 +24,11 @@
   </head>
 
   <body>
-	<header></header>
+	<nav id="nav" role="navigation"></nav>
+	<header>
+		<div id="userWrapper"></div>
+	</header>
+
     <noscript>
       <div id="noScript">
       	<p>
@@ -42,11 +44,7 @@
       </div>
     </noscript>
 
-	<div class="container">
-		<nav id="nav" role="navigation"></nav>
-		<div id="userWrapper"></div>
-		<div id="main" role="main"></div>
-	</div>
+	<div id="main" class="container" role="main"></div>
 
 	<footer>Jakob Merljak, 2013.</footer>
 

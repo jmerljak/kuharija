@@ -1,8 +1,9 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.ingredient;
 
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.IngredientServiceAsync;
