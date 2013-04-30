@@ -1,7 +1,6 @@
 package si.merljak.magistrska.client.mvp;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import si.merljak.magistrska.client.Kuharija;
@@ -89,12 +88,5 @@ public abstract class AbstractView extends Composite {
 	/** Hides view and all of its widgets. */
 	public void hide() {
 		setVisible(false);
-	}
-
-	/** Locale sensitive string comparator */
-	protected class LocaleSensitiveComparator implements Comparator<String> {
-		public native int compare(String source, String target) /*-{
-	    	return source.localeCompare(target);
-		}-*/;
 	}
 }

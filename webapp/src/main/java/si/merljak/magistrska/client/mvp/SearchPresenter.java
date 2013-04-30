@@ -123,8 +123,8 @@ public class SearchPresenter extends AbstractPresenter {
 
 			if (parameters.containsKey(PARAMETER_SORT_BY)) {
 				try {
-					RecipeSortKey sortKey = RecipeSortKey.valueOf(parameters.get(PARAMETER_SORT_BY).toUpperCase());
-					searchParameters.setSortKey(sortKey);
+					String sortKeyString = parameters.get(PARAMETER_SORT_BY).toUpperCase();
+					searchParameters.setSortKey(RecipeSortKey.valueOf(sortKeyString));
 				} catch (Exception e) { /* ignore */ }
 			}
 

@@ -34,6 +34,8 @@ import si.merljak.magistrska.common.rpc.UserService;
 import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.google.common.base.Splitter;
+import com.google.common.base.Splitter.MapSplitter;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
@@ -75,10 +77,14 @@ public class Kuharija implements EntryPoint {
 	public static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
 	public static final DateTimeFormat timestampFormat = DateTimeFormat.getFormat(formatters.timestampFormat());
 
+	// utils
+	private static final MapSplitter keyValueSplitter = Splitter.on("&").trimResults().omitEmptyStrings().withKeyValueSeparator("=");
+
 	// presenters
 	private Map<String, AbstractPresenter> presenters = new HashMap<String, AbstractPresenter>();
 
-	// widgets
+	// panels & widgets
+	private RootPanel mainPanel;
 	private LocaleWidget localeWidget;
 	private Breadcrumbs breadcrumbs;
 
@@ -88,12 +94,10 @@ public class Kuharija implements EntryPoint {
 	boolean isSessionCheckComplete = false;
 	boolean isGeolocateComplete = false;
 
-	private RootPanel main;
-
 	public void onModuleLoad() {
-		main = RootPanel.get("main");
-		Roles.getMainRole().set(main.getElement());
-		Roles.getMainRole().getAriaLiveProperty(main.getElement());
+		mainPanel = RootPanel.get("main");
+		Roles.getMainRole().set(mainPanel.getElement());
+		Roles.getMainRole().getAriaLiveProperty(mainPanel.getElement());
 
 		// user
 		geolocate();
@@ -121,28 +125,31 @@ public class Kuharija implements EntryPoint {
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
 			public void onValueChange(ValueChangeEvent<String> event) {
-				String[] historyTokens = event.getValue().split("&");
-
-				// screen name should be first token
-				String screenName = historyTokens[0];
-
-				// get parameters
-				Map<String, String> parameters = new HashMap<String, String>();
-				for (int i = 1; i < historyTokens.length; i++) {
-					String[] param = historyTokens[i].split("=");
-					if (param.length > 1) {
-						parameters.put(param[0], param[1]);
-					} else {
-						parameters.put(param[0], "");
+				String historyToken = event.getValue();
+				String screenName = historyToken;
+				Map<String, String> parameters = new HashMap<String, String>(0);
+				
+				if (historyToken.contains("&")) {
+					int separatorIndex = historyToken.indexOf("&");
+					// screen name should be first token
+					screenName = historyToken.substring(0, separatorIndex);
+					try {
+						// rest are parameters
+						historyToken = historyToken.substring(separatorIndex, historyToken.length());
+						parameters = keyValueSplitter.split(historyToken);
+					} catch (Exception e) {
+						// incorrect URL, redirect to screen name
+						History.newItem(screenName);
 					}
 				}
 
+				// get parameters
 				AbstractPresenter presenter = presenters.get(screenName);
+				mainPanel.clear();
 				if (presenter != null) {
-					main.clear();
-					main.add(presenter.parseParameters(parameters));
+					mainPanel.add(presenter.parseParameters(parameters));
 				} else {
-					// 404 view
+					// TODO 404 view
 				}
 
 				breadcrumbs.clear();
@@ -191,6 +198,7 @@ public class Kuharija implements EntryPoint {
 
 	/** Handles common RPC call exceptions. */  
 	public static void handleException(Throwable caught) {
+		// TODO alert placeholder
 		Window.alert(caught.getMessage());
 	}
 

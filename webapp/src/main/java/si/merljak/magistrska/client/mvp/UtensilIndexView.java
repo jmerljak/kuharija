@@ -2,16 +2,17 @@ package si.merljak.magistrska.client.mvp;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
+import si.merljak.magistrska.client.utils.LocaleSensitiveComparator;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,12 +29,9 @@ public class UtensilIndexView extends AbstractView {
 	private final UtensilsConstants utensilsConstants = Kuharija.utensilsConstants;
 
 	public UtensilIndexView() {
-		// generate inverse (localized value -> key) utensils map
-		Map<String, String> utensilMap = utensilsConstants.utensilsMap();
-		Map<String, String> inverseMap = new HashMap<String, String>();
-		for (String key : utensilMap.keySet()) {
-			inverseMap.put(utensilMap.get(key), key);
-		}
+		// create inverse (localized value -> key) utensils map
+		BiMap<String, String> utensilMap = HashBiMap.create(utensilsConstants.utensilsMap());
+		BiMap<String, String> inverseMap = utensilMap.inverse();;
 
 		// sort localized values using locale sensitive comparator
 		List<String> values = new ArrayList<String>(utensilMap.values());

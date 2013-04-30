@@ -2,16 +2,17 @@ package si.merljak.magistrska.client.mvp;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
+import si.merljak.magistrska.client.utils.LocaleSensitiveComparator;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,12 +29,9 @@ public class IngredientIndexView extends AbstractView {
 	private final IngredientsConstants ingredientsConstants = Kuharija.ingredientsConstants;
 
 	public IngredientIndexView() {
-		// generate inverse (localized value -> key) ingredients map
-		Map<String, String> ingredientMap = ingredientsConstants.ingredientMap();
-		Map<String, String> inverseMap = new HashMap<String, String>();
-		for (String key : ingredientMap.keySet()) {
-			inverseMap.put(ingredientMap.get(key), key);
-		}
+		// create inverse (localized value -> key) ingredients map
+		BiMap<String, String> ingredientMap = HashBiMap.create(ingredientsConstants.ingredientMap());
+		BiMap<String, String> inverseMap = ingredientMap.inverse();
 
 		// sort localized values using locale sensitive comparator
 		List<String> values = new ArrayList<String>(ingredientMap.values());

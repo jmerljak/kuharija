@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class HomePresenter extends AbstractPresenter {
 
 	// screen and parameters name
-	public static final String SCREEN_NAME = "home";
+	public static final String SCREEN_NAME = "";
 
 	// remote service
 	private RecommendationServiceAsync recommendationService;

@@ -1,5 +1,7 @@
 package si.merljak.magistrska.client.mvp;
 
+import java.util.List;
+
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.widgets.AppendixWidget;
 import si.merljak.magistrska.client.widgets.AudioWidget;
@@ -13,7 +15,6 @@ import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
-import si.merljak.magistrska.common.dto.StepDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 import si.merljak.magistrska.common.enumeration.Category;
@@ -23,15 +24,9 @@ import com.github.gwtbootstrap.client.ui.Badge;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
@@ -168,17 +163,23 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 			panelBasic.add(new Paragraph(text.getContent()));
 		}
 
-		if (!Audio.isSupported()) {
+		List<AudioDto> audios = recipe.getAudios();
+		if (audios.isEmpty()) {
+			panelAudio.add(new HTML(messages.recipeNoAudio()));
+		} else if (!Audio.isSupported()) {
 			panelAudio.add(new HTML(messages.htmlAudioNotSupported()));
 		}
-		for (AudioDto audioDto : recipe.getAudios()) {
+		for (AudioDto audioDto : audios) {
 			panelAudio.add(new AudioWidget(audioDto));
 		}
 
-		if (!Video.isSupported()) {
+		List<VideoDto> videos = recipe.getVideos();
+		if (audios.isEmpty()) {
+			panelAudio.add(new HTML(messages.recipeNoVideo()));
+		} else if (!Video.isSupported()) {
 			panelVideo.add(new HTML(messages.htmlVideoNotSupported()));
 		}
-		for (VideoDto videoDto : recipe.getVideos()) {
+		for (VideoDto videoDto : videos) {
 			panelVideo.add(new VideoWidget(videoDto));
 		}
 
@@ -190,43 +191,6 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		for (AppendixDto appendix : recipe.getAppendencies()) {
 			commentsPanel.add(new AppendixWidget(appendix));
 		}
-
-		setVisible(true);
-	}
-
-	public void displayStep(StepDto step) {
-		if (step == null) {
-			// TODO handle it
-			return;
-		}
-
-		final int page = step.getPage();
-
-		Button btnPrevious = new Button("← previous");
-		btnPrevious.setStyleName(Constants.BTN);
-		btnPrevious.setEnabled(page > 1);
-		btnPrevious.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				UrlBuilder builder = Location.createUrlBuilder().setParameter("page", Integer.toString(page - 1));
-				Window.Location.replace(builder.buildString());
-			}
-		});
-
-		Button btnNext = new Button("next →");
-		btnNext.setStyleName(Constants.BTN);
-		btnNext.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				UrlBuilder builder = Location.createUrlBuilder().setParameter("page", Integer.toString(page + 1));
-				Window.Location.replace(builder.buildString());
-			}
-		});
-
-		panelSteps.clear();
-		panelSteps.add(new Label("step " + page + ": " + step.getContent()));
-		panelSteps.add(btnPrevious);
-		panelSteps.add(btnNext);
 
 		setVisible(true);
 	}
