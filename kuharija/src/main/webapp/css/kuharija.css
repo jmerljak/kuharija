@@ -81,6 +81,16 @@ body {
 	max-width: 300px;
 }
 
-.clr {
-	clear: both;
+/* suggest box */
+.gwt-SuggestBoxPopup {
+	border: 1px solid #EFEFEF;
+	background-color: white;
+}
+
+.gwt-SuggestBoxPopup td.item {
+	padding: 4px 6px;
+}
+
+.gwt-SuggestBoxPopup td.item-selected {
+	background-color: #EFEFEF;
 }

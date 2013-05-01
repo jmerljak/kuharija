@@ -227,6 +227,8 @@ public class SearchView extends AbstractView implements PagingHandler {
 		if (recipes.isEmpty()) {
 			resultsPanel.add(new Label(constants.searchNoResults()));
 		}
+		advancedSearch.setVisible(true);
+		filtersToggle.setVisible(true);
 
 		for (RecipeDto recipe : recipes) {
 			String heading = recipe.getHeading();
@@ -439,6 +441,8 @@ public class SearchView extends AbstractView implements PagingHandler {
 	/** Clears search parameters and results. */
 	public void clearSearchResults() {
 		searchBox.setText("");
+		advancedSearch.setVisible(false);
+		filtersToggle.setVisible(false);
 		filtersToggle.setText(constants.searchFiltersShow());
 		filtersPanel.clear();
 		filtersPanel.setVisible(false);
