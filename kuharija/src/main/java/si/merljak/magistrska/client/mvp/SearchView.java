@@ -19,22 +19,29 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 import com.github.gwtbootstrap.client.ui.AppendButton;
 import com.github.gwtbootstrap.client.ui.CheckBox;
-import com.github.gwtbootstrap.client.ui.Close;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.RadioButton;
+import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -49,21 +56,28 @@ public class SearchView extends AbstractView implements PagingHandler {
 	// i18n
 	private final IngredientsConstants ingredientsConstants = Kuharija.ingredientsConstants;
 	private final UtensilsConstants utensilsConstants = Kuharija.utensilsConstants;
-	private final Map<String, String> ingredientMap = ingredientsConstants.ingredientMap();
-	private final Map<String, String> utensilMap = utensilsConstants.utensilsMap();
+	private final BiMap<String, String> ingredientMap = HashBiMap.create(ingredientsConstants.ingredientMap());
+	private final BiMap<String, String> ingredientInverseMap = ingredientMap.inverse();
+	private final BiMap<String, String> utensilMap = HashBiMap.create(utensilsConstants.utensilsMap());
+	private final BiMap<String, String> utensilInverseMap = utensilMap.inverse();
 	private final Map<String, String> sortKeyMap = constants.sortKeyMap();
 
 	// widgets
 	private final TextBox searchBox = new TextBox();
-	private final FlowPanel filtersPanel = new FlowPanel();
 	private final InlineLabel advancedSearch = new InlineLabel(constants.searchFilters());
 	private final Button filtersToggle = new Button(constants.searchFiltersShow());
+
+	private final FlowPanel filtersPanel = new FlowPanel();
 	private final Label labelDifficulty = new Label(constants.difficulty());
 	private final Label labelCategories = new Label(constants.categories());
 	private final Label labelSeasons = new Label(constants.seasons());
 	private final Label labelIngredients = new Label(constants.ingredients());
 	private final Label labelUtensils = new Label(constants.utensils());
 	private final Label labelSortBy = new Label(constants.sortBy());
+	private final SuggestBox ingredientSuggest;
+	private final SuggestBox utensilSuggest;
+
+	private final FlowPanel sortPanel = new FlowPanel();
 	private final FlowPanel resultsPanel = new FlowPanel();
 	private final PagingWidget pagingWidget = new PagingWidget(this);
 
@@ -111,13 +125,82 @@ public class SearchView extends AbstractView implements PagingHandler {
 				}
 			}
 		});
-		
+
+		labelDifficulty.setStyleName("filterLabel");
+		labelCategories.setStyleName("filterLabel");
+		labelSeasons.setStyleName("filterLabel");
+		labelIngredients.setStyleName("filterLabel");
+		labelUtensils.setStyleName("filterLabel");
+		labelSortBy.setStyleName("filterLabel");
+		filtersPanel.getElement().setId("filtersPanel");
+		sortPanel.getElement().setId("sortPanel");
+
+		// suggestboxes
+		MultiWordSuggestOracle utensilSuggestOracle = new MultiWordSuggestOracle();
+		utensilSuggestOracle.addAll(utensilInverseMap.keySet());
+		utensilSuggest = new SuggestBox(utensilSuggestOracle);
+		utensilSuggest.getElement().setPropertyString("placeholder", constants.searchAndAddUtensil());
+		utensilSuggest.addKeyUpHandler(new KeyUpHandler() {
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					String value = utensilSuggest.getValue();
+					if (utensilInverseMap.containsKey(value)) {
+						searchParameters.addUtensil(utensilInverseMap.get(value));
+						doSearch();
+					} else {
+						// TODO show error
+					}
+				}
+			}
+		});
+		utensilSuggest.addValueChangeHandler(new ValueChangeHandler<String>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				String value = event.getValue();
+				if (utensilInverseMap.containsKey(value)) {
+					searchParameters.addUtensil(utensilInverseMap.get(value));
+					doSearch();
+				}
+			}
+		});
+
+		MultiWordSuggestOracle ingredientSuggestOracle = new MultiWordSuggestOracle();
+		ingredientSuggestOracle.addAll(ingredientInverseMap.keySet());
+		ingredientSuggest = new SuggestBox(ingredientSuggestOracle);
+		ingredientSuggest.getElement().setPropertyString("placeholder", constants.searchAndAddIngredient());
+		ingredientSuggest.addKeyUpHandler(new KeyUpHandler() {
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					String value = ingredientSuggest.getValue();
+					if (ingredientInverseMap.containsKey(value)) {
+						searchParameters.addIngredient(ingredientInverseMap.get(value));
+						doSearch();
+					} else {
+						// TODO show error
+					}
+				}
+			}
+		});
+		ingredientSuggest.addValueChangeHandler(new ValueChangeHandler<String>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				String value = event.getValue();
+				if (ingredientInverseMap.containsKey(value)) {
+					searchParameters.addIngredient(ingredientInverseMap.get(value));
+					doSearch();
+				}
+			}
+		});
+
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.search()));
 		main.add(formPanel);
 		main.add(advancedSearch);
 		main.add(filtersToggle);
 		main.add(filtersPanel);
+		main.add(sortPanel);
 		main.add(resultsPanel);
 		main.add(pagingWidget);
 		initWidget(main);
@@ -188,11 +271,16 @@ public class SearchView extends AbstractView implements PagingHandler {
 		}
 
 		// difficulties
-		filtersPanel.add(labelDifficulty);
+		FlowPanel filterDifficulty = new FlowPanel();
+		filtersPanel.add(filterDifficulty);
+		filterDifficulty.add(labelDifficulty);
 		Set<Difficulty> difficulties = searchParameters.getDifficulties();
 		for (final Difficulty difficulty : Difficulty.values()) {
+			boolean active = difficulties.contains(difficulty);
 			final CheckBox checkBox = new CheckBox(localizeEnum(difficulty));
-			checkBox.setValue(difficulties.contains(difficulty));
+			checkBox.setStyleName("badge");
+			checkBox.setStyleDependentName("active", active);
+			checkBox.setValue(active);
 			checkBox.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -207,15 +295,20 @@ public class SearchView extends AbstractView implements PagingHandler {
 					}
 				}
 			});
-			filtersPanel.add(checkBox);
+			filterDifficulty.add(checkBox);
 		}
 
 		// categories
-		filtersPanel.add(labelCategories);
+		FlowPanel filterCategory = new FlowPanel();
+		filtersPanel.add(filterCategory);
+		filterCategory.add(labelCategories);
 		Set<Category> categories = searchParameters.getCategories();
 		for (final Category category : Category.values()) {
+			boolean active = categories.contains(category);
 			final CheckBox checkBox = new CheckBox(localizeEnum(category));
-			checkBox.setValue(categories.contains(category));
+			checkBox.setStyleName("badge");
+			checkBox.setStyleDependentName("active", active);
+			checkBox.setValue(active);
 			checkBox.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -230,15 +323,20 @@ public class SearchView extends AbstractView implements PagingHandler {
 					}
 				}
 			});
-			filtersPanel.add(checkBox);
+			filterCategory.add(checkBox);
 		}
 
 		// seasons
-		filtersPanel.add(labelSeasons);
+		FlowPanel filterSeason = new FlowPanel();
+		filtersPanel.add(filterSeason);
+		filterSeason.add(labelSeasons);
 		Set<Season> seasons = searchParameters.getSeasons();
 		for (final Season season : Season.values()) {
+			boolean active = seasons.contains(season);
 			final CheckBox checkBox = new CheckBox(localizeEnum(season));
-			checkBox.setValue(seasons.contains(season));
+			checkBox.setStyleName("badge");
+			checkBox.setStyleDependentName("active", active);
+			checkBox.setValue(active);
 			checkBox.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -253,14 +351,19 @@ public class SearchView extends AbstractView implements PagingHandler {
 					}
 				}
 			});
-			filtersPanel.add(checkBox);
+			filterSeason.add(checkBox);
 		}
 
 		// ingredients
-		filtersPanel.add(labelIngredients);
+		FlowPanel filterIngredient = new FlowPanel();
+		filtersPanel.add(filterIngredient);
+		filterIngredient.add(labelIngredients);
 		Set<String> ingredients = searchParameters.getIngredients();
 		for (final String ingredient : ingredients) {
-			Close removeIcon = new Close();
+			IconAnchor removeIcon = new IconAnchor();
+			removeIcon.setIcon(IconType.REMOVE);
+			removeIcon.setText(constants.remove());
+			removeIcon.setStyleName("removeFilter");
 			removeIcon.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -269,16 +372,24 @@ public class SearchView extends AbstractView implements PagingHandler {
 					doSearch();
 				}
 			});
-			InlineLabel ingredientLabel = new InlineLabel(ingredientMap.get(ingredient));
-			filtersPanel.add(ingredientLabel);
-			filtersPanel.add(removeIcon);
+			InlineLabel ingredientLabel = new InlineLabel(ingredientMap.get(ingredient) + " ");
+			filterIngredient.add(ingredientLabel);
+			filterIngredient.add(removeIcon);
+			filterIngredient.add(new InlineLabel(", "));
 		}
+		ingredientSuggest.setValue("");
+		filterIngredient.add(ingredientSuggest);
 
 		// utensil
-		filtersPanel.add(labelUtensils);
+		FlowPanel filterUtensil = new FlowPanel();
+		filtersPanel.add(filterUtensil);
+		filterUtensil.add(labelUtensils);
 		Set<String> utensils = searchParameters.getUtensils();
 		for (final String utensil : utensils) {
-			Close removeIcon = new Close();
+			IconAnchor removeIcon = new IconAnchor();
+			removeIcon.setIcon(IconType.REMOVE);
+			removeIcon.setText(constants.remove());
+			removeIcon.setStyleName("removeFilter");
 			removeIcon.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -287,16 +398,22 @@ public class SearchView extends AbstractView implements PagingHandler {
 					doSearch();
 				}
 			});
-			InlineLabel utensilLabel = new InlineLabel(utensilMap.get(utensil));
-			filtersPanel.add(utensilLabel);
-			filtersPanel.add(removeIcon);
+			InlineLabel utensilLabel = new InlineLabel(utensilMap.get(utensil) + " ");
+			filterUtensil.add(utensilLabel);
+			filterUtensil.add(removeIcon);
+			filterUtensil.add(new InlineLabel(", "));
 		}
+		utensilSuggest.setValue("");
+		filterUtensil.add(utensilSuggest);
 
-		filtersPanel.add(labelSortBy);
+		sortPanel.add(labelSortBy);
 		final RecipeSortKey sortKey = searchParameters.getSortKey();
 		for (final RecipeSortKey key : RecipeSortKey.values()) {
+			boolean active = key == sortKey;
 			final RadioButton radioButton = new RadioButton("sortKey", sortKeyMap.get(key.name()));
-			radioButton.setValue(key == sortKey);
+			radioButton.setStyleName("badge");
+			radioButton.setStyleDependentName("active", active);
+			radioButton.setValue(active);
 			radioButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -307,11 +424,11 @@ public class SearchView extends AbstractView implements PagingHandler {
 					}
 				}
 			});
-			filtersPanel.add(radioButton);
+			sortPanel.add(radioButton);
 		}
 
 		if (!difficulties.isEmpty() || !categories.isEmpty() || !seasons.isEmpty() || 
-			!ingredients.isEmpty() || !utensils.isEmpty() || sortKey != RecipeSortKey.ID) {
+			!ingredients.isEmpty() || !utensils.isEmpty()) {
 			filtersPanel.setVisible(true);
 			filtersToggle.setText(constants.searchFiltersClear());
 		} else {
@@ -325,6 +442,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 		filtersToggle.setText(constants.searchFiltersShow());
 		filtersPanel.clear();
 		filtersPanel.setVisible(false);
+		sortPanel.clear();
 		resultsPanel.clear();
 		pagingWidget.setVisible(false);
 	}

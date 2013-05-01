@@ -14,6 +14,9 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Page")
 	String page();
+
+	@DefaultStringValue("Remove")
+	String remove();
 	
 	@DefaultStringValue("Previous page")
 	String pagePrevious();
@@ -68,8 +71,14 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("No results")
 	String searchNoResults();
+
+	@DefaultStringValue("Search and add an ingredient")
+	String searchAndAddIngredient();
+
+	@DefaultStringValue("Search and add an utensil")
+	String searchAndAddUtensil();
 	
-	@DefaultStringValue("Sort by: ")
+	@DefaultStringValue("Sort by")
 	String sortBy();
 
 	@DefaultStringValue("Preparation time")

@@ -43,6 +43,32 @@ body {
 	display: block;
 }
 
+#filtersPanel input[type="checkbox"],
+#sortPanel input[type="radio"] {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+.filterLabel {
+	display: inline-block;
+	font-weight: bold;
+	margin-right: 20px;
+	text-align: right;
+	width: 100px;
+}
+
+#filtersPanel label,
+#sortPanel label {
+	display: inline-block;
+	margin: 10px 5px;
+	cursor: pointer;
+}
+
+#filtersPanel label.badge-active,
+#sortPanel label.badge-active {
+	background-color: #0088CC;
+}
+
 /* paging */
 .pagingWidget input[type=text] {
 	max-width: 3em;
@@ -53,4 +79,8 @@ body {
 #compareView img {
 	max-height: 240px;
 	max-width: 300px;
+}
+
+.clr {
+	clear: both;
 }
