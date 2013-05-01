@@ -1,13 +1,15 @@
 package si.merljak.magistrska.client.widgets;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.handler.LoginEventHandler;
 import si.merljak.magistrska.client.handler.LogoutHandler;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
-import si.merljak.magistrska.client.mvp.LoginPresenter;
+import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.common.dto.UserDto;
 
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -24,14 +26,14 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * @author Jakob Merljak
  * 
  */
-public class UserWidget extends Composite {
+public class UserWidget extends Composite implements LoginEventHandler {
 
 	// i18n
 	private final CommonConstants constants = Kuharija.constants;
 	private final CommonMessages messages = Kuharija.messages;
 
 	// widgets
-	private final Paragraph userLabel = new Paragraph();
+	private final InlineLabel userLabel = new InlineLabel(messages.hello());
 	private final SimplePanel loginLogoutHolder = new SimplePanel();
 	private final Anchor loginLink = new Anchor(constants.login(), LoginPresenter.getLoginUrl());
 	private final Button logoutButton = new Button(constants.logout());
@@ -69,7 +71,8 @@ public class UserWidget extends Composite {
 	 * 
 	 * @param user DTO (nullable)
 	 */
-	public void displayUser(UserDto user) {
+	@Override
+	public void onUserLogin(UserDto user) {
 		if (user != null) {
 			userLabel.setText(messages.helloUser(user.getName()));
 			loginLogoutHolder.setWidget(logoutButton);

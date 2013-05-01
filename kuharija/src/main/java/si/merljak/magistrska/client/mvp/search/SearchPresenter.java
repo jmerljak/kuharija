@@ -1,4 +1,4 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.search;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeListDto;
 import si.merljak.magistrska.common.enumeration.Category;

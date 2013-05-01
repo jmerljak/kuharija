@@ -3,6 +3,7 @@ package si.merljak.magistrska.client.mvp;
 import java.util.List;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.client.widgets.AppendixWidget;
 import si.merljak.magistrska.client.widgets.AudioWidget;
 import si.merljak.magistrska.client.widgets.CommentWidget;

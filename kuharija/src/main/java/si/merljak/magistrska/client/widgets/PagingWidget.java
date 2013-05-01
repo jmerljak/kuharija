@@ -55,7 +55,7 @@ public class PagingWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (handler != null) {
-					handler.onPageChange(1);
+					handler.changePage(1);
 				}
 			}
 		});
@@ -66,7 +66,7 @@ public class PagingWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (handler != null) {
-					handler.onPageChange(page - 1);
+					handler.changePage(page - 1);
 				}
 			}
 		});
@@ -82,7 +82,7 @@ public class PagingWidget extends Composite {
 						} else if (newPage < 1) {
 							newPage = 1;
 						}
-						handler.onPageChange(newPage);
+						handler.changePage(newPage);
 					} catch (Exception e) {
 						addStyleName("error");
 					}
@@ -97,7 +97,7 @@ public class PagingWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (handler != null) {
-					handler.onPageChange(page + 1);
+					handler.changePage(page + 1);
 				}
 			}
 		});
@@ -109,7 +109,7 @@ public class PagingWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (handler != null) {
-					handler.onPageChange(allPages);
+					handler.changePage(allPages);
 				}
 			}
 		});

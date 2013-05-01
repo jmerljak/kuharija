@@ -1,10 +1,14 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.login;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.handler.LoginEventHandler;
 import si.merljak.magistrska.client.handler.LoginHandler;
 import si.merljak.magistrska.client.handler.LogoutHandler;
+import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.common.dto.SessionDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.enumeration.Language;
@@ -52,7 +56,8 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 	private UserServiceAsync userService;
 
 	// user
-	private static UserDto user;
+	private UserDto user;
+	private Set<LoginEventHandler> loginEventHandlers = new HashSet<LoginEventHandler>();
 	
 	// view
 	private LoginView loginView;
@@ -64,6 +69,12 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 		view.setLoginHandler(this);
 
 		checkSession();
+	}
+
+	public void addLoginEventHandler(LoginEventHandler handler) {
+		if (handler != null) {
+			loginEventHandlers.add(handler);
+		}
 	}
 
 	@Override
@@ -85,7 +96,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 					if (userDto != null) {
 						user = userDto;
 					    loginView.showLoginSuccess();
-						// TODO fire event to notify others
+						notifyOthers();
 					} else {
 						// session expired
 						Cookies.removeCookie(SESSION_COOKIE_NAME);
@@ -117,7 +128,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 					user = session.getUser();
 					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
 				    loginView.showLoginSuccess();
-					// TODO fire event to notify others
+					notifyOthers();
 //					History.back();
 				} else {
 					// username already exists
@@ -141,7 +152,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 					user = session.getUser();
 				    Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
 				    loginView.showLoginSuccess();
-					// TODO fire event to notify others
+					notifyOthers();
 				} else {
 					user = null;
 					loginView.showError(LoginError.INCORRECT_USERNAME_PASSWORD);
@@ -165,7 +176,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 				@Override
 				public void onSuccess(Void result) {
 					loginView.showLogoutSuccess();
-					// TODO fire event to notify others
+					notifyOthers();
 				}
 				
 				@Override
@@ -176,12 +187,15 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 		}
 	}
 
+	/** Notifies others about login event. */
+	private void notifyOthers() {
+		for (LoginEventHandler handler : loginEventHandlers) {
+			handler.onUserLogin(user);
+		}
+	}
+
 	/** Returns proper anchor URL for login. */
 	public static String getLoginUrl() {
 		return "#" + SCREEN_NAME;
-	}
-
-	public String getUsername() {
-		return user != null ? user.getUsername() : null;
 	}
 }

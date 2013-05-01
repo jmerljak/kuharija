@@ -6,7 +6,7 @@ import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractView;
-import si.merljak.magistrska.client.mvp.SearchPresenter;
+import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.common.dto.UtensilDto;
 
 import com.github.gwtbootstrap.client.ui.Heading;

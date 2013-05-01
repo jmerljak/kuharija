@@ -3,8 +3,8 @@ package si.merljak.magistrska.client.widgets;
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.mvp.HomePresenter;
-import si.merljak.magistrska.client.mvp.SearchPresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
+import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilPresenter;
 
 import com.github.gwtbootstrap.client.ui.NavHeader;

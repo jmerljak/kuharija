@@ -1,4 +1,4 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.search;
 
 import java.util.List;
 import java.util.Map;
@@ -8,6 +8,8 @@ import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.handler.PagingHandler;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
+import si.merljak.magistrska.client.mvp.AbstractView;
+import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.widgets.PagingWidget;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeDto;
@@ -64,20 +66,23 @@ public class SearchView extends AbstractView implements PagingHandler {
 
 	// widgets
 	private final TextBox searchBox = new TextBox();
-	private final InlineLabel advancedSearch = new InlineLabel(constants.searchFilters());
-	private final Button filtersToggle = new Button(constants.searchFiltersShow());
 
+	private final InlineLabel labelAdvancedSearch = new InlineLabel(constants.searchFilters());
+	private final Button filtersToggle = new Button(constants.searchFiltersShow());
 	private final FlowPanel filtersPanel = new FlowPanel();
+
 	private final Label labelDifficulty = new Label(constants.difficulty());
 	private final Label labelCategories = new Label(constants.categories());
 	private final Label labelSeasons = new Label(constants.seasons());
 	private final Label labelIngredients = new Label(constants.ingredients());
 	private final Label labelUtensils = new Label(constants.utensils());
-	private final Label labelSortBy = new Label(constants.sortBy());
-	private final SuggestBox ingredientSuggest;
-	private final SuggestBox utensilSuggest;
 
+	private SuggestBox ingredientSuggest;
+	private SuggestBox utensilSuggest;
+
+	private final Label labelSortBy = new Label(constants.sortBy());
 	private final FlowPanel sortPanel = new FlowPanel();
+
 	private final FlowPanel resultsPanel = new FlowPanel();
 	private final PagingWidget pagingWidget = new PagingWidget(this);
 
@@ -109,6 +114,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 		formPanel.add(searchBox);
 		formPanel.add(searchButton);
 
+		// filters
 		filtersToggle.setStyleName(Constants.BTN);
 		filtersToggle.addStyleDependentName("link");
 		filtersToggle.addClickHandler(new ClickHandler() {
@@ -135,7 +141,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 		filtersPanel.getElement().setId("filtersPanel");
 		sortPanel.getElement().setId("sortPanel");
 
-		// suggestboxes
+		// suggest boxes
 		MultiWordSuggestOracle utensilSuggestOracle = new MultiWordSuggestOracle();
 		utensilSuggestOracle.addAll(utensilInverseMap.keySet());
 		utensilSuggest = new SuggestBox(utensilSuggestOracle);
@@ -194,10 +200,11 @@ public class SearchView extends AbstractView implements PagingHandler {
 			}
 		});
 
+		// layout
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.search()));
 		main.add(formPanel);
-		main.add(advancedSearch);
+		main.add(labelAdvancedSearch);
 		main.add(filtersToggle);
 		main.add(filtersPanel);
 		main.add(sortPanel);
@@ -206,6 +213,9 @@ public class SearchView extends AbstractView implements PagingHandler {
 		initWidget(main);
 	}
 
+	/** 
+	 * Gets search string from input box and initiates search (other search parameters remain intact).
+	 */
 	private void doSearch() {
 		searchParameters.setSearchString(searchBox.getValue());
 		SearchPresenter.doSearch(searchParameters);
@@ -227,7 +237,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 		if (recipes.isEmpty()) {
 			resultsPanel.add(new Label(constants.searchNoResults()));
 		}
-		advancedSearch.setVisible(true);
+		labelAdvancedSearch.setVisible(true);
 		filtersToggle.setVisible(true);
 
 		for (RecipeDto recipe : recipes) {
@@ -441,7 +451,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 	/** Clears search parameters and results. */
 	public void clearSearchResults() {
 		searchBox.setText("");
-		advancedSearch.setVisible(false);
+		labelAdvancedSearch.setVisible(false);
 		filtersToggle.setVisible(false);
 		filtersToggle.setText(constants.searchFiltersShow());
 		filtersPanel.clear();
@@ -452,7 +462,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 	}
 
 	@Override
-	public void onPageChange(long page) {
+	public void changePage(long page) {
 		searchParameters.setPage(page);
 		doSearch();
 	}

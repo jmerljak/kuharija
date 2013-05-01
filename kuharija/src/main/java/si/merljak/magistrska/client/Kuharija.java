@@ -11,12 +11,12 @@ import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.client.mvp.HomePresenter;
-import si.merljak.magistrska.client.mvp.LoginPresenter;
-import si.merljak.magistrska.client.mvp.LoginView;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
-import si.merljak.magistrska.client.mvp.SearchPresenter;
 import si.merljak.magistrska.client.mvp.compare.ComparePresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
+import si.merljak.magistrska.client.mvp.login.LoginPresenter;
+import si.merljak.magistrska.client.mvp.login.LoginView;
+import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilPresenter;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.MainMenuWidget;
@@ -120,7 +120,9 @@ public class Kuharija implements EntryPoint {
 		presenters.put(LoginPresenter.SCREEN_NAME, loginPresenter);
 		presenters.put(HomePresenter.SCREEN_NAME, new HomePresenter(language, recommendationService));
 
-		RootPanel.get("userWrapper").add(new UserWidget(loginPresenter));
+		UserWidget userWidget = new UserWidget(loginPresenter);
+		loginPresenter.addLoginEventHandler(userWidget);
+		RootPanel.get("userWrapper").add(userWidget);
 
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {

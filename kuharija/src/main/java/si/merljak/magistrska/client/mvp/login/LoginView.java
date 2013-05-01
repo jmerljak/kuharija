@@ -1,6 +1,7 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.login;
 
 import si.merljak.magistrska.client.handler.LoginHandler;
+import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.common.enumeration.LoginError;
 
 import com.github.gwtbootstrap.client.ui.Alert;
