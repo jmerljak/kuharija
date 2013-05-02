@@ -15,7 +15,7 @@ import com.mysema.query.annotations.QueryProjection;
 
 public class RecipeDetailsDto implements Serializable {
 
-	private static final long serialVersionUID = 6396061562369739274L;
+	private static final long serialVersionUID = -8729613147411600991L;
 
 	private long id;
 	private String heading;
@@ -28,6 +28,7 @@ public class RecipeDetailsDto implements Serializable {
 	private int timeOverall;
 	private int numberOfMeals;
 	private MealUnit mealUnit;
+	private boolean isBookmarked;
 
 	private List<IngredientDto> ingredients = new ArrayList<IngredientDto>();
 	private List<UtensilDto> utensils = new ArrayList<UtensilDto>();
@@ -88,6 +89,14 @@ public class RecipeDetailsDto implements Serializable {
 
 	public MealUnit getMealUnit() {
 		return mealUnit;
+	}
+
+	public boolean isBookmarked() {
+		return isBookmarked;
+	}
+
+	public void setBookmarked(boolean isBookmarked) {
+		this.isBookmarked = isBookmarked;
 	}
 
 	public Integer getTimePreparation() {

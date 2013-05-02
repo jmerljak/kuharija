@@ -204,10 +204,15 @@ public interface CommonConstants extends Constants {
 	
 	@DefaultStringMapValue({
 		"STARTER", "Starter",
+		"SNACK", "Snack",
 		"MAIN", "Main course",
-		"DESERT", "Desert",
+		"DESSERT", "Desert",
+		"SALAD", "Salad",
+		"SIDE", "Side dish",
 		"MEAT", "Meat",
-		"VEGETERIAN", "Vegeterian"})
+		"SEAFOOD", "Seafood",
+		"VEGETERIAN", "Vegeterian",
+		"SPECIAL", "Special"})
 	Map<String, String> categoryMap();
 	
 	@DefaultStringMapValue({

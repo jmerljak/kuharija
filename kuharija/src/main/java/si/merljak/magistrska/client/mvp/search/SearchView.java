@@ -87,7 +87,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 	private final PagingWidget pagingWidget = new PagingWidget(this);
 
 	// variables
-	private SearchParameters searchParameters;
+	private SearchParameters searchParameters = new SearchParameters(null, null);
 
 	public SearchView () {
 		searchBox.setTitle(constants.searchQuery());

@@ -12,6 +12,9 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("Oops!")
 	String oops();
 
+	@DefaultMessage("There is some kind of problem. We apologize for inconvenience. Please, try again.")
+	String unknownError();
+
 	@DefaultMessage(" of {0}")
 	String ofPages(Number allPages);
 
