@@ -1,11 +1,9 @@
 package si.merljak.magistrska.client.mvp.login;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
-import si.merljak.magistrska.client.handler.LoginEventHandler;
+import si.merljak.magistrska.client.event.LoginEvent;
 import si.merljak.magistrska.client.handler.LoginHandler;
 import si.merljak.magistrska.client.handler.LogoutHandler;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
@@ -15,6 +13,7 @@ import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.enumeration.LoginError;
 import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -55,26 +54,22 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 	// remote service
 	private UserServiceAsync userService;
 
+	private EventBus eventBus;
+
 	// user
 	private UserDto user;
-	private Set<LoginEventHandler> loginEventHandlers = new HashSet<LoginEventHandler>();
 	
 	// view
 	private LoginView loginView;
 
-	public LoginPresenter(Language language, UserServiceAsync userService, LoginView view) {
+	public LoginPresenter(Language language, UserServiceAsync userService, LoginView view, EventBus eventBus) {
 		super(language);
 		this.userService = userService;
 		this.loginView = view;
+		this.eventBus = eventBus;
 		view.setLoginHandler(this);
 
 		checkSession();
-	}
-
-	public void addLoginEventHandler(LoginEventHandler handler) {
-		if (handler != null) {
-			loginEventHandlers.add(handler);
-		}
 	}
 
 	@Override
@@ -96,7 +91,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 					if (userDto != null) {
 						user = userDto;
 					    loginView.showLoginSuccess();
-						notifyOthers();
+					    eventBus.fireEvent(new LoginEvent(user));
 					} else {
 						// session expired
 						Cookies.removeCookie(SESSION_COOKIE_NAME);
@@ -128,7 +123,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 					user = session.getUser();
 					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
 				    loginView.showLoginSuccess();
-					notifyOthers();
+				    eventBus.fireEvent(new LoginEvent(user));
 //					History.back();
 				} else {
 					// username already exists
@@ -150,15 +145,15 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 			public void onSuccess(SessionDto session) {
 				if (session != null) {
 					user = session.getUser();
-				    Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
-				    loginView.showLoginSuccess();
-					notifyOthers();
+					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
+					loginView.showLoginSuccess();
+					eventBus.fireEvent(new LoginEvent(user));
 				} else {
 					user = null;
 					loginView.showError(LoginError.INCORRECT_USERNAME_PASSWORD);
 				}
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
 				Kuharija.handleException(caught);
@@ -176,21 +171,14 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 				@Override
 				public void onSuccess(Void result) {
 					loginView.showLogoutSuccess();
-					notifyOthers();
+					eventBus.fireEvent(new LoginEvent(user));
 				}
-				
+
 				@Override
 				public void onFailure(Throwable caught) {
 					// ignore
 				}
 			});
-		}
-	}
-
-	/** Notifies others about login event. */
-	private void notifyOthers() {
-		for (LoginEventHandler handler : loginEventHandlers) {
-			handler.onUserLogin(user);
 		}
 	}
 

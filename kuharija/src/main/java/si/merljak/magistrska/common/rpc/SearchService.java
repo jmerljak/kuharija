@@ -8,5 +8,12 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("search")
 public interface SearchService extends RemoteService {
+
+	/**
+	 * Searches for recipes.
+	 * 
+	 * @param searchParameters search parameters
+	 * @return list of recipes (a page) and number of all results
+	 */
 	RecipeListDto search(SearchParameters searchParameters);
 }

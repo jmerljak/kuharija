@@ -16,9 +16,10 @@ public interface RecipeService extends RemoteService {
 	 * 
 	 * @param recipeId recipe ID
 	 * @param language language
+	 * @param username logged in user's name or {@code null} if no user is logged in 
 	 * @return recipe details or {@code null} if recipe does not exist or has no details for given language
 	 */
-	RecipeDetailsDto getRecipeDetails(long recipeId, Language language);
+	RecipeDetailsDto getRecipeDetails(long recipeId, Language language, String username);
 
 	/**
 	 * Gets multiple recipes.

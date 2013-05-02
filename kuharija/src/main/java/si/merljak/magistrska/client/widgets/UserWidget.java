@@ -1,19 +1,20 @@
 package si.merljak.magistrska.client.widgets;
 
 import si.merljak.magistrska.client.Kuharija;
-import si.merljak.magistrska.client.handler.LoginEventHandler;
+import si.merljak.magistrska.client.event.LoginEvent;
+import si.merljak.magistrska.client.event.LoginEventHandler;
 import si.merljak.magistrska.client.handler.LogoutHandler;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
 import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.common.dto.UserDto;
 
-import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -41,8 +42,9 @@ public class UserWidget extends Composite implements LoginEventHandler {
 	// handler
 	private LogoutHandler handler;
 
-	public UserWidget(LogoutHandler logoutHandler) {
+	public UserWidget(LogoutHandler logoutHandler, EventBus eventBus) {
 		this.handler = logoutHandler;
+		eventBus.addHandler(LoginEvent.TYPE, this);
 
 		FlowPanel main = new FlowPanel();
 		main.add(userLabel);
@@ -66,13 +68,14 @@ public class UserWidget extends Composite implements LoginEventHandler {
 	}
 
 	/**
-	 * Displays hello to user and logout button. If user is not logged in,
+	 * Displays hello to user and logout button. If no user is not logged in,
 	 * generic hello and login link are displayed instead.
 	 * 
 	 * @param user DTO (nullable)
 	 */
 	@Override
-	public void onUserLogin(UserDto user) {
+	public void onLogin(LoginEvent event) {
+		UserDto user = event.getUser();
 		if (user != null) {
 			userLabel.setText(messages.helloUser(user.getName()));
 			loginLogoutHolder.setWidget(logoutButton);

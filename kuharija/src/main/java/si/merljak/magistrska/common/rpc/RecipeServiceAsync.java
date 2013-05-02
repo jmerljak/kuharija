@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface RecipeServiceAsync {
 
-	void getRecipeDetails(long recipeId, Language language, AsyncCallback<RecipeDetailsDto> callback);
+	void getRecipeDetails(long recipeId, Language language, String username, AsyncCallback<RecipeDetailsDto> callback);
 
 	void getRecipes(Set<Long> recipeIdList, Language language, AsyncCallback<List<RecipeDetailsDto>> callback);
 }

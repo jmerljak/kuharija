@@ -8,6 +8,7 @@ import static si.merljak.magistrska.server.model.QRecipeIngredient.recipeIngredi
 import static si.merljak.magistrska.server.model.QRecipeText.recipeText;
 import static si.merljak.magistrska.server.model.QRecipeUtensil.recipeUtensil;
 import static si.merljak.magistrska.server.model.QUtensil.utensil;
+import static si.merljak.magistrska.server.model.QUser.user;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +56,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 	private EntityManager em;
 
 	@Override
-	public RecipeDetailsDto getRecipeDetails(long recipeId, Language language) {
+	public RecipeDetailsDto getRecipeDetails(long recipeId, Language language, String username) {
 		log.debug("executing getRecipe for id: " + recipeId + " and language: " + language);
 
 		Recipe recipeEntity = em.find(Recipe.class, recipeId);
@@ -134,6 +135,12 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 		// categories & seasons
 		recipeDto.addCategories(recipeEntity.getCategories());
 		recipeDto.addSeasons(recipeEntity.getSeasons());
+
+		if (username != null) {
+			recipeDto.setBookmarked(new JPAQuery(em).from(user)
+								.where(user.bookmarks.any().eq(recipeEntity))
+								.exists());
+		}
 
 		return recipeDto;
 	}

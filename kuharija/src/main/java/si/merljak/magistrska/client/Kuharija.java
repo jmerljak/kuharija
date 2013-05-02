@@ -35,7 +35,11 @@ import si.merljak.magistrska.common.rpc.UserServiceAsync;
 import si.merljak.magistrska.common.rpc.UtensilService;
 import si.merljak.magistrska.common.rpc.UtensilServiceAsync;
 
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
+import com.github.gwtbootstrap.client.ui.event.CloseEvent;
+import com.github.gwtbootstrap.client.ui.event.CloseHandler;
 import com.google.common.base.Splitter;
 import com.google.common.base.Splitter.MapSplitter;
 import com.google.gwt.aria.client.Roles;
@@ -45,6 +49,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.geolocation.client.Geolocation;
 import com.google.gwt.geolocation.client.Position;
 import com.google.gwt.geolocation.client.Position.Coordinates;
@@ -52,10 +58,10 @@ import com.google.gwt.geolocation.client.PositionError;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 public class Kuharija implements EntryPoint {
 
@@ -89,7 +95,8 @@ public class Kuharija implements EntryPoint {
 	// panels & widgets
 	private RootPanel mainPanel;
 	private LocaleWidget localeWidget;
-	private Breadcrumbs breadcrumbs;
+	private Breadcrumbs breadcrumbs = new Breadcrumbs("→");
+	private static final SimplePanel alertPlaceholder = new SimplePanel();
 
 	// user
 	private static Coordinates coordinates;
@@ -98,30 +105,32 @@ public class Kuharija implements EntryPoint {
 		mainPanel = RootPanel.get("main");
 		Roles.getMainRole().set(mainPanel.getElement());
 		Roles.getMainRole().getAriaLiveProperty(mainPanel.getElement());
+		Roles.getAlertRole().set(alertPlaceholder.getElement());
 
-		// user
+        EventBus eventBus = new SimpleEventBus();
+
+        // user
 		geolocate();
-		
-		breadcrumbs = new Breadcrumbs("→");
 
 		localeWidget = new LocaleWidget();
 		RootPanel.get("nav").add(localeWidget);
 		RootPanel.get("nav").add(breadcrumbs);
 		RootPanel.get("nav").add(new MainMenuWidget());
+		RootPanel.get("nav").add(alertPlaceholder);
 		Language language = localeWidget.getCurrentLanguage();
 
 		// TODO refactorize MVP architecture!
-		LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView());
+		LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView(), eventBus);
 		presenters.put(IngredientPresenter.SCREEN_NAME, new IngredientPresenter(language, ingredientService));
 		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, utensilService));
-		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, userService));
+		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, userService, eventBus));
 		presenters.put(SearchPresenter.SCREEN_NAME, new SearchPresenter(language, searchService));
 		presenters.put(ComparePresenter.SCREEN_NAME, new ComparePresenter(language, recipeService));
 		presenters.put(LoginPresenter.SCREEN_NAME, loginPresenter);
-		presenters.put(HomePresenter.SCREEN_NAME, new HomePresenter(language, recommendationService));
+		HomePresenter homePresenter = new HomePresenter(language, recommendationService, eventBus);
+		presenters.put(HomePresenter.SCREEN_NAME, homePresenter);
 
-		UserWidget userWidget = new UserWidget(loginPresenter);
-		loginPresenter.addLoginEventHandler(userWidget);
+		UserWidget userWidget = new UserWidget(loginPresenter, eventBus);
 		RootPanel.get("userWrapper").add(userWidget);
 
 		// history handler
@@ -154,6 +163,8 @@ public class Kuharija implements EntryPoint {
 					// TODO 404 view
 				}
 
+				alertPlaceholder.clear();
+
 				breadcrumbs.clear();
 				breadcrumbs.add(new Anchor(constants.home(), "#" + HomePresenter.SCREEN_NAME));
 				breadcrumbs.add(new Label(screenName));
@@ -175,7 +186,8 @@ public class Kuharija implements EntryPoint {
 				@Override
 				public void onSuccess(Position position) {
 					coordinates = position.getCoordinates();
-					// TODO personalize
+					((HomePresenter) presenters.get(HomePresenter.SCREEN_NAME)).setCoordinates(coordinates);
+					// TODO geolocate event
 				}
 				
 				@Override
@@ -184,12 +196,6 @@ public class Kuharija implements EntryPoint {
 				}
 			});
 		}
-	}
-
-	/** Handles common RPC call exceptions. */  
-	public static void handleException(Throwable caught) {
-		// TODO alert placeholder
-		Window.alert(caught.getMessage());
 	}
 
 	/** 
@@ -204,7 +210,16 @@ public class Kuharija implements EntryPoint {
 		}
 	}
 
-	public static Coordinates getCoordinates() {
-		return coordinates;
+	/** Handles common RPC call exceptions. */  
+	public static void handleException(Throwable caught) {
+		Alert alert = new Alert(messages.unknownError(), AlertType.ERROR);
+		alert.setAnimation(true);
+		alert.addCloseHandler(new CloseHandler() {
+			@Override
+			public void onClose(CloseEvent closeEvent) {
+				alertPlaceholder.clear();
+			}
+		});
+		alertPlaceholder.setWidget(alert);
 	}
 }
