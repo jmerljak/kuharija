@@ -3,6 +3,7 @@ package si.merljak.magistrska.client;
 import java.util.HashMap;
 import java.util.Map;
 
+import si.merljak.magistrska.client.event.GeolocateEvent;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
 import si.merljak.magistrska.client.i18n.Formatters;
@@ -40,6 +41,8 @@ import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.event.CloseEvent;
 import com.github.gwtbootstrap.client.ui.event.CloseHandler;
+import com.google.common.base.Joiner;
+import com.google.common.base.Joiner.MapJoiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Splitter.MapSplitter;
 import com.google.gwt.aria.client.Roles;
@@ -53,7 +56,6 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.geolocation.client.Geolocation;
 import com.google.gwt.geolocation.client.Position;
-import com.google.gwt.geolocation.client.Position.Coordinates;
 import com.google.gwt.geolocation.client.PositionError;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -63,6 +65,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
+/**
+ * Entry point for application.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
 public class Kuharija implements EntryPoint {
 
 	// remote services
@@ -86,52 +94,53 @@ public class Kuharija implements EntryPoint {
 	public static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
 	public static final DateTimeFormat timestampFormat = DateTimeFormat.getFormat(formatters.timestampFormat());
 
-	// utils
-	private static final MapSplitter keyValueSplitter = Splitter.on("&").trimResults().omitEmptyStrings().withKeyValueSeparator("=");
+	// utilities
+	public static final Joiner listJoiner = Joiner.on(",").skipNulls();
+	public static final Splitter listSplitter = Splitter.on(",").trimResults().omitEmptyStrings();
+	public static final MapJoiner keyValueJoiner = Joiner.on("&").withKeyValueSeparator("=");
+	public static final MapSplitter keyValueSplitter = Splitter.on("&").trimResults().omitEmptyStrings().withKeyValueSeparator("=");
+
+	// event bus
+	private final EventBus eventBus = new SimpleEventBus();
 
 	// presenters
 	private Map<String, AbstractPresenter> presenters = new HashMap<String, AbstractPresenter>();
 
 	// panels & widgets
-	private RootPanel mainPanel;
+	private final RootPanel mainPanel = RootPanel.get("main");
+	private final RootPanel navPanel = RootPanel.get("nav");
+
 	private LocaleWidget localeWidget;
 	private Breadcrumbs breadcrumbs = new Breadcrumbs("→");
 	private static final SimplePanel alertPlaceholder = new SimplePanel();
 
-	// user
-	private static Coordinates coordinates;
-
 	public void onModuleLoad() {
-		mainPanel = RootPanel.get("main");
 		Roles.getMainRole().set(mainPanel.getElement());
 		Roles.getMainRole().getAriaLiveProperty(mainPanel.getElement());
 		Roles.getAlertRole().set(alertPlaceholder.getElement());
 
-        EventBus eventBus = new SimpleEventBus();
-
-        // user
-		geolocate();
-
 		localeWidget = new LocaleWidget();
-		RootPanel.get("nav").add(localeWidget);
-		RootPanel.get("nav").add(breadcrumbs);
-		RootPanel.get("nav").add(new MainMenuWidget());
-		RootPanel.get("nav").add(alertPlaceholder);
+		navPanel.add(new MainMenuWidget());
+		navPanel.add(localeWidget);
+		navPanel.add(breadcrumbs);
+		navPanel.add(alertPlaceholder);
 		Language language = localeWidget.getCurrentLanguage();
 
 		// TODO refactorize MVP architecture!
 		LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView(), eventBus);
 		presenters.put(IngredientPresenter.SCREEN_NAME, new IngredientPresenter(language, ingredientService));
 		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, utensilService));
-		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, userService, eventBus));
+		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, eventBus));
 		presenters.put(SearchPresenter.SCREEN_NAME, new SearchPresenter(language, searchService));
 		presenters.put(ComparePresenter.SCREEN_NAME, new ComparePresenter(language, recipeService));
 		presenters.put(LoginPresenter.SCREEN_NAME, loginPresenter);
-		HomePresenter homePresenter = new HomePresenter(language, recommendationService, eventBus);
-		presenters.put(HomePresenter.SCREEN_NAME, homePresenter);
+		presenters.put(HomePresenter.SCREEN_NAME, new HomePresenter(language, recommendationService, eventBus));
 
 		UserWidget userWidget = new UserWidget(loginPresenter, eventBus);
 		RootPanel.get("userWrapper").add(userWidget);
+
+		// geolocate
+		geolocate();
 
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -170,11 +179,7 @@ public class Kuharija implements EntryPoint {
 				breadcrumbs.add(new Label(screenName));
 			}
 		});
-		fireCurrentHistory();
-	}
 
-	private void fireCurrentHistory() {
-		// init current history state
 		History.fireCurrentHistoryState();
 	}
 
@@ -185,9 +190,7 @@ public class Kuharija implements EntryPoint {
 			geolocation.getCurrentPosition(new Callback<Position, PositionError>() {
 				@Override
 				public void onSuccess(Position position) {
-					coordinates = position.getCoordinates();
-					((HomePresenter) presenters.get(HomePresenter.SCREEN_NAME)).setCoordinates(coordinates);
-					// TODO geolocate event
+					eventBus.fireEvent(new GeolocateEvent(position.getCoordinates()));
 				}
 				
 				@Override
@@ -210,7 +213,7 @@ public class Kuharija implements EntryPoint {
 		}
 	}
 
-	/** Handles common RPC call exceptions. */  
+	/** Handles common RPC exceptions. */  
 	public static void handleException(Throwable caught) {
 		Alert alert = new Alert(messages.unknownError(), AlertType.ERROR);
 		alert.setAnimation(true);

@@ -35,6 +35,7 @@ public class LoginView extends AbstractView implements LoginPresenter.LoginView 
 	private final PasswordTextBox passwordBox = new PasswordTextBox();
 	private final Button loginButton = new Button(constants.login());
 
+	// handler
 	private LoginHandler handler;
 
 	public LoginView() {

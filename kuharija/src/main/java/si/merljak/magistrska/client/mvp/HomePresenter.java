@@ -3,6 +3,8 @@ package si.merljak.magistrska.client.mvp;
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.event.GeolocateEvent;
+import si.merljak.magistrska.client.event.GeolocateEventHandler;
 import si.merljak.magistrska.client.event.LoginEvent;
 import si.merljak.magistrska.client.event.LoginEventHandler;
 import si.merljak.magistrska.common.dto.RecommendationsDto;
@@ -15,18 +17,18 @@ import com.google.gwt.geolocation.client.Position.Coordinates;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
-public class HomePresenter extends AbstractPresenter implements LoginEventHandler {
+public class HomePresenter extends AbstractPresenter implements LoginEventHandler, GeolocateEventHandler {
 
-	// screen and parameters name
+	// screen name
 	public static final String SCREEN_NAME = "";
 
 	// remote service
-	private RecommendationServiceAsync recommendationService;
+	private final RecommendationServiceAsync recommendationService;
 
 	// view
     private final HomeView homeView = new HomeView();
     
-    // variables
+    // user variables
     private Coordinates coordinates;
     private UserDto user;
 
@@ -42,7 +44,7 @@ public class HomePresenter extends AbstractPresenter implements LoginEventHandle
 		return homeView.asWidget();
 	}
 
-	
+	/** Gets recommendations for user. */
 	private void getRecommendations() {
 		String username = user != null ? user.getUsername() : null;
 		Double latitude = coordinates != null ? coordinates.getLatitude() : null;
@@ -61,15 +63,17 @@ public class HomePresenter extends AbstractPresenter implements LoginEventHandle
 		});
 	}
 
-	public void setCoordinates(Coordinates coordinates) {
-		this.coordinates = coordinates;
+	@Override
+	public void onLogin(LoginEvent event) {
+		// register user and get recommendations
+		user = event.getUser();
 		getRecommendations();
 	}
 
 	@Override
-	public void onLogin(LoginEvent event) {
-		// register user
-		user = event.getUser();
+	public void onGeolocate(GeolocateEvent event) {
+		// register coordinates and get recommendations
+		coordinates = event.getCoordinates();
 		getRecommendations();
 	}
 

@@ -11,8 +11,6 @@ import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -26,16 +24,13 @@ public class ComparePresenter extends AbstractPresenter {
 
 	// screen and parameters name
 	public static final String SCREEN_NAME = "compare";
-	private static final String PARAMETER_RECIPE_ID_LIST = "recipes";
+	private static final String PARAMETER_ID_LIST = "id";
 
 	// remote service
-	private RecipeServiceAsync recipeService;
+	private final RecipeServiceAsync recipeService;
 
 	// view
 	private final CompareView view = new CompareView();
-
-	// utils
-	private final Splitter splitter = Splitter.on(",").omitEmptyStrings().trimResults();
 
 	public ComparePresenter(Language language, RecipeServiceAsync recipeService) {
 		super(language);
@@ -45,8 +40,8 @@ public class ComparePresenter extends AbstractPresenter {
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
 		Set<Long> recipeIdList = new HashSet<Long>();
-		if (parameters.containsKey(PARAMETER_RECIPE_ID_LIST)) {
-			for (String idString : splitter.split(parameters.get(PARAMETER_RECIPE_ID_LIST))) {
+		if (parameters.containsKey(PARAMETER_ID_LIST)) {
+			for (String idString : Kuharija.listSplitter.split(parameters.get(PARAMETER_ID_LIST))) {
 				try {
 					recipeIdList.add(Long.parseLong(idString));
 				} catch (Exception e) { /* ignore */ }
@@ -90,6 +85,6 @@ public class ComparePresenter extends AbstractPresenter {
 	 */
 	public static String buildCompareUrl(Set<Long> recipeIdList) {
 		return "#" + SCREEN_NAME + 
-			   "&" + PARAMETER_RECIPE_ID_LIST + "=" + Joiner.on(",").skipNulls().join(recipeIdList);
+			   "&" + PARAMETER_ID_LIST + "=" + Kuharija.listJoiner.join(recipeIdList);
 	}
 }

@@ -17,9 +17,6 @@ import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchServiceAsync;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Joiner.MapJoiner;
-import com.google.common.base.Splitter;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -47,15 +44,10 @@ public class SearchPresenter extends AbstractPresenter {
 	private static final String PARAMETER_SORT_BY = "sortby";
 
 	// remote service
-	private SearchServiceAsync searchService;
+	private final SearchServiceAsync searchService;
 
 	// view
     private final SearchView searchView = new SearchView();
-
-    // utils
-    private static final Joiner joiner = Joiner.on(",").skipNulls();
-	private static final Splitter splitter = Splitter.on(",").omitEmptyStrings().trimResults();
-	private static final MapJoiner keyValueJoiner = Joiner.on("&").withKeyValueSeparator("=");
 
 	public SearchPresenter(Language language, SearchServiceAsync searchService) {
 		super(language);
@@ -87,7 +79,7 @@ public class SearchPresenter extends AbstractPresenter {
 			}
 
 			if (parameters.containsKey(PARAMETER_DIFFICULTY)) {
-				for (String difficulty : splitter.split(parameters.get(PARAMETER_DIFFICULTY).toUpperCase())) {
+				for (String difficulty : Kuharija.listSplitter.split(parameters.get(PARAMETER_DIFFICULTY).toUpperCase())) {
 					try {
 						searchParameters.addDifficulty(Difficulty.valueOf(difficulty));
 					} catch (Exception e) { /* ignore */ }
@@ -95,7 +87,7 @@ public class SearchPresenter extends AbstractPresenter {
 			}
 
 			if (parameters.containsKey(PARAMETER_CATEGORY)) {
-				for (String category : splitter.split(parameters.get(PARAMETER_CATEGORY).toUpperCase())) {
+				for (String category : Kuharija.listSplitter.split(parameters.get(PARAMETER_CATEGORY).toUpperCase())) {
 					try {
 						searchParameters.addCategory(Category.valueOf(category));
 					} catch (Exception e) { /* ignore */ }
@@ -103,7 +95,7 @@ public class SearchPresenter extends AbstractPresenter {
 			}
 
 			if (parameters.containsKey(PARAMETER_SEASON)) {
-				for (String season : splitter.split(parameters.get(PARAMETER_SEASON).toUpperCase())) {
+				for (String season : Kuharija.listSplitter.split(parameters.get(PARAMETER_SEASON).toUpperCase())) {
 					try {
 						searchParameters.addSeason(Season.valueOf(season));
 					} catch (Exception e) { /* ignore */ }
@@ -111,13 +103,13 @@ public class SearchPresenter extends AbstractPresenter {
 			}
 
 			if (parameters.containsKey(PARAMETER_INGREDIENT)) {
-				for (String ingredient : splitter.split(parameters.get(PARAMETER_INGREDIENT).toUpperCase())) {
+				for (String ingredient : Kuharija.listSplitter.split(parameters.get(PARAMETER_INGREDIENT).toUpperCase())) {
 					searchParameters.addIngredient(ingredient);
 				}
 			}
 
 			if (parameters.containsKey(PARAMETER_UTENSIL)) {
-				for (String utensil : splitter.split(parameters.get(PARAMETER_UTENSIL).toUpperCase())) {
+				for (String utensil : Kuharija.listSplitter.split(parameters.get(PARAMETER_UTENSIL).toUpperCase())) {
 					searchParameters.addUtensil(utensil);
 				}
 			}
@@ -199,7 +191,7 @@ public class SearchPresenter extends AbstractPresenter {
 			for (Difficulty difficulty : difficulties) {
 				difficultyStrings.add(difficulty.name().toLowerCase());
 			}
-			parametersMap.put(PARAMETER_DIFFICULTY, joiner.join(difficultyStrings));
+			parametersMap.put(PARAMETER_DIFFICULTY, Kuharija.listJoiner.join(difficultyStrings));
 		}
 
 		if (!categories.isEmpty()) {
@@ -207,7 +199,7 @@ public class SearchPresenter extends AbstractPresenter {
 			for (Category category : categories) {
 				categoryStrings.add(category.name().toLowerCase());
 			}
-			parametersMap.put(PARAMETER_CATEGORY, joiner.join(categoryStrings));
+			parametersMap.put(PARAMETER_CATEGORY, Kuharija.listJoiner.join(categoryStrings));
 		}
 
 		if (!seasons.isEmpty()) {
@@ -215,22 +207,22 @@ public class SearchPresenter extends AbstractPresenter {
 			for (Season season : seasons) {
 				seasonStrings.add(season.name().toLowerCase());
 			}
-			parametersMap.put(PARAMETER_SEASON, joiner.join(seasonStrings));
+			parametersMap.put(PARAMETER_SEASON, Kuharija.listJoiner.join(seasonStrings));
 		}
 
 		if (!ingredients.isEmpty()) {
-			parametersMap.put(PARAMETER_INGREDIENT, joiner.join(ingredients).toLowerCase());
+			parametersMap.put(PARAMETER_INGREDIENT, Kuharija.listJoiner.join(ingredients).toLowerCase());
 		}
 
 		if (!utensils.isEmpty()) {
-			parametersMap.put(PARAMETER_UTENSIL, joiner.join(utensils).toLowerCase());
+			parametersMap.put(PARAMETER_UTENSIL, Kuharija.listJoiner.join(utensils).toLowerCase());
 		}
 
 		if (sortKey != null && sortKey != SearchParameters.DEFAULT_SORT_KEY) {
 			parametersMap.put(PARAMETER_SORT_BY, sortKey.name().toLowerCase());
 		}
 
-		String parametersString = keyValueJoiner.join(parametersMap);
+		String parametersString = Kuharija.keyValueJoiner.join(parametersMap);
 		if (parametersString.isEmpty()) {
 			History.newItem(SCREEN_NAME);
 		} else {

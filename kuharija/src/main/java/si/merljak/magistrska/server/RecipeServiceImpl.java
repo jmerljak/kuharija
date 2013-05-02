@@ -15,8 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +43,7 @@ import si.merljak.magistrska.server.model.Audio;
 import si.merljak.magistrska.server.model.Comment;
 import si.merljak.magistrska.server.model.Recipe;
 import si.merljak.magistrska.server.model.Subtitle;
+import si.merljak.magistrska.server.model.User;
 import si.merljak.magistrska.server.model.Video;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -54,6 +57,9 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 	
 	@PersistenceContext
 	private EntityManager em;
+
+	@Resource
+	private UserTransaction transaction;
 
 	@Override
 	public RecipeDetailsDto getRecipeDetails(long recipeId, Language language, String username) {
@@ -180,5 +186,39 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 		}
 
 		return list;
+	}
+
+	@Override
+	public void bookmarkRecipe(String username, long recipeId, boolean add) {
+		log.debug("user " + username + " bookmarking recipe " + recipeId);
+
+		try {
+			transaction.begin();
+			Recipe recipeEntity = em.find(Recipe.class, recipeId);
+			User userEntity = em.find(User.class, username);
+			userEntity.addBookmarks(recipeEntity, add);
+			em.persist(userEntity);
+			transaction.commit();
+		} catch (Exception e) {
+			log.error("Could not " + (add ? "add" : "remove") + " bookmark!", e);
+			throw new RuntimeException("Could not " + (add ? "add" : "remove") + " bookmark!");
+		}
+	}
+
+	@Override
+	public void commentRecipe(String username, long recipeId, String content) {
+		log.debug("user " + username + " adding comment for recipe " + recipeId);
+
+		try {
+			Recipe recipeEntity = em.find(Recipe.class, recipeId);
+			User userEntity = em.find(User.class, username);
+
+			transaction.begin();
+			em.persist(new Comment(userEntity, recipeEntity, content));
+			transaction.commit();
+		} catch (Exception e) {
+			log.error("Could not save comment!", e);
+			throw new RuntimeException("Could not save comment!");
+		}
 	}
 }

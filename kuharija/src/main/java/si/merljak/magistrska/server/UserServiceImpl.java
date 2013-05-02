@@ -19,8 +19,6 @@ import si.merljak.magistrska.common.dto.QUserDto;
 import si.merljak.magistrska.common.dto.SessionDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.rpc.UserService;
-import si.merljak.magistrska.server.model.Comment;
-import si.merljak.magistrska.server.model.Recipe;
 import si.merljak.magistrska.server.model.Session;
 import si.merljak.magistrska.server.model.User;
 import si.merljak.magistrska.server.utils.PasswordEncryptionUtils;
@@ -42,7 +40,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	private EntityManager em;
 
 	@Resource
-	private UserTransaction transaction; 
+	private UserTransaction transaction;
 
 	@Override
 	public SessionDto register(String username, String password, String name, String email) {
@@ -141,40 +139,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		} catch (Exception e) {
 			log.error("Could not delete session", e);
 			// ignore
-		}
-	}
-
-	@Override
-	public void bookmarkRecipe(String username, long recipeId, boolean add) {
-		log.debug("user " + username + " bookmarking recipe " + recipeId);
-
-		try {
-			transaction.begin();
-			Recipe recipeEntity = em.find(Recipe.class, recipeId);
-			User userEntity = em.find(User.class, username);
-			userEntity.addBookmarks(recipeEntity, add);
-			em.persist(userEntity);
-			transaction.commit();
-		} catch (Exception e) {
-			log.error("Could not " + (add ? "add" : "remove") + " bookmark!", e);
-			throw new RuntimeException("Could not " + (add ? "add" : "remove") + " bookmark!");
-		}
-	}
-
-	@Override
-	public void commentRecipe(String username, long recipeId, String content) {
-		log.debug("user " + username + " adding comment for recipe " + recipeId);
-
-		try {
-			Recipe recipeEntity = em.find(Recipe.class, recipeId);
-			User userEntity = em.find(User.class, username);
-
-			transaction.begin();
-			em.persist(new Comment(userEntity, recipeEntity, content));
-			transaction.commit();
-		} catch (Exception e) {
-			log.error("Could not save comment!", e);
-			throw new RuntimeException("Could not save comment!");
 		}
 	}
 }

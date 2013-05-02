@@ -24,7 +24,7 @@ public class UtensilPresenter extends AbstractPresenter {
 	private static final String PARAMETER_UTENSIL = "name";
 
 	// remote service
-	private UtensilServiceAsync utensilService;
+	private final UtensilServiceAsync utensilService;
 
 	// views
 	private final UtensilIndexView indexView = new UtensilIndexView();

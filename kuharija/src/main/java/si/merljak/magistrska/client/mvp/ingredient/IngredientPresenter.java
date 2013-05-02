@@ -24,7 +24,7 @@ public class IngredientPresenter extends AbstractPresenter {
 	private static final String PARAMETER_INGREDIENT = "name";
 
 	// remote service
-	private IngredientServiceAsync ingredientService;
+	private final IngredientServiceAsync ingredientService;
 
 	// views
 	private final IngredientIndexView indexView = new IngredientIndexView();

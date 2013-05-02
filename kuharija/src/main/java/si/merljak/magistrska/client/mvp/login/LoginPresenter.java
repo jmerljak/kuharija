@@ -46,21 +46,23 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 		Widget asWidget();
 	}
 
-	// screen and parameter name
+	// screen name
 	public static final String SCREEN_NAME = "login";
 
+	// cookie name
 	private static final String SESSION_COOKIE_NAME = "sid";
 
 	// remote service
-	private UserServiceAsync userService;
+	private final UserServiceAsync userService;
 
-	private EventBus eventBus;
+	// event bus
+	private final EventBus eventBus;
 
 	// user
 	private UserDto user;
 	
 	// view
-	private LoginView loginView;
+	private final LoginView loginView;
 
 	public LoginPresenter(Language language, UserServiceAsync userService, LoginView view, EventBus eventBus) {
 		super(language);

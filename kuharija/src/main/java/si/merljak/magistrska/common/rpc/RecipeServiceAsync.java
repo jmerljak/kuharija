@@ -13,4 +13,8 @@ public interface RecipeServiceAsync {
 	void getRecipeDetails(long recipeId, Language language, String username, AsyncCallback<RecipeDetailsDto> callback);
 
 	void getRecipes(Set<Long> recipeIdList, Language language, AsyncCallback<List<RecipeDetailsDto>> callback);
+	
+	void bookmarkRecipe(String username, long recipeId, boolean add, AsyncCallback<Void> callback);
+
+	void commentRecipe(String username, long recipeId, String content, AsyncCallback<Void> callback);
 }

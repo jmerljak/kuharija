@@ -14,9 +14,5 @@ public interface UserServiceAsync {
 	void checkSession(String sessionId, AsyncCallback<UserDto> callback);
 
 	void logout(String sessionId, AsyncCallback<Void> callback);
-	
-	void bookmarkRecipe(String username, long recipeId, boolean add, AsyncCallback<Void> callback);
-
-	void commentRecipe(String username, long recipeId, String content, AsyncCallback<Void> callback);
 
 }

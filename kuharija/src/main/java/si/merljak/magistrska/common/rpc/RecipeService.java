@@ -28,4 +28,20 @@ public interface RecipeService extends RemoteService {
 	 * @return list of recipes
 	 */
 	List<RecipeDetailsDto> getRecipes(Set<Long> recipeIdList, Language language);
+
+	/** 
+	 * Bookmarks recipe.
+	 * @param username user's username
+	 * @param recipeId recipe ID
+	 * @param add <em>true</em> to add a bookmark or <em>false</em> to remove it
+	 */
+	void bookmarkRecipe(String username, long recipeId, boolean add);
+
+	/** 
+	 * Adds comment to recipe.
+	 * @param username user's username
+	 * @param recipeId recipe ID
+	 * @param content comment body
+	 */
+	void commentRecipe(String username, long recipeId, String content);
 }

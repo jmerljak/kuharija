@@ -9,7 +9,6 @@ import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
-import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -23,17 +22,15 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	private static final String PARAMETER_VIEW = "view"; // basic, steps, video, audio
 
 	// remote service
-	private RecipeServiceAsync recipeService;
-	private UserServiceAsync userService;
+	private final RecipeServiceAsync recipeService;
 
 	private long recipeId;
     private final RecipeView recipeView = new RecipeView();
     private UserDto user;
 
-	public RecipePresenter(Language language, RecipeServiceAsync recipeService, UserServiceAsync userService, EventBus eventBus) {
+	public RecipePresenter(Language language, RecipeServiceAsync recipeService, EventBus eventBus) {
 		super(language);
 		this.recipeService = recipeService;
-		this.userService = userService;
 		eventBus.addHandler(LoginEvent.TYPE, this);
 	}
 
@@ -73,7 +70,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	/** Bookmarks / removes user bookmark. */
 	public void bookmark(final boolean isBookmarked) {
 		String username = user != null ? user.getUsername() : null;
-		userService.bookmarkRecipe(username, recipeId, isBookmarked, new AsyncCallback<Void>() {
+		recipeService.bookmarkRecipe(username, recipeId, isBookmarked, new AsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void nothing) {
 				recipeView.setBookmarked(isBookmarked);
@@ -89,7 +86,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	/** Adds user comment. */
 	public void comment(String content) {
 		String username = user != null ? user.getUsername() : null;
-		userService.commentRecipe(username, recipeId, content, new AsyncCallback<Void>() {
+		recipeService.commentRecipe(username, recipeId, content, new AsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void nothing) {
 				// TODO display comment
