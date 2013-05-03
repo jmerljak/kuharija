@@ -111,19 +111,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		}
 
 		// TODO display user preferred / default view
-		if (view == null || view.equalsIgnoreCase("basic")) {
-			tabsWidget.setActiveTab(TabsWidget.TAB_BASIC);
-			onTabChange(TabsWidget.TAB_BASIC);
-		} else if (view.equalsIgnoreCase("steps")) {
-			tabsWidget.setActiveTab(TabsWidget.TAB_STEPS);
-			onTabChange(TabsWidget.TAB_STEPS);
-		} else if (view.equalsIgnoreCase("video")) {
-			tabsWidget.setActiveTab(TabsWidget.TAB_VIDEO);
-			onTabChange(TabsWidget.TAB_VIDEO);
-		} else if (view.equalsIgnoreCase("audio")) {
-			tabsWidget.setActiveTab(TabsWidget.TAB_AUDIO);
-			onTabChange(TabsWidget.TAB_AUDIO);
-		}
+		setView(view);
 
 		// titles
 		heading.setText(recipe.getHeading());
@@ -196,7 +184,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 
 		List<VideoDto> videos = recipe.getVideos();
 		if (audios.isEmpty()) {
-			panelAudio.add(new HTML(messages.recipeNoVideo()));
+			panelVideo.add(new HTML(messages.recipeNoVideo()));
 		} else if (!Video.isSupported()) {
 			panelVideo.add(new HTML(messages.htmlVideoNotSupported()));
 		}
@@ -214,6 +202,22 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		}
 
 		setVisible(true);
+	}
+
+	public void setView(String view) {
+		if (view == null || view.equalsIgnoreCase("basic")) {
+			tabsWidget.setActiveTab(TabsWidget.TAB_BASIC);
+			onTabChange(TabsWidget.TAB_BASIC);
+		} else if (view.equalsIgnoreCase("steps")) {
+			tabsWidget.setActiveTab(TabsWidget.TAB_STEPS);
+			onTabChange(TabsWidget.TAB_STEPS);
+		} else if (view.equalsIgnoreCase("video")) {
+			tabsWidget.setActiveTab(TabsWidget.TAB_VIDEO);
+			onTabChange(TabsWidget.TAB_VIDEO);
+		} else if (view.equalsIgnoreCase("audio")) {
+			tabsWidget.setActiveTab(TabsWidget.TAB_AUDIO);
+			onTabChange(TabsWidget.TAB_AUDIO);
+		}
 	}
 
 	@Override

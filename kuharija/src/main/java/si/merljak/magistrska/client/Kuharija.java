@@ -12,6 +12,7 @@ import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.client.mvp.compare.ComparePresenter;
+import si.merljak.magistrska.client.mvp.error.NotFoundPresenter;
 import si.merljak.magistrska.client.mvp.home.HomePresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientIndexPresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
@@ -144,6 +145,7 @@ public class Kuharija implements EntryPoint {
 		presenters.put(ComparePresenter.SCREEN_NAME, new ComparePresenter(language, recipeService));
 		presenters.put(LoginPresenter.SCREEN_NAME, loginPresenter);
 		presenters.put(HomePresenter.SCREEN_NAME, new HomePresenter(language, recommendationService, eventBus));
+		presenters.put(NotFoundPresenter.SCREEN_NAME, new NotFoundPresenter(language));
 
 		UserWidget userWidget = new UserWidget(loginPresenter, eventBus);
 		RootPanel.get("userWrapper").add(userWidget);
@@ -173,16 +175,17 @@ public class Kuharija implements EntryPoint {
 					}
 				}
 
+				breadcrumbs.clear();
+				mainPanel.clear();
+
 				// let appropriate presenter handles history event
 				AbstractPresenter presenter = presenters.get(screenName);
-				mainPanel.clear();
-				if (presenter != null) {
-					mainPanel.add(presenter.parseParameters(parameters));
-					buildBreadcrumbs(presenter, true);
-				} else {
-					// TODO 404 view
-					breadcrumbs.clear();
+				if (presenter == null) {
+					// 404 view
+					presenter = presenters.get(NotFoundPresenter.SCREEN_NAME);
 				}
+				mainPanel.add(presenter.parseParameters(parameters));
+				buildBreadcrumbs(presenter, true);
 
 				alertPlaceholder.clear();
 			}
@@ -201,9 +204,6 @@ public class Kuharija implements EntryPoint {
 		AbstractPresenter parentPresenter = presenters.get(presenter.getParentName());
 		if (parentPresenter != null) {
 			buildBreadcrumbs(parentPresenter, false);
-		} else {
-			// reached top level, start from scratch
-			breadcrumbs.clear();
 		}
 
 		String screenName = presenter.getScreenName();

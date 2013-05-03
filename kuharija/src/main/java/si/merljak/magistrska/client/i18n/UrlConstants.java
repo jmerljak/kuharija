@@ -12,6 +12,7 @@ import com.google.gwt.i18n.client.Constants;
 public interface UrlConstants extends Constants {
 
 	@DefaultStringMapValue({
+		"404", "Error",
 		"home", "Home",
 		"compare", "Compare",
 		"ingredient", "Ingredient",

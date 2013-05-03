@@ -27,14 +27,17 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	// screen and parameters name
 	public static final String SCREEN_NAME = "recipe";
 	private static final String PARAMETER_RECIPE_ID = "id";
-	private static final String PARAMETER_VIEW = "view"; // basic, steps, video, audio
+	private static final String PARAMETER_VIEW = "view";
 
 	// remote service
 	private final RecipeServiceAsync recipeService;
 
-	private long recipeId;
-    private final RecipeView recipeView = new RecipeView();
-    private UserDto user;
+	// view
+	private final RecipeView recipeView = new RecipeView();
+
+	// variables
+	private RecipeDetailsDto recipeDto;
+	private UserDto user;
 
 	public RecipePresenter(Language language, RecipeServiceAsync recipeService, EventBus eventBus) {
 		super(language);
@@ -45,16 +48,20 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
 		try {
-			recipeId = Long.parseLong(parameters.get(PARAMETER_RECIPE_ID));
+			long recipeId = Long.parseLong(parameters.get(PARAMETER_RECIPE_ID));
 			String view = parameters.get(PARAMETER_VIEW);
-			getRecipe(recipeId, view);
+			if (recipeDto == null || recipeDto.getId() != recipeId) {
+				getRecipe(recipeId, view);
+			} else {
+				recipeView.setView(view);
+			}
 		} catch (Exception e) {
 			recipeView.displayRecipe(null, null);
 		}
 		return recipeView.asWidget();
 	}
 
-	/** 
+	/**
 	 * Gets recipe by ID.
 	 * 
 	 * @param recipeId recipe ID
@@ -75,36 +82,46 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 		});
 	}
 
-	/** Bookmarks / removes user bookmark. */
+	/**
+	 * Bookmarks / removes user bookmark.
+	 * 
+	 * @param isBookmarked <em>true</em> if addding bookmark, <em>false</em> if removing
+	 */
 	public void bookmark(final boolean isBookmarked) {
-		String username = user != null ? user.getUsername() : null;
-		recipeService.bookmarkRecipe(username, recipeId, isBookmarked, new AsyncCallback<Void>() {
-			@Override
-			public void onSuccess(Void nothing) {
-				recipeView.setBookmarked(isBookmarked);
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				Kuharija.handleException(caught);
-			}
-		});
+		if (user != null && recipeDto != null) {
+			recipeService.bookmarkRecipe(user.getUsername(), recipeDto.getId(), isBookmarked, new AsyncCallback<Void>() {
+				@Override
+				public void onSuccess(Void nothing) {
+					recipeView.setBookmarked(isBookmarked);
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Kuharija.handleException(caught);
+				}
+			});
+		}
 	}
 
-	/** Adds user comment. */
+	/**
+	 * Adds user comment.
+	 * 
+	 * @param content comment content
+	 */
 	public void comment(String content) {
-		String username = user != null ? user.getUsername() : null;
-		recipeService.commentRecipe(username, recipeId, content, new AsyncCallback<Void>() {
-			@Override
-			public void onSuccess(Void nothing) {
-				// TODO display comment
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				Kuharija.handleException(caught);
-			}
-		});
+		if (user != null && recipeDto != null) {
+			recipeService.commentRecipe(user.getUsername(), recipeDto.getId(), content, new AsyncCallback<Void>() {
+				@Override
+				public void onSuccess(Void nothing) {
+					// TODO display comment
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Kuharija.handleException(caught);
+				}
+			});
+		}
 	}
 
 	/**
@@ -115,6 +132,19 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	public static String buildRecipeUrl(long id) {
 		return "#" + SCREEN_NAME +
 			   "&" + PARAMETER_RECIPE_ID + "=" + id;
+	}
+
+	/**
+	 * Builds proper anchor URL for recipe.
+	 * 
+	 * @param id recipe's id
+	 * @param view view
+	 * @return anchor URL
+	 */
+	public static String buildRecipeUrl(long id, String view) {
+		return "#" + SCREEN_NAME +
+			   "&" + PARAMETER_RECIPE_ID + "=" + id +
+			   "&" + PARAMETER_VIEW + "=" + view;
 	}
 
 	@Override
