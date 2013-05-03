@@ -6,7 +6,9 @@ import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.event.LoginEvent;
 import si.merljak.magistrska.client.handler.LoginHandler;
 import si.merljak.magistrska.client.handler.LogoutHandler;
+import si.merljak.magistrska.client.handler.RegisterHandler;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
+import si.merljak.magistrska.client.mvp.HomePresenter;
 import si.merljak.magistrska.common.dto.SessionDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.enumeration.Language;
@@ -18,7 +20,7 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
-public class LoginPresenter extends AbstractPresenter implements LoginHandler, LogoutHandler {
+public class LoginPresenter extends AbstractPresenter implements LoginHandler, LogoutHandler, RegisterHandler {
 	
 	public interface LoginView {
 		/** Clears login form and message. */
@@ -109,14 +111,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 		}
 	}
 
-	/** 
-	 * Tries to register and log in new user.
-	 * 
-	 * @param username (must be unique)
-	 * @param password desired password
-	 * @param name custom name to show
-	 * @param email (optional)
-	 */
+	@Override
 	public void register(String username, String password, String name, String email) {
 		userService.register(username, password, name, email, new AsyncCallback<SessionDto>() {
 			@Override
@@ -124,8 +119,8 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 				if (session != null) {
 					user = session.getUser();
 					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
-				    loginView.showLoginSuccess();
 				    eventBus.fireEvent(new LoginEvent(user));
+//				    loginView.showLoginSuccess();
 //					History.back();
 				} else {
 					// username already exists
@@ -187,5 +182,15 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 	/** Returns proper anchor URL for login. */
 	public static String getLoginUrl() {
 		return "#" + SCREEN_NAME;
+	}
+
+	@Override
+	public String getScreenName() {
+		return SCREEN_NAME;
+	}
+
+	@Override
+	public String getParentName() {
+		return HomePresenter.SCREEN_NAME;
 	}
 }

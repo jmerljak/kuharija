@@ -2,6 +2,12 @@ package si.merljak.magistrska.client.i18n;
 
 import com.google.gwt.i18n.client.Messages;
 
+/** 
+ * Common interface messages.
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public interface CommonMessages extends Messages {
 	@DefaultMessage("Hello!")
 	String hello();
@@ -21,14 +27,14 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("Ingredient not found. See <a href=\"#ingredients\">index of ingredients</a>.")
 	String ingredientNotFoundTry();
 
-	@DefaultMessage("Read more about {0} on Wikipedia")
-	String ingredientReadMoreOnWikipedia(String name);
+	@DefaultMessage("Read more about {0} on <a href=\"http://en.wikipedia.org/w/index.php?search={1}\" target=\"_blank\">Wikipedia</a>")
+	String ingredientReadMoreOnWikipedia(String name, String query);
 	
 	@DefaultMessage("Utensil not found. See <a href=\"#utensils\">index of utensils</a>.")
 	String utensilNotFoundTry();
 
-	@DefaultMessage("Read more about {0} on Wikipedia")
-	String utensilReadMoreOnWikipedia(String name);
+	@DefaultMessage("Read more about {0} on <a href=\"http://en.wikipedia.org/w/index.php?search={1}\" target=\"_blank\">Wikipedia</a>")
+	String utensilReadMoreOnWikipedia(String name, String query);
 
 	@DefaultMessage("Find <a href=\"{1}\">recipes with {0}</a>")
 	String searchByIngredient(String name, String href);

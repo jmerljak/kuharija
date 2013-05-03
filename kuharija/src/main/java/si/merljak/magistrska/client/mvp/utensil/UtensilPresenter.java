@@ -20,15 +20,14 @@ import com.google.gwt.user.client.ui.Widget;
 public class UtensilPresenter extends AbstractPresenter {
 
 	// screen and parameter name
-	public static final String SCREEN_NAME = "utensils";
+	public static final String SCREEN_NAME = "utensil";
 	private static final String PARAMETER_UTENSIL = "name";
 
 	// remote service
 	private final UtensilServiceAsync utensilService;
 
 	// views
-	private final UtensilIndexView indexView = new UtensilIndexView();
-	private final UtensilDetailsView detailsView = new UtensilDetailsView();
+	private final UtensilView detailsView = new UtensilView();
 
 	public UtensilPresenter(Language language, UtensilServiceAsync utensilService) {
 		super(language);
@@ -37,17 +36,18 @@ public class UtensilPresenter extends AbstractPresenter {
 
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
+		detailsView.setVisible(false);
 		if (parameters.containsKey(PARAMETER_UTENSIL)) {
 			getUtensil(parameters.get(PARAMETER_UTENSIL));
-			return detailsView.asWidget();
 		} else {
-			return indexView.asWidget();
+			detailsView.displayUtensil(null);
+			detailsView.setVisible(true);
 		}
+		return detailsView.asWidget();
 	}
 
 	/** Gets utensil by name. */
 	private void getUtensil(String name) {
-		detailsView.setVisible(false);
 		utensilService.getUtensil(name, new AsyncCallback<UtensilDto>() {
 			@Override
 			public void onSuccess(UtensilDto utensil) {
@@ -71,5 +71,15 @@ public class UtensilPresenter extends AbstractPresenter {
 	public static String buildUtensilUrl(String name) {
 		return "#" + SCREEN_NAME +
 			   "&" + PARAMETER_UTENSIL + "=" + name.toLowerCase();
+	}
+
+	@Override
+	public String getScreenName() {
+		return SCREEN_NAME;
+	}
+
+	@Override
+	public String getParentName() {
+		return UtensilIndexPresenter.SCREEN_NAME;
 	}
 }

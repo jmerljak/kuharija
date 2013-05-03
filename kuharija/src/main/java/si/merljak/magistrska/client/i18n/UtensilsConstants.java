@@ -4,6 +4,11 @@ import java.util.Map;
 
 import com.google.gwt.i18n.client.Constants;
 
+/**
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public interface UtensilsConstants extends Constants {
 	
 	@DefaultStringMapValue({
@@ -11,14 +16,14 @@ public interface UtensilsConstants extends Constants {
 		"APPLE_CUTTER", "Apple cutter",
 		"BAIN_MARIE", "Bain-marie",
 		"BAKING_TRAY", "Baking tray",
-		"BAKING_TRAY_LARGE", "Baking tray - large",
-		"BAKING_TRAY_SMALL", "Baking tray - small",
+		"BAKING_TRAY_LARGE", "Baking tray, large",
+		"BAKING_TRAY_SMALL", "Baking tray, small",
 		"BAKING_PAPER", "Parchment paper",
 		"BANNETON", "Banneton",
 		"BASTER", "Baster",
 		"BISCUIT_CUTTER", "Biscuit cutter",
 		"BLENDER", "Blender",
-		"BLENDER_STICK", "Blender - immersion",
+		"BLENDER_STICK", "Blender, immersion",
 		"BLOW_TORCH", "Blow torch",
 		"BOTTLE_OPENER", "Bottle opener",
 		"BOWL", "Bowl",
@@ -53,7 +58,7 @@ public interface UtensilsConstants extends Constants {
 		"GARLIC_PRESS", "Garlic press",
 		"GRAPEFRUIT_KNIFE", "Grapefruit knife",
 		"GRATER", "Grater",
-		"KNIFE_SMALL", "Knife - small",
+		"KNIFE_SMALL", "Knife, small",
 		"LADLE", "Ladle",
 		"LEMON_REAMER", "Lemon reamer",
 		"LEMON_SQUEEZER", "Lemon squeezer",

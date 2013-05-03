@@ -115,4 +115,14 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 		user = event.getUser();
 	}
 
+	@Override
+	public String getScreenName() {
+		return SCREEN_NAME;
+	}
+
+	@Override
+	public String getParentName() {
+		return HomePresenter.SCREEN_NAME;
+	}
+
 }

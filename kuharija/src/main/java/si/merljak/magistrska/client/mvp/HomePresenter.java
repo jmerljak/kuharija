@@ -77,4 +77,13 @@ public class HomePresenter extends AbstractPresenter implements LoginEventHandle
 		getRecommendations();
 	}
 
+	@Override
+	public String getScreenName() {
+		return SCREEN_NAME;
+	}
+
+	@Override
+	public String getParentName() {
+		return null;
+	}
 }

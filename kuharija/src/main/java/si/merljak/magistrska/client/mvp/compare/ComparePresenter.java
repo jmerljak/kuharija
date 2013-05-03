@@ -7,6 +7,7 @@ import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
+import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
@@ -86,5 +87,15 @@ public class ComparePresenter extends AbstractPresenter {
 	public static String buildCompareUrl(Set<Long> recipeIdList) {
 		return "#" + SCREEN_NAME + 
 			   "&" + PARAMETER_ID_LIST + "=" + Kuharija.listJoiner.join(recipeIdList);
+	}
+
+	@Override
+	public String getScreenName() {
+		return SCREEN_NAME;
+	}
+
+	@Override
+	public String getParentName() {
+		return RecipePresenter.SCREEN_NAME;
 	}
 }

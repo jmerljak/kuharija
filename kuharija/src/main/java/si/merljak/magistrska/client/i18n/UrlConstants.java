@@ -1,11 +1,22 @@
 package si.merljak.magistrska.client.i18n;
 
-import com.google.gwt.i18n.client.Messages;
+import java.util.Map;
 
-public interface UrlConstants extends Messages {
+import com.google.gwt.i18n.client.Constants;
 
-	@DefaultMessage("http://en.wikipedia.org/w/index.php?search={0}")
-	String localWikipediaSearchUrl(String query);
-	
-	// TODO localize internal urls?
+public interface UrlConstants extends Constants {
+
+	@DefaultStringMapValue({
+		"home", "Home",
+		"compare", "Compare",
+		"ingredient", "Ingredient",
+		"ingredients", "Ingredients",
+		"lexicon", "Lexicon",
+		"login", "Login",
+		"recipe", "Recipe",
+		"recipes", "Recipes",
+		"search", "Search",
+		"utensil", "Utensil",
+		"utensils", "Utensils"})
+	Map<String, String> screenNameMap();
 }

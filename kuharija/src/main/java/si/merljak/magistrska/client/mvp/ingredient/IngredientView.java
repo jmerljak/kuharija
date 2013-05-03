@@ -4,7 +4,6 @@ import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
-import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.common.dto.IngredientDto;
@@ -13,8 +12,7 @@ import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 
@@ -24,11 +22,10 @@ import com.google.gwt.user.client.ui.HTML;
  * @author Jakob Merljak
  * 
  */
-public class IngredientDetailsView extends AbstractView {
+public class IngredientView extends AbstractView {
 
 	// i18n
 	private final IngredientsConstants ingredientsConstants = Kuharija.ingredientsConstants;
-	private final UrlConstants urlConstants = GWT.create(UrlConstants.class);
 	private final Map<String, String> ingredientMap = ingredientsConstants.ingredientMap();
 	private final Map<String, String> ingredientDescriptionMap = ingredientsConstants.ingredientDescriptionMap();
 
@@ -37,7 +34,7 @@ public class IngredientDetailsView extends AbstractView {
 	private final FlowPanel content = new FlowPanel();
 	private final Paragraph message404 = new Paragraph(messages.ingredientNotFoundTry());
 
-	public IngredientDetailsView() {
+	public IngredientView() {
 		FlowPanel main = new FlowPanel();
 		main.add(heading);
 		main.add(content);
@@ -76,7 +73,7 @@ public class IngredientDetailsView extends AbstractView {
 
 			content.add(new Paragraph(localizedDescription));
 			content.add(new HTML(messages.searchByIngredient(localizedName.toLowerCase(), SearchPresenter.buildSearchByIngredientUrl(ingredientName))));
-			content.add(new Anchor(messages.ingredientReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl(localizedName), "_blank"));
+			content.add(new HTML(messages.ingredientReadMoreOnWikipedia(localizedName, URL.encodeQueryString(localizedName))));
 		}
 	}
 }

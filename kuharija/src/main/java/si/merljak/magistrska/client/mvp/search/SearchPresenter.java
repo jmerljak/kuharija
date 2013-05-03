@@ -8,6 +8,7 @@ import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
+import si.merljak.magistrska.client.mvp.HomePresenter;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeListDto;
 import si.merljak.magistrska.common.enumeration.Category;
@@ -278,6 +279,16 @@ public class SearchPresenter extends AbstractPresenter {
 	public static String buildSearchByUtensilUrl(String utensilName) {
 		return "#" + SCREEN_NAME + 
 			   "&" + PARAMETER_UTENSIL + "=" + utensilName.toLowerCase();
+	}
+
+	@Override
+	public String getScreenName() {
+		return SCREEN_NAME;
+	}
+
+	@Override
+	public String getParentName() {
+		return HomePresenter.SCREEN_NAME;
 	}
 
 }

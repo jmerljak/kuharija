@@ -28,4 +28,18 @@ public abstract class AbstractPresenter {
 	 * @return proper view as a widget
 	 */
 	public abstract Widget parseParameters(Map<String, String> parameters);
+
+	/**
+	 * Gets name of the screen.
+	 * 
+	 * @return screen name
+	 */
+	public abstract String getScreenName();
+
+	/**
+	 * Gets name of the <em>parent</em> presenter. Needed for breadcrumbs building.
+	 * 
+	 * @return parent presenter name
+	 */
+	public abstract String getParentName();
 }

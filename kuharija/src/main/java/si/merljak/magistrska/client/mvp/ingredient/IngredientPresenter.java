@@ -20,15 +20,14 @@ import com.google.gwt.user.client.ui.Widget;
 public class IngredientPresenter extends AbstractPresenter {
 
 	// screen and parameter name
-	public static final String SCREEN_NAME = "ingredients";
+	public static final String SCREEN_NAME = "ingredient";
 	private static final String PARAMETER_INGREDIENT = "name";
 
 	// remote service
 	private final IngredientServiceAsync ingredientService;
 
-	// views
-	private final IngredientIndexView indexView = new IngredientIndexView();
-	private final IngredientDetailsView detailsView = new IngredientDetailsView();
+	// view
+	private final IngredientView detailsView = new IngredientView();
 
 	public IngredientPresenter(Language language, IngredientServiceAsync ingredientService) {
 		super(language);
@@ -37,17 +36,18 @@ public class IngredientPresenter extends AbstractPresenter {
 
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
+		detailsView.setVisible(false);
 		if (parameters.containsKey(PARAMETER_INGREDIENT)) {
 			getIngredient(parameters.get(PARAMETER_INGREDIENT));
-			return detailsView.asWidget();
 		} else {
-			return indexView.asWidget();
+			detailsView.displayIngredient(null);
+			detailsView.setVisible(true);
 		}
+		return detailsView.asWidget();
 	}
 
 	/** Gets ingredient by name. */
 	private void getIngredient(String name) {
-		detailsView.setVisible(false);
 		ingredientService.getIngredient(name, new AsyncCallback<IngredientDto>() {
 			@Override
 			public void onSuccess(IngredientDto ingredient) {
@@ -71,5 +71,15 @@ public class IngredientPresenter extends AbstractPresenter {
 	public static String buildIngredientUrl(String name) {
 		return "#" + SCREEN_NAME +
 			   "&" + PARAMETER_INGREDIENT + "=" + name.toLowerCase();
+	}
+
+	@Override
+	public String getScreenName() {
+		return SCREEN_NAME;
+	}
+
+	@Override
+	public String getParentName() {
+		return IngredientIndexPresenter.SCREEN_NAME;
 	}
 }

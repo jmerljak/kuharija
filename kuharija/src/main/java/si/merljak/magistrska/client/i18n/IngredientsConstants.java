@@ -4,6 +4,11 @@ import java.util.Map;
 
 import com.google.gwt.i18n.client.Constants;
 
+/**
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public interface IngredientsConstants extends Constants {
 
 	@DefaultStringMapValue({
@@ -28,10 +33,10 @@ public interface IngredientsConstants extends Constants {
 		"COCOA", "Cocoa",
 		"COD", "Cod",
 		"COOKING_BASE", "Cooking base",
-		"COOKING_BASE_VEGETABLE", "Cooking base (vegetable)",
+		"COOKING_BASE_VEGETABLE", "Cooking base, vegetable",
 		"CORN", "Corn",
 		"CREAM", "Cream",
-		"CREAM_SOUR", "Cream (sour)",
+		"CREAM_SOUR", "Cream, sour",
 		"CUCURBITA", "Cucurbita",
 		"CUCURBITA_SEEDS", "Cucurbita seeds",
 		"EGG", "Egg",
@@ -44,9 +49,9 @@ public interface IngredientsConstants extends Constants {
 		"GARLIC", "Garlic",
 		"GORGONZOLA", "Gorgonzola",
 		"HAZELNUT", "Hazelnut",
-		"HAZELNUT_MILLED", "Milled hazelnuts",
+		"HAZELNUT_MILLED", "Hazelnuts, milled",
 		"ICECREAM", "Icecream",
-		"ICECREAM_VANILLA", "Vanilla icecream",
+		"ICECREAM_VANILLA", "Icecream, vanilla",
 		"KAKI", "Kaki",
 		"KOHLRABI", "Kohlrabi",
 		"LAURUS", "Laurus",
@@ -61,7 +66,7 @@ public interface IngredientsConstants extends Constants {
 		"MOZZARELLA", "Mozzarella",
 		"MUSHROOMS", "Mushrooms",
 		"NUT", "Nut",
-		"NUT_MILLED", "Milled nuts",
+		"NUT_MILLED", "Nuts, milled",
 		"NUTMEG", "Nutmeg",
 		"OIL", "Oil",
 		"OIL_OLIVE", "Olive oil",
@@ -102,9 +107,9 @@ public interface IngredientsConstants extends Constants {
 		"SESAME", "Sesame",
 		"LINSEED", "Linseed",
 		"PEANUT", "Peanut",
-		"PEANUT_MILLED", "Milled peanut",
+		"PEANUT_MILLED", "Peanut, milled",
 		"ALMOND", "Almond",
-		"ALMOND_MILLED", "Milled almond",
+		"ALMOND_MILLED", "Almond, milled",
 		"RAISINS", "Raisins",
 		"OATMEAL", "Oatmeal",
 		"APPLE", "Apple",

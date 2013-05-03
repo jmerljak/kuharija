@@ -12,12 +12,15 @@ import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.client.mvp.HomePresenter;
+import si.merljak.magistrska.client.mvp.LexiconPresenter;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.mvp.compare.ComparePresenter;
+import si.merljak.magistrska.client.mvp.ingredient.IngredientIndexPresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginView;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
+import si.merljak.magistrska.client.mvp.utensil.UtensilIndexPresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilPresenter;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.MainMenuWidget;
@@ -88,7 +91,7 @@ public class Kuharija implements EntryPoint {
 	public static final UtensilsConstants utensilsConstants = GWT.create(UtensilsConstants.class);
 	public static final UrlConstants urlConstants = GWT.create(UrlConstants.class);
 
-    // formatters
+	// formatters
 	public static final Formatters formatters = GWT.create(Formatters.class);
 	public static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
 	public static final DateTimeFormat dateFormat = DateTimeFormat.getFormat(formatters.dateFormat());
@@ -104,14 +107,15 @@ public class Kuharija implements EntryPoint {
 	private final EventBus eventBus = new SimpleEventBus();
 
 	// presenters
-	private Map<String, AbstractPresenter> presenters = new HashMap<String, AbstractPresenter>();
+	private final Map<String, AbstractPresenter> presenters = new HashMap<String, AbstractPresenter>();
 
-	// panels & widgets
+	// panels
 	private final RootPanel mainPanel = RootPanel.get("main");
 	private final RootPanel navPanel = RootPanel.get("nav");
 
-	private LocaleWidget localeWidget;
-	private Breadcrumbs breadcrumbs = new Breadcrumbs("→");
+	// widgets
+	private final LocaleWidget localeWidget = new LocaleWidget();
+	private final Breadcrumbs breadcrumbs = new Breadcrumbs("→");
 	private static final SimplePanel alertPlaceholder = new SimplePanel();
 
 	public void onModuleLoad() {
@@ -119,7 +123,7 @@ public class Kuharija implements EntryPoint {
 		Roles.getMainRole().getAriaLiveProperty(mainPanel.getElement());
 		Roles.getAlertRole().set(alertPlaceholder.getElement());
 
-		localeWidget = new LocaleWidget();
+		// layout
 		navPanel.add(new MainMenuWidget());
 		navPanel.add(localeWidget);
 		navPanel.add(breadcrumbs);
@@ -128,8 +132,11 @@ public class Kuharija implements EntryPoint {
 
 		// TODO refactorize MVP architecture!
 		LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView(), eventBus);
+		presenters.put(LexiconPresenter.SCREEN_NAME, new LexiconPresenter(language));
+		presenters.put(IngredientIndexPresenter.SCREEN_NAME, new IngredientIndexPresenter(language));
 		presenters.put(IngredientPresenter.SCREEN_NAME, new IngredientPresenter(language, ingredientService));
 		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, utensilService));
+		presenters.put(UtensilIndexPresenter.SCREEN_NAME, new UtensilIndexPresenter(language));
 		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, eventBus));
 		presenters.put(SearchPresenter.SCREEN_NAME, new SearchPresenter(language, searchService));
 		presenters.put(ComparePresenter.SCREEN_NAME, new ComparePresenter(language, recipeService));
@@ -148,7 +155,8 @@ public class Kuharija implements EntryPoint {
 				String historyToken = event.getValue();
 				String screenName = historyToken;
 				Map<String, String> parameters = new HashMap<String, String>(0);
-				
+
+				// get parameters
 				if (historyToken.contains("&")) {
 					int separatorIndex = historyToken.indexOf("&");
 					// screen name should be first token
@@ -163,24 +171,46 @@ public class Kuharija implements EntryPoint {
 					}
 				}
 
-				// get parameters
+				// let appropriate presenter handles history event
 				AbstractPresenter presenter = presenters.get(screenName);
 				mainPanel.clear();
 				if (presenter != null) {
 					mainPanel.add(presenter.parseParameters(parameters));
+					buildBreadcrumbs(presenter, true);
 				} else {
 					// TODO 404 view
+					breadcrumbs.clear();
 				}
 
 				alertPlaceholder.clear();
-
-				breadcrumbs.clear();
-				breadcrumbs.add(new Anchor(constants.home(), "#" + HomePresenter.SCREEN_NAME));
-				breadcrumbs.add(new Label(screenName));
 			}
 		});
 
 		History.fireCurrentHistoryState();
+	}
+
+	/** 
+	 * Recursively builds breadcrumbs.
+	 * 
+	 * @param presenter
+	 * @param isLast if it is last level
+	 */
+	private void buildBreadcrumbs(AbstractPresenter presenter, boolean isLast) {
+		AbstractPresenter parentPresenter = presenters.get(presenter.getParentName());
+		if (parentPresenter != null) {
+			buildBreadcrumbs(parentPresenter, false);
+		} else {
+			// reached top level, start from scratch
+			breadcrumbs.clear();
+		}
+
+		String screenName = presenter.getScreenName();
+		String localizedName = urlConstants.screenNameMap().get(screenName.isEmpty() ? "home" : screenName);
+		if (isLast) {
+			breadcrumbs.add(new Label(localizedName));
+		} else {
+			breadcrumbs.add(new Anchor(localizedName, "#" + screenName));
+		}
 	}
 
 	/** Tries to get user's location. */

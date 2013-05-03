@@ -3,7 +3,6 @@ package si.merljak.magistrska.client.mvp.utensil;
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
-import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
@@ -14,7 +13,6 @@ import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 
@@ -24,11 +22,10 @@ import com.google.gwt.user.client.ui.HTML;
  * @author Jakob Merljak
  * 
  */
-public class UtensilDetailsView extends AbstractView {
+public class UtensilView extends AbstractView {
 
 	// i18n
 	private final UtensilsConstants utensilsConstants = Kuharija.utensilsConstants;
-	private final UrlConstants urlConstants = Kuharija.urlConstants;
 	private final Map<String, String> utensilMap = utensilsConstants.utensilsMap();
 	private final Map<String, String> utensilsDescriptionMap = utensilsConstants.utensilsDescriptionMap();
 
@@ -37,7 +34,7 @@ public class UtensilDetailsView extends AbstractView {
 	private final FlowPanel content = new FlowPanel();
 	private final Paragraph message404 = new Paragraph(messages.utensilNotFoundTry());
 
-	public UtensilDetailsView() {
+	public UtensilView() {
 		FlowPanel main = new FlowPanel();
 		main.add(heading);
 		main.add(content);
@@ -76,7 +73,7 @@ public class UtensilDetailsView extends AbstractView {
 
 			content.add(new Paragraph(localizedDescription));
 			content.add(new HTML(messages.searchByUtensil(localizedName.toLowerCase(), SearchPresenter.buildSearchByUtensilUrl(utensilName))));
-			content.add(new Anchor(messages.utensilReadMoreOnWikipedia(localizedName), urlConstants.localWikipediaSearchUrl(URL.encodeQueryString(localizedName)), "_blank"));
+			content.add(new HTML(messages.utensilReadMoreOnWikipedia(localizedName, URL.encodeQueryString(localizedName))));
 		}
 	}
 }
