@@ -8,7 +8,7 @@ import si.merljak.magistrska.client.handler.LoginHandler;
 import si.merljak.magistrska.client.handler.LogoutHandler;
 import si.merljak.magistrska.client.handler.RegisterHandler;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
-import si.merljak.magistrska.client.mvp.HomePresenter;
+import si.merljak.magistrska.client.mvp.home.HomePresenter;
 import si.merljak.magistrska.common.dto.SessionDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.enumeration.Language;
@@ -20,8 +20,14 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Login presenter.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
 public class LoginPresenter extends AbstractPresenter implements LoginHandler, LogoutHandler, RegisterHandler {
-	
+
 	public interface LoginView {
 		/** Clears login form and message. */
 		void clear();

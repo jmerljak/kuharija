@@ -238,4 +238,13 @@ public interface CommonConstants extends Constants {
 		"TIMEOVERALL", "Time overall",
 		"DIFFICULTY", "Difficulty"})
 	Map<String, String> sortKeyMap();
+
+	@DefaultStringMapValue({
+		"INGREDIENTS_FROM_FRIDGE", "From ingredients in your refrigerator",
+		"USER_PREFERENCES", "Your preferences",
+		"LOCAL_SEASON", "Season",
+		"LOCAL_TIME", "Time of day",
+		"LOCAL_SPECIALTY", "Local specialty",
+		"FEATURED", "Featured"})
+	Map<String, String> recommendationMap();
 }

@@ -84,9 +84,4 @@ public abstract class AbstractView extends Composite {
 		}
 		return Joiner.on(" ").join(timeStrings);
 	}
-
-	/** Hides view and all of its widgets. */
-	public void hide() {
-		setVisible(false);
-	}
 }

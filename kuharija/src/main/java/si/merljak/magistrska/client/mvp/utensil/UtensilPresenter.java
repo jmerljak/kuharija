@@ -12,7 +12,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Presenter for utensils index and details views.
+ * Presenter for utensil details view.
  * 
  * @author Jakob Merljak
  * 

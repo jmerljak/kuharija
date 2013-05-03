@@ -8,7 +8,7 @@ import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
-import si.merljak.magistrska.client.mvp.HomePresenter;
+import si.merljak.magistrska.client.mvp.home.HomePresenter;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeListDto;
 import si.merljak.magistrska.common.enumeration.Category;

@@ -12,7 +12,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Presenter for ingredients index and details views.
+ * Presenter for ingredient details view.
  * 
  * @author Jakob Merljak
  * 

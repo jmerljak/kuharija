@@ -16,7 +16,7 @@ public class GeolocateEvent extends GwtEvent<GeolocateEventHandler> {
 	private Coordinates coordinates;
 
 	/**
-	 * Event for user login or logout.
+	 * Geolocate event.
 	 * 
 	 * @param coordinates user geolocation
 	 */

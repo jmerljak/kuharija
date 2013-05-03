@@ -9,7 +9,7 @@ import si.merljak.magistrska.common.enumeration.Language;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Presenter for utensils index and details views.
+ * Presenter for utensils index.
  * 
  * @author Jakob Merljak
  * 

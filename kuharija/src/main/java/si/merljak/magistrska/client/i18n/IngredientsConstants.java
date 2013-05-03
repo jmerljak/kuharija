@@ -5,9 +5,10 @@ import java.util.Map;
 import com.google.gwt.i18n.client.Constants;
 
 /**
+ * Ingredients i18n.
  * 
  * @author Jakob Merljak
- *
+ * 
  */
 public interface IngredientsConstants extends Constants {
 

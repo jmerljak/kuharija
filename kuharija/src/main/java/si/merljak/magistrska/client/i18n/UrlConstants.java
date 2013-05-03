@@ -4,6 +4,11 @@ import java.util.Map;
 
 import com.google.gwt.i18n.client.Constants;
 
+/**
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public interface UrlConstants extends Constants {
 
 	@DefaultStringMapValue({

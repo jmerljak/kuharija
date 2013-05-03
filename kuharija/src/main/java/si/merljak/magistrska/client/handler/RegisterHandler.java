@@ -1,5 +1,10 @@
 package si.merljak.magistrska.client.handler;
 
+/**
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public interface RegisterHandler {
 	/**
 	 * Tries to register and log in new user.

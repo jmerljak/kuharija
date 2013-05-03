@@ -1,10 +1,12 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.recipe;
 
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.event.LoginEvent;
 import si.merljak.magistrska.client.event.LoginEventHandler;
+import si.merljak.magistrska.client.mvp.AbstractPresenter;
+import si.merljak.magistrska.client.mvp.home.HomePresenter;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.enumeration.Language;
@@ -14,6 +16,12 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Presenter for recipe details.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
 public class RecipePresenter extends AbstractPresenter implements LoginEventHandler {
 
 	// screen and parameters name

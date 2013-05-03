@@ -9,7 +9,7 @@ import si.merljak.magistrska.client.handler.PagingHandler;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractView;
-import si.merljak.magistrska.client.mvp.RecipePresenter;
+import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
 import si.merljak.magistrska.client.widgets.PagingWidget;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeDto;

@@ -1,8 +1,9 @@
-package si.merljak.magistrska.client.mvp;
+package si.merljak.magistrska.client.mvp.recipe;
 
 import java.util.List;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.client.widgets.AppendixWidget;
 import si.merljak.magistrska.client.widgets.AudioWidget;
@@ -24,7 +25,12 @@ import si.merljak.magistrska.common.enumeration.Season;
 import com.github.gwtbootstrap.client.ui.Badge;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.IconSize;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.ui.Anchor;
@@ -56,6 +62,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 	private FlowPanel panelAudio = new FlowPanel();
 	private FlowPanel panelVideo = new FlowPanel();
 	private FlowPanel commentsPanel = new FlowPanel();
+	private IconAnchor bookmark = new IconAnchor();
 
 	public RecipeView() {
 		FlowPanel side = new FlowPanel();
@@ -131,6 +138,19 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		recipeDetailsPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
 		recipeDetailsPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
 		recipeDetailsPanel.add(new Image(RECIPE_IMG_FOLDER + recipe.getImageUrl()));
+
+		final boolean isBookmarked = recipe.isBookmarked();
+		bookmark.setIcon(isBookmarked ? IconType.BOOKMARK : IconType.BOOKMARK_EMPTY);
+		bookmark.setIconSize(IconSize.LARGE);
+		bookmark.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO link presenter
+				// TODO get bookmarked or not
+//				presenter.bookmark(!isBookmarked);
+			}
+		});
+		recipeDetailsPanel.add(bookmark);
 
 		// categories & seasons
 		for (Category category : recipe.getCategories()) {
@@ -215,7 +235,6 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 	}
 
 	public void setBookmarked(boolean isBookmarked) {
-		// TODO Auto-generated method stub
-		
+		bookmark.setIcon(isBookmarked ? IconType.BOOKMARK : IconType.BOOKMARK_EMPTY);
 	}
 }

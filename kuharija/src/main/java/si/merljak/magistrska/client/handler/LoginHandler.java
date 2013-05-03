@@ -1,5 +1,10 @@
 package si.merljak.magistrska.client.handler;
 
+/**
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public interface LoginHandler {
 	/** 
 	 * Tries to login with provided credentials.
