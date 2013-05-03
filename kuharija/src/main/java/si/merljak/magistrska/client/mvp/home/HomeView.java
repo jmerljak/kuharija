@@ -11,9 +11,11 @@ import si.merljak.magistrska.common.dto.RecommendationsDto;
 import si.merljak.magistrska.common.enumeration.RecommendationType;
 
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.Image;
+import com.github.gwtbootstrap.client.ui.constants.ImageType;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -25,10 +27,30 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class HomeView extends AbstractView {
 
+	// constants
+	private static final int SCEDULE = 10000;
+
 	// widgets
 	private final FlowPanel recommendPanel = new FlowPanel();
 
+	// timer
+	private int selected;
+	private final Timer timer;
+
 	public HomeView () {
+		recommendPanel.getElement().setId("recommendations");
+		timer = new Timer() {
+			@Override
+			public void run() {
+				int widgetCount = recommendPanel.getWidgetCount();
+				if (widgetCount > 0) {
+					recommendPanel.getWidget(selected).removeStyleDependentName("active");
+					selected = (selected  + 1) % widgetCount;
+					recommendPanel.getWidget(selected).addStyleDependentName("active");
+				}
+			}
+		};
+
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.appTitle()));
 		main.add(recommendPanel);
@@ -36,28 +58,52 @@ public class HomeView extends AbstractView {
 	}
 
 	public void displayRecommendations(RecommendationsDto result) {
+		timer.cancel();
 		recommendPanel.clear();
 		Map<RecommendationType, List<RecipeDto>> recommendations = result.getRecommendations();
 		for (RecommendationType type : recommendations.keySet()) {
-			recommendPanel.add(new Label(constants.recommendationMap().get(type.name())));
 			for (RecipeDto recipe : recommendations.get(type)) {
+				String heading = recipe.getHeading();
 				String imageUrl = recipe.getImageUrl();
 				if (imageUrl == null) {
 					imageUrl = RECIPE_IMG_FALLBACK;
 				}
+
 				Image image = new Image(RECIPE_THUMB_IMG_FOLDER + imageUrl);
-				image.setAltText(recipe.getHeading());
-				Anchor link = new Anchor(recipe.getHeading(), RecipePresenter.buildRecipeUrl(recipe.getId()));
+				image.setAltText(heading);
+				image.setType(ImageType.POLAROID);
 
-				FlowPanel resultEntry = new FlowPanel();
-				resultEntry.setStyleName("resultEntry");
-				resultEntry.add(link);
-				resultEntry.add(image);
-				resultEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
-				resultEntry.add(new Label(timeFromMinutes(recipe.getTimeOverall())));
+				Anchor link = new Anchor(heading, RecipePresenter.buildRecipeUrl(recipe.getId()));
+				link.getElement().appendChild(image.getElement());
 
-				recommendPanel.add(resultEntry);
+				FlowPanel recommendationEntry = new FlowPanel();
+				recommendationEntry.setStyleName("recommendation");
+				recommendationEntry.add(link);
+				recommendationEntry.add(image);
+				recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
+				recommendationEntry.add(new Label(timeFromMinutes(recipe.getTimeOverall())));
+				recommendationEntry.add(new Label(constants.recommendationMap().get(type.name())));
+//				recommendationEntry.addHandler(new MouseOverHandler() {
+//					@Override
+//					public void onMouseOver(MouseOverEvent event) {
+//						timer.cancel();
+//					}
+//				}, MouseOverEvent.getType());
+//				recommendationEntry.addHandler(new MouseOutHandler() {
+//					@Override
+//					public void onMouseOut(MouseOutEvent event) {
+//						timer.scheduleRepeating(SCEDULE);
+//					}
+//				}, MouseOutEvent.getType());
+
+				recommendPanel.add(recommendationEntry);
 			}
+		}
+
+		if (recommendPanel.getWidgetCount() > 0) {
+			selected = 0;
+			recommendPanel.getWidget(selected).addStyleDependentName("active");
+			timer.scheduleRepeating(SCEDULE);
 		}
 	}
 

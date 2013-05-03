@@ -17,6 +17,7 @@ import si.merljak.magistrska.common.rpc.UserServiceAsync;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -87,6 +88,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 		loginView.clear();
 		if (user != null) {
 		    loginView.showLoginSuccess();
+		    History.back();
 		}
 		return loginView.asWidget();
 	}
@@ -126,8 +128,8 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 					user = session.getUser();
 					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
 				    eventBus.fireEvent(new LoginEvent(user));
-//				    loginView.showLoginSuccess();
-//					History.back();
+				    loginView.showLoginSuccess();
+					History.back();
 				} else {
 					// username already exists
 					// view.displayRegisterForm(LoginError.USERNAME_ALREADY_EXISTS);
@@ -151,6 +153,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
 					loginView.showLoginSuccess();
 					eventBus.fireEvent(new LoginEvent(user));
+				    History.back();
 				} else {
 					user = null;
 					loginView.showError(LoginError.INCORRECT_USERNAME_PASSWORD);

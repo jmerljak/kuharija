@@ -14,7 +14,7 @@ public class SearchParameters implements Serializable {
 
 	private static final long serialVersionUID = 2817702799360224889L;
 
-	public static final long DEFAULT_PAGE_SIZE = 15L;
+	public static final long DEFAULT_PAGE_SIZE = 8L;
 	public static final RecipeSortKey DEFAULT_SORT_KEY = RecipeSortKey.ID;
 
 	private long page = 1;

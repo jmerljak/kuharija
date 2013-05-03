@@ -40,7 +40,7 @@ public class UserWidget extends Composite implements LoginEventHandler {
 	private final Button logoutButton = new Button(constants.logout());
 
 	// handler
-	private LogoutHandler handler;
+	private final LogoutHandler handler;
 
 	public UserWidget(LogoutHandler logoutHandler, EventBus eventBus) {
 		this.handler = logoutHandler;

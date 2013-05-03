@@ -15,16 +15,48 @@ body {
 	font-family: sans-serif;
 }
 
+/* home */
+#recommendations {
+	position: relative;
+}
+
+.recommendation {
+	background: white;
+	position: absolute;
+	/* TODO think about it */
+	left: -99999px;
+	top: -99999px;
+}
+
+.recommendation-active {
+	left: 0;
+	top: 0;'
+}
+
+.recommendation a {
+	display: block;
+}
+
 /* login */
 #loginForm {
 	margin-top: 1em;
 }
 
 /* index */
-.index {
-	-moz-column-count: 3;
-	-webkit-column-count: 3;
-	column-count: 3;
+@media (min-width: 480px) {
+	.index {
+		-moz-column-count: 2;
+		-webkit-column-count: 2;
+		column-count: 2;
+	}
+}
+
+@media (min-width: 1200px) {
+	.index {
+		-moz-column-count: 3;
+		-webkit-column-count: 3;
+		column-count: 3;
+	}
 }
 
 /* search  */
