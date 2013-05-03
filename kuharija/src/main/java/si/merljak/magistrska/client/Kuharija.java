@@ -12,11 +12,11 @@ import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.client.mvp.HomePresenter;
-import si.merljak.magistrska.client.mvp.LexiconPresenter;
 import si.merljak.magistrska.client.mvp.RecipePresenter;
 import si.merljak.magistrska.client.mvp.compare.ComparePresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientIndexPresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
+import si.merljak.magistrska.client.mvp.lexicon.LexiconPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginView;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
@@ -121,6 +121,8 @@ public class Kuharija implements EntryPoint {
 	public void onModuleLoad() {
 		Roles.getMainRole().set(mainPanel.getElement());
 		Roles.getMainRole().getAriaLiveProperty(mainPanel.getElement());
+		Roles.getNavigationRole().set(navPanel.getElement());
+		Roles.getNavigationRole().set(breadcrumbs.getElement());
 		Roles.getAlertRole().set(alertPlaceholder.getElement());
 
 		// layout

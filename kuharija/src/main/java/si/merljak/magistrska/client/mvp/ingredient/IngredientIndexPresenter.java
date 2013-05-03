@@ -3,7 +3,7 @@ package si.merljak.magistrska.client.mvp.ingredient;
 import java.util.Map;
 
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
-import si.merljak.magistrska.client.mvp.LexiconPresenter;
+import si.merljak.magistrska.client.mvp.lexicon.LexiconPresenter;
 import si.merljak.magistrska.common.enumeration.Language;
 
 import com.google.gwt.user.client.ui.Widget;

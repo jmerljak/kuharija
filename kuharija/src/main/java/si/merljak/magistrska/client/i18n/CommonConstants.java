@@ -4,6 +4,12 @@ import java.util.Map;
 
 import com.google.gwt.i18n.client.Constants;
 
+/** 
+ * Common interface constants.
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Cooking masterpieces")
@@ -41,6 +47,9 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Tools")
 	String tools();
+
+	@DefaultStringValue("Lexicon")
+	String lexicon();
 
 	@DefaultStringValue("Ingredients")
 	String ingredients();
