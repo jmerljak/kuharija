@@ -5,7 +5,7 @@ import si.merljak.magistrska.client.mvp.AbstractView;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -19,7 +19,7 @@ public class NotFoundView extends AbstractView {
 	public NotFoundView() {
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, messages.oops()));
-		main.add(new Label("404"));
+		main.add(new HTML(messages.pageNotFound()));
 		initWidget(main);
 	}
 

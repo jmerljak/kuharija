@@ -6,7 +6,6 @@ import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.event.LoginEvent;
 import si.merljak.magistrska.client.event.LoginEventHandler;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
-import si.merljak.magistrska.client.mvp.home.HomePresenter;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.enumeration.Language;
@@ -160,7 +159,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 
 	@Override
 	public String getParentName() {
-		return HomePresenter.SCREEN_NAME;
+		return RecipeIndexPresenter.SCREEN_NAME;
 	}
 
 }

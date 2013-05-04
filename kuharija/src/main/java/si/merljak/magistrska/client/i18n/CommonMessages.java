@@ -18,6 +18,9 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("Oops!")
 	String oops();
 
+	@DefaultMessage("Page not found! Go to <a href=\"#\">home page</a> or try <a href=\"#search\">search</a>.")
+	String pageNotFound();
+
 	@DefaultMessage("There is some kind of problem. We apologize for inconvenience. Please, try again.")
 	String unknownError();
 

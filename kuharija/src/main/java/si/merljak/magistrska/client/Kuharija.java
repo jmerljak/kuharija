@@ -19,6 +19,7 @@ import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.lexicon.LexiconPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginView;
+import si.merljak.magistrska.client.mvp.recipe.RecipeIndexPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilIndexPresenter;
@@ -65,6 +66,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -128,7 +130,9 @@ public class Kuharija implements EntryPoint {
 
 		// layout
 		navPanel.add(new MainMenuWidget());
+		navPanel.add(new InlineLabel("Jezik: "));
 		navPanel.add(localeWidget);
+		navPanel.add(new InlineLabel("You are here:"));
 		navPanel.add(breadcrumbs);
 		navPanel.add(alertPlaceholder);
 		Language language = localeWidget.getCurrentLanguage();
@@ -141,6 +145,7 @@ public class Kuharija implements EntryPoint {
 		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, utensilService));
 		presenters.put(UtensilIndexPresenter.SCREEN_NAME, new UtensilIndexPresenter(language));
 		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, eventBus));
+		presenters.put(RecipeIndexPresenter.SCREEN_NAME, new RecipeIndexPresenter(language, recipeService, eventBus));
 		presenters.put(SearchPresenter.SCREEN_NAME, new SearchPresenter(language, searchService));
 		presenters.put(ComparePresenter.SCREEN_NAME, new ComparePresenter(language, recipeService));
 		presenters.put(LoginPresenter.SCREEN_NAME, loginPresenter);

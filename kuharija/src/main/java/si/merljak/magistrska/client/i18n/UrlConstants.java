@@ -14,7 +14,7 @@ public interface UrlConstants extends Constants {
 	@DefaultStringMapValue({
 		"404", "Error",
 		"home", "Home",
-		"compare", "Compare",
+		"compare", "Recipe comparison",
 		"ingredient", "Ingredient",
 		"ingredients", "Ingredients",
 		"lexicon", "Lexicon",

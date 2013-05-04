@@ -39,6 +39,9 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Recipe")
 	String recipe();
 
+	@DefaultStringValue("Recipes")
+	String recipes();
+
 	@DefaultStringValue("Recipe comparison")
 	String recipeComparison();
 
@@ -57,7 +60,7 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Index of ingredients")
 	String ingredientsIndex();
 
-	@DefaultStringValue("Utensils")
+	@DefaultStringValue("Kitchen utensils")
 	String utensils();
 
 	@DefaultStringValue("Index of food preparation utensils")
