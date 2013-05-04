@@ -167,6 +167,10 @@ public class RecipeDetailsDto implements Serializable {
 		this.appendencies = appendencies;
 	}
 
+	public void setSteps(List<StepDto> steps) {
+		this.steps = steps;
+	}
+
 	public void addStep(StepDto step) {
 		steps.add(step);
 	}

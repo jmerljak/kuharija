@@ -2,13 +2,14 @@ package si.merljak.magistrska.server;
 
 import static si.merljak.magistrska.server.model.QAppendix.appendix;
 import static si.merljak.magistrska.server.model.QIngredient.ingredient;
+import static si.merljak.magistrska.server.model.QProcedureStep.procedureStep;
 import static si.merljak.magistrska.server.model.QRecipe.recipe;
 import static si.merljak.magistrska.server.model.QRecipeDetails.recipeDetails;
 import static si.merljak.magistrska.server.model.QRecipeIngredient.recipeIngredient;
 import static si.merljak.magistrska.server.model.QRecipeText.recipeText;
 import static si.merljak.magistrska.server.model.QRecipeUtensil.recipeUtensil;
-import static si.merljak.magistrska.server.model.QUtensil.utensil;
 import static si.merljak.magistrska.server.model.QUser.user;
+import static si.merljak.magistrska.server.model.QUtensil.utensil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.dto.QAppendixDto;
 import si.merljak.magistrska.common.dto.QIngredientDto;
 import si.merljak.magistrska.common.dto.QRecipeDetailsDto;
+import si.merljak.magistrska.common.dto.QStepDto;
 import si.merljak.magistrska.common.dto.QTextDto;
 import si.merljak.magistrska.common.dto.QUtensilDto;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
@@ -130,6 +132,11 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 			videoUrls.addAll(Arrays.asList(video.getUrls().split(";")));
 			recipeDto.addVideo(new VideoDto(video.getLanguage(), videoUrls, video.getPosterUrl(), subtitles));
 		}
+
+		// steps
+		recipeDto.setSteps(new JPAQuery(em).from(procedureStep)
+								.where(procedureStep.recipe.id.eq(recipeId), procedureStep.language.eq(language))
+								.list(new QStepDto(procedureStep.language, procedureStep.page, procedureStep.content, procedureStep.imageUrl)));
 
 		// comments
 		for (Comment comment : recipeEntity.getComments()) {

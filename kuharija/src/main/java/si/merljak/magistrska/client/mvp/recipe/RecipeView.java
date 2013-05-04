@@ -17,6 +17,7 @@ import si.merljak.magistrska.common.dto.AppendixDto;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.CommentDto;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
+import si.merljak.magistrska.common.dto.StepDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 import si.merljak.magistrska.common.enumeration.Category;
@@ -169,7 +170,10 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 
 		// texts
 		for (TextDto text : recipe.getTexts()) {
-			panelBasic.add(new Paragraph(text.getContent()));
+			panelBasic.add(new HTML(text.getContent()));
+		}
+		for (StepDto step : recipe.getSteps()) {
+			panelSteps.add(new HTML(step.getContent()));
 		}
 
 		List<AudioDto> audios = recipe.getAudios();
