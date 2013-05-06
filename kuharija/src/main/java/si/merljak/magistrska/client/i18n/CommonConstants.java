@@ -18,11 +18,17 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Home")
 	String home();
 
-	@DefaultStringValue("Page")
-	String page();
+	@DefaultStringValue("Language")
+	String language();
+
+	@DefaultStringValue("You are here")
+	String youAreHere();
 
 	@DefaultStringValue("Remove")
 	String remove();
+
+	@DefaultStringValue("Page")
+	String page();
 	
 	@DefaultStringValue("Previous page")
 	String pagePrevious();
@@ -44,6 +50,9 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Recipe comparison")
 	String recipeComparison();
+
+	@DefaultStringValue("Recipes by difficulty")
+	String recipesByDifficulty();
 
 	@DefaultStringValue("Author")
 	String recipeAuthor();

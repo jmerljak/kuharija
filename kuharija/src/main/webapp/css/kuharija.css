@@ -1,6 +1,4 @@
 body {
-	/*padding-top: 40px;
-	position: relative;*/
 }
 
 #noScript {
@@ -13,6 +11,26 @@ body {
 	border: 1px solid red;
 	padding: 4px;
 	font-family: sans-serif;
+}
+
+.visuallyhidden {
+	/* like on twitter.com */
+    border: 0 none;
+    clip: rect(0px, 0px, 0px, 0px);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+footer {
+	margin-top: 30px;
+}
+
+.searchWidget {
+	display: inline-block;
 }
 
 /* home */
@@ -31,6 +49,10 @@ body {
 .recommendation-active {
 	left: 0;
 	top: 0;'
+}
+
+.recommendation img {
+	width: 100%;
 }
 
 .recommendation a {
@@ -77,16 +99,27 @@ body {
 
 #filtersPanel input[type="checkbox"],
 #sortPanel input[type="radio"] {
+    border: 0 none;
+    clip: rect(0px, 0px, 0px, 0px);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
     position: absolute;
-    clip: rect(1px, 1px, 1px, 1px);
+    width: 1px;
 }
 
 .filterLabel {
-	display: inline-block;
 	font-weight: bold;
-	margin-right: 20px;
-	text-align: right;
-	width: 100px;
+}
+
+@media (min-width: 480px) {
+	.filterLabel {
+		display: inline-block;
+		margin-right: 20px;
+		text-align: right;
+		width: 100px;
+	}
 }
 
 #filtersPanel label,
@@ -111,6 +144,13 @@ body {
 #compareView img {
 	max-height: 240px;
 	max-width: 300px;
+}
+
+@media (min-width: 480px) {
+	.ompareView img {
+	max-height: 160px;
+	max-width: 200px;
+	}
 }
 
 /* suggest box */

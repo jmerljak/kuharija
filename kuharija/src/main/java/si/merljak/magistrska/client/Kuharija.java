@@ -26,7 +26,7 @@ import si.merljak.magistrska.client.mvp.utensil.UtensilIndexPresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilPresenter;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.MainMenuWidget;
-import si.merljak.magistrska.client.widgets.UserWidget;
+import si.merljak.magistrska.client.widgets.SearchWidget;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.IngredientService;
 import si.merljak.magistrska.common.rpc.IngredientServiceAsync;
@@ -113,8 +113,10 @@ public class Kuharija implements EntryPoint {
 	private final Map<String, AbstractPresenter> presenters = new HashMap<String, AbstractPresenter>();
 
 	// panels
-	private final RootPanel mainPanel = RootPanel.get("main");
 	private final RootPanel navPanel = RootPanel.get("nav");
+	private final RootPanel headerPanel = RootPanel.get("header");
+	private final RootPanel mainPanel = RootPanel.get("main");
+	private final RootPanel footerPanel = RootPanel.get("footer");
 
 	// widgets
 	private final LocaleWidget localeWidget = new LocaleWidget();
@@ -128,13 +130,6 @@ public class Kuharija implements EntryPoint {
 		Roles.getNavigationRole().set(breadcrumbs.getElement());
 		Roles.getAlertRole().set(alertPlaceholder.getElement());
 
-		// layout
-		navPanel.add(new MainMenuWidget());
-		navPanel.add(new InlineLabel("Jezik: "));
-		navPanel.add(localeWidget);
-		navPanel.add(new InlineLabel("You are here:"));
-		navPanel.add(breadcrumbs);
-		navPanel.add(alertPlaceholder);
 		Language language = localeWidget.getCurrentLanguage();
 
 		// TODO refactorize MVP architecture!
@@ -152,8 +147,20 @@ public class Kuharija implements EntryPoint {
 		presenters.put(HomePresenter.SCREEN_NAME, new HomePresenter(language, recommendationService, eventBus));
 		presenters.put(NotFoundPresenter.SCREEN_NAME, new NotFoundPresenter(language));
 
-		UserWidget userWidget = new UserWidget(loginPresenter, eventBus);
-		RootPanel.get("userWrapper").add(userWidget);
+		MainMenuWidget mainMenu = new MainMenuWidget(loginPresenter, eventBus);
+		navPanel.add(mainMenu);
+
+		Label breadcrumbsLabel = new InlineLabel(constants.youAreHere());
+		breadcrumbsLabel.setStyleName("visuallyhidden");
+		headerPanel.add(breadcrumbsLabel);
+		headerPanel.add(breadcrumbs);
+//		headerPanel.add(new SearchWidget());
+		headerPanel.add(alertPlaceholder);
+
+		Label languageLabel = new InlineLabel(constants.language());
+		languageLabel.setStyleName("visuallyhidden");
+		footerPanel.add(languageLabel);
+		footerPanel.add(localeWidget);
 
 		// geolocate
 		geolocate();

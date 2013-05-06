@@ -38,6 +38,9 @@ public interface CommonMessages extends Messages {
 
 	@DefaultMessage("Read more about {0} on <a href=\"http://en.wikipedia.org/w/index.php?search={1}\" target=\"_blank\">Wikipedia</a>")
 	String utensilReadMoreOnWikipedia(String name, String query);
+	
+	@DefaultMessage("Browse by category or <a href=\"#search\">search</a> by a keyword.")
+	String browseOrSearchRecipes();
 
 	@DefaultMessage("Find <a href=\"{1}\">recipes with {0}</a>")
 	String searchByIngredient(String name, String href);
