@@ -12,6 +12,7 @@ import si.merljak.magistrska.common.enumeration.RecommendationType;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
@@ -53,6 +54,7 @@ public class HomeView extends AbstractView {
 
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.appTitle()));
+		main.add(new Paragraph(constants.recommendations()));
 		main.add(recommendPanel);
 		initWidget(main);
 	}

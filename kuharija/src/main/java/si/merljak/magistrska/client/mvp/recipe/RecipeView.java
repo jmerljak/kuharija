@@ -3,13 +3,14 @@ package si.merljak.magistrska.client.mvp.recipe;
 import java.util.List;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.handler.PagingHandler;
 import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.client.widgets.AppendixWidget;
 import si.merljak.magistrska.client.widgets.AudioWidget;
 import si.merljak.magistrska.client.widgets.CommentWidget;
 import si.merljak.magistrska.client.widgets.IngredientsWidget;
-import si.merljak.magistrska.client.widgets.TabsWidget;
+import si.merljak.magistrska.client.widgets.SimplePagingWidget;
 import si.merljak.magistrska.client.widgets.TabsWidget.TabChangeHandler;
 import si.merljak.magistrska.client.widgets.UtensilsWidget;
 import si.merljak.magistrska.client.widgets.VideoWidget;
@@ -24,11 +25,14 @@ import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Season;
 
 import com.github.gwtbootstrap.client.ui.Badge;
+import com.github.gwtbootstrap.client.ui.Caption;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Paragraph;
-import com.github.gwtbootstrap.client.ui.base.IconAnchor;
+import com.github.gwtbootstrap.client.ui.Tab;
+import com.github.gwtbootstrap.client.ui.TabPanel;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
+import com.github.gwtbootstrap.client.ui.resources.Bootstrap.Tabs;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.ui.Anchor;
@@ -48,21 +52,25 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 
 	// widgets
 	private final Heading heading = new Heading(HEADING_SIZE);
-	private final TabsWidget tabsWidget = new TabsWidget(this);
+//	private final TabsWidget tabsWidget = new TabsWidget(this);
 	private final UtensilsWidget utensilsWidget = new UtensilsWidget();
 	private final IngredientsWidget ingredientsWidget = new IngredientsWidget();
 
-	FlowPanel center = new FlowPanel();
-	FlowPanel fluid = new FlowPanel();
-	private Paragraph notFoundMessage = new Paragraph(messages.recipeNotFoundTry());
-	private FlowPanel recipeDetailsPanel = new FlowPanel();
-	private SimplePanel mainPanel = new SimplePanel();
-	private FlowPanel panelBasic = new FlowPanel();
-	private FlowPanel panelSteps = new FlowPanel();
-	private FlowPanel panelAudio = new FlowPanel();
-	private FlowPanel panelVideo = new FlowPanel();
-	private FlowPanel commentsPanel = new FlowPanel();
-	private IconAnchor bookmark = new IconAnchor();
+	private final Paragraph notFoundMessage = new Paragraph(messages.recipeNotFoundTry());
+	private final FlowPanel recipeDetailsPanel = new FlowPanel();
+//	private final SimplePanel mainPanel = new SimplePanel();
+	private final TabPanel tabPanel = new TabPanel(Tabs.ABOVE);
+	private final FlowPanel panelBasic = new FlowPanel();
+	private final FlowPanel panelSteps = new FlowPanel();
+	private final SimplePanel stepPanel = new SimplePanel();
+	private final FlowPanel panelAudio = new FlowPanel();
+	private final FlowPanel panelVideo = new FlowPanel();
+	private final FlowPanel commentsPanel = new FlowPanel();
+//	private final IconAnchor bookmark = new IconAnchor();
+
+	private final FlowPanel center = new FlowPanel();
+	private final FlowPanel fluid = new FlowPanel();
+
 
 	public RecipeView() {
 		FlowPanel side = new FlowPanel();
@@ -70,10 +78,36 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		side.add(ingredientsWidget);
 		side.add(utensilsWidget);
 
+		Tab tabBasic = new Tab();
+		tabBasic.setActive(true);
+		tabBasic.setIcon(IconType.LIST);
+		tabBasic.setHeading(constants.tabBasic());
+		tabBasic.add(panelBasic);
+		
+		Tab tabSteps = new Tab();
+		tabSteps.setIcon(IconType.LIST_ALT);
+		tabSteps.setHeading(constants.tabSteps());
+		tabSteps.add(panelSteps);
+		
+		Tab tabVideo = new Tab();
+		tabVideo.setIcon(IconType.FILM);
+		tabVideo.setHeading(constants.tabVideo());
+		tabVideo.add(panelVideo);
+		
+		Tab tabAudio = new Tab();
+		tabAudio.setIcon(IconType.MUSIC);
+		tabAudio.setHeading(constants.tabAudio());
+		tabAudio.add(panelAudio);
+
+		tabPanel.add(tabBasic);
+		tabPanel.add(tabSteps);
+		tabPanel.add(tabVideo);
+		tabPanel.add(tabAudio);
+		
 		center.setStyleName(Constants.SPAN + 9);
 		center.add(new Heading(HEADING_SIZE + 1, constants.recipeProcedure()));
-		center.add(tabsWidget);
-		center.add(mainPanel);
+		center.add(tabPanel);
+//		center.add(mainPanel);
 		center.add(commentsPanel);
 
 		fluid.setStyleName(Constants.ROW_FLUID);
@@ -81,6 +115,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		fluid.add(center);
 
 		notFoundMessage.setVisible(false);
+		recipeDetailsPanel.getElement().setId("recipeDetails");
 
 		FlowPanel main = new FlowPanel();
 		main.add(heading);
@@ -95,7 +130,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		recipeDetailsPanel.clear();
 		center.setVisible(false);
 		fluid.setVisible(false);
-		mainPanel.clear();
+//		mainPanel.clear();
 		panelBasic.clear();
 		panelSteps.clear();
 		panelAudio.clear();
@@ -113,11 +148,16 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		}
 
 		// titles
-		heading.setText(recipe.getHeading());
-		Kuharija.setWindowTitle(recipe.getHeading());
+		String recipeHeading = recipe.getHeading();
+		heading.setText(recipeHeading);
+		Kuharija.setWindowTitle(recipeHeading);
+
+		String recipeSubHeading = recipe.getSubHeading();
+		if (recipeSubHeading != null) {
+			recipeDetailsPanel.add(new Caption(recipeSubHeading));
+		}
 
 		// recipe info
-		recipeDetailsPanel.add(new Label(recipe.getSubHeading()));
 		String imageUrl = recipe.getImageUrl();
 		if (imageUrl != null) {
 			recipeDetailsPanel.add(new Image(RECIPE_IMG_FOLDER + imageUrl));
@@ -178,8 +218,19 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		for (TextDto text : recipe.getTexts()) {
 			panelBasic.add(new HTML(text.getContent()));
 		}
-		for (StepDto step : recipe.getSteps()) {
-			panelSteps.add(new HTML(step.getContent()));
+
+		final List<StepDto> steps = recipe.getSteps();
+		SimplePagingWidget simplePaging = new SimplePagingWidget(new PagingHandler() {
+			@Override
+			public void changePage(long page) {
+				stepPanel.setWidget(new HTML(steps.get((int)page).getContent()));
+			}
+		});
+		if (!steps.isEmpty()) {
+			stepPanel.setWidget(new HTML(steps.get(0).getContent()));
+			panelSteps.add(stepPanel);
+			panelSteps.add(simplePaging);
+			simplePaging.setPage(0, steps.size());
 		}
 
 		// audio
@@ -231,6 +282,15 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 
 	public void setView(String view) {
 		if (view == null || view.equalsIgnoreCase("basic")) {
+			tabPanel.selectTab(0);
+		} else if (view.equalsIgnoreCase("steps")) {
+			tabPanel.selectTab(1);
+		} else if (view.equalsIgnoreCase("video")) {
+			tabPanel.selectTab(2);
+		} else if (view.equalsIgnoreCase("audio")) {
+			tabPanel.selectTab(3);
+		}
+		/*if (view == null || view.equalsIgnoreCase("basic")) {
 			tabsWidget.setActiveTab(TabsWidget.TAB_BASIC);
 			onTabChange(TabsWidget.TAB_BASIC);
 		} else if (view.equalsIgnoreCase("steps")) {
@@ -242,28 +302,28 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		} else if (view.equalsIgnoreCase("audio")) {
 			tabsWidget.setActiveTab(TabsWidget.TAB_AUDIO);
 			onTabChange(TabsWidget.TAB_AUDIO);
-		}
+		}*/
 	}
 
 	@Override
 	public void onTabChange(int tab) {
-		switch (tab) {
-		case TabsWidget.TAB_BASIC:
-			mainPanel.setWidget(panelBasic);
-			break;
-		case TabsWidget.TAB_STEPS:
-			mainPanel.setWidget(panelSteps);
-			break;
-		case TabsWidget.TAB_VIDEO:
-			mainPanel.setWidget(panelVideo);
-			break;
-		case TabsWidget.TAB_AUDIO:
-			mainPanel.setWidget(panelAudio);
-			break;
-		}
+//		switch (tab) {
+//		case TabsWidget.TAB_BASIC:
+//			mainPanel.setWidget(panelBasic);
+//			break;
+//		case TabsWidget.TAB_STEPS:
+//			mainPanel.setWidget(panelSteps);
+//			break;
+//		case TabsWidget.TAB_VIDEO:
+//			mainPanel.setWidget(panelVideo);
+//			break;
+//		case TabsWidget.TAB_AUDIO:
+//			mainPanel.setWidget(panelAudio);
+//			break;
+//		}
 	}
 
 	public void setBookmarked(boolean isBookmarked) {
-		bookmark.setIcon(isBookmarked ? IconType.BOOKMARK : IconType.BOOKMARK_EMPTY);
+//		bookmark.setIcon(isBookmarked ? IconType.BOOKMARK : IconType.BOOKMARK_EMPTY);
 	}
 }

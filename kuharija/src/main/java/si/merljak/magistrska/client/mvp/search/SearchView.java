@@ -1,5 +1,6 @@
 package si.merljak.magistrska.client.mvp.search;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +10,7 @@ import si.merljak.magistrska.client.handler.PagingHandler;
 import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractView;
+import si.merljak.magistrska.client.mvp.compare.ComparePresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
 import si.merljak.magistrska.client.widgets.PagingWidget;
 import si.merljak.magistrska.common.SearchParameters;
@@ -85,9 +87,11 @@ public class SearchView extends AbstractView implements PagingHandler {
 
 	private final FlowPanel resultsPanel = new FlowPanel();
 	private final PagingWidget pagingWidget = new PagingWidget(this);
+	private final Button compareLink = new Button(constants.recipeCompare());
 
 	// variables
 	private SearchParameters searchParameters = new SearchParameters(null, null);
+	private Set<Long> selectedRecipes = new HashSet<Long>();
 
 	public SearchView () {
 		searchBox.setTitle(constants.searchQuery());
@@ -200,6 +204,17 @@ public class SearchView extends AbstractView implements PagingHandler {
 			}
 		});
 
+		compareLink.setStyleName(Constants.BTN);
+		compareLink.addStyleName(Constants.DISABLED);
+		compareLink.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if (selectedRecipes.size() > 1) {
+					ComparePresenter.compare(selectedRecipes);
+				}
+			}
+		});
+
 		// layout
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.search()));
@@ -209,6 +224,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 		main.add(filtersPanel);
 		main.add(resultsPanel);
 		main.add(pagingWidget);
+		main.add(compareLink);
 		initWidget(main);
 	}
 
@@ -228,6 +244,8 @@ public class SearchView extends AbstractView implements PagingHandler {
 	 */
 	public void displaySearchResults(RecipeListDto results, SearchParameters parameters) {
 		// clear old data
+		selectedRecipes.clear();
+		compareLink.addStyleName(Constants.DISABLED);
 		clearSearchResults();
 		Heading headingResults = new Heading(HEADING_SIZE + 1, constants.searchResults());
 		headingResults.setStyleName("visuallyhidden");
@@ -257,11 +275,32 @@ public class SearchView extends AbstractView implements PagingHandler {
 			Anchor link = new Anchor(heading, RecipePresenter.buildRecipeUrl(recipe.getId()));
 			link.getElement().appendChild(image.getElement());
 
+			final long recipeId = recipe.getId();
+			final CheckBox checkbox = new CheckBox(constants.recipeComparisonSelect());
+			checkbox.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					if (checkbox.getValue()) {
+						selectedRecipes.add(recipeId);
+					} else {
+						selectedRecipes.remove(recipeId);
+					}
+					if (selectedRecipes.size() > 1) {
+						compareLink.setEnabled(true);
+						compareLink.removeStyleName(Constants.DISABLED);
+					} else {
+						compareLink.setEnabled(false);
+						compareLink.addStyleName(Constants.DISABLED);
+					}
+				}
+			});
+
 			FlowPanel resultEntry = new FlowPanel();
 			resultEntry.setStyleName("resultEntry");
 			resultEntry.add(link);
 			resultEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
 			resultEntry.add(new Label(timeFromMinutes(recipe.getTimeOverall())));
+			resultEntry.add(checkbox);
 
 			resultsPanel.add(resultEntry);
 		}

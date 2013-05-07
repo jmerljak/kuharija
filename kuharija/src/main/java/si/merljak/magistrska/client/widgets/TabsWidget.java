@@ -56,7 +56,7 @@ public class TabsWidget extends Composite {
 		IconAnchor anchorSteps = new IconAnchor();
 		anchorSteps.setHref("#steps");
 		anchorSteps.setIcon(IconType.LIST_ALT);
-		anchorSteps.setText(" " + constants.tabDetails());
+		anchorSteps.setText(" " + constants.tabSteps());
 		anchorSteps.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {

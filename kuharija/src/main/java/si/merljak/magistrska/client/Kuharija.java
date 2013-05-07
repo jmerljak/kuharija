@@ -153,6 +153,7 @@ public class Kuharija implements EntryPoint {
 		Label breadcrumbsLabel = new InlineLabel(constants.youAreHere());
 		breadcrumbsLabel.setStyleName("visuallyhidden");
 		Image headerImage = new Image();
+		headerImage.setUrl(GWT.getHostPageBaseURL() + "img/kuharija.png");
 		headerImage.setAltText("logo");
 		headerPanel.add(headerImage);
 		headerPanel.add(breadcrumbsLabel);

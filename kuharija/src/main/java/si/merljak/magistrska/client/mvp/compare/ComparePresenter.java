@@ -12,6 +12,7 @@ import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
 
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -79,14 +80,12 @@ public class ComparePresenter extends AbstractPresenter {
 	}
 
 	/**
-	 * Builds proper anchor URL for recipes comparison.
+	 * Redirects to recipe comparison.
 	 * 
 	 * @param recipeIdList list of recipe IDs
-	 * @return anchor URL
 	 */
-	public static String buildCompareUrl(Set<Long> recipeIdList) {
-		return "#" + SCREEN_NAME + 
-			   "&" + PARAMETER_ID_LIST + "=" + Kuharija.listJoiner.join(recipeIdList);
+	public static void compare(Set<Long> recipeIdList) {
+		History.newItem(SCREEN_NAME + "&" + PARAMETER_ID_LIST + "=" + Kuharija.listJoiner.join(recipeIdList));
 	}
 
 	@Override
