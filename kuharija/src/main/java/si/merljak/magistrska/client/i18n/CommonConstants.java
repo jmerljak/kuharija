@@ -68,8 +68,11 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Index of ingredients")
 	String ingredientsIndex();
+	
+	@DefaultStringValue("for")
+	String ingredientsFor();
 
-	@DefaultStringValue("Kitchen utensils")
+	@DefaultStringValue("Utensils")
 	String utensils();
 
 	@DefaultStringValue("Index of food preparation utensils")
@@ -89,6 +92,9 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Clear and hide")
 	String searchFiltersClear();
+
+	@DefaultStringValue("Search results")
+	String searchResults();
 
 	@DefaultStringValue("No results")
 	String searchNoResults();
@@ -214,6 +220,14 @@ public interface CommonConstants extends Constants {
 		"PINCH", "pinch",
 		"SOME", ""})
 	Map<String, String> unitMap();
+
+	@DefaultStringMapValue({
+		"PERSON", "persons",
+		"PIECE", "pieces",
+		"SERVING_PLATE", "serving plates",
+		"BAKING_TRAY", "baking trays"
+	})
+	Map<String, String> mealUnitMap();
 	
 	@DefaultStringMapValue({
 		"DIDYOUKNOW", "Did you know?",

@@ -25,8 +25,14 @@ body {
     width: 1px;
 }
 
+header img {
+	display: block;
+	height: 100px;
+}
+
 footer {
 	margin-top: 30px;
+	text-align: right;
 }
 
 .searchWidget {
@@ -135,9 +141,19 @@ footer {
 }
 
 /* paging */
+.pagingWidget {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.pagingWidget a {
+	margin: 0 10px;
+}
+
 .pagingWidget input[type=text] {
 	max-width: 3em;
 	margin: 0 5px;
+	text-align: right;
 }
 
 /* compare */
@@ -153,6 +169,18 @@ footer {
 	}
 }
 
+/* recipe */
+#numOfMealsInput {
+	display: inline-block;
+	margin: 0 5px;
+	vertical-align: middle;
+}
+
+#numOfMealsInput input[type=text] {
+	max-width: 3em;
+	text-align: right;
+}
+
 /* suggest box */
 .gwt-SuggestBoxPopup {
 	border: 1px solid #EFEFEF;
@@ -165,4 +193,13 @@ footer {
 
 .gwt-SuggestBoxPopup td.item-selected {
 	background-color: #EFEFEF;
+}
+
+/* print styles */
+@media print {
+	.visuallyhidden,
+	nav, #nav, 
+	header, #header {
+		display: none;
+	}
 }

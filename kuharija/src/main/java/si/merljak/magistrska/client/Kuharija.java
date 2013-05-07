@@ -26,7 +26,6 @@ import si.merljak.magistrska.client.mvp.utensil.UtensilIndexPresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilPresenter;
 import si.merljak.magistrska.client.widgets.LocaleWidget;
 import si.merljak.magistrska.client.widgets.MainMenuWidget;
-import si.merljak.magistrska.client.widgets.SearchWidget;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.IngredientService;
 import si.merljak.magistrska.common.rpc.IngredientServiceAsync;
@@ -43,6 +42,7 @@ import si.merljak.magistrska.common.rpc.UtensilServiceAsync;
 
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.event.CloseEvent;
 import com.github.gwtbootstrap.client.ui.event.CloseHandler;
@@ -140,7 +140,7 @@ public class Kuharija implements EntryPoint {
 		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, utensilService));
 		presenters.put(UtensilIndexPresenter.SCREEN_NAME, new UtensilIndexPresenter(language));
 		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, eventBus));
-		presenters.put(RecipeIndexPresenter.SCREEN_NAME, new RecipeIndexPresenter(language, recipeService, eventBus));
+		presenters.put(RecipeIndexPresenter.SCREEN_NAME, new RecipeIndexPresenter(language));
 		presenters.put(SearchPresenter.SCREEN_NAME, new SearchPresenter(language, searchService));
 		presenters.put(ComparePresenter.SCREEN_NAME, new ComparePresenter(language, recipeService));
 		presenters.put(LoginPresenter.SCREEN_NAME, loginPresenter);
@@ -152,9 +152,11 @@ public class Kuharija implements EntryPoint {
 
 		Label breadcrumbsLabel = new InlineLabel(constants.youAreHere());
 		breadcrumbsLabel.setStyleName("visuallyhidden");
+		Image headerImage = new Image();
+		headerImage.setAltText("logo");
+		headerPanel.add(headerImage);
 		headerPanel.add(breadcrumbsLabel);
 		headerPanel.add(breadcrumbs);
-//		headerPanel.add(new SearchWidget());
 		headerPanel.add(alertPlaceholder);
 
 		Label languageLabel = new InlineLabel(constants.language());

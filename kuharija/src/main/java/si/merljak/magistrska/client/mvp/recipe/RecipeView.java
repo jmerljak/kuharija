@@ -38,6 +38,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 
@@ -120,13 +121,16 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 
 		// recipe info
 		recipeDetailsPanel.add(new Label(recipe.getSubHeading()));
-		recipeDetailsPanel.add(new Label(constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation())));
-		recipeDetailsPanel.add(new Label(constants.timeCooking() + ": " + timeFromMinutes(recipe.getTimeCooking())));
-		recipeDetailsPanel.add(new Label(constants.timeOverall() + ": " + timeFromMinutes(recipe.getTimeOverall())));
-//		recipeDetailsPanel.add(new Label(constants.numberOfMeals() + ": " + recipe.getNumberOfMeals()));
-		recipeDetailsPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
-		recipeDetailsPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
-		recipeDetailsPanel.add(new Image(RECIPE_IMG_FOLDER + recipe.getImageUrl()));
+		String imageUrl = recipe.getImageUrl();
+		if (imageUrl != null) {
+			recipeDetailsPanel.add(new Image(RECIPE_IMG_FOLDER + imageUrl));
+		}
+		recipeDetailsPanel.add(new InlineLabel(constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation())));
+		recipeDetailsPanel.add(new InlineLabel(constants.timeCooking() + ": " + timeFromMinutes(recipe.getTimeCooking())));
+		recipeDetailsPanel.add(new InlineLabel(constants.timeOverall() + ": " + timeFromMinutes(recipe.getTimeOverall())));
+//		recipeDetailsPanel.add(new InlineLabel(constants.numberOfMeals() + ": " + recipe.getNumberOfMeals()));
+		recipeDetailsPanel.add(new InlineLabel(constants.recipeAuthor() + ": " + recipe.getAuthor()));
+		recipeDetailsPanel.add(new InlineLabel(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
 
 		final boolean isBookmarked = recipe.isBookmarked();
 		bookmark.setIcon(isBookmarked ? IconType.BOOKMARK : IconType.BOOKMARK_EMPTY);
@@ -139,7 +143,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 //				presenter.bookmark(!isBookmarked);
 			}
 		});
-		recipeDetailsPanel.add(bookmark);
+//		recipeDetailsPanel.add(bookmark);
 
 		// categories & seasons
 		for (Category category : recipe.getCategories()) {
@@ -163,7 +167,7 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		}
 
 		// ingredients
-		ingredientsWidget.setIngredients(recipe.getIngredients(), recipe.getNumberOfMeals(), true);
+		ingredientsWidget.setIngredients(recipe.getIngredients(), recipe.getNumberOfMeals(), recipe.getMealUnit(), true);
 
 		// utensils
 		utensilsWidget.update(recipe.getUtensils());

@@ -207,7 +207,6 @@ public class SearchView extends AbstractView implements PagingHandler {
 		main.add(labelAdvancedSearch);
 		main.add(filtersToggle);
 		main.add(filtersPanel);
-		main.add(sortPanel);
 		main.add(resultsPanel);
 		main.add(pagingWidget);
 		initWidget(main);
@@ -230,6 +229,10 @@ public class SearchView extends AbstractView implements PagingHandler {
 	public void displaySearchResults(RecipeListDto results, SearchParameters parameters) {
 		// clear old data
 		clearSearchResults();
+		Heading headingResults = new Heading(HEADING_SIZE + 1, constants.searchResults());
+		headingResults.setStyleName("visuallyhidden");
+		resultsPanel.add(headingResults);
+		resultsPanel.add(sortPanel);
 
 		setSearchParameters(parameters);
 

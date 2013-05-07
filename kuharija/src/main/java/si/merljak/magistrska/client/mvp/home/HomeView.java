@@ -69,7 +69,7 @@ public class HomeView extends AbstractView {
 					imageUrl = RECIPE_IMG_FALLBACK;
 				}
 
-				Image image = new Image(RECIPE_THUMB_IMG_FOLDER + imageUrl);
+				Image image = new Image(RECIPE_IMG_FOLDER + imageUrl);
 				image.setAltText(heading);
 				image.setType(ImageType.POLAROID);
 

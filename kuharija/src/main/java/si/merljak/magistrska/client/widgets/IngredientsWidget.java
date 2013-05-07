@@ -9,6 +9,7 @@ import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
 import si.merljak.magistrska.client.utils.Calc;
 import si.merljak.magistrska.common.dto.IngredientDto;
+import si.merljak.magistrska.common.enumeration.MealUnit;
 import si.merljak.magistrska.common.enumeration.Unit;
 
 import com.github.gwtbootstrap.client.ui.AppendButton;
@@ -51,6 +52,7 @@ public class IngredientsWidget extends Composite {
 	private final Button buttonPlus = new Button("+");
 	private final Button buttonMinus = new Button("-");
 	private final TextBox numberInput = new TextBox();
+	private final InlineLabel mealUnitLabel = new InlineLabel();
 	private final CheckBox metricCheckBox = new CheckBox(constants.metricUnits());
 
 	// variables
@@ -99,6 +101,7 @@ public class IngredientsWidget extends Composite {
 		});
 
 		formPanel.addStyleName(Constants.CONTROL_GROUP);
+		formPanel.setId("numOfMealsInput");
 		formPanel.add(numberInput);
 		formPanel.add(buttonMinus);
 		formPanel.add(buttonPlus);
@@ -106,15 +109,18 @@ public class IngredientsWidget extends Composite {
 		FlowPanel panel = new FlowPanel();
 		panel.add(heading);
 		panel.add(ingredientsList);
+		panel.add(new InlineLabel(constants.ingredientsFor()));
 		panel.add(formPanel);
+		panel.add(mealUnitLabel);
 		panel.add(metricCheckBox);
 		initWidget(panel);
 	}
 
-	public void setIngredients(List<IngredientDto> ingredients, int numOfMeals, boolean useMetric) {
+	public void setIngredients(List<IngredientDto> ingredients, int numOfMeals, MealUnit mealUnit, boolean useMetric) {
 		this.ingredients = ingredients;
 		this.numOfMealsBase = numOfMeals;
 		this.numOfMeals = numOfMeals;
+		mealUnitLabel.setText(constants.mealUnitMap().get(mealUnit.name()));
 		metricCheckBox.setValue(useMetric);
 		updateList();
 	}
