@@ -258,6 +258,8 @@ public class SearchView extends AbstractView implements PagingHandler {
 		if (recipes.isEmpty()) {
 			resultsPanel.add(new Label(constants.searchNoResults()));
 		}
+		final boolean isComparePossible = recipes.size() > 1;
+		compareLink.setVisible(isComparePossible);
 		labelAdvancedSearch.setVisible(true);
 		filtersToggle.setVisible(true);
 
@@ -275,32 +277,34 @@ public class SearchView extends AbstractView implements PagingHandler {
 			Anchor link = new Anchor(heading, RecipePresenter.buildRecipeUrl(recipe.getId()));
 			link.getElement().appendChild(image.getElement());
 
-			final long recipeId = recipe.getId();
-			final CheckBox checkbox = new CheckBox(constants.recipeComparisonSelect());
-			checkbox.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					if (checkbox.getValue()) {
-						selectedRecipes.add(recipeId);
-					} else {
-						selectedRecipes.remove(recipeId);
-					}
-					if (selectedRecipes.size() > 1) {
-						compareLink.setEnabled(true);
-						compareLink.removeStyleName(Constants.DISABLED);
-					} else {
-						compareLink.setEnabled(false);
-						compareLink.addStyleName(Constants.DISABLED);
-					}
-				}
-			});
-
 			FlowPanel resultEntry = new FlowPanel();
 			resultEntry.setStyleName("resultEntry");
 			resultEntry.add(link);
 			resultEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
 			resultEntry.add(new Label(timeFromMinutes(recipe.getTimeOverall())));
-			resultEntry.add(checkbox);
+
+			if (isComparePossible) {
+				final long recipeId = recipe.getId();
+				final CheckBox checkbox = new CheckBox(constants.recipeComparisonSelect());
+				checkbox.addClickHandler(new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						if (checkbox.getValue()) {
+							selectedRecipes.add(recipeId);
+						} else {
+							selectedRecipes.remove(recipeId);
+						}
+						if (selectedRecipes.size() > 1) {
+							compareLink.setEnabled(true);
+							compareLink.removeStyleName(Constants.DISABLED);
+						} else {
+							compareLink.setEnabled(false);
+							compareLink.addStyleName(Constants.DISABLED);
+						}
+					}
+				});
+				resultEntry.add(checkbox);
+			}
 
 			resultsPanel.add(resultEntry);
 		}
@@ -501,6 +505,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 		sortPanel.clear();
 		resultsPanel.clear();
 		pagingWidget.setVisible(false);
+		compareLink.setVisible(false);
 	}
 
 	@Override
