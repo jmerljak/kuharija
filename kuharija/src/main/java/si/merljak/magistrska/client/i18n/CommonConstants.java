@@ -12,7 +12,7 @@ import com.google.gwt.i18n.client.Constants;
  */
 public interface CommonConstants extends Constants {
 
-	@DefaultStringValue("Cooking masterpieces")
+	@DefaultStringValue("Culinary Masterpieces")
 	String appTitle();
 
 	@DefaultStringValue("Home")
@@ -53,6 +53,9 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Recipes by difficulty")
 	String recipesByDifficulty();
+
+	@DefaultStringValue("Procedure")
+	String recipeProcedure();
 
 	@DefaultStringValue("Author")
 	String recipeAuthor();
@@ -129,8 +132,14 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Use metric units")
 	String metricUnits();
 
+	@DefaultStringValue("Appendices")
+	String appendices();
+
 	@DefaultStringValue("Comments")
 	String comments();
+
+	@DefaultStringValue("There are no comments")
+	String noComments();
 
 	@DefaultStringValue("Difficulty")
 	String difficulty();
@@ -141,11 +150,11 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Categories")
 	String categories();
 
-	@DefaultStringValue("Basic description")
+	@DefaultStringValue("Basic")
 	String tabBasic();
 
-	@DefaultStringValue("Detailed description")
-	String tabDetails();
+	@DefaultStringValue("Step by step")
+	String tabSteps();
 
 	@DefaultStringValue("Video")
 	String tabVideo();
@@ -215,7 +224,7 @@ public interface CommonConstants extends Constants {
 		"TEASPOON", "tea spoon",
 		"C", "°C",
 		"F", "°F",
-		"PIECE", "x",
+		"TIMES", "x",
 		"PAIR", "pair of",
 		"PINCH", "pinch",
 		"SOME", ""})

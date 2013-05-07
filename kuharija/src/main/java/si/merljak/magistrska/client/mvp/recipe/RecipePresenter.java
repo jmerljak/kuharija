@@ -55,7 +55,9 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 				recipeView.setView(view);
 			}
 		} catch (Exception e) {
+			recipeView.setVisible(false);
 			recipeView.displayRecipe(null, null);
+			recipeView.setVisible(true);
 		}
 		return recipeView.asWidget();
 	}
@@ -67,11 +69,13 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	 * @param view
 	 */
 	private void getRecipe(long recipeId, final String view) {
+		recipeView.setVisible(false);
 		String username = user != null ? user.getUsername() : null;
 		recipeService.getRecipeDetails(recipeId, language, username, new AsyncCallback<RecipeDetailsDto>() {
 			@Override
 			public void onSuccess(RecipeDetailsDto recipe) {
 				recipeView.displayRecipe(recipe, view);
+				recipeView.setVisible(true);
 			}
 
 			@Override

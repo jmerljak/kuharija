@@ -44,9 +44,9 @@ public class HomeView extends AbstractView {
 			public void run() {
 				int widgetCount = recommendPanel.getWidgetCount();
 				if (widgetCount > 0) {
-					recommendPanel.getWidget(selected).removeStyleDependentName("active");
+					recommendPanel.getWidget(selected).addStyleName("visuallyhidden");
 					selected = (selected  + 1) % widgetCount;
-					recommendPanel.getWidget(selected).addStyleDependentName("active");
+					recommendPanel.getWidget(selected).removeStyleName("visuallyhidden");
 				}
 			}
 		};
@@ -79,7 +79,6 @@ public class HomeView extends AbstractView {
 				FlowPanel recommendationEntry = new FlowPanel();
 				recommendationEntry.setStyleName("recommendation");
 				recommendationEntry.add(link);
-				recommendationEntry.add(image);
 				recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
 				recommendationEntry.add(new Label(timeFromMinutes(recipe.getTimeOverall())));
 				recommendationEntry.add(new Label(constants.recommendationMap().get(type.name())));
@@ -96,13 +95,14 @@ public class HomeView extends AbstractView {
 //					}
 //				}, MouseOutEvent.getType());
 
+				recommendationEntry.addStyleName("visuallyhidden");
 				recommendPanel.add(recommendationEntry);
 			}
 		}
 
 		if (recommendPanel.getWidgetCount() > 0) {
 			selected = 0;
-			recommendPanel.getWidget(selected).addStyleDependentName("active");
+			recommendPanel.getWidget(selected).removeStyleName("visuallyhidden");
 			timer.scheduleRepeating(SCEDULE);
 		}
 	}

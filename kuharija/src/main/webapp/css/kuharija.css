@@ -1,4 +1,7 @@
-body {
+@media (max-width: 959px) {
+	body {
+		padding-top: 0 !important;
+	}
 }
 
 #noScript {
@@ -26,8 +29,14 @@ body {
 }
 
 header img {
-	display: block;
-	height: 100px;
+	display: none;
+}
+
+@media (min-width: 960px) {
+	header img {
+		display: block;
+		height: 100px;
+	}
 }
 
 footer {
@@ -41,24 +50,10 @@ footer {
 
 /* home */
 #recommendations {
-	position: relative;
-}
-
-.recommendation {
-	background: white;
-	position: absolute;
-	/* TODO think about it */
-	left: -99999px;
-	top: -99999px;
-}
-
-.recommendation-active {
-	left: 0;
-	top: 0;'
 }
 
 .recommendation img {
-	width: 100%;
+	height: 100%;
 }
 
 .recommendation a {

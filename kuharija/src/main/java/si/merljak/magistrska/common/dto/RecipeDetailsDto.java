@@ -36,7 +36,7 @@ public class RecipeDetailsDto implements Serializable {
 	private List<AudioDto> audios = new ArrayList<AudioDto>();
 	private List<VideoDto> videos = new ArrayList<VideoDto>();
 	private List<CommentDto> comments = new ArrayList<CommentDto>();
-	private List<AppendixDto> appendencies = new ArrayList<AppendixDto>();
+	private List<AppendixDto> appendices = new ArrayList<AppendixDto>();
 	private List<StepDto> steps = new ArrayList<StepDto>();
 	private Set<Season> seasons = new HashSet<Season>();
 	private Set<Category> categories = new HashSet<Category>();
@@ -159,12 +159,12 @@ public class RecipeDetailsDto implements Serializable {
 		return comments;
 	}
 
-	public List<AppendixDto> getAppendencies() {
-		return appendencies;
+	public List<AppendixDto> getAppendices() {
+		return appendices;
 	}
 
-	public void setAppendencies(List<AppendixDto> appendencies) {
-		this.appendencies = appendencies;
+	public void setAppendices(List<AppendixDto> appendices) {
+		this.appendices = appendices;
 	}
 
 	public void setSteps(List<StepDto> steps) {

@@ -108,11 +108,11 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 							.list(new QTextDto(recipeText.language, recipeText.content, recipeText.metadata));
 		recipeDto.setTexts(texts);
 
-		// appendencies
-		List<AppendixDto> appendencies = new JPAQuery(em).from(appendix)
+		// appendices
+		List<AppendixDto> appendices = new JPAQuery(em).from(appendix)
 						.where(appendix.recipe.eq(recipeEntity), appendix.language.eq(language))
 						.list(new QAppendixDto(appendix.type, appendix.language, appendix.content));
-		recipeDto.setAppendencies(appendencies);
+		recipeDto.setAppendices(appendices);
 
 		// audio
 		for (Audio audio : recipeEntity.getAudios()) {

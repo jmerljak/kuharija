@@ -17,8 +17,8 @@ public enum Unit {
 	C(UnitType.TEMPERATURE),
 	F(UnitType.TEMPERATURE),
 
-	PIECE(UnitType.PIECE),
-	PAIR(UnitType.PIECE),
+	TIMES(UnitType.COUNTABLE),
+	PAIR(UnitType.COUNTABLE),
 	PINCH(UnitType.UNCOUNTABLE),
 	SOME(UnitType.UNCOUNTABLE);
 

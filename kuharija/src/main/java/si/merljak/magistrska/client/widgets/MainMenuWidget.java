@@ -48,7 +48,7 @@ public class MainMenuWidget extends Composite implements LoginEventHandler {
 
 		// header
 		NavHeader header = new NavHeader(constants.appTitle());
-		header.setShowOn(Device.PHONE);
+		header.setHideOn(Device.DESKTOP);
 
 		// main navigation
 		Nav mainNav = new Nav();
