@@ -33,6 +33,8 @@ import com.github.gwtbootstrap.client.ui.TabPanel;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.Bootstrap.Tabs;
+import com.google.gwt.aria.client.Roles;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.ui.Anchor;
@@ -103,6 +105,17 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		tabPanel.add(tabSteps);
 		tabPanel.add(tabVideo);
 		tabPanel.add(tabAudio);
+
+		// ARIA roles
+		Roles.getTabpanelRole().set(panelBasic.getElement());
+		Roles.getTabpanelRole().set(panelSteps.getElement());
+		Roles.getTabpanelRole().set(panelVideo.getElement());
+		Roles.getTabpanelRole().set(panelAudio.getElement());
+		Element tablistElement = tabPanel.getElement().getFirstChildElement();
+		Roles.getTablistRole().set(tablistElement);
+		for (int i = 0; i < tablistElement.getChildCount(); i++) {
+			Roles.getTabRole().set(Element.as(tablistElement.getChild(i)));
+		}
 		
 		center.setStyleName(Constants.SPAN + 9);
 		center.add(new Heading(HEADING_SIZE + 1, constants.recipeProcedure()));

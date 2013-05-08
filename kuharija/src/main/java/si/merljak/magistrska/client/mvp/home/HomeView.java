@@ -33,6 +33,7 @@ public class HomeView extends AbstractView {
 
 	// widgets
 	private final FlowPanel recommendPanel = new FlowPanel();
+	private final Label pageLabel = new Label();
 
 	// timer
 	private int selected;
@@ -47,6 +48,7 @@ public class HomeView extends AbstractView {
 				if (widgetCount > 0) {
 					recommendPanel.getWidget(selected).addStyleName("visuallyhidden");
 					selected = (selected  + 1) % widgetCount;
+					pageLabel.setText((selected  + 1) + " " + messages.ofPages(recommendPanel.getWidgetCount()));
 					recommendPanel.getWidget(selected).removeStyleName("visuallyhidden");
 				}
 			}
@@ -56,12 +58,14 @@ public class HomeView extends AbstractView {
 		main.add(new Heading(HEADING_SIZE, constants.appTitle()));
 		main.add(new Paragraph(constants.recommendations()));
 		main.add(recommendPanel);
+		main.add(pageLabel);
 		initWidget(main);
 	}
 
 	public void displayRecommendations(RecommendationsDto result) {
 		timer.cancel();
 		recommendPanel.clear();
+		pageLabel.setText("");
 		Map<RecommendationType, List<RecipeDto>> recommendations = result.getRecommendations();
 		for (RecommendationType type : recommendations.keySet()) {
 			for (RecipeDto recipe : recommendations.get(type)) {
@@ -104,6 +108,7 @@ public class HomeView extends AbstractView {
 
 		if (recommendPanel.getWidgetCount() > 0) {
 			selected = 0;
+			pageLabel.setText(1 + " " + messages.ofPages(recommendPanel.getWidgetCount()));
 			recommendPanel.getWidget(selected).removeStyleName("visuallyhidden");
 			timer.scheduleRepeating(SCEDULE);
 		}
