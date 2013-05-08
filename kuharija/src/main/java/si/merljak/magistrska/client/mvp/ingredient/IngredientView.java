@@ -12,6 +12,7 @@ import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
+import com.google.gwt.aria.client.Roles;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -39,6 +40,8 @@ public class IngredientView extends AbstractView {
 		main.add(heading);
 		main.add(content);
 		initWidget(main);
+
+		Roles.getArticleRole().set(main.getElement());
 	}
 
 	/**

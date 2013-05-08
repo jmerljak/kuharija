@@ -22,6 +22,7 @@ import com.github.gwtbootstrap.client.ui.ResponsiveNavbar;
 import com.github.gwtbootstrap.client.ui.constants.Alignment;
 import com.github.gwtbootstrap.client.ui.constants.Device;
 import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
+import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -90,7 +91,9 @@ public class MainMenuWidget extends Composite implements LoginEventHandler {
 		navRight.clear();
 		navRight.add(searchWidget);
 		if (user != null) {
-			navRight.add(new NavText(messages.helloUser(user.getName())));
+			final NavText userLabel = new NavText(messages.helloUser(user.getName()));
+			Roles.getStatusRole().set(userLabel.getElement());
+			navRight.add(userLabel);
 			navRight.add(logoutButton);
 		} else {
 			navRight.add(loginLink);

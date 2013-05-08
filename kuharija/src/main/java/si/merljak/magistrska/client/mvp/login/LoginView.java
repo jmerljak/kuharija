@@ -42,7 +42,6 @@ public class LoginView extends AbstractView implements LoginPresenter.LoginView 
 		// alert placeholder with ARIA alert role
 		alertPlaceholder.setClose(false);
 		alertPlaceholder.setVisible(false);
-		Roles.getAlertRole().set(alertPlaceholder.getElement());
 
 		// username input box
 		usernameBox.addKeyUpHandler(new KeyUpHandler() {
@@ -90,6 +89,10 @@ public class LoginView extends AbstractView implements LoginPresenter.LoginView 
 		main.add(alertPlaceholder);
 		main.add(loginForm);
 		initWidget(main);
+
+		// ARIA roles
+		Roles.getAlertRole().set(alertPlaceholder.getElement());
+		Roles.getFormRole().set(loginForm.getElement());
 	}
 
 	@Override

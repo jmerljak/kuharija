@@ -6,6 +6,7 @@ import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 
 import com.github.gwtbootstrap.client.ui.AppendButton;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -49,6 +50,8 @@ public class SearchWidget extends Composite {
 		formPanel.add(searchBox);
 		formPanel.add(searchButton);
 		initWidget(formPanel);
+
+		Roles.getSearchRole().set(formPanel.getElement());
 	}
 
 	/**
