@@ -7,7 +7,7 @@ import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
-import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
+import si.merljak.magistrska.client.mvp.recipe.RecipeIndexPresenter;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
@@ -95,6 +95,6 @@ public class ComparePresenter extends AbstractPresenter {
 
 	@Override
 	public String getParentName() {
-		return RecipePresenter.SCREEN_NAME;
+		return RecipeIndexPresenter.SCREEN_NAME;
 	}
 }

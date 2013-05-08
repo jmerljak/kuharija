@@ -183,7 +183,7 @@ public class SearchPresenter extends AbstractPresenter {
 			parametersMap.put(PARAMETER_PAGE_SIZE, pageSize.toString());
 		}
 
-		if (searchString != null && !searchString.isEmpty()) {
+		if (searchString != null) {
 			parametersMap.put(PARAMETER_SEARCH_STRING, URL.encodePathSegment(searchString));
 		}
 

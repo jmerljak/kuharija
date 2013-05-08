@@ -108,10 +108,10 @@ public class IngredientsWidget extends Composite {
 
 		FlowPanel panel = new FlowPanel();
 		panel.add(heading);
-		panel.add(ingredientsList);
 		panel.add(new InlineLabel(constants.ingredientsFor()));
 		panel.add(formPanel);
 		panel.add(mealUnitLabel);
+		panel.add(ingredientsList);
 		panel.add(metricCheckBox);
 		initWidget(panel);
 	}

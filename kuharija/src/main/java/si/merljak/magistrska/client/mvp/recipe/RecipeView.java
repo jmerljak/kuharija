@@ -223,11 +223,11 @@ public class RecipeView extends AbstractView implements TabChangeHandler {
 		SimplePagingWidget simplePaging = new SimplePagingWidget(new PagingHandler() {
 			@Override
 			public void changePage(long page) {
-				stepPanel.setWidget(new HTML(steps.get((int)page).getContent()));
+				stepPanel.setWidget(new HTML((page + 1) + ". " + steps.get((int)page).getContent()));
 			}
 		});
 		if (!steps.isEmpty()) {
-			stepPanel.setWidget(new HTML(steps.get(0).getContent()));
+			stepPanel.setWidget(new HTML("1. " + steps.get(0).getContent()));
 			panelSteps.add(stepPanel);
 			panelSteps.add(simplePaging);
 			simplePaging.setPage(0, steps.size());
