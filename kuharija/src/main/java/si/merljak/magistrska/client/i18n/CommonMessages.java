@@ -24,29 +24,29 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("There is some kind of problem. We apologize for inconvenience. Please, try again.")
 	String unknownError();
 
-	@DefaultMessage(" of {0}")
-	String ofPages(Number allPages);
+	@DefaultMessage("Learn about cooking utensils, ingredients and more.")
+	String lexiconIntro();
 
 	@DefaultMessage("Ingredient not found. See <a href=\"#ingredients\">index of ingredients</a>.")
 	String ingredientNotFoundTry();
 
-	@DefaultMessage("Read more about {0} on <a href=\"http://en.wikipedia.org/w/index.php?search={1}\" target=\"_blank\">Wikipedia</a>")
-	String ingredientReadMoreOnWikipedia(String name, String query);
+	@DefaultMessage("Read more on Wikipedia")
+	String ingredientReadMoreOnWikipedia();
 	
 	@DefaultMessage("Utensil not found. See <a href=\"#utensils\">index of utensils</a>.")
 	String utensilNotFoundTry();
 
-	@DefaultMessage("Read more about {0} on <a href=\"http://en.wikipedia.org/w/index.php?search={1}\" target=\"_blank\">Wikipedia</a>")
-	String utensilReadMoreOnWikipedia(String name, String query);
+	@DefaultMessage("Read more on Wikipedia")
+	String utensilReadMoreOnWikipedia();
 	
 	@DefaultMessage("Browse by category or <a href=\"#search\">search</a> by a keyword.")
 	String browseOrSearchRecipes();
 
-	@DefaultMessage("Find <a href=\"{1}\">recipes with {0}</a>")
-	String searchByIngredient(String name, String href);
+	@DefaultMessage("Find recipes with {0}")
+	String searchByIngredient(String name);
 
-	@DefaultMessage("Find <a href=\"{1}\">recipes with {0}</a>")
-	String searchByUtensil(String name, String href);
+	@DefaultMessage("Find recipes with {0}")
+	String searchByUtensil(String name);
 
 	@DefaultMessage("Recipe not found or has no content in english. Select some other language or try <a href=\"#search\">search</a>.")
 	String recipeNotFoundTry();
@@ -62,7 +62,13 @@ public interface CommonMessages extends Messages {
 
 	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 video tag. We recommend <a href=\"http://browser-update.org/update.html\">upgrading your browser</a>.")
 	String htmlVideoNotSupported();
+	
+	@DefaultMessage(" of {0}")
+	String ofPages(Number allPages);
 
 	@DefaultMessage("{0}, posted {1}")
 	String commentBy(String user, String date);
+
+	@DefaultMessage("http://en.wikipedia.org/w/index.php?search={0}")
+	String wikipediaSearchUrl(String query);
 }

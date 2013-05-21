@@ -80,9 +80,6 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Index of ingredients")
 	String ingredientsIndex();
-	
-	@DefaultStringValue("for")
-	String ingredientsFor();
 
 	@DefaultStringValue("Utensils")
 	String utensils();
@@ -138,8 +135,20 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Number of meals")
 	String numberOfMeals();
 
+	@DefaultStringValue("Increase number of meals")
+	String numberOfMealsIncrease();
+
+	@DefaultStringValue("Decrease number of meals")
+	String numberOfMealsDecrease();
+	
+	@DefaultStringValue("Enter number of meals")
+	String numberOfMealsInput();
+
 	@DefaultStringValue("Use metric units")
 	String metricUnits();
+
+	@DefaultStringValue("Check to display metric units")
+	String metricUnitsTooltip();
 
 	@DefaultStringValue("Appendices")
 	String appendices();
@@ -246,10 +255,10 @@ public interface CommonConstants extends Constants {
 	Map<String, String> unitMap();
 
 	@DefaultStringMapValue({
-		"PERSON", "persons",
-		"PIECE", "pieces",
-		"SERVING_PLATE", "serving plates",
-		"BAKING_TRAY", "baking trays"
+		"PERSON", "Persons",
+		"PIECE", "Pieces",
+		"SERVING_PLATE", "Serving plates",
+		"BAKING_TRAY", "Baking trays"
 	})
 	Map<String, String> mealUnitMap();
 	
@@ -275,7 +284,7 @@ public interface CommonConstants extends Constants {
 	Map<String, String> categoryMap();
 	
 	@DefaultStringMapValue({
-		"ALLYEAR", "All year",
+		"ALLYEAR", "Throughout the year",
 		"SPRING", "Spring",
 		"SUMMER", "summer",
 		"AUTUMN", "Autumn",

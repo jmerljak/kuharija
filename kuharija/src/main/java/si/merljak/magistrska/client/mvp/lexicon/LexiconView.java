@@ -6,10 +6,10 @@ import si.merljak.magistrska.client.mvp.ingredient.IngredientIndexPresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilIndexPresenter;
 
 import com.github.gwtbootstrap.client.ui.Heading;
-import com.github.gwtbootstrap.client.ui.base.ListItem;
-import com.github.gwtbootstrap.client.ui.base.UnorderedList;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -22,15 +22,22 @@ public class LexiconView extends AbstractView {
 
 	public LexiconView() {
 		Anchor ingredientsLink = new Anchor(constants.ingredients(), "#" + IngredientIndexPresenter.SCREEN_NAME);
-		Anchor utensilsLink = new Anchor(constants.utensils(), "#" + UtensilIndexPresenter.SCREEN_NAME);
+		SimplePanel ingredientsLinkHolder = new SimplePanel();
+		ingredientsLinkHolder.setWidget(ingredientsLink);
+		ingredientsLinkHolder.setStyleName("imageLink");
+		ingredientsLinkHolder.addStyleDependentName("ingredients");
 
-		UnorderedList categories = new UnorderedList();
-		categories.add(new ListItem(ingredientsLink));
-		categories.add(new ListItem(utensilsLink));
+		Anchor utensilsLink = new Anchor(constants.utensils(), "#" + UtensilIndexPresenter.SCREEN_NAME);
+		SimplePanel utensilsLinkHolder = new SimplePanel();
+		utensilsLinkHolder.setWidget(utensilsLink);
+		utensilsLinkHolder.setStyleName("imageLink");
+		utensilsLinkHolder.addStyleDependentName("utensils");
 
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.lexicon()));
-		main.add(categories);
+		main.add(new Paragraph(messages.lexiconIntro()));
+		main.add(ingredientsLinkHolder);
+		main.add(utensilsLinkHolder);
 		initWidget(main);
 	}
 

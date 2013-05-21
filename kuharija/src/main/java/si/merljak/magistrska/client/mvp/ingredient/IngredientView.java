@@ -11,11 +11,12 @@ import si.merljak.magistrska.common.dto.IngredientDto;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 
 /**
  * Simple view that displays single ingredient details.
@@ -74,9 +75,17 @@ public class IngredientView extends AbstractView {
 				content.add(img);
 			}
 
+			// links
+			Anchor linkRecipesByIngredient = new Anchor(messages.searchByIngredient(localizedName.toLowerCase()), SearchPresenter.buildSearchByIngredientUrl(ingredientName));
+			linkRecipesByIngredient.setStyleName(Constants.BTN);
+			linkRecipesByIngredient.addStyleDependentName("success");
+
+			Anchor linkWikipedia = new Anchor(messages.ingredientReadMoreOnWikipedia(), messages.wikipediaSearchUrl(URL.encodeQueryString(localizedName)), "_blank");
+			linkWikipedia.setStyleName(Constants.BTN);
+
 			content.add(new Paragraph(localizedDescription));
-			content.add(new HTML(messages.searchByIngredient(localizedName.toLowerCase(), SearchPresenter.buildSearchByIngredientUrl(ingredientName))));
-			content.add(new HTML(messages.ingredientReadMoreOnWikipedia(localizedName, URL.encodeQueryString(localizedName))));
+			content.add(linkRecipesByIngredient);
+			content.add(linkWikipedia);
 		}
 	}
 }

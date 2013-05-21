@@ -61,6 +61,7 @@ public class IngredientsWidget extends Composite {
 	private int numOfMeals;
 
 	public IngredientsWidget() {
+		numberInput.setTitle(constants.numberOfMealsInput());
 		numberInput.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
@@ -73,6 +74,7 @@ public class IngredientsWidget extends Composite {
 			}
 		});
 		
+		buttonMinus.setTitle(constants.numberOfMealsDecrease());
 		buttonMinus.setStyleName(Constants.BTN);
 		buttonMinus.addClickHandler(new ClickHandler() {
 			@Override
@@ -84,6 +86,7 @@ public class IngredientsWidget extends Composite {
 			}
 		});
 
+		buttonPlus.setTitle(constants.numberOfMealsIncrease());
 		buttonPlus.setStyleName(Constants.BTN);
 		buttonPlus.addClickHandler(new ClickHandler() {
 			@Override
@@ -93,6 +96,7 @@ public class IngredientsWidget extends Composite {
 			}
 		});
 
+		metricCheckBox.setTitle(constants.metricUnitsTooltip());
 		metricCheckBox.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -108,9 +112,8 @@ public class IngredientsWidget extends Composite {
 
 		FlowPanel panel = new FlowPanel();
 		panel.add(heading);
-		panel.add(new InlineLabel(constants.ingredientsFor()));
-		panel.add(formPanel);
 		panel.add(mealUnitLabel);
+		panel.add(formPanel);
 		panel.add(ingredientsList);
 		panel.add(metricCheckBox);
 		initWidget(panel);

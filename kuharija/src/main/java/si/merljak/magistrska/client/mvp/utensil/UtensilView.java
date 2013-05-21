@@ -11,11 +11,12 @@ import si.merljak.magistrska.common.dto.UtensilDto;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 
 /**
  * Simple view that displays single utensil details.
@@ -74,9 +75,17 @@ public class UtensilView extends AbstractView {
 				content.add(img);
 			}
 
+			// links
+			Anchor linkRecipesByUtensil = new Anchor(messages.searchByUtensil(localizedName.toLowerCase()), SearchPresenter.buildSearchByUtensilUrl(utensilName));
+			linkRecipesByUtensil.setStyleName(Constants.BTN);
+			linkRecipesByUtensil.addStyleDependentName("info");
+
+			Anchor linkWikipedia = new Anchor(messages.utensilReadMoreOnWikipedia(), messages.wikipediaSearchUrl(URL.encodeQueryString(localizedName)), "_blank");
+			linkWikipedia.setStyleName(Constants.BTN);
+
 			content.add(new Paragraph(localizedDescription));
-			content.add(new HTML(messages.searchByUtensil(localizedName.toLowerCase(), SearchPresenter.buildSearchByUtensilUrl(utensilName))));
-			content.add(new HTML(messages.utensilReadMoreOnWikipedia(localizedName, URL.encodeQueryString(localizedName))));
+			content.add(linkRecipesByUtensil);
+			content.add(linkWikipedia);
 		}
 	}
 }
