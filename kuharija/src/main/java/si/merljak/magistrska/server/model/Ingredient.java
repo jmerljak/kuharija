@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -17,11 +18,15 @@ public class Ingredient implements Serializable {
 
 	private String imageUrl;
 
+	@ManyToOne
+	private Ingredient parent;
+
 	protected Ingredient() {}
 
-	public Ingredient(String name, String imageUrl) {
+	public Ingredient(String name, String imageUrl, Ingredient parent) {
 		this.name = name;
 		this.imageUrl = imageUrl;
+		this.parent = parent;
 	}
 
 	public String getName() {
@@ -30,5 +35,9 @@ public class Ingredient implements Serializable {
 
 	public String getImageUrl() {
 		return imageUrl;
+	}
+
+	public Ingredient getParent() {
+		return parent;
 	}
 }

@@ -11,7 +11,9 @@ import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.compare.ComparePresenter;
+import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
+import si.merljak.magistrska.client.mvp.utensil.UtensilPresenter;
 import si.merljak.magistrska.client.widgets.PagingWidget;
 import si.merljak.magistrska.common.SearchParameters;
 import si.merljak.magistrska.common.dto.RecipeDto;
@@ -253,6 +255,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 		resultsPanel.add(sortPanel);
 
 		setSearchParameters(parameters);
+		searchForIngredientOrUtensil(parameters.getSearchString());
 
 		List<RecipeDto> recipes = results.getRecipes();
 		if (recipes.isEmpty()) {
@@ -314,6 +317,34 @@ public class SearchView extends AbstractView implements PagingHandler {
 		pagingWidget.setVisible(results.getAllCount() > 0);
 	}
 
+	private void searchForIngredientOrUtensil(String searchString) {
+		if (searchString == null || searchString.length() < 3) {
+			return;
+		}
+
+		// search for ingredient by key word
+		if (ingredientInverseMap.containsKey(searchString)) {
+			resultsPanel.add(new Anchor(searchString, IngredientPresenter.buildIngredientUrl(ingredientInverseMap.get(searchString))));
+		} else {
+			for (String key : ingredientInverseMap.keySet()) {
+				if (key.toLowerCase().contains(searchString.toLowerCase())) {
+					resultsPanel.add(new Anchor(key, IngredientPresenter.buildIngredientUrl(ingredientInverseMap.get(key))));
+				}
+			}
+		}
+
+		// search for ingredient by key word
+		if (utensilInverseMap.containsKey(searchString)) {
+			resultsPanel.add(new Anchor(searchString, UtensilPresenter.buildUtensilUrl(utensilInverseMap.get(searchString))));
+		} else {
+			for (String key : utensilInverseMap.keySet()) {
+				if (key.toLowerCase().contains(searchString.toLowerCase())) {
+					resultsPanel.add(new Anchor(key, UtensilPresenter.buildUtensilUrl(utensilInverseMap.get(key))));
+				}
+			}
+		}
+		
+	}
 	/** 
 	 * Display search string, filters, sorting etc.
 	 * 

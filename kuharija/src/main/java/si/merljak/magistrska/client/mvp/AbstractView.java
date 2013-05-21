@@ -31,6 +31,7 @@ public abstract class AbstractView extends Composite {
 	protected static final CommonMessages messages = Kuharija.messages;
 
 	// folders for static content
+	protected static final String IMG_BASE_FOLDER = GWT.getHostPageBaseURL() + "img/";
 	protected static final String INGREDIENT_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/ingredient/";
 	protected static final String RECIPE_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/recipe/";
 	protected static final String RECIPE_THUMB_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/recipe/thumbs/";
@@ -81,6 +82,8 @@ public abstract class AbstractView extends Composite {
 				timeStrings.add(Integer.toString(minutes));
 				timeStrings.add(constants.timeMinute());
 			}
+		} else {
+			timeStrings.add("-");
 		}
 		return Joiner.on(" ").join(timeStrings);
 	}

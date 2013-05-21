@@ -24,14 +24,16 @@ public class LexiconView extends AbstractView {
 		Anchor ingredientsLink = new Anchor(constants.ingredients(), "#" + IngredientIndexPresenter.SCREEN_NAME);
 		SimplePanel ingredientsLinkHolder = new SimplePanel();
 		ingredientsLinkHolder.setWidget(ingredientsLink);
-		ingredientsLinkHolder.setStyleName("imageLink");
+		ingredientsLinkHolder.setStylePrimaryName("imageLink");
 		ingredientsLinkHolder.addStyleDependentName("ingredients");
+		ingredientsLinkHolder.addStyleName("img-rounded");
 
 		Anchor utensilsLink = new Anchor(constants.utensils(), "#" + UtensilIndexPresenter.SCREEN_NAME);
 		SimplePanel utensilsLinkHolder = new SimplePanel();
 		utensilsLinkHolder.setWidget(utensilsLink);
-		utensilsLinkHolder.setStyleName("imageLink");
+		utensilsLinkHolder.setStylePrimaryName("imageLink");
 		utensilsLinkHolder.addStyleDependentName("utensils");
+		utensilsLinkHolder.addStyleName("img-rounded");
 
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.lexicon()));

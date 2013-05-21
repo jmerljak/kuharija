@@ -95,7 +95,11 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 			BooleanBuilder ingredientsFilter = new BooleanBuilder();
 			for (String ingredientName : ingredients) {
 				// searching for recipes with ALL listed ingredients
-				ingredientsFilter.and(recipe.ingredients.any().ingredient.name.eq(ingredientName));
+				ingredientsFilter.and(
+						recipe.ingredients.any().ingredient.name.eq(ingredientName)
+						.or(
+						recipe.ingredients.any().ingredient.parent.name.eq(ingredientName))
+						);
 			}
 			subquery.where(ingredientsFilter);
 		}
@@ -104,7 +108,11 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 			BooleanBuilder utensilsFilter = new BooleanBuilder();
 			for (String utensilName : utensils) {
 				// searching for recipes with ALL listed utensils
-				utensilsFilter.and(recipe.utensils.any().utensil.name.eq(utensilName));
+				utensilsFilter.and(
+						recipe.utensils.any().utensil.name.eq(utensilName)
+						.or(
+						recipe.utensils.any().utensil.parent.name.eq(utensilName))
+						);
 			}
 			subquery.where(utensilsFilter);
 		}

@@ -88,13 +88,13 @@ footer {
 	}
 }
 
+/* image links */
 .imageLink {
 	display: inline-block;
 	margin: 10px 0;
 	width: 100%;
 }
 
-/* */
 @media (min-width: 960px) {
 	.imageLink {
 		margin: 0.5%;
@@ -103,7 +103,7 @@ footer {
 }
 
 .imageLink-ingredients {
-	background: url("../img/ingredients.jpg") no-repeat center center;
+	background: black url("../img/ingredients.jpg") no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -111,16 +111,15 @@ footer {
 }
 
 .imageLink-utensils {
-	background: url("../img/utensils.jpg") no-repeat center center;
+	background: black url("../img/utensils.jpg") no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 }
 
-.imageLink a,
-.imageLink a:hover {
-	background: rgba(254, 254, 254, 0.1);
+.imageLink a {
+	background: rgba(254, 254, 254, 0.07);
 	color: white;
 	display: inline-block;
 	font-size: 2em;
@@ -133,9 +132,9 @@ footer {
 }
 
 .imageLink a:hover {
-	background: rgba(254, 254, 254, 0);
-	-moz-transition: background 0.5 linear;
-	transition: background 0.2 linear;
+	background: rgba(254, 254, 254, 0.02);
+	color: white;
+	text-decoration: none;
 }
 
 /* ingredients / utensils */

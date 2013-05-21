@@ -8,11 +8,11 @@ import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Season;
 
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -41,7 +41,7 @@ public class RecipeIndexView extends AbstractView {
 
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.recipes()));
-		main.add(new HTML(messages.browseOrSearchRecipes()));
+		main.add(new Paragraph(messages.browseOrSearchRecipes()));
 		main.add(new Heading(HEADING_SIZE + 1, constants.categories()));
 		main.add(categories);
 		main.add(new Heading(HEADING_SIZE + 1, constants.seasons()));
