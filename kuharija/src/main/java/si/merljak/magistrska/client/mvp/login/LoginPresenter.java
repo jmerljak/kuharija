@@ -18,7 +18,9 @@ import si.merljak.magistrska.common.rpc.UserServiceAsync;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -29,30 +31,37 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class LoginPresenter extends AbstractPresenter implements LoginHandler, LogoutHandler, RegisterHandler {
 
-	public interface LoginView {
-		/** Clears login form and message. */
-		void clear();
-
+	public interface LoginView extends IsWidget {
 		/**
 		 * Displays error message.
+		 * 
 		 * @param error enumerator
 		 */
 		void showError(LoginError error);
 
-		/** Displays login success message. */
-		void showLoginSuccess();
+		/**
+		 * Displays login success message.
+		 * 
+		 * @param withTimer if redirect timer is set
+		 */
+		void showLoginSuccess(boolean withTimer);
 
 		/** Displays logout success message. */
 		void showLogoutSuccess();
 
-		/** 
+		/**
 		 * Sets login handler.
+		 * 
 		 * @param loginHandler handler implementation
 		 */
 		void setLoginHandler(LoginHandler loginHandler);
 
-		/** Gets view as widget. */
-		Widget asWidget();
+		/**
+		 * Sets logout handler.
+		 * 
+		 * @param logoutHandler handler implementation
+		 */
+		void setLogoutHandler(LogoutHandler logoutHandler);
 	}
 
 	// screen name
@@ -60,6 +69,9 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 
 	// cookie name
 	private static final String SESSION_COOKIE_NAME = "sid";
+
+	// redirect timer timeout (in miliseconds)
+	private static final int REDIRECT_TIMEOUT = 10000;
 
 	// remote service
 	private final UserServiceAsync userService;
@@ -69,9 +81,11 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 
 	// user
 	private UserDto user;
-	
+
 	// view
 	private final LoginView loginView;
+
+	private final Timer redirectTimer;
 
 	public LoginPresenter(Language language, UserServiceAsync userService, LoginView view, EventBus eventBus) {
 		super(language);
@@ -79,16 +93,22 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 		this.loginView = view;
 		this.eventBus = eventBus;
 		view.setLoginHandler(this);
+		view.setLogoutHandler(this);
+
+		redirectTimer = new Timer() {
+			@Override
+			public void run() {
+				History.back();
+			}
+		};
 
 		checkSession();
 	}
 
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
-		loginView.clear();
 		if (user != null) {
-		    loginView.showLoginSuccess();
-		    History.back();
+			loginView.showLoginSuccess(false);
 		}
 		return loginView.asWidget();
 	}
@@ -102,15 +122,15 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 				public void onSuccess(UserDto userDto) {
 					if (userDto != null) {
 						user = userDto;
-					    loginView.showLoginSuccess();
-					    eventBus.fireEvent(new LoginEvent(user));
+						loginView.showLoginSuccess(false);
+						eventBus.fireEvent(new LoginEvent(user));
 					} else {
 						// session expired
 						Cookies.removeCookie(SESSION_COOKIE_NAME);
 						loginView.showError(LoginError.SESSION_EXPIRED);
 					}
 				}
-				
+
 				@Override
 				public void onFailure(Throwable caught) {
 					// ignore, assume no user is logged in
@@ -127,15 +147,16 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 				if (session != null) {
 					user = session.getUser();
 					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
-				    eventBus.fireEvent(new LoginEvent(user));
-				    loginView.showLoginSuccess();
-					History.back();
+					eventBus.fireEvent(new LoginEvent(user));
+					loginView.showLoginSuccess(true);
+					// set timer
+					redirectTimer.schedule(REDIRECT_TIMEOUT);
 				} else {
 					// username already exists
 					// view.displayRegisterForm(LoginError.USERNAME_ALREADY_EXISTS);
 				}
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
 				Kuharija.handleException(caught);
@@ -151,9 +172,10 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 				if (session != null) {
 					user = session.getUser();
 					Cookies.setCookie(SESSION_COOKIE_NAME, session.getSessionId(), session.getExpires());
-					loginView.showLoginSuccess();
 					eventBus.fireEvent(new LoginEvent(user));
-				    History.back();
+					loginView.showLoginSuccess(true);
+					// set timer
+					redirectTimer.schedule(REDIRECT_TIMEOUT);
 				} else {
 					user = null;
 					loginView.showError(LoginError.INCORRECT_USERNAME_PASSWORD);
@@ -186,6 +208,10 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 				}
 			});
 		}
+	}
+
+	public void cancelRedirectTimer() {
+		redirectTimer.cancel();
 	}
 
 	/** Returns proper anchor URL for login. */

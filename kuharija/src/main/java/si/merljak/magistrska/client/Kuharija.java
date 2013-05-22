@@ -133,7 +133,7 @@ public class Kuharija implements EntryPoint {
 		Language language = localeWidget.getCurrentLanguage();
 
 		// TODO refactorize MVP architecture!
-		LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView(), eventBus);
+		final LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView(), eventBus);
 		presenters.put(LexiconPresenter.SCREEN_NAME, new LexiconPresenter(language));
 		presenters.put(IngredientIndexPresenter.SCREEN_NAME, new IngredientIndexPresenter(language));
 		presenters.put(IngredientPresenter.SCREEN_NAME, new IngredientPresenter(language, ingredientService));
@@ -190,6 +190,7 @@ public class Kuharija implements EntryPoint {
 					}
 				}
 
+				loginPresenter.cancelRedirectTimer();
 				breadcrumbs.clear();
 				mainPanel.clear();
 

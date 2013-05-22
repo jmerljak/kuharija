@@ -208,8 +208,11 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Password")
 	String password();
 	
-	@DefaultStringValue("You are now logged in.")
+	@DefaultStringValue("You are already logged in.")
 	String loginSuccess();
+	
+	@DefaultStringValue("You are now logged in. In a few moments you will be redirected to previous page.")
+	String loginSuccessAndRedirect();
 	
 	@DefaultStringValue("You are now logged out.")
 	String logoutSuccess();
