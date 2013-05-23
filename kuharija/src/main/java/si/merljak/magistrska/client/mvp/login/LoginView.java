@@ -121,7 +121,9 @@ public class LoginView extends AbstractView implements LoginPresenter.LoginView 
 		Roles.getAlertRole().set(alertPlaceholder.getElement());
 		Roles.getFormRole().set(loginForm.getElement());
 		TextboxRole textboxRole = Roles.getTextboxRole();
+		textboxRole.setAriaRequiredProperty(usernameBox.getElement(), true);
 		textboxRole.setAriaLabelledbyProperty(usernameBox.getElement(), Id.of(usernameLabel.getElement()));
+		textboxRole.setAriaRequiredProperty(passwordBox.getElement(), true);
 		textboxRole.setAriaLabelledbyProperty(passwordBox.getElement(), Id.of(passwordLabel.getElement()));
 	}
 

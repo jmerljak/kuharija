@@ -141,7 +141,7 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Decrease number of meals")
 	String numberOfMealsDecrease();
 	
-	@DefaultStringValue("Enter number of meals")
+	@DefaultStringValue("Enter number of meals (only numbers)")
 	String numberOfMealsInput();
 
 	@DefaultStringValue("Use metric units")

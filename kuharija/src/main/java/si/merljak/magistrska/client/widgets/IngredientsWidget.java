@@ -19,6 +19,8 @@ import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.google.gwt.aria.client.InvalidValue;
+import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -69,11 +71,13 @@ public class IngredientsWidget extends Composite {
 					numOfMeals = Integer.parseInt(numberInput.getText());
 					updateList();
 				} catch (Exception e) {
+					// set invalid state
 					formPanel.addStyleName("error");
+					Roles.getTextboxRole().setAriaInvalidState(numberInput.getElement(), InvalidValue.TRUE);
 				}
 			}
 		});
-		
+
 		buttonMinus.setTitle(constants.numberOfMealsDecrease());
 		buttonMinus.setStyleName(Constants.BTN);
 		buttonMinus.addClickHandler(new ClickHandler() {
@@ -110,6 +114,7 @@ public class IngredientsWidget extends Composite {
 		formPanel.add(buttonMinus);
 		formPanel.add(buttonPlus);
 
+		// layout
 		FlowPanel panel = new FlowPanel();
 		panel.add(heading);
 		panel.add(mealUnitLabel);
@@ -130,7 +135,10 @@ public class IngredientsWidget extends Composite {
 
 	private void updateList() {
 		numberInput.setText(Integer.toString(numOfMeals));
+
+		// remove invalid state
 		formPanel.removeStyleName("error");
+		Roles.getTextboxRole().setAriaInvalidState(numberInput.getElement(), InvalidValue.FALSE);
 
 		ingredientsList.clear();
 		for (IngredientDto ingredient : ingredients) {
