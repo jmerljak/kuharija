@@ -77,8 +77,9 @@ public class MainMenuWidget extends Composite implements LoginEventHandler {
 		navCollapse.add(mainNav);
 		navCollapse.add(navRight);
 
-		// responsive nabvar
+		// responsive navbar
 		ResponsiveNavbar navbar = new ResponsiveNavbar();
+		navbar.setInverse(true);
 		navbar.setPosition(NavbarPosition.TOP);
 		navbar.add(header);
 		navbar.add(navCollapse);

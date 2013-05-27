@@ -24,7 +24,7 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("You are here")
 	String youAreHere();
 
-	@DefaultStringValue("Today we recommend:")
+	@DefaultStringValue("Our recommendations")
 	String recommendations();
 
 	@DefaultStringValue("Remove")
@@ -303,9 +303,9 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringMapValue({
 		"INGREDIENTS_FROM_FRIDGE", "From ingredients in your refrigerator",
-		"USER_PREFERENCES", "Your preferences",
-		"LOCAL_SEASON", "Season",
-		"LOCAL_TIME", "Time of day",
+		"USER_PREFERENCES", "Based on your preferences",
+		"LOCAL_SEASON", "Seasonal",
+		"LOCAL_TIME", "For the time of day",
 		"LOCAL_SPECIALTY", "Local specialty",
 		"FEATURED", "Featured"})
 	Map<String, String> recommendationMap();

@@ -1,5 +1,6 @@
 package si.merljak.magistrska.client.mvp.recipe;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
@@ -37,6 +38,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	// variables
 	private RecipeDetailsDto recipeDto;
 	private UserDto user;
+	private Map<String, String> userPreferences = new HashMap<String, String>(0);
 
 	public RecipePresenter(Language language, RecipeServiceAsync recipeService, EventBus eventBus) {
 		super(language);
@@ -48,11 +50,10 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	public Widget parseParameters(Map<String, String> parameters) {
 		try {
 			long recipeId = Long.parseLong(parameters.get(PARAMETER_RECIPE_ID));
-			String view = parameters.get(PARAMETER_VIEW);
+
 			if (recipeDto == null || recipeDto.getId() != recipeId) {
+				String view = userPreferences.get(PARAMETER_VIEW);
 				getRecipe(recipeId, view);
-			} else {
-				recipeView.setView(view);
 			}
 		} catch (Exception e) {
 			recipeView.setVisible(false);
@@ -95,7 +96,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 			recipeService.bookmarkRecipe(user.getUsername(), recipeDto.getId(), isBookmarked, new AsyncCallback<Void>() {
 				@Override
 				public void onSuccess(Void nothing) {
-					recipeView.setBookmarked(isBookmarked);
+//					recipeView.setBookmarked(isBookmarked);
 				}
 
 				@Override
@@ -154,6 +155,12 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	public void onLogin(LoginEvent event) {
 		// register user
 		user = event.getUser();
+
+		if (user != null && user.getPreferences() != null) {
+			userPreferences = Kuharija.keyValueSplitter.split(user.getPreferences());
+		} else {
+			userPreferences.clear();
+		}
 	}
 
 	@Override

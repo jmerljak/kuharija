@@ -1,0 +1,25 @@
+/*
+ * Some ugly hacks and quick fixes. 
+ *
+ * Inspired by Harry Roberts, see http://csswizardry.com/2013/04/shame-css/
+ *
+ */
+
+/* Visual aid for accessibility testing. */ 
+/* *:focus {
+	show focus (only for testing)
+	outline: red solid 3px !important;
+} */
+
+/* Fix for strange problem with responsive navigation widget. */
+.container-fluid {
+	max-width: 1170px;
+	margin: 0 auto;
+}
+
+@media (max-width: 979px) {
+	body {
+		padding-top: 0 !important;
+	}
+}
+
