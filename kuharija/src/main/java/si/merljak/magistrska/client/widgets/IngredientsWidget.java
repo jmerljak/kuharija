@@ -116,6 +116,8 @@ public class IngredientsWidget extends Composite {
 
 		// layout
 		FlowPanel panel = new FlowPanel();
+		panel.setStyleName("sideWidget");
+		panel.addStyleDependentName("ingredients");
 		panel.add(heading);
 		panel.add(mealUnitLabel);
 		panel.add(formPanel);

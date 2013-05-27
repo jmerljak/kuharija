@@ -35,6 +35,8 @@ public class UtensilsWidget extends Composite {
 
 	public UtensilsWidget() {
 		FlowPanel panel = new FlowPanel();
+		panel.setStyleName("sideWidget");
+		panel.addStyleDependentName("utensils");
 		panel.add(heading);
 		panel.add(utensilsList);
 		initWidget(panel);

@@ -63,7 +63,8 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 			subquery.innerJoin(recipe.texts, recipeText);
 			subquery.where(recipeDetails.heading.lower().like(searchString)
 					   .or(recipeDetails.subHeading.lower().like(searchString))
-					   .or(recipeText.content.lower().like(searchString)));
+					   .or(recipeText.content.lower().like(searchString))
+					   .or(recipe.metadata.lower().like(searchString)));
 		}
 
 		if (!difficulties.isEmpty()) {

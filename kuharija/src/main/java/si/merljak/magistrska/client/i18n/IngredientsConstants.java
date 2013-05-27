@@ -115,7 +115,19 @@ public interface IngredientsConstants extends Constants {
 		"WALNUT_MILLED", "Nuts, milled",
 		"WATER", "Water",
 		"WATERMELON", "Watermelon",
-		"YEAST", "Yeast"
+		"YEAST", "Yeast",
+		"HAM", "Ham",
+		"OLIVE", "Olives",
+		"SALAMI", "Salami",
+		"ROSEMARY", "Rosemary",
+		"PROSCIUTTO", "Prosciutto",
+		"SQUID", "Squid",
+		"SHRIMP", "Shrimp",
+		"CHEESE_NACHO", "Nacho",
+		"MUSHROOMS_PORCINO", "Porcino",
+		"PAPRIKA", "Paprika",
+		"ZUCCHINI", "Zucchini",
+		"ROCKET", "Rocket"
 		})
 	Map<String, String> ingredientMap();
 
@@ -223,7 +235,19 @@ public interface IngredientsConstants extends Constants {
 		"WALNUT_MILLED_DESC", "See <a href=\"#ingredient&name=walnut\">walnut</a>",
 		"WATERMELON_DESC", "Watermelon is a vine-like (scrambler and trailer) flowering plant originally from southern Africa. Its fruit, which is also called watermelon, is a special kind referred to by botanists as a pepo, a berry which has a thick rind (exocarp) and fleshy center (mesocarp and endocarp). Pepos are derived from an inferior ovary, and are characteristic of the Cucurbitaceae. The watermelon fruit, loosely considered a type of melon – although not in the genus Cucumis – has a smooth exterior rind (green, yellow and sometimes white) and a juicy, sweet interior flesh (usually deep red to pink, but sometimes orange, yellow and even green if not ripe). (from Wikipedia)",
 		"WATER_DESC", "Water is a chemical compound with the chemical formula H2O. A water molecule contains one oxygen and two hydrogen atoms connected by covalent bonds. Water is a liquid at standard ambient temperature and pressure, but it often co-exists on Earth with its solid state, ice, and gaseous state (water vapor or steam). Water also exists in a liquid crystal state near hydrophilic surfaces. Safe drinking water is essential to humans and other lifeforms even though it provides no calories or organic nutrients. (from Wikipedia)",
-		"YEAST_DESC", "Yeast, the most common one being S. cerevisiae, is used in baking as a leavening agent, where it converts the food/fermentable sugars present in dough into the gas carbon dioxide. This causes the dough to expand or rise as gas forms pockets or bubbles. When the dough is baked, the yeast dies and the air pockets set, giving the baked product a soft and spongy texture. (from Wikipedia)"
+		"YEAST_DESC", "Yeast, the most common one being S. cerevisiae, is used in baking as a leavening agent, where it converts the food/fermentable sugars present in dough into the gas carbon dioxide. This causes the dough to expand or rise as gas forms pockets or bubbles. When the dough is baked, the yeast dies and the air pockets set, giving the baked product a soft and spongy texture. (from Wikipedia)",
+		"HAM_DESC", "Ham is a cut of meat from the thigh of the hind leg of an animal, usually a pig. Nearly all hams sold today are either fully cooked or cured. (from Wikipedia)",
+		"OLIVE_DESC", "The olives is a species of small tree in the family Oleaceae, native to the coastal areas of the eastern Mediterranean Basin as well as northern Iraq, and northern Iran at the south of the Caspian Sea. Its fruit, also called the olive, is of major agricultural importance in the Mediterranean region as the source of olive oil. (from Wikipedia)",
+		"SALAMI_DESC", "Salami is cured sausage, fermented and air-dried meat, originating from one of a variety of animals. Historically, salami was popular among Southern European peasants because it can be stored at room temperature for periods of up to 30–40 days once cut, supplementing a possibly meager or inconsistent supply of fresh meat. Varieties of salami are traditionally made across Europe. (from Wikipedia)",
+		"ROSEMARY_DESC", "Rosmarinus officinalis, commonly known as rosemary, is a woody, perennial herb with fragrant, evergreen, needle-like leaves and white, pink, purple, or blue flowers, native to the Mediterranean region. (from Wikipedia)",
+		"PROSCIUTTO_DESC", "Prosciutto is a dry-cured ham that is usually thinly sliced and served uncooked; this style is called prosciutto crudo in Italian and is distinguished from cooked ham, prosciutto cotto. (from Wikipedia)",
+		"SQUID_DESC", "Squid are cephalopods of the order Teuthida, which comprises around 300 species. Like all other cephalopods, squid have a distinct head, bilateral symmetry, a mantle, and arms. Squid, like cuttlefish, have eight arms arranged in pairs and two, usually longer, tentacles. Squid are strong swimmers and certain species can fly for short distances out of the water. (from Wikipedia)",
+		"SHRIMP_DESC", "Under the broader definition, shrimp may be synonymous with prawn, covering stalk-eyed swimming crustaceans with long narrow muscular tails (abdomens), long whiskers (antennae) and slender legs. They swim forwards by paddling with swimmerets on the underside of their abdomens. Crabs and lobsters have strong walking legs, whereas shrimp have thin fragile legs which they use primarily for perching. Most shrimp are sold frozen and marketed based on their categorization of presentation, grading, colour, and uniformity. Shrimp have high levels of omega-3 fatty acids and low levels of mercury. (from Wikipedia)",
+		"CHEESE_NACHO_DESC", "A form of processed cheese sauce mixed with peppers and other spices is often used in place of freshly shredded cheese in institutional or large-scale production settings, such as schools, movie theaters, sports venues, and convenience stores, or wherever using freshly grated cheese may be logistically prohibitive. Though originally formulated as a cheaper and more convenient source of cheese to top nachos, this dip has become popular enough in the U.S. that it is available in some Mexican-themed restaurants, and at major grocery stores, in both name-brand (Frito-Lay, Tostitos, and Taco Bell) and unbranded versions. (from Wikipedia)",
+		"MUSHROOMS_PORCINO_DESC", "See <a href=\"#ingredient&name=mushrooms\">mushrooms</a>",
+		"PAPRIKA_DESC", "Paprika is a spice made from ground, dried fruits of Capsicum annuum, either bell pepper or chili pepper varieties or mixtures thereof. The seasoning is used in many cuisines to add color and flavor to dishes, but it is usually associated with Hungary, Spain, and Portugal, the latter two having introduced Capsicum annuum to the Old World from the Americas. It is also used in Turkey, Greece, Serbia, Croatia, Romania, Bulgaria, Morocco. (from Wikipedia)",
+		"ZUCCHINI_DESC", "The zucchini or courgette is a summer squash which can reach nearly a meter in length, but which is usually harvested at half that size or less. Along with certain other squashes, it belongs to the species Cucurbita pepo. Zucchini can be dark or light green. A related hybrid, the golden zucchini, is a deep yellow or orange color. (from Wikipedia)",
+		"ROCKET_DESC", "Rocket is an edible annual plant, commonly known as salad rocket, roquette, rucola, rugula, colewort; or, in the United States, arugula. (from Wikipedia)"
 		})
 	Map<String, String> ingredientDescriptionMap();
 }
