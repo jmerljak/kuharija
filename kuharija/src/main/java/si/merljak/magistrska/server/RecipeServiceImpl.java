@@ -136,6 +136,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 		// steps
 		recipeDto.setSteps(new JPAQuery(em).from(procedureStep)
 								.where(procedureStep.recipe.id.eq(recipeId), procedureStep.language.eq(language))
+								.orderBy(procedureStep.page.asc())
 								.list(new QStepDto(procedureStep.language, procedureStep.page, procedureStep.content, procedureStep.imageUrl)));
 
 		// comments

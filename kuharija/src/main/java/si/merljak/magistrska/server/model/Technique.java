@@ -24,9 +24,6 @@ public class Technique implements Serializable {
 	@GeneratedValue
 	private long id;
 
-	@NotNull
-	private String title;
-
 	private String imageUrl;
 
 	@NotNull
@@ -45,15 +42,14 @@ public class Technique implements Serializable {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy = "technique")
 	private Set<TechniqueVideo> videos;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	private Set<Recipe> recipes;
 
 	private String metaData;
 
 	protected Technique() {}
 
-	public Technique(long id, String title, String imageUrl, Difficulty difficulty, String metaData) {
-		this.title = title;
+	public Technique(long id, String imageUrl, Difficulty difficulty, String metaData) {
 		this.imageUrl = imageUrl;
 		this.difficulty = difficulty;
 		this.metaData = metaData;
@@ -61,10 +57,6 @@ public class Technique implements Serializable {
 
 	public long getId() {
 		return id;
-	}
-
-	public String getTitle() {
-		return title;
 	}
 
 	public String getImageUrl() {

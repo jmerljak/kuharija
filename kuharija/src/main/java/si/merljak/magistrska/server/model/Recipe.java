@@ -11,6 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -64,7 +66,8 @@ public class Recipe implements Serializable {
     @OneToMany(mappedBy = "recipe")
 	private Set<RecipeUtensil> utensils;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name = "recipe_technique", inverseJoinColumns = @JoinColumn(name = "technique_id"))
 	private Set<Technique> techniques;
 
 	@OneToMany(mappedBy = "recipe")

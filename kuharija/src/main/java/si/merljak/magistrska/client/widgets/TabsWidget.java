@@ -6,16 +6,19 @@ import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.handler.PagingHandler;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
+import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.common.dto.AudioDto;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.StepDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 
+import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Tab;
 import com.github.gwtbootstrap.client.ui.TabPanel;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
+import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.github.gwtbootstrap.client.ui.resources.Bootstrap.Tabs;
 import com.google.gwt.aria.client.Id;
 import com.google.gwt.aria.client.PresentationRole;
@@ -32,7 +35,6 @@ import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * Widget with tabbed panels.
@@ -62,7 +64,7 @@ public class TabsWidget extends Composite {
 	private final TabPanel tabsWidget = new TabPanel(Tabs.ABOVE);
 	private final FlowPanel panelBasic = new FlowPanel();
 	private final FlowPanel panelSteps = new FlowPanel();
-	private final SimplePanel stepPanel = new SimplePanel();
+	private final FlowPanel stepPanel = new FlowPanel();
 	private final FlowPanel panelAudio = new FlowPanel();
 	private final FlowPanel panelVideo = new FlowPanel();
 
@@ -198,11 +200,11 @@ public class TabsWidget extends Composite {
 		SimplePagingWidget simplePaging = new SimplePagingWidget(new PagingHandler() {
 			@Override
 			public void changePage(long page) {
-				stepPanel.setWidget(new HTML((page + 1) + ". " + steps.get((int) page).getContent()));
+				showStep(steps.get((int) page));
 			}
 		});
 		if (!steps.isEmpty()) {
-			stepPanel.setWidget(new HTML("1. " + steps.get(0).getContent()));
+			showStep(steps.get(0));
 			panelSteps.add(stepPanel);
 			panelSteps.add(simplePaging);
 			simplePaging.setPage(0, steps.size());
@@ -256,5 +258,20 @@ public class TabsWidget extends Composite {
 		roleTab.setAriaSelectedState(tabStepsElement, selectedTab == TAB_STEPS ? SelectedValue.TRUE : SelectedValue.FALSE);
 		roleTab.setAriaSelectedState(tabVideoElement, selectedTab == TAB_VIDEO ? SelectedValue.TRUE : SelectedValue.FALSE);
 		roleTab.setAriaSelectedState(tabAudioElement, selectedTab == TAB_AUDIO ? SelectedValue.TRUE : SelectedValue.FALSE);
+	}
+
+	private void showStep(StepDto step) {
+		stepPanel.clear();
+
+		int page = step.getPage();
+		String imageUrl = step.getImageUrl();
+		if (imageUrl != null) {
+			Image img = new Image(AbstractView.RECIPE_IMG_FOLDER + imageUrl);
+			img.setAltText(messages.recipeStepNumber(page));
+			img.setType(ImageType.ROUNDED);
+			stepPanel.add(img);
+		}
+
+		stepPanel.add(new Paragraph(page + ". " + step.getContent()));
 	}
 }

@@ -38,7 +38,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	// variables
 	private RecipeDetailsDto recipeDto;
 	private UserDto user;
-	private Map<String, String> userPreferences = new HashMap<String, String>(0);
+	private Map<String, String> userPreferences = null;
 
 	public RecipePresenter(Language language, RecipeServiceAsync recipeService, EventBus eventBus) {
 		super(language);
@@ -52,7 +52,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 			long recipeId = Long.parseLong(parameters.get(PARAMETER_RECIPE_ID));
 
 			if (recipeDto == null || recipeDto.getId() != recipeId) {
-				String view = userPreferences.get(PARAMETER_VIEW);
+				String view = userPreferences != null ? userPreferences.get(PARAMETER_VIEW) : null;
 				getRecipe(recipeId, view);
 			}
 		} catch (Exception e) {
@@ -159,7 +159,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 		if (user != null && user.getPreferences() != null) {
 			userPreferences = Kuharija.keyValueSplitter.split(user.getPreferences());
 		} else {
-			userPreferences.clear();
+			userPreferences = null;
 		}
 	}
 

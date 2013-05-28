@@ -57,6 +57,9 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("There is no video recordings for the recipe.")
 	String recipeNoVideo();
 
+	@DefaultMessage("Procedure step number {0}.")
+	String recipeStepNumber(int stepNumber);
+
 	@DefaultMessage("Unfortunatelly, your browser does not support HTML5 audio tag. We recommend <a href=\"http://browser-update.org/update.html\">upgrading your browser</a>.")
 	String htmlAudioNotSupported();
 

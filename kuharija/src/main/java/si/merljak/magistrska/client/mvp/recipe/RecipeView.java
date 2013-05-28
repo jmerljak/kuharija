@@ -17,13 +17,14 @@ import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Season;
 
 import com.github.gwtbootstrap.client.ui.Badge;
-import com.github.gwtbootstrap.client.ui.Caption;
+import com.github.gwtbootstrap.client.ui.Emphasis;
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
 /**
@@ -36,30 +37,28 @@ public class RecipeView extends AbstractView {
 
 	// widgets
 	private final Heading heading = new Heading(HEADING_SIZE);
+	private final Emphasis subHeading = new Emphasis();
+	private final Paragraph notFoundMessage = new Paragraph(messages.recipeNotFoundTry());
+
+	private final FlowPanel imgPanel = new FlowPanel();
+	private final FlowPanel infoPanel = new FlowPanel();
 	private final TabsWidget tabsWidget = new TabsWidget();
 	private final UtensilsWidget utensilsWidget = new UtensilsWidget();
 	private final IngredientsWidget ingredientsWidget = new IngredientsWidget();
-
-	private final Paragraph notFoundMessage = new Paragraph(messages.recipeNotFoundTry());
-	private final FlowPanel recipeDetailsPanel = new FlowPanel();
-	private final FlowPanel imgPanel = new FlowPanel();
 	private final FlowPanel commentsPanel = new FlowPanel();
-//	private final IconAnchor bookmark = new IconAnchor();
 
 	private final FlowPanel center = new FlowPanel();
 	private final FlowPanel fluid1 = new FlowPanel();
 	private final FlowPanel fluid2 = new FlowPanel();
 
-
 	public RecipeView() {
-
 		// fluid 1
 		imgPanel.setStyleName(Constants.SPAN + 9);
-		recipeDetailsPanel.setStyleName(Constants.SPAN + 3);
+		infoPanel.setStyleName(Constants.SPAN + 3);
 
 		fluid1.setStyleName(Constants.ROW_FLUID);
 		fluid1.add(imgPanel);
-		fluid1.add(recipeDetailsPanel);
+		fluid1.add(infoPanel);
 
 		// fluid 2
 		FlowPanel side = new FlowPanel();
@@ -76,24 +75,17 @@ public class RecipeView extends AbstractView {
 		fluid2.add(side);
 		fluid2.add(center);
 
+		// styles
 		notFoundMessage.setVisible(false);
-//		recipeDetailsPanel.getElement().setId("recipeDetails");
 
+		// layout
 		FlowPanel main = new FlowPanel();
 		main.add(heading);
+		main.add(subHeading);
 		main.add(notFoundMessage);
 		main.add(fluid1);
 		main.add(fluid2);
 		initWidget(main);
-	}
-
-	public void clearAll() {
-		notFoundMessage.setVisible(false);
-		recipeDetailsPanel.clear();
-		imgPanel.clear();
-		center.setVisible(false);
-		fluid1.setVisible(false);
-		commentsPanel.clear();
 	}
 
 	public void displayRecipe(RecipeDetailsDto recipe, String view) {
@@ -112,7 +104,7 @@ public class RecipeView extends AbstractView {
 
 		String recipeSubHeading = recipe.getSubHeading();
 		if (recipeSubHeading != null) {
-			recipeDetailsPanel.add(new Caption(recipeSubHeading));
+			subHeading.setText(recipeSubHeading);
 		}
 
 		// recipe info
@@ -120,18 +112,19 @@ public class RecipeView extends AbstractView {
 		if (imageUrl != null) {
 			Image img = new Image(RECIPE_IMG_FOLDER + imageUrl);
 			img.setAltText(recipeHeading);
+			img.setType(ImageType.ROUNDED);
 			imgPanel.add(img);
 		}
-		recipeDetailsPanel.add(new Label(constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation())));
-		recipeDetailsPanel.add(new Label(constants.timeCooking() + ": " + timeFromMinutes(recipe.getTimeCooking())));
-		recipeDetailsPanel.add(new Label(constants.timeOverall() + ": " + timeFromMinutes(recipe.getTimeOverall())));
-		recipeDetailsPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
-		recipeDetailsPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
+		infoPanel.add(new Label(constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation())));
+		infoPanel.add(new Label(constants.timeCooking() + ": " + timeFromMinutes(recipe.getTimeCooking())));
+		infoPanel.add(new Label(constants.timeOverall() + ": " + timeFromMinutes(recipe.getTimeOverall())));
+		infoPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
+		infoPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
 
 		// categories & seasons
 		Label categoriesLabel = new Label(constants.categories());
 		categoriesLabel.setStyleName("visuallyhidden");
-		recipeDetailsPanel.add(categoriesLabel);
+		infoPanel.add(categoriesLabel);
 		for (Category category : recipe.getCategories()) {
 			Badge categoryBadge = new Badge(localizeEnum(category));
 			categoryBadge.setStylePrimaryName("category");
@@ -139,12 +132,12 @@ public class RecipeView extends AbstractView {
 			categoryBadge.setWordWrap(false);
 			Anchor categoryAnchor = new Anchor("", SearchPresenter.buildSearchByCategoryUrl(category));
 			categoryAnchor.getElement().appendChild(categoryBadge.getElement());
-			recipeDetailsPanel.add(categoryAnchor);
+			infoPanel.add(categoryAnchor);
 		}
 
 		Label seasonsLabel = new Label(constants.seasons());
 		seasonsLabel.setStyleName("visuallyhidden");
-		recipeDetailsPanel.add(seasonsLabel);
+		infoPanel.add(seasonsLabel);
 		for (Season season : recipe.getSeasons()) {
 			Badge seasonBadge = new Badge(localizeEnum(season));
 			seasonBadge.setStylePrimaryName("season");
@@ -152,7 +145,7 @@ public class RecipeView extends AbstractView {
 			seasonBadge.setWordWrap(false);
 			Anchor seasonAnchor = new Anchor("", SearchPresenter.buildSearchBySeasonUrl(season));
 			seasonAnchor.getElement().appendChild(seasonBadge.getElement());
-			recipeDetailsPanel.add(seasonAnchor);
+			infoPanel.add(seasonAnchor);
 		}
 
 		// ingredients
@@ -180,8 +173,22 @@ public class RecipeView extends AbstractView {
 			commentsPanel.add(new CommentWidget(comment));
 		}
 
+		// procedure text, audio, video
 		tabsWidget.displayRecipe(recipe, view);
-		center.setVisible(true);
+
+		// show
 		fluid1.setVisible(true);
+		fluid2.setVisible(true);
+	}
+
+	private void clearAll() {
+		subHeading.setText("");
+		notFoundMessage.setVisible(false);
+		infoPanel.clear();
+		imgPanel.clear();
+		tabsWidget.clearAll();
+		commentsPanel.clear();
+		fluid1.setVisible(false);
+		fluid2.setVisible(true);
 	}
 }
