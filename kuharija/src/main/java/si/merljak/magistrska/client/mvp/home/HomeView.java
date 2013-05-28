@@ -1,7 +1,10 @@
 package si.merljak.magistrska.client.mvp.home;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.mvp.AbstractView;
@@ -10,11 +13,13 @@ import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.dto.RecommendationsDto;
 import si.merljak.magistrska.common.enumeration.RecommendationType;
 
+import com.github.gwtbootstrap.client.ui.Emphasis;
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
-import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.Lead;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -28,90 +33,120 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class HomeView extends AbstractView {
 
-	// constants
-	private static final int SCEDULE = 10000;
-
 	// widgets
+	private final Heading heading1 = new Heading(HEADING_SIZE + 1, constants.recommendations1());
+	private final Heading heading2 = new Heading(HEADING_SIZE + 1, constants.recommendations2());
 	private final FlowPanel recommendPanel = new FlowPanel();
-	private final Label pageLabel = new Label();
+	private final FlowPanel userPanel = new FlowPanel();
 
-	// timer
-	private int selected;
-	private final Timer timer;
+	private List<RecommendationType> recommendationTypes = Arrays.asList(
+			RecommendationType.INGREDIENTS_FROM_FRIDGE, 
+			RecommendationType.USER_PREFERENCES, 
+			RecommendationType.LOCAL_TIME,
+			RecommendationType.FEATURED,
+			RecommendationType.LOCAL_SEASON,
+			RecommendationType.LOCAL_SPECIALTY);
 
-	public HomeView () {
-		recommendPanel.getElement().setId("recommendations");
-		timer = new Timer() {
-			@Override
-			public void run() {
-				int widgetCount = recommendPanel.getWidgetCount();
-				if (widgetCount > 0) {
-					recommendPanel.getWidget(selected).addStyleName("visuallyhidden");
-					selected = (selected  + 1) % widgetCount;
-					pageLabel.setText((selected  + 1) + " " + messages.ofPages(recommendPanel.getWidgetCount()));
-					recommendPanel.getWidget(selected).removeStyleName("visuallyhidden");
-				}
-			}
-		};
+	private Set<Long> idSet = new HashSet<Long>();
+
+	public HomeView() {
+		Heading title = new Heading(HEADING_SIZE, constants.appTitle());
+		heading1.setStyleName("visuallyhidden");
 
 		FlowPanel main = new FlowPanel();
-		main.add(new Heading(HEADING_SIZE, constants.appTitle()));
-		main.add(new Paragraph(constants.recommendations()));
+		main.add(title);
+		main.add(heading1);
+		main.add(userPanel);
+		main.add(heading2);
 		main.add(recommendPanel);
-		main.add(pageLabel);
 		initWidget(main);
 	}
 
 	public void displayRecommendations(RecommendationsDto result) {
-		timer.cancel();
+		idSet.clear();
+		heading1.setVisible(false);
+		userPanel.clear();
 		recommendPanel.clear();
-		pageLabel.setText("");
+
 		Map<RecommendationType, List<RecipeDto>> recommendations = result.getRecommendations();
-		for (RecommendationType type : recommendations.keySet()) {
-			for (RecipeDto recipe : recommendations.get(type)) {
-				String heading = recipe.getHeading();
-				String imageUrl = recipe.getImageUrl();
-				if (imageUrl == null) {
-					imageUrl = RECIPE_IMG_FALLBACK;
+		// using predefined type list (instead of recommendations.keySet()) to assure order
+		for (RecommendationType type : recommendationTypes) {
+			if (recommendations.containsKey(type)) {
+				for (RecipeDto recipe : recommendations.get(type)) {
+					long recipeId = recipe.getId();
+					if (!idSet.add(recipeId)) {
+						// skip duplicates
+						continue;
+					}
+	
+					if (type == RecommendationType.INGREDIENTS_FROM_FRIDGE || type == RecommendationType.USER_PREFERENCES) {
+						addExposedEntry(recipe, type);
+					} else {
+						addResultEntry(recipe, type);
+					}
 				}
-
-				Image image = new Image(RECIPE_IMG_FOLDER + imageUrl);
-				image.setAltText(heading);
-				image.setType(ImageType.POLAROID);
-
-				Anchor link = new Anchor(heading, RecipePresenter.buildRecipeUrl(recipe.getId()));
-				link.getElement().appendChild(image.getElement());
-
-				FlowPanel recommendationEntry = new FlowPanel();
-				recommendationEntry.setStyleName("recommendation");
-				recommendationEntry.add(link);
-				recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
-				recommendationEntry.add(new Label(timeFromMinutes(recipe.getTimeOverall())));
-				recommendationEntry.add(new Label(constants.recommendationMap().get(type.name())));
-//				recommendationEntry.addHandler(new MouseOverHandler() {
-//					@Override
-//					public void onMouseOver(MouseOverEvent event) {
-//						timer.cancel();
-//					}
-//				}, MouseOverEvent.getType());
-//				recommendationEntry.addHandler(new MouseOutHandler() {
-//					@Override
-//					public void onMouseOut(MouseOutEvent event) {
-//						timer.scheduleRepeating(SCEDULE);
-//					}
-//				}, MouseOutEvent.getType());
-
-				recommendationEntry.addStyleName("visuallyhidden");
-				recommendPanel.add(recommendationEntry);
 			}
 		}
+	}
 
-		if (recommendPanel.getWidgetCount() > 0) {
-			selected = 0;
-			pageLabel.setText(1 + " " + messages.ofPages(recommendPanel.getWidgetCount()));
-			recommendPanel.getWidget(selected).removeStyleName("visuallyhidden");
-			timer.scheduleRepeating(SCEDULE);
+	private void addResultEntry(RecipeDto recipe, RecommendationType type) {
+		String heading = recipe.getHeading();
+		String imageUrl = recipe.getImageUrl();
+		if (imageUrl == null) {
+			imageUrl = AbstractView.RECIPE_IMG_FALLBACK;
 		}
+
+		Image image = new Image(AbstractView.RECIPE_THUMB_IMG_FOLDER + imageUrl);
+		image.setType(ImageType.POLAROID);
+		image.setAltText(heading);
+
+		Anchor link = new Anchor(heading, RecipePresenter.buildRecipeUrl(recipe.getId()));
+		link.getElement().appendChild(image.getElement());
+		
+		Label timeOverall = new Label(" " + timeFromMinutes(recipe.getTimeOverall()));
+		timeOverall.setTitle(constants.timeOverall());
+		timeOverall.getElement().insertFirst(new Icon(IconType.TIME).getElement());
+
+		FlowPanel recommendationEntry = new FlowPanel();
+		recommendationEntry.setStyleName("resultEntry");
+		recommendationEntry.addStyleDependentName(type.name().toLowerCase());
+		recommendationEntry.add(link);
+		recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
+		recommendationEntry.add(timeOverall);
+		recommendationEntry.add(new Emphasis(constants.recommendationMap().get(type.name())));
+		recommendPanel.add(recommendationEntry);
+	}
+
+	private void addExposedEntry(RecipeDto recipe, RecommendationType type) {
+		String heading = recipe.getHeading();
+		String imageUrl = recipe.getImageUrl();
+		if (imageUrl == null) {
+			imageUrl = AbstractView.RECIPE_IMG_FALLBACK;
+		}
+
+		Image image = new Image(AbstractView.RECIPE_THUMB_IMG_FOLDER + imageUrl);
+		image.setType(ImageType.ROUNDED);
+		image.setAltText(heading);
+
+		Anchor link = new Anchor(heading, RecipePresenter.buildRecipeUrl(recipe.getId()));
+		link.getElement().appendChild(image.getElement());
+		
+		Label timeOverall = new Label(" " + timeFromMinutes(recipe.getTimeOverall()));
+		timeOverall.setTitle(constants.timeOverall());
+		timeOverall.getElement().insertFirst(new Icon(IconType.TIME).getElement());
+
+		FlowPanel recommendationEntry = new FlowPanel();
+		recommendationEntry.setStyleName("exposedEntry");
+		recommendationEntry.addStyleDependentName(type.name().toLowerCase());
+		Lead lead = new Lead();
+		lead.setText(constants.recommendationMap().get(type.name()));
+		recommendationEntry.add(lead);
+		recommendationEntry.add(link);
+		recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
+		recommendationEntry.add(timeOverall);
+		userPanel.add(recommendationEntry);
+
+		heading1.setVisible(true);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package si.merljak.magistrska.client.mvp.recipe;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;

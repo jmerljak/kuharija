@@ -24,13 +24,16 @@ import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 
 import com.github.gwtbootstrap.client.ui.AppendButton;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.RadioButton;
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.common.collect.BiMap;
@@ -43,7 +46,6 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
@@ -72,7 +74,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 	private final TextBox searchBox = new TextBox();
 
 	private final InlineLabel labelAdvancedSearch = new InlineLabel(constants.searchFilters());
-	private final Button filtersToggle = new Button(constants.searchFiltersShow());
+	private final com.google.gwt.user.client.ui.Button filtersToggle = new com.google.gwt.user.client.ui.Button(constants.searchFiltersShow());
 	private final FlowPanel filtersPanel = new FlowPanel();
 
 	private final Label labelDifficulty = new Label(constants.difficulty());
@@ -206,8 +208,12 @@ public class SearchView extends AbstractView implements PagingHandler {
 			}
 		});
 
+		compareLink.setIcon(IconType.SHARE_ALT);
+		compareLink.setIconPosition(IconPosition.RIGHT);
 		compareLink.setStyleName(Constants.BTN);
+		compareLink.addStyleDependentName("success");
 		compareLink.addStyleName(Constants.DISABLED);
+		compareLink.addStyleName("pull-right");
 		compareLink.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -284,7 +290,11 @@ public class SearchView extends AbstractView implements PagingHandler {
 			resultEntry.setStyleName("resultEntry");
 			resultEntry.add(link);
 			resultEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
-			resultEntry.add(new Label(timeFromMinutes(recipe.getTimeOverall())));
+
+			Label timeOverall = new Label(" " + timeFromMinutes(recipe.getTimeOverall()));
+			timeOverall.setTitle(constants.timeOverall());
+			timeOverall.getElement().insertFirst(new Icon(IconType.TIME).getElement());
+			resultEntry.add(timeOverall);
 
 			if (isComparePossible) {
 				final long recipeId = recipe.getId();

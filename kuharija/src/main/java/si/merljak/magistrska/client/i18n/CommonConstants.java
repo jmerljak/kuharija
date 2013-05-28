@@ -24,8 +24,11 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("You are here")
 	String youAreHere();
 
-	@DefaultStringValue("Our recommendations")
-	String recommendations();
+	@DefaultStringValue("Recommendations for you")
+	String recommendations1();
+
+	@DefaultStringValue("Have you tried ...")
+	String recommendations2();
 
 	@DefaultStringValue("Remove")
 	String remove();
@@ -33,16 +36,19 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Page")
 	String page();
 	
+	@DefaultStringValue("Enter page number (only numbers)")
+	String pageInput();
+	
 	@DefaultStringValue("Previous page")
 	String pagePrevious();
 	
 	@DefaultStringValue("Next page")
 	String pageNext();
 	
-	@DefaultStringValue("First page")
+	@DefaultStringValue("To beginning")
 	String pageFirst();
 	
-	@DefaultStringValue("Last page")
+	@DefaultStringValue("To end")
 	String pageLast();
 
 	@DefaultStringValue("Recipe")

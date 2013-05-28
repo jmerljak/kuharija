@@ -176,7 +176,7 @@ public class PersonalizationServiceMock implements PersonalizationService {
 	 * @return property value or {@code null} if property not found
 	 */
 	private static String getProperty(String properties, String propertyName) {
-		for (String property : properties.split(";")) {
+		for (String property : properties.split("&")) {
 			String[] param = property.split("=");
 			if (param.length == 2 && param[0].equalsIgnoreCase(propertyName)) {
 				return param[1];

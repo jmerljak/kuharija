@@ -19,9 +19,11 @@ import si.merljak.magistrska.common.enumeration.Season;
 import com.github.gwtbootstrap.client.ui.Badge;
 import com.github.gwtbootstrap.client.ui.Emphasis;
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -54,6 +56,7 @@ public class RecipeView extends AbstractView {
 	public RecipeView() {
 		// fluid 1
 		imgPanel.setStyleName(Constants.SPAN + 9);
+		imgPanel.getElement().setId("imgPanel");
 		infoPanel.setStyleName(Constants.SPAN + 3);
 
 		fluid1.setStyleName(Constants.ROW_FLUID);
@@ -115,9 +118,19 @@ public class RecipeView extends AbstractView {
 			img.setType(ImageType.ROUNDED);
 			imgPanel.add(img);
 		}
-		infoPanel.add(new Label(constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation())));
-		infoPanel.add(new Label(constants.timeCooking() + ": " + timeFromMinutes(recipe.getTimeCooking())));
-		infoPanel.add(new Label(constants.timeOverall() + ": " + timeFromMinutes(recipe.getTimeOverall())));
+		
+		Label timePreparation = new Label(" " + constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation()));
+		timePreparation.getElement().insertFirst(new Icon(IconType.TIME).getElement());
+		
+		Label timeCooking = new Label(" " + constants.timeCooking() + ": " + timeFromMinutes(recipe.getTimeCooking()));
+		timeCooking.getElement().insertFirst(new Icon(IconType.TIME).getElement());
+		
+		Label timeOverall = new Label(" " + constants.timeOverall() + ": " + timeFromMinutes(recipe.getTimeOverall()));
+		timeOverall.getElement().insertFirst(new Icon(IconType.TIME).getElement());
+
+		infoPanel.add(timePreparation);
+		infoPanel.add(timeCooking);
+		infoPanel.add(timeOverall);
 		infoPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
 		infoPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
 

@@ -1,14 +1,3 @@
-/* *:focus {
-	show focus (only for testing)
-	outline: red solid 3px !important;
-} */
-
-@media (max-width: 979px) {
-	body {
-		padding-top: 0 !important;
-	}
-}
-
 #noScript {
 	width: 22em;
 	position: absolute;
@@ -21,8 +10,8 @@
 	font-family: sans-serif;
 }
 
+/* visually hidden, but accessible, like on twitter.com */
 .visuallyhidden {
-	/* like on twitter.com */
     border: 0 none;
     clip: rect(0px, 0px, 0px, 0px);
     height: 1px;
@@ -33,6 +22,7 @@
     width: 1px;
 }
 
+/* header */
 #header img {
 	display: none;
 }
@@ -44,6 +34,7 @@
 	}
 }
 
+/* footer */
 footer {
 	margin-top: 30px;
 	text-align: right;
@@ -54,16 +45,33 @@ footer {
 }
 
 /* home */
-#recommendations {
+.recommendations {
+	display: inline-block;
+	margin: 10px 0;
+	width: 100%;
+}
+
+@media (min-width: 960px) {
+	.recommendations {
+		margin: 0.5%;
+		width: 49%;
+	}
+}
+
+.recommendation {
 }
 
 .recommendation img {
-	display: block;
+	width: 100%;
 	height: 100%;
 }
 
 .recommendation a {
 	display: block;
+}
+
+.recommendations i {
+	margin: auto 5px;
 }
 
 /* login */
@@ -155,6 +163,31 @@ div[role=article] a {
 	margin: 0 5px 5px 0;
 }
 
+/* exposed */
+.exposedEntry {
+	display: inline-block;
+	margin: 10px 0;
+	width: 100%;
+}
+
+@media (min-width: 960px) {
+	.exposedEntry {
+		margin: 0.5%;
+		width: 49%;
+	}
+}
+
+.exposedEntry img {
+	widgth: 100%;
+	max-height: 300px;
+	display: block;
+}
+
+.exposedEntry a,
+.exposedEntry em {
+	display: block;
+}
+
 /* search  */
 .resultEntry {
 	display: inline-block;
@@ -169,6 +202,9 @@ div[role=article] a {
 
 .resultEntry a {
 	display: block;
+}
+
+div#filtersPanel {
 }
 
 #filtersPanel input[type="checkbox"],
@@ -225,6 +261,10 @@ div[role=article] a {
 }
 
 /* compare */
+#compareView td {
+	max-width: 300px; 
+}
+
 #compareView img {
 	max-height: 240px;
 	max-width: 300px;
@@ -238,9 +278,13 @@ div[role=article] a {
 }
 
 /* recipe */
-#recipeDetails .caption {
+#imgPanel .caption {
 	margin: 5px 0;
 	font-size: 1.2em;
+}
+
+#imgPanel img {
+	max-height: 600px;
 }
 
 #numOfMealsInput {
@@ -252,6 +296,11 @@ div[role=article] a {
 #numOfMealsInput input[type=text] {
 	max-width: 3em;
 	text-align: right;
+}
+
+/* widgets */
+.sideWidget {
+	padding: 2px;
 }
 
 /* suggest box */
@@ -266,6 +315,56 @@ div[role=article] a {
 
 .gwt-SuggestBoxPopup td.item-selected {
 	background-color: #EFEFEF;
+}
+
+/* badges */
+.category,
+.season {
+	margin-right: 5px;
+}
+
+.badge.category-starter {
+	background-color: #F58A25;
+}
+.badge.category-snack {
+	background-color: #538558;
+}
+.badge.category-main {
+	background-color: #237CD3;
+}
+.badge.category-dessert {
+	background-color: #A173A4;
+}
+.badge.category-salad {
+	background-color: #9AC93D;
+}
+.badge.category-side {
+	background-color: #9AC93D;
+}
+.badge.category-meat {
+	background-color: #B8202D;
+}
+.badge.category-seafood {
+	background-color: #237C93;
+}
+.badge.category-vegeterian {
+	background-color: #168342;
+}
+.badge.category-special {
+	background-color: #B81463;
+}
+
+.badge.season-spring {
+	background-color: #9AC93D;
+}
+.badge.season-summer {
+	background-color: #F58A25;
+}
+.badge.season-autumn {
+	background-color: #82211E;
+}
+.badge.season-winter {
+	background-color: #2F5B82;
 }
 
 /* print styles */
