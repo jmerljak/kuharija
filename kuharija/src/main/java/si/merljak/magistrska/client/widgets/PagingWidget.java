@@ -50,7 +50,7 @@ public class PagingWidget extends Composite {
 		this.handler = pagingHandler;
 
 		firstPageAnchor.setIcon(IconType.FAST_BACKWARD);
-		firstPageAnchor.setText(constants.pageFirst());
+		firstPageAnchor.setTitle(constants.pageFirst());
 		firstPageAnchor.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -61,7 +61,7 @@ public class PagingWidget extends Composite {
 		});
 
 		previousPageAnchor.setIcon(IconType.STEP_BACKWARD);
-		previousPageAnchor.setText(constants.pagePrevious());
+		previousPageAnchor.setTitle(constants.pagePrevious());
 		previousPageAnchor.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -71,6 +71,7 @@ public class PagingWidget extends Composite {
 			}
 		});
 
+		pageBox.setTitle(constants.pageInput());
 		pageBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
@@ -92,7 +93,7 @@ public class PagingWidget extends Composite {
 
 		nextPageAnchor.setIcon(IconType.STEP_FORWARD);
 		nextPageAnchor.setIconPosition(IconPosition.RIGHT);
-		nextPageAnchor.setText(constants.pageNext());
+		nextPageAnchor.setTitle(constants.pageNext());
 		nextPageAnchor.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -104,7 +105,7 @@ public class PagingWidget extends Composite {
 
 		lastPageAnchor.setIcon(IconType.FAST_FORWARD);
 		lastPageAnchor.setIconPosition(IconPosition.RIGHT);
-		lastPageAnchor.setText(constants.pageLast());
+		lastPageAnchor.setTitle(constants.pageLast());
 		lastPageAnchor.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {

@@ -83,6 +83,7 @@ public class RecipeView extends AbstractView {
 
 		// layout
 		FlowPanel main = new FlowPanel();
+		main.setStyleName("recipeView");
 		main.add(heading);
 		main.add(subHeading);
 		main.add(notFoundMessage);

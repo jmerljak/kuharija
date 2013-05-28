@@ -180,12 +180,26 @@ div[role=article] a {
 .exposedEntry img {
 	widgth: 100%;
 	max-height: 300px;
+	margin: 5px 0;
 	display: block;
 }
 
-.exposedEntry a,
-.exposedEntry em {
+.exposedEntry a {
 	display: block;
+	font-size: 1.15em;
+}
+
+.userRecommendations {
+	margin-bottom: 1.5em;
+}
+
+.userRecommendations:empty {
+	margin: 0;
+}
+
+p.lead-home,
+p.lead-home {
+	margin-bottom: 5px;
 }
 
 /* search  */
@@ -278,9 +292,10 @@ div#filtersPanel {
 }
 
 /* recipe */
-#imgPanel .caption {
-	margin: 5px 0;
-	font-size: 1.2em;
+.recipeView em {
+	display: block;
+	margin-bottom: 5px;
+	font-size: 1.15em;
 }
 
 #imgPanel img {
@@ -296,6 +311,10 @@ div#filtersPanel {
 #numOfMealsInput input[type=text] {
 	max-width: 3em;
 	text-align: right;
+}
+
+p.stepContent {
+	margin: 10px 0;
 }
 
 /* widgets */

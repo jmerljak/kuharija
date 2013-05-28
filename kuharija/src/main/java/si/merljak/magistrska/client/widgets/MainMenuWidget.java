@@ -7,10 +7,9 @@ import si.merljak.magistrska.client.handler.LogoutHandler;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
 import si.merljak.magistrska.client.mvp.home.HomePresenter;
-import si.merljak.magistrska.client.mvp.ingredient.IngredientIndexPresenter;
+import si.merljak.magistrska.client.mvp.lexicon.LexiconPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipeIndexPresenter;
-import si.merljak.magistrska.client.mvp.utensil.UtensilIndexPresenter;
 import si.merljak.magistrska.common.dto.UserDto;
 
 import com.github.gwtbootstrap.client.ui.Nav;
@@ -55,8 +54,7 @@ public class MainMenuWidget extends Composite implements LoginEventHandler {
 		Nav mainNav = new Nav();
 		mainNav.add(new NavLink(constants.home(), "#" + HomePresenter.SCREEN_NAME));
 		mainNav.add(new NavLink(constants.recipes(), "#" + RecipeIndexPresenter.SCREEN_NAME));
-		mainNav.add(new NavLink(constants.ingredients(), "#" + IngredientIndexPresenter.SCREEN_NAME));
-		mainNav.add(new NavLink(constants.utensils(), "#" + UtensilIndexPresenter.SCREEN_NAME));
+		mainNav.add(new NavLink(constants.lexicon(), "#" + LexiconPresenter.SCREEN_NAME));
 
 		// right buttons (login)
 		navRight.setAlignment(Alignment.RIGHT);

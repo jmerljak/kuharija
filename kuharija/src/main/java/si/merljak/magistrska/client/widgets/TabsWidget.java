@@ -260,6 +260,11 @@ public class TabsWidget extends Composite {
 		roleTab.setAriaSelectedState(tabAudioElement, selectedTab == TAB_AUDIO ? SelectedValue.TRUE : SelectedValue.FALSE);
 	}
 
+	/**
+	 * Displays steps.
+	 * 
+	 * @param step DTO
+	 */
 	private void showStep(StepDto step) {
 		stepPanel.clear();
 
@@ -272,6 +277,8 @@ public class TabsWidget extends Composite {
 			stepPanel.add(img);
 		}
 
-		stepPanel.add(new Paragraph(page + ". " + step.getContent()));
+		Paragraph stepContent = new Paragraph(page + ". " + step.getContent());
+		stepContent.setStyleName("stepContent");
+		stepPanel.add(stepContent);
 	}
 }

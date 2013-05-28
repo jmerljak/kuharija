@@ -34,8 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class HomeView extends AbstractView {
 
 	// widgets
-	private final Heading heading1 = new Heading(HEADING_SIZE + 1, constants.recommendations1());
-	private final Heading heading2 = new Heading(HEADING_SIZE + 1, constants.recommendations2());
+	Lead heading2 = new Lead();
 	private final FlowPanel recommendPanel = new FlowPanel();
 	private final FlowPanel userPanel = new FlowPanel();
 
@@ -50,12 +49,13 @@ public class HomeView extends AbstractView {
 	private Set<Long> idSet = new HashSet<Long>();
 
 	public HomeView() {
-		Heading title = new Heading(HEADING_SIZE, constants.appTitle());
-		heading1.setStyleName("visuallyhidden");
+		heading2.setText(constants.recommendations2());
+		heading2.addStyleDependentName("home");
+
+		userPanel.setStyleName("userRecommendations");
 
 		FlowPanel main = new FlowPanel();
-		main.add(title);
-		main.add(heading1);
+		main.add(new Heading(HEADING_SIZE, constants.appTitle()));
 		main.add(userPanel);
 		main.add(heading2);
 		main.add(recommendPanel);
@@ -64,7 +64,6 @@ public class HomeView extends AbstractView {
 
 	public void displayRecommendations(RecommendationsDto result) {
 		idSet.clear();
-		heading1.setVisible(false);
 		userPanel.clear();
 		recommendPanel.clear();
 
@@ -135,18 +134,18 @@ public class HomeView extends AbstractView {
 		timeOverall.setTitle(constants.timeOverall());
 		timeOverall.getElement().insertFirst(new Icon(IconType.TIME).getElement());
 
+		Lead lead = new Lead();
+		lead.addStyleDependentName("home");
+		lead.setText(constants.recommendationMap().get(type.name()));
+
 		FlowPanel recommendationEntry = new FlowPanel();
 		recommendationEntry.setStyleName("exposedEntry");
 		recommendationEntry.addStyleDependentName(type.name().toLowerCase());
-		Lead lead = new Lead();
-		lead.setText(constants.recommendationMap().get(type.name()));
 		recommendationEntry.add(lead);
 		recommendationEntry.add(link);
 		recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
 		recommendationEntry.add(timeOverall);
 		userPanel.add(recommendationEntry);
-
-		heading1.setVisible(true);
 	}
 
 	@Override
