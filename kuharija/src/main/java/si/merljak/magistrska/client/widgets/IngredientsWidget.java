@@ -19,6 +19,7 @@ import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.google.gwt.aria.client.Id;
 import com.google.gwt.aria.client.InvalidValue;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -113,6 +114,12 @@ public class IngredientsWidget extends Composite {
 		formPanel.add(numberInput);
 		formPanel.add(buttonMinus);
 		formPanel.add(buttonPlus);
+
+		// additional ARIA properties
+		ingredientsList.getElement().setId("ingredientsList");
+		mealUnitLabel.getElement().setId("mealUnitLabel");
+		Roles.getTextboxRole().setAriaLabelledbyProperty(numberInput.getElement(), Id.of(mealUnitLabel.getElement()));
+		Roles.getFormRole().setAriaControlsProperty(formPanel.getElement(), Id.of(ingredientsList.getElement()));
 
 		// layout
 		FlowPanel panel = new FlowPanel();

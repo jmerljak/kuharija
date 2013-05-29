@@ -5,8 +5,10 @@ import si.merljak.magistrska.client.handler.PagingHandler;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
+import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
+import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
@@ -38,6 +40,7 @@ public class SimplePagingWidget extends Composite {
 	public SimplePagingWidget(PagingHandler pagingHandler) {
 		this.handler = pagingHandler;
 
+		previousPageAnchor.setStyleName(Constants.BTN);
 		previousPageAnchor.setIcon(IconType.STEP_BACKWARD);
 		previousPageAnchor.setText(constants.stepPrevious());
 		previousPageAnchor.addClickHandler(new ClickHandler() {
@@ -50,6 +53,7 @@ public class SimplePagingWidget extends Composite {
 			}
 		});
 
+		nextPageAnchor.setStyleName(Constants.BTN);
 		nextPageAnchor.setIcon(IconType.STEP_FORWARD);
 		nextPageAnchor.setIconPosition(IconPosition.RIGHT);
 		nextPageAnchor.setText(constants.stepNext());
@@ -83,6 +87,21 @@ public class SimplePagingWidget extends Composite {
 		this.allPages = allCount;
 
 		previousPageAnchor.setEnabled(page > 0);
+		if (page > 0) {
+			previousPageAnchor.removeStyleName(Constants.DISABLED);
+			Roles.getLinkRole().setAriaDisabledState(previousPageAnchor.getElement(), false);
+		} else {
+			previousPageAnchor.addStyleName(Constants.DISABLED);
+			Roles.getLinkRole().setAriaDisabledState(previousPageAnchor.getElement(), true);
+		}
+
 		nextPageAnchor.setEnabled(page < allPages - 1);
+		if (page < allPages - 1) {
+			nextPageAnchor.removeStyleName(Constants.DISABLED);
+			Roles.getLinkRole().setAriaDisabledState(nextPageAnchor.getElement(), false);
+		} else {
+			nextPageAnchor.addStyleName(Constants.DISABLED);
+			Roles.getLinkRole().setAriaDisabledState(nextPageAnchor.getElement(), true);
+		}
 	}
 }

@@ -11,6 +11,7 @@ import com.github.gwtbootstrap.client.ui.base.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
+import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -49,6 +50,7 @@ public class PagingWidget extends Composite {
 	public PagingWidget(PagingHandler pagingHandler) {
 		this.handler = pagingHandler;
 
+		firstPageAnchor.setStyleName(Constants.BTN);
 		firstPageAnchor.setIcon(IconType.FAST_BACKWARD);
 		firstPageAnchor.setTitle(constants.pageFirst());
 		firstPageAnchor.addClickHandler(new ClickHandler() {
@@ -60,6 +62,7 @@ public class PagingWidget extends Composite {
 			}
 		});
 
+		previousPageAnchor.setStyleName(Constants.BTN);
 		previousPageAnchor.setIcon(IconType.STEP_BACKWARD);
 		previousPageAnchor.setTitle(constants.pagePrevious());
 		previousPageAnchor.addClickHandler(new ClickHandler() {
@@ -91,6 +94,7 @@ public class PagingWidget extends Composite {
 			}
 		});
 
+		nextPageAnchor.setStyleName(Constants.BTN);
 		nextPageAnchor.setIcon(IconType.STEP_FORWARD);
 		nextPageAnchor.setIconPosition(IconPosition.RIGHT);
 		nextPageAnchor.setTitle(constants.pageNext());
@@ -103,6 +107,7 @@ public class PagingWidget extends Composite {
 			}
 		});
 
+		lastPageAnchor.setStyleName(Constants.BTN);
 		lastPageAnchor.setIcon(IconType.FAST_FORWARD);
 		lastPageAnchor.setIconPosition(IconPosition.RIGHT);
 		lastPageAnchor.setTitle(constants.pageLast());
@@ -142,6 +147,17 @@ public class PagingWidget extends Composite {
 
 		firstPageAnchor.setEnabled(page > 1);
 		previousPageAnchor.setEnabled(page > 1);
+		if (page > 1) {
+			firstPageAnchor.removeStyleName(Constants.DISABLED);
+			previousPageAnchor.removeStyleName(Constants.DISABLED);
+			Roles.getLinkRole().setAriaDisabledState(firstPageAnchor.getElement(), false);
+			Roles.getLinkRole().setAriaDisabledState(previousPageAnchor.getElement(), false);
+		} else {
+			firstPageAnchor.addStyleName(Constants.DISABLED);
+			previousPageAnchor.addStyleName(Constants.DISABLED);
+			Roles.getLinkRole().setAriaDisabledState(firstPageAnchor.getElement(), true);
+			Roles.getLinkRole().setAriaDisabledState(previousPageAnchor.getElement(), true);
+		}
 
 		removeStyleName("error");
 		pageBox.setEnabled(allPages > 1);
@@ -150,5 +166,16 @@ public class PagingWidget extends Composite {
 
 		nextPageAnchor.setEnabled(page < allPages);
 		lastPageAnchor.setEnabled(page < allPages);
+		if (page < allPages) {
+			nextPageAnchor.removeStyleName(Constants.DISABLED);
+			lastPageAnchor.removeStyleName(Constants.DISABLED);
+			Roles.getLinkRole().setAriaDisabledState(nextPageAnchor.getElement(), false);
+			Roles.getLinkRole().setAriaDisabledState(lastPageAnchor.getElement(), false);
+		} else {
+			nextPageAnchor.addStyleName(Constants.DISABLED);
+			lastPageAnchor.addStyleName(Constants.DISABLED);
+			Roles.getLinkRole().setAriaDisabledState(nextPageAnchor.getElement(), true);
+			Roles.getLinkRole().setAriaDisabledState(lastPageAnchor.getElement(), true);
+		}
 	}
 }

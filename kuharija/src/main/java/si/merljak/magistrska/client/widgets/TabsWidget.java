@@ -196,6 +196,7 @@ public class TabsWidget extends Composite {
 			panelBasic.add(new HTML(text.getContent()));
 		}
 
+		// steps
 		final List<StepDto> steps = recipe.getSteps();
 		SimplePagingWidget simplePaging = new SimplePagingWidget(new PagingHandler() {
 			@Override
@@ -203,20 +204,29 @@ public class TabsWidget extends Composite {
 				showStep(steps.get((int) page));
 			}
 		});
+
 		if (!steps.isEmpty()) {
 			showStep(steps.get(0));
 			panelSteps.add(stepPanel);
 			panelSteps.add(simplePaging);
 			simplePaging.setPage(0, steps.size());
+		} else if (view != null && view.equalsIgnoreCase("steps")) {
+			// no steps, show basic view
+			view = null;
 		}
 
 		// video
 		List<VideoDto> videos = recipe.getVideos();
 		if (videos.isEmpty()) {
 			panelVideo.add(new Paragraph(messages.recipeNoVideo()));
+			if (view != null && view.equalsIgnoreCase("video")) {
+				// no video, show basic view
+				view = null;
+			}
 		} else if (!Video.isSupported()) {
 			panelVideo.add(new Paragraph(messages.htmlVideoNotSupported()));
 		}
+
 		for (VideoDto videoDto : videos) {
 			panelVideo.add(new VideoWidget(videoDto));
 		}
@@ -225,9 +235,14 @@ public class TabsWidget extends Composite {
 		List<AudioDto> audios = recipe.getAudios();
 		if (audios.isEmpty()) {
 			panelAudio.add(new Paragraph(messages.recipeNoAudio()));
+			if (view != null && view.equalsIgnoreCase("audio")) {
+				// no audio, show basic view
+				view = null;
+			}
 		} else if (!Audio.isSupported()) {
 			panelAudio.add(new Paragraph(messages.htmlAudioNotSupported()));
 		}
+
 		for (AudioDto audioDto : audios) {
 			panelAudio.add(new AudioWidget(audioDto));
 		}
