@@ -7,10 +7,15 @@ import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.Season;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -24,6 +29,16 @@ import com.google.gwt.user.client.ui.Widget;
 public class RecipeIndexView extends AbstractView {
 
 	public RecipeIndexView() {
+		Button buttonAll = new Button(messages.browseAllRecipes());
+		buttonAll.setType(ButtonType.PRIMARY);
+		buttonAll.setSize(ButtonSize.LARGE);
+		buttonAll.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				SearchPresenter.doSearch("");
+			}
+		});
+
 		UnorderedList categories = new UnorderedList();
 		for (Category category : Category.values()) {
 			categories.add(new ListItem(new Anchor(localizeEnum(category), SearchPresenter.buildSearchByCategoryUrl(category))));
@@ -42,6 +57,7 @@ public class RecipeIndexView extends AbstractView {
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.recipes()));
 		main.add(new Paragraph(messages.browseOrSearchRecipes()));
+		main.add(buttonAll);
 		main.add(new Heading(HEADING_SIZE + 1, constants.categories()));
 		main.add(categories);
 		main.add(new Heading(HEADING_SIZE + 1, constants.seasons()));

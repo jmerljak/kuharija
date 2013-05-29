@@ -137,7 +137,7 @@ public class RecipeView extends AbstractView {
 
 		// categories & seasons
 		Label categoriesLabel = new Label(constants.categories());
-		categoriesLabel.setStyleName("visuallyhidden");
+		categoriesLabel.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
 		infoPanel.add(categoriesLabel);
 		for (Category category : recipe.getCategories()) {
 			Badge categoryBadge = new Badge(localizeEnum(category));
@@ -150,7 +150,7 @@ public class RecipeView extends AbstractView {
 		}
 
 		Label seasonsLabel = new Label(constants.seasons());
-		seasonsLabel.setStyleName("visuallyhidden");
+		seasonsLabel.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
 		infoPanel.add(seasonsLabel);
 		for (Season season : recipe.getSeasons()) {
 			Badge seasonBadge = new Badge(localizeEnum(season));

@@ -94,6 +94,9 @@ public class Kuharija implements EntryPoint {
 	public static final UtensilsConstants utensilsConstants = GWT.create(UtensilsConstants.class);
 	public static final UrlConstants urlConstants = GWT.create(UrlConstants.class);
 
+	// constants
+	public static final String CSS_VISUALLY_HIDDEN = "visuallyhidden";
+
 	// formatters
 	public static final Formatters formatters = GWT.create(Formatters.class);
 	public static final NumberFormat numberFormat = NumberFormat.getFormat(formatters.numberFormat());
@@ -132,7 +135,7 @@ public class Kuharija implements EntryPoint {
 
 		Language language = localeWidget.getCurrentLanguage();
 
-		// TODO refactorize MVP architecture!
+		// MVP
 		final LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView(), eventBus);
 		presenters.put(LexiconPresenter.SCREEN_NAME, new LexiconPresenter(language));
 		presenters.put(IngredientIndexPresenter.SCREEN_NAME, new IngredientIndexPresenter(language));
@@ -151,17 +154,18 @@ public class Kuharija implements EntryPoint {
 		navPanel.add(mainMenu);
 
 		Label breadcrumbsLabel = new InlineLabel(constants.youAreHere());
-		breadcrumbsLabel.setStyleName("visuallyhidden");
+		breadcrumbsLabel.setStyleName(CSS_VISUALLY_HIDDEN);
 		Image headerImage = new Image();
 		headerImage.setUrl(GWT.getHostPageBaseURL() + "img/kuharija.png");
 		headerImage.setAltText("logo");
+		breadcrumbs.addStyleName(CSS_VISUALLY_HIDDEN);
 		headerPanel.add(headerImage);
 		headerPanel.add(breadcrumbsLabel);
 		headerPanel.add(breadcrumbs);
 		headerPanel.add(alertPlaceholder);
 
 		Label languageLabel = new InlineLabel(constants.language());
-		languageLabel.setStyleName("visuallyhidden");
+		languageLabel.setStyleName(CSS_VISUALLY_HIDDEN);
 		footerPanel.add(languageLabel);
 		footerPanel.add(localeWidget);
 

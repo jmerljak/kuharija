@@ -9,17 +9,22 @@ import java.util.Set;
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
+import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.dto.RecommendationsDto;
 import si.merljak.magistrska.common.enumeration.RecommendationType;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Emphasis;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Lead;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -34,7 +39,6 @@ import com.google.gwt.user.client.ui.Widget;
 public class HomeView extends AbstractView {
 
 	// widgets
-	Lead heading2 = new Lead();
 	private final FlowPanel recommendPanel = new FlowPanel();
 	private final FlowPanel userPanel = new FlowPanel();
 
@@ -49,16 +53,28 @@ public class HomeView extends AbstractView {
 	private Set<Long> idSet = new HashSet<Long>();
 
 	public HomeView() {
+		Lead heading2 = new Lead();
 		heading2.setText(constants.recommendations2());
 		heading2.addStyleDependentName("home");
 
 		userPanel.setStyleName("userRecommendations");
+
+		Button buttonAll = new Button(messages.browseAllRecipes());
+		buttonAll.setType(ButtonType.PRIMARY);
+		buttonAll.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				SearchPresenter.doSearch("");
+			}
+		});
 
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.appTitle()));
 		main.add(userPanel);
 		main.add(heading2);
 		main.add(recommendPanel);
+		main.add(new Lead());
+		main.add(buttonAll);
 		initWidget(main);
 	}
 

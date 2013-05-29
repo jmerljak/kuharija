@@ -255,7 +255,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 		compareLink.addStyleName(Constants.DISABLED);
 		clearSearchResults();
 		Heading headingResults = new Heading(HEADING_SIZE + 1, constants.searchResults());
-		headingResults.setStyleName("visuallyhidden");
+		headingResults.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
 		resultsPanel.add(headingResults);
 		resultsPanel.add(sortPanel);
 
