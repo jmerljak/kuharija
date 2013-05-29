@@ -5,16 +5,17 @@ import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 
 import com.github.gwtbootstrap.client.ui.AppendButton;
-import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.base.ListItem;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TextBox;
 
 public class SearchWidget extends Composite {
 
@@ -25,8 +26,10 @@ public class SearchWidget extends Composite {
 	private final TextBox searchBox = new TextBox();
 
 	public SearchWidget() {
+		searchBox.setPlaceholder(constants.searchQuery());
+//		searchBox.setSearchQuery(true);
+		searchBox.setAccessKey('/');
 		searchBox.setTitle(constants.searchQuery());
-		searchBox.getElement().setAttribute("placeholder", constants.searchQuery());
 		searchBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
@@ -37,7 +40,7 @@ public class SearchWidget extends Composite {
 		});
 
 		Button searchButton = new Button(constants.search());
-		searchButton.setStyleName(Constants.BTN);
+		searchButton.setIcon(IconType.SEARCH);
 		searchButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -49,7 +52,7 @@ public class SearchWidget extends Composite {
 		formPanel.addStyleName("searchWidget");
 		formPanel.add(searchBox);
 		formPanel.add(searchButton);
-		initWidget(formPanel);
+		initWidget(new ListItem(formPanel));
 
 		Roles.getSearchRole().set(formPanel.getElement());
 	}
