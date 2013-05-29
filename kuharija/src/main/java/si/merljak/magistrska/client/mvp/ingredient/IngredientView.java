@@ -8,14 +8,14 @@ import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.common.dto.IngredientDto;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
-import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 /**
@@ -76,13 +76,16 @@ public class IngredientView extends AbstractView {
 			}
 
 			// links
-			Anchor linkRecipesByIngredient = new Anchor(messages.searchByIngredient(localizedName.toLowerCase()), SearchPresenter.buildSearchByIngredientUrl(ingredientName));
-			linkRecipesByIngredient.setStyleName(Constants.BTN);
-			linkRecipesByIngredient.addStyleDependentName("success");
+			Button linkRecipesByIngredient = new Button();
+			linkRecipesByIngredient.setText(messages.searchByIngredient(localizedName.toLowerCase()));
+			linkRecipesByIngredient.setHref(SearchPresenter.buildSearchByIngredientUrl(ingredientName));
+			linkRecipesByIngredient.setType(ButtonType.SUCCESS);
 
-			Anchor linkWikipedia = new Anchor(messages.ingredientReadMoreOnWikipedia(), messages.wikipediaSearchUrl(URL.encodeQueryString(localizedName)), "_blank");
-			linkWikipedia.setStyleName(Constants.BTN);
-
+			Button linkWikipedia = new Button();
+			linkWikipedia.setText(messages.ingredientReadMoreOnWikipedia());
+			linkWikipedia.setHref(messages.wikipediaSearchUrl(URL.encodeQueryString(localizedName)));
+			linkWikipedia.setTarget("_blank");
+			
 			content.add(new Paragraph(localizedDescription));
 			content.add(linkRecipesByIngredient);
 			content.add(linkWikipedia);

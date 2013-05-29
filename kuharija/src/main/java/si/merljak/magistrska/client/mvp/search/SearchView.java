@@ -32,6 +32,7 @@ import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.RadioButton;
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
@@ -110,7 +111,6 @@ public class SearchView extends AbstractView implements PagingHandler {
 		});
 
 		Button searchButton = new Button(constants.search());
-		searchButton.setStyleName(Constants.BTN);
 		searchButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -124,7 +124,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 
 		// filters
 		filtersToggle.setStyleName(Constants.BTN);
-		filtersToggle.addStyleDependentName("link");
+		filtersToggle.addStyleName(ButtonType.LINK.get());
 		filtersToggle.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -210,8 +210,7 @@ public class SearchView extends AbstractView implements PagingHandler {
 
 		compareLink.setIcon(IconType.SHARE_ALT);
 		compareLink.setIconPosition(IconPosition.RIGHT);
-		compareLink.setStyleName(Constants.BTN);
-		compareLink.addStyleDependentName("success");
+		compareLink.setType(ButtonType.SUCCESS);
 		compareLink.addStyleName(Constants.DISABLED);
 		compareLink.addStyleName("pull-right");
 		compareLink.addClickHandler(new ClickHandler() {

@@ -7,6 +7,7 @@ import si.merljak.magistrska.client.mvp.utensil.UtensilIndexPresenter;
 
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -26,14 +27,14 @@ public class LexiconView extends AbstractView {
 		ingredientsLinkHolder.setWidget(ingredientsLink);
 		ingredientsLinkHolder.setStylePrimaryName("imageLink");
 		ingredientsLinkHolder.addStyleDependentName("ingredients");
-		ingredientsLinkHolder.addStyleName("img-rounded");
+		ingredientsLinkHolder.addStyleName(ImageType.ROUNDED.get());
 
 		Anchor utensilsLink = new Anchor(constants.utensils(), "#" + UtensilIndexPresenter.SCREEN_NAME);
 		SimplePanel utensilsLinkHolder = new SimplePanel();
 		utensilsLinkHolder.setWidget(utensilsLink);
 		utensilsLinkHolder.setStylePrimaryName("imageLink");
 		utensilsLinkHolder.addStyleDependentName("utensils");
-		utensilsLinkHolder.addStyleName("img-rounded");
+		utensilsLinkHolder.addStyleName(ImageType.ROUNDED.get());
 
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.lexicon()));

@@ -41,6 +41,9 @@ public interface CommonMessages extends Messages {
 	
 	@DefaultMessage("Browse by category or <a href=\"#search\">search</a> by a keyword.")
 	String browseOrSearchRecipes();
+	
+	@DefaultMessage("Show all recipes")
+	String browseAllRecipes();
 
 	@DefaultMessage("Find recipes with {0}")
 	String searchByIngredient(String name);

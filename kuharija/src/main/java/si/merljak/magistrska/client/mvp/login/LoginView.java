@@ -10,6 +10,7 @@ import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Form;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.constants.AlertType;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.google.gwt.aria.client.Id;
 import com.google.gwt.aria.client.Roles;
@@ -80,7 +81,7 @@ public class LoginView extends AbstractView implements LoginPresenter.LoginView 
 
 		// login button
 		loginButton.setStyleName(Constants.BTN);
-		loginButton.addStyleDependentName("success");
+		loginButton.addStyleName(ButtonType.SUCCESS.get());
 		loginButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -91,7 +92,7 @@ public class LoginView extends AbstractView implements LoginPresenter.LoginView 
 		});
 
 		// logout button
-		logoutButton.setStyleName("btn-link");
+		logoutButton.setStyleName(ButtonType.LINK.get());
 		logoutButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {

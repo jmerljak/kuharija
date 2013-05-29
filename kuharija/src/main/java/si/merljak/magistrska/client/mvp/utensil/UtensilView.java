@@ -8,14 +8,14 @@ import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.common.dto.UtensilDto;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
-import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 /**
@@ -76,12 +76,15 @@ public class UtensilView extends AbstractView {
 			}
 
 			// links
-			Anchor linkRecipesByUtensil = new Anchor(messages.searchByUtensil(localizedName.toLowerCase()), SearchPresenter.buildSearchByUtensilUrl(utensilName));
-			linkRecipesByUtensil.setStyleName(Constants.BTN);
-			linkRecipesByUtensil.addStyleDependentName("info");
+			Button linkRecipesByUtensil = new Button();
+			linkRecipesByUtensil.setText(messages.searchByUtensil(localizedName.toLowerCase()));
+			linkRecipesByUtensil.setHref(SearchPresenter.buildSearchByUtensilUrl(utensilName));
+			linkRecipesByUtensil.setType(ButtonType.INFO);
 
-			Anchor linkWikipedia = new Anchor(messages.utensilReadMoreOnWikipedia(), messages.wikipediaSearchUrl(URL.encodeQueryString(localizedName)), "_blank");
-			linkWikipedia.setStyleName(Constants.BTN);
+			Button linkWikipedia = new Button();
+			linkWikipedia.setText(messages.utensilReadMoreOnWikipedia());
+			linkWikipedia.setHref(messages.wikipediaSearchUrl(URL.encodeQueryString(localizedName)));
+			linkWikipedia.setTarget("_blank");
 
 			content.add(new Paragraph(localizedDescription));
 			content.add(linkRecipesByUtensil);
