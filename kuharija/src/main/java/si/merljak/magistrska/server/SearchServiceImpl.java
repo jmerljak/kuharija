@@ -24,6 +24,8 @@ import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 import si.merljak.magistrska.common.rpc.SearchService;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPASubQuery;
@@ -34,6 +36,8 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 	private static final long serialVersionUID = 6742097745368981008L;
 
 	private static final Logger log = LoggerFactory.getLogger(SearchServiceImpl.class);
+
+	private final Splitter splitter = Splitter.on(CharMatcher.JAVA_LETTER.negate()).omitEmptyStrings();
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -58,13 +62,26 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 		JPASubQuery subquery = new JPASubQuery().from(recipe);
 
 		if (searchString != null) {
-			searchString = "%" + searchString.trim().toLowerCase() + "%";
+			BooleanBuilder basicFilter = new BooleanBuilder();
+			for (String split : splitter.split(searchString)) {
+				split = split.toLowerCase();
+				if (split.length() < 3) {
+					// skip very short words
+					continue;
+				} else {
+					split = "%" + split + "%";
+				}
+
+				// match ALL words (anywhere)
+				basicFilter.and(recipeDetails.heading.lower().like(split)
+							   .or(recipeDetails.subHeading.lower().like(split))
+							   .or(recipeText.content.lower().like(split))
+							   .or(recipe.metadata.lower().like(split)));
+			}
+
 			subquery.innerJoin(recipe.details, recipeDetails);
 			subquery.innerJoin(recipe.texts, recipeText);
-			subquery.where(recipeDetails.heading.lower().like(searchString)
-					   .or(recipeDetails.subHeading.lower().like(searchString))
-					   .or(recipeText.content.lower().like(searchString))
-					   .or(recipe.metadata.lower().like(searchString)));
+			subquery.where(basicFilter);
 		}
 
 		if (!difficulties.isEmpty()) {

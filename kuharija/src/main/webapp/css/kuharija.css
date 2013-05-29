@@ -205,7 +205,7 @@ p.lead-home {
 /* search  */
 .resultEntry {
 	display: inline-block;
-	margin: 1em;
+	margin: 1em 0.75em 1em 1em;
 }
 
 .resultEntry img {
