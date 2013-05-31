@@ -22,6 +22,7 @@ import com.github.gwtbootstrap.client.ui.Emphasis;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
@@ -140,10 +141,6 @@ public class RecipeView extends AbstractView {
 		// recipe info
 		String imageUrl = recipe.getImageUrl();
 		if (imageUrl != null) {
-//			Image img = new Image(RECIPE_IMG_FOLDER + imageUrl);
-//			img.setAltText(recipeHeading);
-//			img.setType(ImageType.ROUNDED);
-//			imgPanel.add(img);
 			imgPanel.getElement().setAttribute("style", "background-image: url('" + RECIPE_IMG_FOLDER + imageUrl + "')");
 		} else {
 			imgPanel.getElement().removeAttribute("style");
@@ -158,6 +155,33 @@ public class RecipeView extends AbstractView {
 		Label timeOverall = new Label(" " + constants.timeOverall() + ": " + timeFromMinutes(recipe.getTimeOverall()));
 		timeOverall.getElement().insertFirst(new Icon(IconType.TIME).getElement());
 
+		// review stars
+		int stars;
+		String reviewText = "";
+		if (recipe.getReviewStars() == null) {
+			stars = 0;
+			reviewText = messages.recipeNoReview();
+		} else {
+			stars = recipe.getReviewStars().intValue();
+			reviewText = messages.recipeReviewOutOfFive(stars);
+		}
+
+		InlineLabel reviewLabel = new InlineLabel();
+		reviewLabel.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
+		reviewLabel.setText(reviewText);
+
+		FlowPanel review = new FlowPanel();
+		review.setTitle(reviewText);
+		review.add(reviewLabel);
+		for (int i=0; i < 5; i++) {
+			if (i < stars) {
+				review.add(new Icon(IconType.STAR));
+			} else {
+				review.add(new Icon(IconType.STAR_EMPTY));
+			}
+		}
+
+		infoPanel.add(review);
 		infoPanel.add(timePreparation);
 		infoPanel.add(timeCooking);
 		infoPanel.add(timeOverall);

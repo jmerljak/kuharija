@@ -55,6 +55,8 @@ public class Recipe implements Serializable {
 
 	private Integer timeOverall;
 
+	private Integer reviewStars;
+
 	private String metadata;
 
 	@OneToMany(mappedBy = "recipe")
@@ -146,6 +148,10 @@ public class Recipe implements Serializable {
 
 	public String getMetadata() {
 		return metadata;
+	}
+
+	public Integer getReviewStars() {
+		return reviewStars;
 	}
 
 	public Set<RecipeDetails> getDetails() {

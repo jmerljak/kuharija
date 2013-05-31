@@ -29,6 +29,7 @@ public class RecipeDetailsDto implements Serializable {
 	private int numberOfMeals;
 	private MealUnit mealUnit;
 	private boolean isBookmarked;
+	private Integer reviewStars;
 
 	private List<IngredientDto> ingredients = new ArrayList<IngredientDto>();
 	private List<UtensilDto> utensils = new ArrayList<UtensilDto>();
@@ -45,7 +46,7 @@ public class RecipeDetailsDto implements Serializable {
 
 	@QueryProjection
 	public RecipeDetailsDto(long id, String heading, String subHeading, String author, String imageUrl, Difficulty difficulty, 
-			Integer timePreparation, Integer timeCooking, int timeOverall, int numberOfMeals, MealUnit mealUnit) {
+			Integer timePreparation, Integer timeCooking, int timeOverall, int numberOfMeals, MealUnit mealUnit, Integer reviewStars) {
 		this.id = id;
 		this.heading = heading;
 		this.subHeading = subHeading;
@@ -57,6 +58,7 @@ public class RecipeDetailsDto implements Serializable {
 		this.timeOverall = timeOverall;
 		this.numberOfMeals = numberOfMeals;
 		this.mealUnit = mealUnit;
+		this.reviewStars = reviewStars;
 	}
 
 	public long getId() {
@@ -109,6 +111,10 @@ public class RecipeDetailsDto implements Serializable {
 
 	public int getTimeOverall() {
 		return timeOverall;
+	}
+
+	public Integer getReviewStars() {
+		return reviewStars;
 	}
 
 	public List<IngredientDto> getIngredients() {

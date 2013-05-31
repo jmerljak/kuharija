@@ -63,6 +63,12 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("There are no video recordings for the recipe.")
 	String recipeNoVideo();
 
+	@DefaultMessage("This recipe has not been reviewed yet.")
+	String recipeNoReview();
+
+	@DefaultMessage("{} of 5 stars")
+	String recipeReviewOutOfFive(int stars);
+
 	@DefaultMessage("Procedure step number {0}.")
 	String recipeStepNumber(int stepNumber);
 

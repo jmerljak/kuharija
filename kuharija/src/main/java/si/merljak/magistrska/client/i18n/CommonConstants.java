@@ -156,10 +156,10 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Check to display metric units")
 	String metricUnitsTooltip();
 
-	@DefaultStringValue("Appendices")
+	@DefaultStringValue("Tips and info")
 	String appendices();
 
-	@DefaultStringValue("Show appendices")
+	@DefaultStringValue("Show tips and info")
 	String appendicesShow();
 
 	@DefaultStringValue("Comments")

@@ -79,7 +79,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 												.uniqueResult(new QRecipeDetailsDto(recipe.id, recipeDetails.heading, 
 													recipeDetails.subHeading, recipe.author, recipe.imageUrl, recipe.difficulty, 
 													recipe.timePreparation, recipe.timeCooking, recipe.timeOverall,
-													recipe.numberOfMeals, recipe.mealUnit));
+													recipe.numberOfMeals, recipe.mealUnit, recipe.reviewStars));
 
 		if (recipeDto == null) {
 			// TODO try show recipe in the default language?
@@ -170,7 +170,7 @@ public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeSer
 								.list(new QRecipeDetailsDto(recipe.id, recipeDetails.heading, 
 									recipeDetails.subHeading, recipe.author, recipe.imageUrl, recipe.difficulty, 
 									recipe.timePreparation, recipe.timeCooking, recipe.timeOverall,
-									recipe.numberOfMeals, recipe.mealUnit));
+									recipe.numberOfMeals, recipe.mealUnit, recipe.reviewStars));
 		
 		for (RecipeDetailsDto recipeDto : list) {
 			Recipe uniqueResult = new JPAQuery(em).from(recipe)
