@@ -5,12 +5,13 @@ import si.merljak.magistrska.client.handler.PagingHandler;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
 
-import com.github.gwtbootstrap.client.ui.base.IconAnchor;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.base.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
+import com.google.gwt.aria.client.Id;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -38,10 +39,10 @@ public class PagingWidget extends Composite {
 	// widgets
 	private final TextBox pageBox = new TextBox();
 	private final InlineLabel pageCount = new InlineLabel();
-	private final IconAnchor firstPageAnchor = new IconAnchor();
-	private final IconAnchor previousPageAnchor = new IconAnchor();
-	private final IconAnchor nextPageAnchor = new IconAnchor();
-	private final IconAnchor lastPageAnchor = new IconAnchor();
+	private final Button firstPageAnchor = new Button();
+	private final Button previousPageAnchor = new Button();
+	private final Button nextPageAnchor = new Button();
+	private final Button lastPageAnchor = new Button();
 
 	// variables
 	private int page = 1;
@@ -50,7 +51,6 @@ public class PagingWidget extends Composite {
 	public PagingWidget(PagingHandler pagingHandler) {
 		this.handler = pagingHandler;
 
-		firstPageAnchor.setStyleName(Constants.BTN);
 		firstPageAnchor.setIcon(IconType.FAST_BACKWARD);
 		firstPageAnchor.setTitle(constants.pageFirst());
 		firstPageAnchor.addClickHandler(new ClickHandler() {
@@ -62,7 +62,6 @@ public class PagingWidget extends Composite {
 			}
 		});
 
-		previousPageAnchor.setStyleName(Constants.BTN);
 		previousPageAnchor.setIcon(IconType.STEP_BACKWARD);
 		previousPageAnchor.setTitle(constants.pagePrevious());
 		previousPageAnchor.addClickHandler(new ClickHandler() {
@@ -74,7 +73,12 @@ public class PagingWidget extends Composite {
 			}
 		});
 
+		InlineLabel pageLabel = new InlineLabel(constants.page());
+		pageLabel.getElement().setId("pageLabel");
+		pageCount.getElement().setId("pageCount");
+
 		pageBox.setTitle(constants.pageInput());
+		Roles.getTextboxRole().setAriaLabelledbyProperty(pageBox.getElement(), Id.of(pageLabel.getElement()), Id.of(pageCount.getElement()));
 		pageBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
@@ -94,7 +98,6 @@ public class PagingWidget extends Composite {
 			}
 		});
 
-		nextPageAnchor.setStyleName(Constants.BTN);
 		nextPageAnchor.setIcon(IconType.STEP_FORWARD);
 		nextPageAnchor.setIconPosition(IconPosition.RIGHT);
 		nextPageAnchor.setTitle(constants.pageNext());
@@ -107,7 +110,6 @@ public class PagingWidget extends Composite {
 			}
 		});
 
-		lastPageAnchor.setStyleName(Constants.BTN);
 		lastPageAnchor.setIcon(IconType.FAST_FORWARD);
 		lastPageAnchor.setIconPosition(IconPosition.RIGHT);
 		lastPageAnchor.setTitle(constants.pageLast());
@@ -125,7 +127,7 @@ public class PagingWidget extends Composite {
 		main.addStyleName(Constants.CONTROL_GROUP);
 		main.add(firstPageAnchor);
 		main.add(previousPageAnchor);
-		main.add(new InlineLabel(constants.page()));
+		main.add(pageLabel);
 		main.add(pageBox);
 		main.add(pageCount);
 		main.add(nextPageAnchor);

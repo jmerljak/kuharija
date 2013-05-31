@@ -9,7 +9,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -41,9 +40,6 @@ public class Technique implements Serializable {
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy = "technique")
 	private Set<TechniqueVideo> videos;
-
-	@ManyToMany(fetch=FetchType.LAZY)
-	private Set<Recipe> recipes;
 
 	private String metaData;
 
