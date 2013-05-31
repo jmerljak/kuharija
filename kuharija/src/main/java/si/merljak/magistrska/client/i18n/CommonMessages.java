@@ -45,6 +45,9 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("Show all recipes")
 	String browseAllRecipes();
 
+	@DefaultMessage("Have you searched for: ")
+	String haveYouSearchedFor();
+
 	@DefaultMessage("Find recipes with {0}")
 	String searchByIngredient(String name);
 
@@ -54,10 +57,10 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("Recipe not found or has no content in english. Select some other language or try <a href=\"#search\">search</a>.")
 	String recipeNotFoundTry();
 	
-	@DefaultMessage("There is no audio recordings for the recipe.")
+	@DefaultMessage("There are no audio recordings for the recipe.")
 	String recipeNoAudio();
 
-	@DefaultMessage("There is no video recordings for the recipe.")
+	@DefaultMessage("There are no video recordings for the recipe.")
 	String recipeNoVideo();
 
 	@DefaultMessage("Procedure step number {0}.")

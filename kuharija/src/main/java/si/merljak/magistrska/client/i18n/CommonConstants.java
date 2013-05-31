@@ -195,13 +195,13 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Audio")
 	String tabAudio();
 
-	@DefaultStringValue("Download audio")
+	@DefaultStringValue("Download audio: ")
 	String downloadAudio();
 
-	@DefaultStringValue("Download video")
+	@DefaultStringValue("Download video: ")
 	String downloadVideo();
 
-	@DefaultStringValue("Download subtitle")
+	@DefaultStringValue("Download subtitle: ")
 	String downloadSubtitle();
 
 	// login

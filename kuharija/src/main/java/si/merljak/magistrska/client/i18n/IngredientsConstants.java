@@ -106,6 +106,7 @@ public interface IngredientsConstants extends Constants {
 		"TOMATO", "Tomato",
 		"TOMATO_SAUCE", "Tomato sauce",
 		"TUNA", "Tuna",
+		"TUNA_CAN", "Tuna, canned",
 		"TURKEY", "Turkey",
 		"TURKEY_BREAST", "Turkey breast",
 		"VANILLA", "Vanilla",
