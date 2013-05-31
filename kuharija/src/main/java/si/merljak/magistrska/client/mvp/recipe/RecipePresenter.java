@@ -3,6 +3,8 @@ package si.merljak.magistrska.client.mvp.recipe;
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
+import si.merljak.magistrska.client.event.ActionEvent;
+import si.merljak.magistrska.client.event.ActionEventHandler;
 import si.merljak.magistrska.client.event.LoginEvent;
 import si.merljak.magistrska.client.event.LoginEventHandler;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
@@ -21,7 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Jakob Merljak
  * 
  */
-public class RecipePresenter extends AbstractPresenter implements LoginEventHandler {
+public class RecipePresenter extends AbstractPresenter implements LoginEventHandler, ActionEventHandler {
 
 	// screen and parameters name
 	public static final String SCREEN_NAME = "recipe";
@@ -43,6 +45,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 		super(language);
 		this.recipeService = recipeService;
 		eventBus.addHandler(LoginEvent.TYPE, this);
+		eventBus.addHandler(ActionEvent.TYPE, this);
 	}
 
 	@Override
@@ -160,6 +163,12 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 		} else {
 			userPreferences = null;
 		}
+	}
+
+	@Override
+	public void onAction(ActionEvent event) {
+		recipeView.performActions(event.getActions());
+		
 	}
 
 	@Override

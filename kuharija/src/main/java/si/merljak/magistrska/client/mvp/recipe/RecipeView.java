@@ -17,17 +17,21 @@ import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Season;
 
 import com.github.gwtbootstrap.client.ui.Badge;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Emphasis;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
-import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * View for recipe details and cooking instructions.
@@ -47,6 +51,12 @@ public class RecipeView extends AbstractView {
 	private final TabsWidget tabsWidget = new TabsWidget();
 	private final UtensilsWidget utensilsWidget = new UtensilsWidget();
 	private final IngredientsWidget ingredientsWidget = new IngredientsWidget();
+
+	private final FlowPanel appendixPanel = new FlowPanel();
+	private final SimplePanel appendixHolder = new SimplePanel();
+	private final Button appendixToggle = new Button(constants.appendicesShow());
+	private final FlowPanel appendixListPanel = new FlowPanel();
+
 	private final FlowPanel commentsPanel = new FlowPanel();
 
 	private final FlowPanel center = new FlowPanel();
@@ -55,9 +65,11 @@ public class RecipeView extends AbstractView {
 
 	public RecipeView() {
 		// fluid 1
-		imgPanel.setStyleName(Constants.SPAN + 9);
 		imgPanel.getElement().setId("imgPanel");
+		imgPanel.setStyleName(Constants.SPAN + 9);
+		imgPanel.addStyleName(ImageType.ROUNDED.get());
 		infoPanel.setStyleName(Constants.SPAN + 3);
+		infoPanel.getElement().setId("infoPanel");
 
 		fluid1.setStyleName(Constants.ROW_FLUID);
 		fluid1.add(imgPanel);
@@ -72,6 +84,7 @@ public class RecipeView extends AbstractView {
 		center.setStyleName(Constants.SPAN + 9);
 		center.add(new Heading(HEADING_SIZE + 1, constants.recipeProcedure()));
 		center.add(tabsWidget);
+		center.add(appendixPanel);
 		center.add(commentsPanel);
 
 		fluid2.setStyleName(Constants.ROW_FLUID);
@@ -80,6 +93,19 @@ public class RecipeView extends AbstractView {
 
 		// styles
 		notFoundMessage.setVisible(false);
+
+		// appendix toggle
+		appendixPanel.add(new Heading(HEADING_SIZE + 1, constants.appendices()));
+		appendixPanel.add(appendixHolder);
+
+		appendixToggle.setIcon(IconType.CHEVRON_RIGHT);
+		appendixToggle.setIconPosition(IconPosition.RIGHT);
+		appendixToggle.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				appendixHolder.setWidget(appendixListPanel);
+			}
+		});
 
 		// layout
 		FlowPanel main = new FlowPanel();
@@ -114,10 +140,13 @@ public class RecipeView extends AbstractView {
 		// recipe info
 		String imageUrl = recipe.getImageUrl();
 		if (imageUrl != null) {
-			Image img = new Image(RECIPE_IMG_FOLDER + imageUrl);
-			img.setAltText(recipeHeading);
-			img.setType(ImageType.ROUNDED);
-			imgPanel.add(img);
+//			Image img = new Image(RECIPE_IMG_FOLDER + imageUrl);
+//			img.setAltText(recipeHeading);
+//			img.setType(ImageType.ROUNDED);
+//			imgPanel.add(img);
+			imgPanel.getElement().setAttribute("style", "background-image: url('" + RECIPE_IMG_FOLDER + imageUrl + "')");
+		} else {
+			imgPanel.getElement().removeAttribute("style");
 		}
 		
 		Label timePreparation = new Label(" " + constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation()));
@@ -171,9 +200,10 @@ public class RecipeView extends AbstractView {
 		// appendices
 		List<AppendixDto> appendices = recipe.getAppendices();
 		if (!appendices.isEmpty()) {
-			commentsPanel.add(new Heading(HEADING_SIZE + 1, constants.appendices()));
+			appendixHolder.setWidget(appendixToggle);
+			appendixPanel.setVisible(true);
 			for (AppendixDto appendix : appendices) {
-				commentsPanel.add(new AppendixWidget(appendix));
+				appendixListPanel.add(new AppendixWidget(appendix));
 			}
 		}
 
@@ -201,8 +231,14 @@ public class RecipeView extends AbstractView {
 		infoPanel.clear();
 		imgPanel.clear();
 		tabsWidget.clearAll();
+		appendixPanel.setVisible(false);
+		appendixListPanel.clear();
 		commentsPanel.clear();
 		fluid1.setVisible(false);
 		fluid2.setVisible(true);
+	}
+
+	public void performActions(List<String> actions) {
+		tabsWidget.performActions(actions);
 	}
 }

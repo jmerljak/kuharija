@@ -1,3 +1,11 @@
+body.kuharija {
+	background: white url("../img/white_wall_hash.png") repeat top left;
+}
+
+div.main {
+	background-image: none;	
+}
+
 #noScript {
 	width: 22em;
 	position: absolute;
@@ -163,6 +171,10 @@ div[role=article] a {
 	margin: 0 5px 5px 0;
 }
 
+#ingredientsList {
+	margin-top: 10px;
+}
+
 /* exposed */
 .exposedEntry {
 	display: inline-block;
@@ -279,6 +291,17 @@ div#filtersPanel {
 	max-width: 300px; 
 }
 
+#compareView td:first-child {
+	font-style: italic;
+	font-weight: bold;
+}
+
+#compareView ul {
+	list-style: none;
+	margin: 0;
+}
+
+
 #compareView img {
 	max-height: 240px;
 	max-width: 300px;
@@ -294,12 +317,31 @@ div#filtersPanel {
 /* recipe */
 .recipeView em {
 	display: block;
-	margin-bottom: 5px;
+	margin-bottom: 7px;
 	font-size: 1.15em;
 }
 
-#imgPanel img {
-	max-height: 600px;
+#imgPanel {
+	background-color: transparent;
+	background-position: center center;
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	min-height: 400px;
+	margin-bottom: 10px;
+}
+
+@media (max-width: 979px) {
+	#imgPanel {
+		min-height: 200px;
+	}
+}
+
+#infoPanel {
+	vertical-align: bottom;
+	margin-bottom: 10px;
 }
 
 #numOfMealsInput {

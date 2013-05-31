@@ -104,4 +104,20 @@ public class SimplePagingWidget extends Composite {
 			Roles.getLinkRole().setAriaDisabledState(nextPageAnchor.getElement(), true);
 		}
 	}
+
+	public boolean hasPrevious() {
+		return page > 0;
+	}
+
+	public boolean hasNext() {
+		return page < allPages - 1;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public long getAllCount() {
+		return allPages;
+	}
 }

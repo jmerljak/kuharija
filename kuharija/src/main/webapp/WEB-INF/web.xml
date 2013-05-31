@@ -24,6 +24,11 @@
     <servlet-name>utensilServlet</servlet-name>
     <servlet-class>si.merljak.magistrska.server.UtensilServiceImpl</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>wozServlet</servlet-name>
+    <servlet-class>si.merljak.magistrska.server.mock.WOzServiceImpl</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>ingredientServlet</servlet-name>
     <url-pattern>/kuharija/ingredient</url-pattern>
@@ -48,6 +53,11 @@
     <servlet-name>utensilServlet</servlet-name>
     <url-pattern>/kuharija/utensil</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>wozServlet</servlet-name>
+    <url-pattern>/kuharija/woz</url-pattern>
+  </servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>

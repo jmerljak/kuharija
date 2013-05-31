@@ -159,6 +159,9 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Appendices")
 	String appendices();
 
+	@DefaultStringValue("Show appendices")
+	String appendicesShow();
+
 	@DefaultStringValue("Comments")
 	String comments();
 
@@ -180,7 +183,7 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Next step")
 	String stepNext();
 
-	@DefaultStringValue("Basic")
+	@DefaultStringValue("Text")
 	String tabBasic();
 
 	@DefaultStringValue("Step by step")

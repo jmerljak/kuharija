@@ -96,6 +96,12 @@ public class AudioWidget extends Composite {
 		setStyleName("audioWidget");
 	}
 
+	public void play() {
+		if (audioWidget != null) {
+			audioWidget.play();
+		}
+	}
+
 	public void pause() {
 		if (audioWidget != null) {
 			audioWidget.pause();

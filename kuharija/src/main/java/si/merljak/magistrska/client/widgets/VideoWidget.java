@@ -133,6 +133,12 @@ public class VideoWidget extends Composite {
 		setStyleName("videoWidget");
 	}
 
+	public void play() {
+		if (videoWidget != null) {
+			videoWidget.play();
+		}
+	}
+
 	public void pause() {
 		if (videoWidget != null) {
 			videoWidget.pause();

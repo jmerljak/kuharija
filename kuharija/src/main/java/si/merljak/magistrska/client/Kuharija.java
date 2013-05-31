@@ -19,6 +19,7 @@ import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.lexicon.LexiconPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginView;
+import si.merljak.magistrska.client.mvp.mock.WizardControlsPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipeIndexPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
@@ -149,6 +150,7 @@ public class Kuharija implements EntryPoint {
 		presenters.put(LoginPresenter.SCREEN_NAME, loginPresenter);
 		presenters.put(HomePresenter.SCREEN_NAME, new HomePresenter(language, recommendationService, eventBus));
 		presenters.put(NotFoundPresenter.SCREEN_NAME, new NotFoundPresenter(language));
+		presenters.put(WizardControlsPresenter.SCREEN_NAME, new WizardControlsPresenter(language, eventBus));
 
 		MainMenuWidget mainMenu = new MainMenuWidget(loginPresenter, eventBus);
 		navPanel.add(mainMenu);

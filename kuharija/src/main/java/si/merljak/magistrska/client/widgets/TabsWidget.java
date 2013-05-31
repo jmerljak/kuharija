@@ -17,6 +17,7 @@ import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Tab;
 import com.github.gwtbootstrap.client.ui.TabPanel;
+import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.github.gwtbootstrap.client.ui.resources.Bootstrap.Tabs;
@@ -28,13 +29,16 @@ import com.google.gwt.aria.client.TabRole;
 import com.google.gwt.aria.client.TablistRole;
 import com.google.gwt.aria.client.TabpanelRole;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Widget with tabbed panels.
@@ -73,10 +77,14 @@ public class TabsWidget extends Composite {
 	private final Element tabVideoElement;
 	private final Element tabAudioElement;
 
+	// paging handler
+	private SimplePagingWidget simplePagingWidget;
+	private PagingHandler pagingHandler;
+
 	public TabsWidget() {
 		// tabs
 		Tab tabBasic = new Tab();
-		tabBasic.setIcon(IconType.LIST);
+		tabBasic.setIcon(IconType.ALIGN_LEFT);
 		tabBasic.setHeading(constants.tabBasic());
 		tabBasic.add(panelBasic);
 		tabBasic.addClickHandler(new ClickHandler() {
@@ -87,7 +95,7 @@ public class TabsWidget extends Composite {
 		});
 
 		Tab tabSteps = new Tab();
-		tabSteps.setIcon(IconType.LIST_ALT);
+		tabSteps.setIcon(IconType.HAND_RIGHT);
 		tabSteps.setHeading(constants.tabSteps());
 		tabSteps.add(panelSteps);
 		tabSteps.addClickHandler(new ClickHandler() {
@@ -98,7 +106,7 @@ public class TabsWidget extends Composite {
 		});
 
 		Tab tabVideo = new Tab();
-		tabVideo.setIcon(IconType.FILM);
+		tabVideo.setIcon(IconType.FACETIME_VIDEO);
 		tabVideo.setHeading(constants.tabVideo());
 		tabVideo.add(panelVideo);
 		tabVideo.addClickHandler(new ClickHandler() {
@@ -193,23 +201,35 @@ public class TabsWidget extends Composite {
 
 		// texts
 		for (TextDto text : recipe.getTexts()) {
-			panelBasic.add(new HTML(text.getContent()));
+			HTML html = new HTML(text.getContent());
+			panelBasic.add(html);
+			NodeList<Element> elementsByTagName = html.getElement().getElementsByTagName("p");
+			if (elementsByTagName.getLength() > 0) {
+				// select first
+				elementsByTagName.getItem(0).setClassName(Constants.LEAD);
+			}
 		}
 
 		// steps
 		final List<StepDto> steps = recipe.getSteps();
-		SimplePagingWidget simplePaging = new SimplePagingWidget(new PagingHandler() {
+		pagingHandler = new PagingHandler() {
 			@Override
 			public void changePage(long page) {
 				showStep(steps.get((int) page));
+				NodeList<Element> elementsByTagName = panelBasic.getWidget(0).getElement().getElementsByTagName("p");
+				for (int i=0; i < elementsByTagName.getLength(); i++) {
+					elementsByTagName.getItem(i).removeClassName(Constants.LEAD);
+				}
+				elementsByTagName.getItem((int) page).setClassName(Constants.LEAD);
 			}
-		});
+		};
+		simplePagingWidget = new SimplePagingWidget(pagingHandler);
 
 		if (!steps.isEmpty()) {
 			showStep(steps.get(0));
 			panelSteps.add(stepPanel);
-			panelSteps.add(simplePaging);
-			simplePaging.setPage(0, steps.size());
+			panelSteps.add(simplePagingWidget);
+			simplePagingWidget.setPage(0, steps.size());
 		} else if (view != null && view.equalsIgnoreCase("steps")) {
 			// no steps, show basic view
 			view = null;
@@ -295,5 +315,59 @@ public class TabsWidget extends Composite {
 		Paragraph stepContent = new Paragraph(page + ". " + step.getContent());
 		stepContent.setStyleName("stepContent");
 		stepPanel.add(stepContent);
+	}
+
+	public void performActions(List<String> actions) {
+		if (!this.isAttached()) {
+			Window.alert("new actions ignored!");
+			return;
+		}
+
+		try {
+			for (String action : actions) {
+				switch (tabsWidget.getSelectedTab()) {
+				case TAB_BASIC:
+				case TAB_STEPS:
+					if (simplePagingWidget != null && pagingHandler != null) {
+						int page = simplePagingWidget.getPage();
+						int newPage = page;
+						if (action.equalsIgnoreCase("forward") && simplePagingWidget.hasNext()) {
+							newPage = page + 1;
+						} else if (action.equalsIgnoreCase("back") && simplePagingWidget.hasPrevious()) {
+							newPage = page - 1;
+						} else {
+							return;
+						}
+
+						simplePagingWidget.setPage(newPage, simplePagingWidget.getAllCount());
+						pagingHandler.changePage(newPage);
+						if (panelBasic.getWidgetCount() > 0) {
+							NodeList<Element> elementsByTagName = panelBasic.getWidget(0).getElement().getElementsByTagName("p");
+							elementsByTagName.getItem(page).removeClassName(Constants.LEAD);
+							elementsByTagName.getItem(newPage).setClassName(Constants.LEAD);
+						}
+					}
+					break;
+				case TAB_AUDIO:
+					Widget audioWidget = panelAudio.getWidget(0);
+					if (audioWidget instanceof AudioWidget && action.equalsIgnoreCase("play")) {
+						((AudioWidget) audioWidget).play();
+					} else if (audioWidget instanceof AudioWidget && action.equalsIgnoreCase("pause")) {
+						((AudioWidget) audioWidget).pause();
+					}
+					break;
+				case TAB_VIDEO:
+					Widget videoWidget = panelVideo.getWidget(0);
+					if (videoWidget instanceof VideoWidget && action.equalsIgnoreCase("play")) {
+						((VideoWidget) videoWidget).play();
+					} else if (videoWidget instanceof VideoWidget && action.equalsIgnoreCase("pause")) {
+						((VideoWidget) videoWidget).pause();
+					}
+					break;
+				}
+			}
+		} catch (Exception e) {
+			// ignore exceptions
+		}
 	}
 }
