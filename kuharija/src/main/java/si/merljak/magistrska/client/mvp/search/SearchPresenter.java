@@ -67,14 +67,14 @@ public class SearchPresenter extends AbstractPresenter {
 
 			if (parameters.containsKey(PARAMETER_PAGE)) {
 				try {
-					long page = Long.parseLong(parameters.get(PARAMETER_PAGE));
+					int page = Integer.parseInt(parameters.get(PARAMETER_PAGE));
 					searchParameters.setPage(page);
 				} catch (Exception e) { /* ignore */ }
 			}
 
 			if (parameters.containsKey(PARAMETER_PAGE_SIZE)) {
 				try {
-					long pageSize = Long.parseLong(parameters.get(PARAMETER_PAGE_SIZE));
+					int pageSize = Integer.parseInt(parameters.get(PARAMETER_PAGE_SIZE));
 					searchParameters.setPageSize(pageSize);
 				} catch (Exception e) { /* ignore */ }
 			}
@@ -164,8 +164,8 @@ public class SearchPresenter extends AbstractPresenter {
 	 */
 	public static void doSearch(SearchParameters searchParameters) {
 		// parameters
-		Long page = searchParameters.getPage();
-		Long pageSize = searchParameters.getPageSize();
+		int page = searchParameters.getPage();
+		int pageSize = searchParameters.getPageSize();
 		String searchString = searchParameters.getSearchString();
 		Set<Difficulty> difficulties = searchParameters.getDifficulties();
 		Set<Category> categories = searchParameters.getCategories();
@@ -176,11 +176,11 @@ public class SearchPresenter extends AbstractPresenter {
 
 		Map<String, String> parametersMap = new HashMap<String, String>();
 		if (page > 1) {
-			parametersMap.put(PARAMETER_PAGE, page.toString());
+			parametersMap.put(PARAMETER_PAGE, Integer.toString(page));
 		}
 
 		if (pageSize != SearchParameters.DEFAULT_PAGE_SIZE) {
-			parametersMap.put(PARAMETER_PAGE_SIZE, pageSize.toString());
+			parametersMap.put(PARAMETER_PAGE_SIZE, Integer.toString(pageSize));
 		}
 
 		if (searchString != null) {

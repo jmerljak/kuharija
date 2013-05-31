@@ -14,6 +14,7 @@ import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 
 import com.github.gwtbootstrap.client.ui.Image;
+import com.github.gwtbootstrap.client.ui.Lead;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Tab;
 import com.github.gwtbootstrap.client.ui.TabPanel;
@@ -34,7 +35,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -77,7 +77,7 @@ public class TabsWidget extends Composite {
 	private final Element tabVideoElement;
 	private final Element tabAudioElement;
 
-	// paging handler
+	// paging widget and handler
 	private SimplePagingWidget simplePagingWidget;
 	private PagingHandler pagingHandler;
 
@@ -91,6 +91,8 @@ public class TabsWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				setAriaSelected(TAB_BASIC);
+				pauseAudio();
+				pauseVideo();
 			}
 		});
 
@@ -102,6 +104,8 @@ public class TabsWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				setAriaSelected(TAB_STEPS);
+				pauseAudio();
+				pauseVideo();
 			}
 		});
 
@@ -113,6 +117,7 @@ public class TabsWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				setAriaSelected(TAB_VIDEO);
+				pauseAudio();
 			}
 		});
 
@@ -124,6 +129,7 @@ public class TabsWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				setAriaSelected(TAB_AUDIO);
+				pauseVideo();
 			}
 		});
 
@@ -179,6 +185,7 @@ public class TabsWidget extends Composite {
 		roleTabpanel.setAriaLabelledbyProperty(panelAudioElement, Id.of(tabAudioElement));
 
 		// init widget
+		tabsWidget.getElement().setId("tabsWidget");
 		tabsWidget.add(tabBasic);
 		tabsWidget.add(tabSteps);
 		tabsWidget.add(tabVideo);
@@ -214,13 +221,13 @@ public class TabsWidget extends Composite {
 		final List<StepDto> steps = recipe.getSteps();
 		pagingHandler = new PagingHandler() {
 			@Override
-			public void changePage(long page) {
-				showStep(steps.get((int) page));
+			public void changePage(int page) {
+				showStep(steps.get(page));
 				NodeList<Element> elementsByTagName = panelBasic.getWidget(0).getElement().getElementsByTagName("p");
 				for (int i=0; i < elementsByTagName.getLength(); i++) {
 					elementsByTagName.getItem(i).removeClassName(Constants.LEAD);
 				}
-				elementsByTagName.getItem((int) page).setClassName(Constants.LEAD);
+				elementsByTagName.getItem(page).setClassName(Constants.LEAD);
 			}
 		};
 		simplePagingWidget = new SimplePagingWidget(pagingHandler);
@@ -296,7 +303,7 @@ public class TabsWidget extends Composite {
 	}
 
 	/**
-	 * Displays steps.
+	 * Displays a step.
 	 * 
 	 * @param step DTO
 	 */
@@ -312,14 +319,48 @@ public class TabsWidget extends Composite {
 			stepPanel.add(img);
 		}
 
-		Paragraph stepContent = new Paragraph(page + ". " + step.getContent());
-		stepContent.setStyleName("stepContent");
+		Lead stepContent = new Lead();
+		stepContent.setText(step.getContent());
+		stepContent.addStyleName("stepContent");
 		stepPanel.add(stepContent);
 	}
 
+	private void playAudio() {
+		Widget widget = panelAudio.getWidget(0);
+		if (widget instanceof AudioWidget) {
+			((AudioWidget) widget).play();
+		}
+	}
+
+	private void pauseAudio() {
+		Widget widget = panelAudio.getWidget(0);
+		if (widget instanceof AudioWidget) {
+			((AudioWidget) widget).pause();
+		}
+	}
+
+	private void playVideo() {
+		Widget widget = panelVideo.getWidget(0);
+		if (widget instanceof VideoWidget) {
+			((VideoWidget) widget).pause();
+		}
+	}
+
+	private void pauseVideo() {
+		Widget widget = panelVideo.getWidget(0);
+		if (widget instanceof VideoWidget) {
+			((VideoWidget) widget).pause();
+		}
+	}
+
+	/** 
+	 * Performs actions requested by the 'wizard'.
+	 * 
+	 * @param actions list of actions to perform
+	 */
 	public void performActions(List<String> actions) {
 		if (!this.isAttached()) {
-			Window.alert("new actions ignored!");
+			// ignore actions
 			return;
 		}
 
@@ -349,19 +390,17 @@ public class TabsWidget extends Composite {
 					}
 					break;
 				case TAB_AUDIO:
-					Widget audioWidget = panelAudio.getWidget(0);
-					if (audioWidget instanceof AudioWidget && action.equalsIgnoreCase("play")) {
-						((AudioWidget) audioWidget).play();
-					} else if (audioWidget instanceof AudioWidget && action.equalsIgnoreCase("pause")) {
-						((AudioWidget) audioWidget).pause();
+					if (action.equalsIgnoreCase("play")) {
+						playAudio();
+					} else if (action.equalsIgnoreCase("pause")) {
+						pauseAudio();
 					}
 					break;
 				case TAB_VIDEO:
-					Widget videoWidget = panelVideo.getWidget(0);
-					if (videoWidget instanceof VideoWidget && action.equalsIgnoreCase("play")) {
-						((VideoWidget) videoWidget).play();
-					} else if (videoWidget instanceof VideoWidget && action.equalsIgnoreCase("pause")) {
-						((VideoWidget) videoWidget).pause();
+					if (action.equalsIgnoreCase("play")) {
+						playVideo();
+					} else if (action.equalsIgnoreCase("pause")) {
+						pauseVideo();
 					}
 					break;
 				}

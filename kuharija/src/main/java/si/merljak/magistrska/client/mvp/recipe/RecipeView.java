@@ -235,7 +235,7 @@ public class RecipeView extends AbstractView {
 		appendixListPanel.clear();
 		commentsPanel.clear();
 		fluid1.setVisible(false);
-		fluid2.setVisible(true);
+		fluid2.setVisible(false);
 	}
 
 	public void performActions(List<String> actions) {

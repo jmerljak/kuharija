@@ -230,6 +230,11 @@ p.lead-home {
 	display: block;
 }
 
+.resultEntry label.checkbox {
+	font-style: italic;
+	margin-top: 5px;
+}
+
 div#filtersPanel {
 }
 
@@ -353,6 +358,22 @@ div#filtersPanel {
 #numOfMealsInput input[type=text] {
 	max-width: 3em;
 	text-align: right;
+}
+
+#tabsWidget .nav {
+	margin-bottom: 0;
+}
+
+#tabsWidget .tab-content {
+	background-color: white;
+	border: 1px solid #DDDDDD;
+	border-top: none;
+	min-height: 100px;
+	padding: 15px;
+	-moz-box-shadow: 5px 5px 10px #DDDDDD;
+	-webkit-box-shadow: 5px 5px 10px #DDDDDD;
+	box-shadow: 5px 5px 10px #DDDDDD;
+	margin-bottom: 10px;
 }
 
 p.stepContent {

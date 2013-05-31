@@ -1,20 +1,12 @@
 package si.merljak.magistrska.client.mvp.mock;
 
-import java.util.List;
 import java.util.Map;
 
-import si.merljak.magistrska.client.event.ActionEvent;
-import si.merljak.magistrska.client.event.LoginEvent;
-import si.merljak.magistrska.client.event.LoginEventHandler;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
 import si.merljak.magistrska.client.mvp.home.HomePresenter;
 import si.merljak.magistrska.common.enumeration.Language;
-import si.merljak.magistrska.common.rpc.mock.WOzService;
 import si.merljak.magistrska.common.rpc.mock.WOzServiceAsync;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,59 +16,26 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Jakob Merljak
  * 
  */
-public class WizardControlsPresenter extends AbstractPresenter implements LoginEventHandler {
+public class WizardControlsPresenter extends AbstractPresenter {
 
 	// screen name
 	public static final String SCREEN_NAME = "wizard";
 
 	// remote service
-	private final WOzServiceAsync wozService = GWT.create(WOzService.class);
-
-	// event bus
-	private final EventBus eventBus;
+	private final WOzServiceAsync wozService;
 
 	// view
-	private WizardControlsView view;
+	private WizardControlsView view = new WizardControlsView();
 
-	private final Timer timer;
-
-	public WizardControlsPresenter(Language language, EventBus eventBus) {
+	public WizardControlsPresenter(Language language, WOzServiceAsync wozService) {
 		super(language);
-		this.eventBus = eventBus;
-
-		view = new WizardControlsView();
+		this.wozService = wozService;
 		view.setPresenter(this);
-
-		timer = new Timer() {
-			@Override
-			public void run() {
-				getActions();
-			}
-		};
-
-		eventBus.addHandler(LoginEvent.TYPE, this);
 	}
 
 	@Override
 	public Widget parseParameters(Map<String, String> parameters) {
 		return view.asWidget();
-	}
-
-	private void getActions() {
-		wozService.getActions(new AsyncCallback<List<String>>() {
-			@Override
-			public void onSuccess(List<String> actions) {
-				if (actions != null && !actions.isEmpty()) {
-					eventBus.fireEvent(new ActionEvent(actions));
-					view.displayActions(actions);
-				}
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// do nothing
-			}
-		});
 	}
 
 	public void setAction(String action) {
@@ -88,7 +47,7 @@ public class WizardControlsPresenter extends AbstractPresenter implements LoginE
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				// ignore
 			}
 		});
 	}
@@ -101,14 +60,5 @@ public class WizardControlsPresenter extends AbstractPresenter implements LoginE
 	@Override
 	public String getParentName() {
 		return HomePresenter.SCREEN_NAME;
-	}
-
-	@Override
-	public void onLogin(LoginEvent event) {
-		if (event.getUser() != null) {
-			timer.scheduleRepeating(2500);
-		} else {
-			timer.cancel();
-		}
 	}
 }

@@ -44,8 +44,8 @@ public class PagingWidget extends Composite {
 	private final IconAnchor lastPageAnchor = new IconAnchor();
 
 	// variables
-	private long page = 1;
-	private long allPages = 1;
+	private int page = 1;
+	private int allPages = 1;
 
 	public PagingWidget(PagingHandler pagingHandler) {
 		this.handler = pagingHandler;
@@ -80,7 +80,7 @@ public class PagingWidget extends Composite {
 			public void onKeyUp(KeyUpEvent event) {
 				if (handler != null && event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 					try {
-						long newPage = Long.parseLong(pageBox.getText());
+						int newPage = Integer.parseInt(pageBox.getText());
 						if (newPage > allPages) {
 							newPage = allPages;
 						} else if (newPage < 1) {
@@ -115,7 +115,7 @@ public class PagingWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (handler != null) {
-					handler.changePage(allPages);
+					handler.changePage((int) allPages);
 				}
 			}
 		});
@@ -141,7 +141,7 @@ public class PagingWidget extends Composite {
 	 * @param allCount all results count (regardless page size)
 	 * 
 	 */
-	public void setPage(long page, long pageSize, long allCount) {
+	public void setPage(int page, int pageSize, int allCount) {
 		this.page = page;
 		this.allPages = (allCount - 1) / pageSize + 1;
 

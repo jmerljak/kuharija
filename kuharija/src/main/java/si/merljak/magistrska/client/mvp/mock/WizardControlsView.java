@@ -1,8 +1,5 @@
 package si.merljak.magistrska.client.mvp.mock;
 
-import java.util.Date;
-import java.util.List;
-
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.mvp.AbstractView;
 
@@ -15,7 +12,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -26,7 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class WizardControlsView extends AbstractView {
 
-	private final FlowPanel controlsFeedback = new FlowPanel();
+	// presenter
 	private WizardControlsPresenter presenter;
 
 	public WizardControlsView() {
@@ -78,21 +74,11 @@ public class WizardControlsView extends AbstractView {
 		main.add(buttonPlay);
 		main.add(new InlineLabel(" "));
 		main.add(buttonNext);
-		main.add(controlsFeedback);
 		initWidget(main);
 	}
 
 	void setPresenter(WizardControlsPresenter presenter) {
 		this.presenter = presenter;
-	}
-
-	public void displayActions(List<String> actions) {
-		// show feedback
-		controlsFeedback.clear();
-		controlsFeedback.add(new Label(Kuharija.timestampFormat.format(new Date())));
-		for (String action : actions) {
-			controlsFeedback.add(new Label(action));
-		}
 	}
 
 	@Override

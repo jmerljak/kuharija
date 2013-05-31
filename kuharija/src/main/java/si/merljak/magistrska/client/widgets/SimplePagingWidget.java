@@ -4,7 +4,8 @@ import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.handler.PagingHandler;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 
-import com.github.gwtbootstrap.client.ui.base.IconAnchor;
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
@@ -15,8 +16,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 /**
- * Simple paging widget.
- * TODO this is temporary solution!!!
+ * Simple paging widget (just back and forward).
  * 
  * @author Jakob Merljak
  * 
@@ -30,18 +30,17 @@ public class SimplePagingWidget extends Composite {
 	private PagingHandler handler;
 
 	// widgets
-	private final IconAnchor previousPageAnchor = new IconAnchor();
-	private final IconAnchor nextPageAnchor = new IconAnchor();
+	private final Button previousPageAnchor = new Button();
+	private final Button nextPageAnchor = new Button();
 
 	// variables
 	private int page = 0;
-	private long allPages = 1;
+	private int allPages = 1;
 
 	public SimplePagingWidget(PagingHandler pagingHandler) {
 		this.handler = pagingHandler;
 
-		previousPageAnchor.setStyleName(Constants.BTN);
-		previousPageAnchor.setIcon(IconType.STEP_BACKWARD);
+		previousPageAnchor.setIcon(IconType.CHEVRON_LEFT);
 		previousPageAnchor.setText(constants.stepPrevious());
 		previousPageAnchor.addClickHandler(new ClickHandler() {
 			@Override
@@ -53,9 +52,9 @@ public class SimplePagingWidget extends Composite {
 			}
 		});
 
-		nextPageAnchor.setStyleName(Constants.BTN);
-		nextPageAnchor.setIcon(IconType.STEP_FORWARD);
+		nextPageAnchor.setIcon(IconType.CHEVRON_RIGHT);
 		nextPageAnchor.setIconPosition(IconPosition.RIGHT);
+		nextPageAnchor.setType(ButtonType.SUCCESS);
 		nextPageAnchor.setText(constants.stepNext());
 		nextPageAnchor.addClickHandler(new ClickHandler() {
 			@Override
@@ -82,7 +81,7 @@ public class SimplePagingWidget extends Composite {
 	 * @param allCount all results count (regardless page size)
 	 * 
 	 */
-	public void setPage(int page, long allCount) {
+	public void setPage(int page, int allCount) {
 		this.page = page;
 		this.allPages = allCount;
 
@@ -117,7 +116,7 @@ public class SimplePagingWidget extends Composite {
 		return page;
 	}
 
-	public long getAllCount() {
+	public int getAllCount() {
 		return allPages;
 	}
 }

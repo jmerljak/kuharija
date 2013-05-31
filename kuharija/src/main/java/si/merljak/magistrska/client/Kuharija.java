@@ -40,6 +40,8 @@ import si.merljak.magistrska.common.rpc.UserService;
 import si.merljak.magistrska.common.rpc.UserServiceAsync;
 import si.merljak.magistrska.common.rpc.UtensilService;
 import si.merljak.magistrska.common.rpc.UtensilServiceAsync;
+import si.merljak.magistrska.common.rpc.mock.WOzService;
+import si.merljak.magistrska.common.rpc.mock.WOzServiceAsync;
 
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
@@ -87,6 +89,7 @@ public class Kuharija implements EntryPoint {
 	private static final UserServiceAsync userService = GWT.create(UserService.class);
 	private static final UtensilServiceAsync utensilService = GWT.create(UtensilService.class);
 	private static final RecommendationServiceAsync recommendationService = GWT.create(RecommendationService.class);
+	private static final WOzServiceAsync wOzService = GWT.create(WOzService.class);
 
 	// i18n
 	public static final CommonConstants constants = GWT.create(CommonConstants.class);
@@ -143,14 +146,14 @@ public class Kuharija implements EntryPoint {
 		presenters.put(IngredientPresenter.SCREEN_NAME, new IngredientPresenter(language, ingredientService));
 		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, utensilService));
 		presenters.put(UtensilIndexPresenter.SCREEN_NAME, new UtensilIndexPresenter(language));
-		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, eventBus));
+		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, wOzService, eventBus));
 		presenters.put(RecipeIndexPresenter.SCREEN_NAME, new RecipeIndexPresenter(language));
 		presenters.put(SearchPresenter.SCREEN_NAME, new SearchPresenter(language, searchService));
 		presenters.put(ComparePresenter.SCREEN_NAME, new ComparePresenter(language, recipeService));
 		presenters.put(LoginPresenter.SCREEN_NAME, loginPresenter);
 		presenters.put(HomePresenter.SCREEN_NAME, new HomePresenter(language, recommendationService, eventBus));
 		presenters.put(NotFoundPresenter.SCREEN_NAME, new NotFoundPresenter(language));
-		presenters.put(WizardControlsPresenter.SCREEN_NAME, new WizardControlsPresenter(language, eventBus));
+		presenters.put(WizardControlsPresenter.SCREEN_NAME, new WizardControlsPresenter(language, wOzService));
 
 		MainMenuWidget mainMenu = new MainMenuWidget(loginPresenter, eventBus);
 		navPanel.add(mainMenu);

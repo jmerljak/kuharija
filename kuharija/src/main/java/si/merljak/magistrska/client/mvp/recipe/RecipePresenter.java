@@ -1,10 +1,9 @@
 package si.merljak.magistrska.client.mvp.recipe;
 
+import java.util.List;
 import java.util.Map;
 
 import si.merljak.magistrska.client.Kuharija;
-import si.merljak.magistrska.client.event.ActionEvent;
-import si.merljak.magistrska.client.event.ActionEventHandler;
 import si.merljak.magistrska.client.event.LoginEvent;
 import si.merljak.magistrska.client.event.LoginEventHandler;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
@@ -12,8 +11,10 @@ import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.dto.UserDto;
 import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.rpc.RecipeServiceAsync;
+import si.merljak.magistrska.common.rpc.mock.WOzServiceAsync;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -23,7 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Jakob Merljak
  * 
  */
-public class RecipePresenter extends AbstractPresenter implements LoginEventHandler, ActionEventHandler {
+public class RecipePresenter extends AbstractPresenter implements LoginEventHandler {
 
 	// screen and parameters name
 	public static final String SCREEN_NAME = "recipe";
@@ -32,6 +33,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 
 	// remote service
 	private final RecipeServiceAsync recipeService;
+	private final WOzServiceAsync wozService;
 
 	// view
 	private final RecipeView recipeView = new RecipeView();
@@ -41,11 +43,26 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 	private UserDto user;
 	private Map<String, String> userPreferences = null;
 
-	public RecipePresenter(Language language, RecipeServiceAsync recipeService, EventBus eventBus) {
+	// timer (WOz)
+	private final Timer timer;
+
+	public RecipePresenter(Language language, RecipeServiceAsync recipeService, WOzServiceAsync wozService, EventBus eventBus) {
 		super(language);
 		this.recipeService = recipeService;
+		this.wozService = wozService;
 		eventBus.addHandler(LoginEvent.TYPE, this);
-		eventBus.addHandler(ActionEvent.TYPE, this);
+
+		
+		timer = new Timer() {
+			@Override
+			public void run() {
+				if (recipeView.isAttached()) {
+					getActions();
+				} else {
+					timer.cancel();
+				}
+			}
+		};
 	}
 
 	@Override
@@ -61,6 +78,10 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 			recipeView.setVisible(false);
 			recipeView.displayRecipe(null, null);
 			recipeView.setVisible(true);
+		}
+
+		if (user != null) {
+			timer.scheduleRepeating(2500);
 		}
 		return recipeView.asWidget();
 	}
@@ -160,15 +181,29 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 
 		if (user != null && user.getPreferences() != null) {
 			userPreferences = Kuharija.keyValueSplitter.split(user.getPreferences());
+			if (recipeView.isAttached()) {
+				timer.scheduleRepeating(2500);
+			}
 		} else {
 			userPreferences = null;
+			timer.cancel();
 		}
 	}
 
-	@Override
-	public void onAction(ActionEvent event) {
-		recipeView.performActions(event.getActions());
-		
+	private void getActions() {
+		wozService.getActions(new AsyncCallback<List<String>>() {
+			@Override
+			public void onSuccess(List<String> actions) {
+				if (actions != null && !actions.isEmpty()) {
+					recipeView.performActions(actions);
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// do nothing
+			}
+		});
 	}
 
 	@Override

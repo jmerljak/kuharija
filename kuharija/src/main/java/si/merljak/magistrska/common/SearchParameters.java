@@ -14,11 +14,11 @@ public class SearchParameters implements Serializable {
 
 	private static final long serialVersionUID = 2817702799360224889L;
 
-	public static final long DEFAULT_PAGE_SIZE = 8L;
+	public static final int DEFAULT_PAGE_SIZE = 8;
 	public static final RecipeSortKey DEFAULT_SORT_KEY = RecipeSortKey.ID;
 
-	private long page = 1;
-	private long pageSize = DEFAULT_PAGE_SIZE;
+	private int page = 1;
+	private int pageSize = DEFAULT_PAGE_SIZE;
 	private String searchString;
 	private Set<Difficulty> difficulties = new HashSet<Difficulty>(0);
 	private Set<Category> categories = new HashSet<Category>(0);
@@ -35,7 +35,7 @@ public class SearchParameters implements Serializable {
 		this.language = language;
 	}
 
-	public SearchParameters(String searchString, Language language, long pageSize) {
+	public SearchParameters(String searchString, Language language, int pageSize) {
 		this.searchString = searchString;
 		this.language = language;
 		setPageSize(pageSize);
@@ -49,19 +49,19 @@ public class SearchParameters implements Serializable {
 		this.searchString = searchString;
 	}
 
-	public long getPage() {
+	public int getPage() {
 		return page;
 	}
 
-	public void setPage(long page) {
+	public void setPage(int page) {
 		this.page = page > 0 ? page : 1;
 	}
 
-	public long getPageSize() {
+	public int getPageSize() {
 		return pageSize;
 	}
 
-	public void setPageSize(long pageSize) {
+	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize > 0 ? pageSize : DEFAULT_PAGE_SIZE;
 	}
 

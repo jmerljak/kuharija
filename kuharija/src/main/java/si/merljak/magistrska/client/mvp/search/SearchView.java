@@ -32,6 +32,8 @@ import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.RadioButton;
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
+import com.github.gwtbootstrap.client.ui.base.ListItem;
+import com.github.gwtbootstrap.client.ui.base.UnorderedList;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconPosition;
@@ -90,7 +92,10 @@ public class SearchView extends AbstractView implements PagingHandler {
 	private final Label labelSortBy = new Label(constants.sortBy());
 	private final FlowPanel sortPanel = new FlowPanel();
 
-	private final FlowPanel resultsPanel = new FlowPanel();
+	private final FlowPanel resultsLexiconPanel = new FlowPanel();
+	private final UnorderedList resultsLexiconList = new UnorderedList();
+
+	private final FlowPanel resultsRecipePanel = new FlowPanel();
 	private final PagingWidget pagingWidget = new PagingWidget(this);
 	private final Button compareLink = new Button(constants.recipeCompare());
 
@@ -124,7 +129,6 @@ public class SearchView extends AbstractView implements PagingHandler {
 
 		// filters
 		filtersToggle.setStyleName(Constants.BTN);
-		filtersToggle.addStyleName(ButtonType.LINK.get());
 		filtersToggle.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -208,7 +212,11 @@ public class SearchView extends AbstractView implements PagingHandler {
 			}
 		});
 
-		compareLink.setIcon(IconType.SHARE_ALT);
+		// results panels
+		resultsLexiconPanel.add(new InlineLabel(messages.haveYouSearchedFor()));
+		resultsLexiconPanel.add(resultsLexiconList);
+
+		compareLink.setIcon(IconType.CHEVRON_RIGHT);
 		compareLink.setIconPosition(IconPosition.RIGHT);
 		compareLink.setType(ButtonType.SUCCESS);
 		compareLink.addStyleName(Constants.DISABLED);
@@ -229,7 +237,8 @@ public class SearchView extends AbstractView implements PagingHandler {
 		main.add(labelAdvancedSearch);
 		main.add(filtersToggle);
 		main.add(filtersPanel);
-		main.add(resultsPanel);
+		main.add(resultsLexiconPanel);
+		main.add(resultsRecipePanel);
 		main.add(pagingWidget);
 		main.add(compareLink);
 		initWidget(main);
@@ -256,15 +265,15 @@ public class SearchView extends AbstractView implements PagingHandler {
 		clearSearchResults();
 		Heading headingResults = new Heading(HEADING_SIZE + 1, constants.searchResults());
 		headingResults.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
-		resultsPanel.add(headingResults);
-		resultsPanel.add(sortPanel);
+		resultsRecipePanel.add(headingResults);
+		resultsRecipePanel.add(sortPanel);
 
 		setSearchParameters(parameters);
 		searchForIngredientOrUtensil(parameters.getSearchString());
 
 		List<RecipeDto> recipes = results.getRecipes();
 		if (recipes.isEmpty()) {
-			resultsPanel.add(new Label(constants.searchNoResults()));
+			resultsRecipePanel.add(new Label(constants.searchNoResults()));
 		}
 		final boolean isComparePossible = recipes.size() > 1;
 		compareLink.setVisible(isComparePossible);
@@ -318,37 +327,42 @@ public class SearchView extends AbstractView implements PagingHandler {
 				resultEntry.add(checkbox);
 			}
 
-			resultsPanel.add(resultEntry);
+			resultsRecipePanel.add(resultEntry);
 		}
 
 		// paging
-		pagingWidget.setPage(searchParameters.getPage(), searchParameters.getPageSize(), results.getAllCount());
+		pagingWidget.setPage(searchParameters.getPage(), searchParameters.getPageSize(), (int) results.getAllCount());
 		pagingWidget.setVisible(results.getAllCount() > 0);
 	}
 
 	private void searchForIngredientOrUtensil(String searchString) {
 		if (searchString == null || searchString.length() < 3) {
+			// skip very short words
 			return;
 		}
 
 		// search for ingredient by key word
 		if (ingredientInverseMap.containsKey(searchString)) {
-			resultsPanel.add(new Anchor(searchString, IngredientPresenter.buildIngredientUrl(ingredientInverseMap.get(searchString))));
+			resultsLexiconList.add(new ListItem(new Anchor(searchString, IngredientPresenter.buildIngredientUrl(ingredientInverseMap.get(searchString)))));
+			resultsLexiconPanel.setVisible(true);
 		} else {
 			for (String key : ingredientInverseMap.keySet()) {
 				if (key.toLowerCase().contains(searchString.toLowerCase())) {
-					resultsPanel.add(new Anchor(key, IngredientPresenter.buildIngredientUrl(ingredientInverseMap.get(key))));
+					resultsLexiconList.add(new ListItem(new Anchor(key, IngredientPresenter.buildIngredientUrl(ingredientInverseMap.get(key)))));
+					resultsLexiconPanel.setVisible(true);
 				}
 			}
 		}
 
 		// search for ingredient by key word
 		if (utensilInverseMap.containsKey(searchString)) {
-			resultsPanel.add(new Anchor(searchString, UtensilPresenter.buildUtensilUrl(utensilInverseMap.get(searchString))));
+			resultsLexiconList.add(new ListItem(new Anchor(searchString, UtensilPresenter.buildUtensilUrl(utensilInverseMap.get(searchString)))));
+			resultsLexiconPanel.setVisible(true);
 		} else {
 			for (String key : utensilInverseMap.keySet()) {
 				if (key.toLowerCase().contains(searchString.toLowerCase())) {
-					resultsPanel.add(new Anchor(key, UtensilPresenter.buildUtensilUrl(utensilInverseMap.get(key))));
+					resultsLexiconList.add(new ListItem(new Anchor(key, UtensilPresenter.buildUtensilUrl(utensilInverseMap.get(key)))));
+					resultsLexiconPanel.setVisible(true);
 				}
 			}
 		}
@@ -543,13 +557,15 @@ public class SearchView extends AbstractView implements PagingHandler {
 		filtersPanel.clear();
 		filtersPanel.setVisible(false);
 		sortPanel.clear();
-		resultsPanel.clear();
+		resultsLexiconPanel.setVisible(false);
+		resultsLexiconList.clear();
+		resultsRecipePanel.clear();
 		pagingWidget.setVisible(false);
 		compareLink.setVisible(false);
 	}
 
 	@Override
-	public void changePage(long page) {
+	public void changePage(int page) {
 		searchParameters.setPage(page);
 		doSearch();
 	}
