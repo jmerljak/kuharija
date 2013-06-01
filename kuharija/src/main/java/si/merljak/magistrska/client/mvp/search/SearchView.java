@@ -24,24 +24,31 @@ import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 
+import com.github.gwtbootstrap.client.ui.AppendButton;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.CheckBox;
+import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Emphasis;
+import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.ListBox;
+import com.github.gwtbootstrap.client.ui.Typeahead;
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.base.UnorderedList;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
+import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
 import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.gwt.aria.client.InvalidValue;
+import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -49,13 +56,16 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -76,11 +86,13 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 	private final Map<String, String> sortKeyMap = constants.sortKeyMap();
 
 	// widgets
-	private final FlowPanel searchPanel = new FlowPanel();
 	private final SearchWidget searchWidget = new SearchWidget(this);
+	private final FlowPanel searchPanel = new FlowPanel();
 
-	private final FlowPanel resultsMain = new FlowPanel();
-	private final FlowPanel resultsLexicon = new FlowPanel();
+	private final Heading headingResults;
+	private final FluidRow resultsPanel = new FluidRow();
+	private final Column resultsMain = new Column(10);
+	private final Column resultsLexicon = new Column(2);
 	private final FlowPanel resultsRecipes = new FlowPanel();
 	private final FlowPanel resultsUtensils = new FlowPanel();
 	private final FlowPanel resultsIngredients = new FlowPanel();
@@ -89,19 +101,21 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 
 	private final FlowPanel sortPanel = new FlowPanel();
 	private final ListBox sortListBox = new ListBox();
-	
-	// TODO cleanup
-	private final com.google.gwt.user.client.ui.Button filtersToggle = new com.google.gwt.user.client.ui.Button();
-	private final FlowPanel filtersPanel = new FlowPanel();
 
-	private final Label labelDifficulty = new Label(constants.difficulty());
-	private final Label labelCategories = new Label(constants.categories());
-	private final Label labelSeasons = new Label(constants.seasons());
-	private final Label labelIngredients = new Label(constants.ingredients());
-	private final Label labelUtensils = new Label(constants.utensils());
+	private final FluidRow filtersPanel = new FluidRow();
+	private final ListBox filterDifficulty = new ListBox(true);
+	private final ListBox filterCategory = new ListBox(true);
+	private final ListBox filterSeason = new ListBox(true);
+	private final FlowPanel filterIngredient = new FlowPanel();
+	
+	// TODO should be real buttons (not bootstrap's "buttons" = links), using it for convenience
+	private final Button filtersShowButton = new Button(constants.searchAdvanced() + " ");
+	private final Button filtersHideButton = new Button(constants.searchBasic() + " ");
 
 	private SuggestBox ingredientSuggest;
-	private SuggestBox utensilSuggest;
+	private final AppendButton ingredientSuggestForm = new AppendButton();
+	private final Button ingredientAdd = new Button();
+	private Typeahead ingredientSuggest2;
 
 	private final PagingWidget pagingWidget = new PagingWidget(this);
 	private final Button compareLink = new Button(constants.recipeCompare());
@@ -113,7 +127,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 	public SearchView () {
 		// headings
 		Heading heading = new Heading(HEADING_SIZE, constants.search());
-		Heading headingResults = new Heading(HEADING_SIZE + 1, constants.searchResults());
+		headingResults = new Heading(HEADING_SIZE + 1, constants.searchResults());
 		Heading headingRecipes = new Heading(HEADING_SIZE + 2, constants.recipes());
 		Heading headingLexicon = new Heading(HEADING_SIZE + 2, constants.lexicon());
 		Heading headingIngredients = new Heading(HEADING_SIZE + 3, constants.ingredients());
@@ -121,11 +135,188 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		headingResults.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
 		headingLexicon.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
 
-		// search panel
-		searchPanel.setStyleName("searchPanel");
-		searchPanel.add(searchWidget);
-		searchPanel.add(filtersToggle);
-		searchPanel.add(filtersPanel);
+		// filters
+		filtersShowButton.setType(ButtonType.LINK);
+		filtersShowButton.setIcon(IconType.CHEVRON_DOWN);
+		filtersShowButton.setIconPosition(IconPosition.RIGHT);
+		filtersShowButton.setTitle(constants.searchToggleInfo());
+		filtersShowButton.getElement().setId("filtersShowButton");
+		filtersShowButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				filtersShowButton.setVisible(false);
+				filtersPanel.setVisible(true);
+				filtersHideButton.setVisible(true);
+			}
+		});
+
+		filtersHideButton.setType(ButtonType.LINK);
+		filtersHideButton.setIcon(IconType.CHEVRON_UP);
+		filtersHideButton.setIconPosition(IconPosition.RIGHT);
+		filtersHideButton.setTitle(constants.searchToggleInfo());
+		filtersHideButton.getElement().setId("filtersHideButton");
+		filtersHideButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				searchParameters = new SearchParameters(null, null);
+				filtersPanel.setVisible(false);
+				filtersHideButton.setVisible(false);
+				filtersShowButton.setVisible(true);
+				doSearch();
+			}
+		});
+
+		Label labelDifficulty = new Label(constants.difficulty());
+		labelDifficulty.setStyleName("filterLabel");
+		filterDifficulty.setSize(8);
+		filterDifficulty.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+//				boolean clear = filterDifficulty.isItemSelected(0);
+				for (int i=0/*1*/; i < filterDifficulty.getItemCount(); i++) {
+					Difficulty difficulty = Difficulty.valueOf(filterDifficulty.getValue(i));
+					if (/*!clear &&*/ filterDifficulty.isItemSelected(i)) {
+						searchParameters.addDifficulty(difficulty);
+					} else {
+						searchParameters.removeDifficulty(difficulty);
+//						filterDifficulty.setItemSelected(i, false);
+					}
+					searchParameters.setPage(1);
+				}
+			}
+		});
+		Column filterPanelDifficulty = new Column(3);
+		filterPanelDifficulty.add(labelDifficulty);
+		filterPanelDifficulty.add(filterDifficulty);
+
+		Label labelCategories = new Label(constants.categories());
+		labelCategories.setStyleName("filterLabel");
+		filterCategory.setSize(8);
+		filterCategory.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+//				boolean clear = filterCategory.isItemSelected(0);
+				for (int i=0/*1*/; i < filterCategory.getItemCount(); i++) {
+					Category category = Category.valueOf(filterCategory.getValue(i));
+					if (/*!clear &&*/ filterCategory.isItemSelected(i)) {
+						searchParameters.addCategory(category);
+					} else {
+						searchParameters.removeCategory(category);
+//						filterCategory.setItemSelected(i, false);
+					}
+					searchParameters.setPage(1);
+				}
+			}
+		});
+		Column filterPanelCategories = new Column(3);
+		filterPanelCategories.add(labelCategories);
+		filterPanelCategories.add(filterCategory);
+
+		Label labelSeasons = new Label(constants.seasons());
+		labelSeasons.setStyleName("filterLabel");
+		filterSeason.setSize(8);
+		filterSeason.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+//				boolean clear = filterSeason.isItemSelected(0);
+				for (int i=0/*1*/; i < filterSeason.getItemCount(); i++) {
+					Season season = Season.valueOf(filterSeason.getValue(i));
+					if (/*!clear &&*/ filterSeason.isItemSelected(i)) {
+						searchParameters.addSeason(season);
+					} else {
+						searchParameters.removeSeason(season);
+//						filterSeason.setItemSelected(i, false);
+					}
+					searchParameters.setPage(1);
+				}
+			}
+		});
+		Column filterPanelSeasons = new Column(3);
+		filterPanelSeasons.add(labelSeasons);
+		filterPanelSeasons.add(filterSeason);
+
+		// suggest boxes
+		MultiWordSuggestOracle ingredientSuggestOracle = new MultiWordSuggestOracle();
+		ingredientSuggestOracle.addAll(ingredientInverseMap.keySet());
+		ingredientSuggest = new SuggestBox(ingredientSuggestOracle);
+		ingredientSuggest.getElement().setPropertyString("placeholder", constants.searchAndAddIngredient());
+		ingredientSuggest.setStyleName(Constants.SPAN + 8);
+		ingredientSuggest.addKeyUpHandler(new KeyUpHandler() {
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				String value = ingredientSuggest.getValue();
+				if (ingredientInverseMap.containsKey(value)) {
+					ingredientSuggestForm.removeStyleName(ControlGroupType.ERROR.get());
+					ingredientSuggestForm.addStyleName(ControlGroupType.SUCCESS.get());
+					Roles.getTextboxRole().setAriaInvalidState(ingredientSuggest.getElement(), InvalidValue.FALSE);
+					if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+						searchParameters.addIngredient(ingredientInverseMap.get(value));
+						doSearch();
+					}
+				} else {
+					// show error
+					ingredientSuggestForm.addStyleName(ControlGroupType.ERROR.get());
+					ingredientSuggestForm.removeStyleName(ControlGroupType.SUCCESS.get());
+					Roles.getTextboxRole().setAriaInvalidState(ingredientSuggest.getElement(), InvalidValue.TRUE);
+				}
+			}
+		});
+		ingredientSuggest.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+			@Override
+			public void onSelection(SelectionEvent<Suggestion> event) {
+				String value = event.getSelectedItem().getReplacementString();
+				if (ingredientInverseMap.containsKey(value)) {
+					ingredientSuggestForm.removeStyleName(ControlGroupType.ERROR.get());
+					ingredientSuggestForm.addStyleName(ControlGroupType.SUCCESS.get());
+					Roles.getTextboxRole().setAriaInvalidState(ingredientSuggest.getElement(), InvalidValue.FALSE);
+					searchParameters.addIngredient(ingredientInverseMap.get(value));
+					doSearch();
+				} else {
+					// show error
+					ingredientSuggestForm.addStyleName(ControlGroupType.ERROR.get());
+					ingredientSuggestForm.removeStyleName(ControlGroupType.SUCCESS.get());
+					Roles.getTextboxRole().setAriaInvalidState(ingredientSuggest.getElement(), InvalidValue.TRUE);
+				}
+			}
+		});
+
+		ingredientAdd.setIcon(IconType.OK);
+		ingredientAdd.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				String value = ingredientSuggest.getValue();
+				if (ingredientInverseMap.containsKey(value)) {
+					ingredientSuggestForm.removeStyleName(ControlGroupType.ERROR.get());
+					ingredientSuggestForm.addStyleName(ControlGroupType.SUCCESS.get());
+					Roles.getTextboxRole().setAriaInvalidState(ingredientSuggest.getElement(), InvalidValue.FALSE);
+					searchParameters.addIngredient(ingredientInverseMap.get(value));
+					doSearch();
+				} else {
+					ingredientSuggestForm.addStyleName(ControlGroupType.ERROR.get());
+					ingredientSuggestForm.removeStyleName(ControlGroupType.SUCCESS.get());
+					Roles.getTextboxRole().setAriaInvalidState(ingredientSuggest.getElement(), InvalidValue.TRUE);
+				}
+			}
+		});
+
+		Label labelIngredients = new Label(constants.ingredients());
+		labelIngredients.setStyleName("filterLabel");
+
+		ingredientSuggestForm.addStyleName(Constants.CONTROL_GROUP);
+		ingredientSuggestForm.add(ingredientSuggest);
+		ingredientSuggestForm.add(ingredientAdd);
+		
+
+		Column filterIngredients = new Column(3);
+		filterIngredients.add(labelIngredients);
+		filterIngredients.add(filterIngredient);
+		filterIngredients.add(ingredientSuggestForm);
+
+		filtersPanel.addStyleName("filtersPanel");
+		filtersPanel.add(filterPanelDifficulty);
+		filtersPanel.add(filterPanelCategories);
+		filtersPanel.add(filterPanelSeasons);
+		filtersPanel.add(filterIngredients);
 
 		// sort
 		for (RecipeSortKey key : RecipeSortKey.values()) {
@@ -146,7 +337,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		sortPanel.add(new InlineLabel(constants.sortBy()));
 		sortPanel.add(sortListBox);
 		sortPanel.add(compareLink);
-
+		
 		// compare link
 		compareLink.setIcon(IconType.CHEVRON_RIGHT);
 		compareLink.setIconPosition(IconPosition.RIGHT);
@@ -162,101 +353,24 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 			}
 		});
 
-		// filters
-		filtersToggle.setStyleName(Constants.BTN);
-		filtersToggle.addStyleName(ButtonType.LINK.get());
-		filtersToggle.setTitle(constants.searchToggleInfo());
-		filtersToggle.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				if (filtersPanel.isVisible()) {
-					searchParameters = new SearchParameters(null, null);
-					filtersPanel.setVisible(false);
-					filtersToggle.setText(constants.searchAdvanced());
-					doSearch();
-				} else {
-					filtersPanel.setVisible(true);
-					filtersToggle.setText(constants.searchBasic());
-				}
-			}
-		});
+		// search panel
+		SimplePanel searchWidgetHolder = new SimplePanel(searchWidget);
+		searchWidgetHolder.setStyleName("searchWidgetHolder");
+		searchWidget.setLarge(true);
 
-		labelDifficulty.setStyleName("filterLabel");
-		labelCategories.setStyleName("filterLabel");
-		labelSeasons.setStyleName("filterLabel");
-		labelIngredients.setStyleName("filterLabel");
-		labelUtensils.setStyleName("filterLabel");
-		filtersPanel.getElement().setId("filtersPanel");
+		searchPanel.setStyleName("searchPanel");
+		searchPanel.add(searchWidgetHolder);
+		searchPanel.add(filtersShowButton);
+		searchPanel.add(filtersPanel);
+		searchPanel.add(filtersHideButton);
 
-		// suggest boxes
-		MultiWordSuggestOracle utensilSuggestOracle = new MultiWordSuggestOracle();
-		utensilSuggestOracle.addAll(utensilInverseMap.keySet());
-		utensilSuggest = new SuggestBox(utensilSuggestOracle);
-		utensilSuggest.getElement().setPropertyString("placeholder", constants.searchAndAddUtensil());
-		utensilSuggest.addKeyUpHandler(new KeyUpHandler() {
-			@Override
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					String value = utensilSuggest.getValue();
-					if (utensilInverseMap.containsKey(value)) {
-						searchParameters.addUtensil(utensilInverseMap.get(value));
-						doSearch();
-					} else {
-						// TODO show error
-					}
-				}
-			}
-		});
-		utensilSuggest.addValueChangeHandler(new ValueChangeHandler<String>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				String value = event.getValue();
-				if (utensilInverseMap.containsKey(value)) {
-					searchParameters.addUtensil(utensilInverseMap.get(value));
-					doSearch();
-				}
-			}
-		});
-
-		MultiWordSuggestOracle ingredientSuggestOracle = new MultiWordSuggestOracle();
-		ingredientSuggestOracle.addAll(ingredientInverseMap.keySet());
-		ingredientSuggest = new SuggestBox(ingredientSuggestOracle);
-		ingredientSuggest.getElement().setPropertyString("placeholder", constants.searchAndAddIngredient());
-		ingredientSuggest.addKeyUpHandler(new KeyUpHandler() {
-			@Override
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					String value = ingredientSuggest.getValue();
-					if (ingredientInverseMap.containsKey(value)) {
-						searchParameters.addIngredient(ingredientInverseMap.get(value));
-						doSearch();
-					} else {
-						// TODO show error
-					}
-				}
-			}
-		});
-		ingredientSuggest.addValueChangeHandler(new ValueChangeHandler<String>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				String value = event.getValue();
-				if (ingredientInverseMap.containsKey(value)) {
-					searchParameters.addIngredient(ingredientInverseMap.get(value));
-					doSearch();
-				}
-			}
-		});
-
-		// results
-		resultsMain.addStyleName("resultsPanel");
-		resultsMain.add(headingRecipes);
-		resultsMain.add(sortPanel);
-		resultsMain.add(resultsRecipes);
-		resultsMain.add(pagingWidget);
+		// results panels
+		resultsPanel.add(resultsLexicon);
+		resultsPanel.add(resultsMain);
 
 		resultsLexicon.addStyleName("resultsPanel");
 		resultsLexicon.add(headingLexicon);
-		resultsLexicon.add(new Emphasis(messages.haveYouSearchedFor()));
+		resultsLexicon.add(new Emphasis(messages.didYouSearchFor()));
 		resultsLexicon.add(resultsIngredients);
 		resultsLexicon.add(resultsUtensils);
 
@@ -265,11 +379,12 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 
 		resultsUtensils.add(headingUtensils);
 		resultsUtensils.add(resultsUtensilList);
-
-		FlowPanel resultsPanel = new FlowPanel();
-		resultsPanel.setStyleName(Constants.ROW_FLUID);
-		resultsPanel.add(resultsLexicon);
-		resultsPanel.add(resultsMain);
+		
+		resultsMain.addStyleName("resultsPanel");
+		resultsMain.add(headingRecipes);
+		resultsMain.add(sortPanel);
+		resultsMain.add(resultsRecipes);
+		resultsMain.add(pagingWidget);
 
 		// layout
 		FlowPanel main = new FlowPanel();
@@ -312,8 +427,6 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		boolean isComparePossible = recipes.size() > 1;
 		compareLink.setVisible(isComparePossible);
 		sortPanel.setVisible(isComparePossible);
-
-		filtersToggle.setVisible(true);
 
 		for (RecipeDto recipe : recipes) {
 			String heading = recipe.getHeading();
@@ -369,7 +482,126 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		long allCount = results.getAllCount();
 		pagingWidget.setPage(searchParameters.getPage(), searchParameters.getPageSize(), (int) allCount);
 		pagingWidget.setVisible(allCount > 0);
+		headingResults.setVisible(true);
+		resultsMain.setVisible(true);
 	}
+
+	/** 
+		 * Display search string, filters, sorting etc.
+		 * 
+		 * @param searchParameters
+		 */
+		private void setSearchParameters(SearchParameters parameters) {
+			searchParameters = parameters;
+	
+			// search string
+			String searchString = searchParameters.getSearchString();
+			if (searchString != null) {
+				searchWidget.setText(searchString);
+			}
+	
+			// difficulties
+			filterDifficulty.clear();
+//			filterDifficulty.addItem(constants.searchFilterAll(), "");
+			Set<Difficulty> difficulties = searchParameters.getDifficulties();
+			for (final Difficulty difficulty : Difficulty.values()) {
+				boolean active = difficulties.contains(difficulty);
+				filterDifficulty.addItem(localizeEnum(difficulty), difficulty.name());
+				filterDifficulty.setItemSelected(filterDifficulty.getItemCount() - 1, active);
+			}
+//			if (difficulties.isEmpty()) {
+//				filterDifficulty.setItemSelected(0, true);
+//			}
+	
+			// categories
+			filterCategory.clear();
+//			filterCategory.addItem(constants.searchFilterAll(), "");
+			Set<Category> categories = searchParameters.getCategories();
+			for (final Category category : Category.values()) {
+				boolean active = categories.contains(category);
+				filterCategory.addItem(localizeEnum(category), category.name());
+				filterCategory.setItemSelected(filterCategory.getItemCount() - 1, active);
+			}
+//			if (categories.isEmpty()) {
+//				filterCategory.setItemSelected(0, true);
+//			}
+	
+			// seasons
+			filterSeason.clear();
+			Set<Season> seasons = searchParameters.getSeasons();
+			for (final Season season : Season.values()) {
+				boolean active = seasons.contains(season);
+				String seasonName = season.name();
+				filterSeason.addItem(constants.seasonMap().get(seasonName), seasonName);
+				filterSeason.setItemSelected(filterSeason.getItemCount() - 1, active);
+			}
+//			if (seasons.isEmpty()) {
+//				filterSeason.setItemSelected(0, true);
+//			}
+	
+			// ingredients
+			ingredientSuggest.setValue("");
+			ingredientSuggestForm.removeStyleName(ControlGroupType.ERROR.get());
+			ingredientSuggestForm.removeStyleName(ControlGroupType.SUCCESS.get());
+			filterIngredient.clear();
+			Set<String> ingredients = searchParameters.getIngredients();
+			for (final String ingredient : ingredients) {
+				IconAnchor removeIcon = new IconAnchor();
+				removeIcon.setIcon(IconType.REMOVE);
+				removeIcon.setText(constants.remove());
+				removeIcon.setStyleName("removeFilter");
+				removeIcon.addClickHandler(new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						searchParameters.removeIngredient(ingredient);
+						searchParameters.setPage(1);
+						doSearch();
+					}
+				});
+				InlineLabel ingredientLabel = new InlineLabel(ingredientMap.get(ingredient) + " ");
+				FlowPanel ingredientEntry = new FlowPanel(); 
+				ingredientEntry.add(ingredientLabel);
+				ingredientEntry.add(removeIcon);
+				filterIngredient.add(ingredientEntry);
+			}
+	
+			// utensil
+			Set<String> utensils = searchParameters.getUtensils();
+			if (!utensils.isEmpty()) {
+				FlowPanel filterUtensil = new FlowPanel();
+				filtersPanel.add(filterUtensil);
+				Label labelUtensils = new Label(constants.utensils());
+				filterUtensil.add(labelUtensils);
+				for (final String utensil : utensils) {
+					IconAnchor removeIcon = new IconAnchor();
+					removeIcon.setIcon(IconType.REMOVE);
+					removeIcon.setText(constants.remove());
+					removeIcon.setStyleName("removeFilter");
+					removeIcon.addClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+							searchParameters.removeUtensil(utensil);
+							searchParameters.setPage(1);
+							doSearch();
+						}
+					});
+					InlineLabel utensilLabel = new InlineLabel(utensilMap.get(utensil) + " ");
+					filterUtensil.add(utensilLabel);
+					filterUtensil.add(removeIcon);
+				}
+			}
+	
+			// sort
+			sortListBox.setSelectedValue(searchParameters.getSortKey().name());
+	
+			if (!difficulties.isEmpty() || !categories.isEmpty() || !seasons.isEmpty() || 
+				!ingredients.isEmpty() || !utensils.isEmpty()) {
+				filtersPanel.setVisible(true);
+				filtersHideButton.setVisible(true);
+			} else {
+				filtersShowButton.setVisible(true);
+			}
+		}
 
 	private void searchForIngredientOrUtensil(String searchString) {
 		if (searchString == null || searchString.length() < 3) {
@@ -402,191 +634,27 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		resultsIngredients.setVisible(resultsIngredientList.getWidgetCount() > 0);
 		resultsUtensils.setVisible(resultsUtensilList.getWidgetCount() > 0);
 		if (resultsIngredients.isVisible() || resultsUtensils.isVisible()) {
-			resultsMain.addStyleName(Constants.SPAN + 10);
-			resultsLexicon.addStyleName(Constants.SPAN + 2);
-			resultsLexicon.setVisible(true);
-		}
-	}
-
-	/** 
-	 * Display search string, filters, sorting etc.
-	 * 
-	 * @param searchParameters
-	 */
-	private void setSearchParameters(SearchParameters parameters) {
-		searchParameters = parameters;
-
-		// search string
-		String searchString = searchParameters.getSearchString();
-		if (searchString != null) {
-			searchWidget.setText(searchString);
-		}
-
-		// difficulties
-		FlowPanel filterDifficulty = new FlowPanel();
-		filtersPanel.add(filterDifficulty);
-		filterDifficulty.add(labelDifficulty);
-		Set<Difficulty> difficulties = searchParameters.getDifficulties();
-		for (final Difficulty difficulty : Difficulty.values()) {
-			boolean active = difficulties.contains(difficulty);
-			final CheckBox checkBox = new CheckBox(localizeEnum(difficulty));
-			checkBox.setStyleName("badge");
-			checkBox.setStyleDependentName("active", active);
-			checkBox.setValue(active);
-			checkBox.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					if (checkBox.getValue()) {
-						searchParameters.addDifficulty(difficulty);
-						searchParameters.setPage(1);
-						doSearch();
-					} else {
-						searchParameters.removeDifficulty(difficulty);
-						searchParameters.setPage(1);
-						doSearch();
-					}
-				}
-			});
-			filterDifficulty.add(checkBox);
-		}
-
-		// categories
-		FlowPanel filterCategory = new FlowPanel();
-		filtersPanel.add(filterCategory);
-		filterCategory.add(labelCategories);
-		Set<Category> categories = searchParameters.getCategories();
-		for (final Category category : Category.values()) {
-			boolean active = categories.contains(category);
-			final CheckBox checkBox = new CheckBox(localizeEnum(category));
-			checkBox.setStyleName("badge");
-			checkBox.setStyleDependentName("active", active);
-			checkBox.setValue(active);
-			checkBox.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					if (checkBox.getValue()) {
-						searchParameters.addCategory(category);
-						searchParameters.setPage(1);
-						doSearch();
-					} else {
-						searchParameters.removeCategory(category);
-						searchParameters.setPage(1);
-						doSearch();
-					}
-				}
-			});
-			filterCategory.add(checkBox);
-		}
-
-		// seasons
-		FlowPanel filterSeason = new FlowPanel();
-		filtersPanel.add(filterSeason);
-		filterSeason.add(labelSeasons);
-		Set<Season> seasons = searchParameters.getSeasons();
-		for (final Season season : Season.values()) {
-			boolean active = seasons.contains(season);
-			final CheckBox checkBox = new CheckBox(localizeEnum(season));
-			checkBox.setStyleName("badge");
-			checkBox.setStyleDependentName("active", active);
-			checkBox.setValue(active);
-			checkBox.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					if (checkBox.getValue()) {
-						searchParameters.addSeason(season);
-						searchParameters.setPage(1);
-						doSearch();
-					} else {
-						searchParameters.removeSeason(season);
-						searchParameters.setPage(1);
-						doSearch();
-					}
-				}
-			});
-			filterSeason.add(checkBox);
-		}
-
-		// ingredients
-		FlowPanel filterIngredient = new FlowPanel();
-		filtersPanel.add(filterIngredient);
-		filterIngredient.add(labelIngredients);
-		Set<String> ingredients = searchParameters.getIngredients();
-		for (final String ingredient : ingredients) {
-			IconAnchor removeIcon = new IconAnchor();
-			removeIcon.setIcon(IconType.REMOVE);
-			removeIcon.setText(constants.remove());
-			removeIcon.setStyleName("removeFilter");
-			removeIcon.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					searchParameters.removeIngredient(ingredient);
-					searchParameters.setPage(1);
-					doSearch();
-				}
-			});
-			InlineLabel ingredientLabel = new InlineLabel(ingredientMap.get(ingredient) + " ");
-			filterIngredient.add(ingredientLabel);
-			filterIngredient.add(removeIcon);
-			filterIngredient.add(new InlineLabel(", "));
-		}
-		ingredientSuggest.setValue("");
-		filterIngredient.add(ingredientSuggest);
-
-		// utensil
-		FlowPanel filterUtensil = new FlowPanel();
-		filtersPanel.add(filterUtensil);
-		filterUtensil.add(labelUtensils);
-		Set<String> utensils = searchParameters.getUtensils();
-		for (final String utensil : utensils) {
-			IconAnchor removeIcon = new IconAnchor();
-			removeIcon.setIcon(IconType.REMOVE);
-			removeIcon.setText(constants.remove());
-			removeIcon.setStyleName("removeFilter");
-			removeIcon.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					searchParameters.removeUtensil(utensil);
-					searchParameters.setPage(1);
-					doSearch();
-				}
-			});
-			InlineLabel utensilLabel = new InlineLabel(utensilMap.get(utensil) + " ");
-			filterUtensil.add(utensilLabel);
-			filterUtensil.add(removeIcon);
-			filterUtensil.add(new InlineLabel(", "));
-		}
-		utensilSuggest.setValue("");
-		filterUtensil.add(utensilSuggest);
-
-		// sort
-		sortListBox.setSelectedValue(searchParameters.getSortKey().name());
-
-		if (!difficulties.isEmpty() || !categories.isEmpty() || !seasons.isEmpty() || 
-			!ingredients.isEmpty() || !utensils.isEmpty()) {
-			filtersPanel.setVisible(true);
-			filtersToggle.setText(constants.searchBasic());
-		} else {
-			filtersToggle.setText(constants.searchAdvanced());
+			resultsMain.setSize(10);
+			resultsPanel.insert(resultsLexicon, 0);
 		}
 	}
 
 	/** Clears search parameters and results. */
 	public void clearSearchResults() {
 		searchWidget.clear();
-		filtersToggle.setVisible(false);
-		filtersToggle.setText(constants.searchAdvanced());
-		filtersPanel.clear();
+		filtersShowButton.setVisible(false);
+		filtersHideButton.setVisible(false);
 		filtersPanel.setVisible(false);
 
-		resultsLexicon.setVisible(false);
+		headingResults.setVisible(false);
+		resultsPanel.remove(resultsLexicon);
+		resultsMain.setSize(12);
+		resultsMain.setVisible(false);
 		resultsRecipes.clear();
 		resultsIngredients.setVisible(false);
 		resultsIngredientList.clear();
 		resultsUtensils.setVisible(false);
 		resultsUtensilList.clear();
-
-		resultsMain.removeStyleName(Constants.SPAN + 10);
-		resultsLexicon.removeStyleName(Constants.SPAN + 2);
 
 		pagingWidget.setVisible(false);
 		compareLink.setVisible(false);

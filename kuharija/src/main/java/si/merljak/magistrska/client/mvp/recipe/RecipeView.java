@@ -18,12 +18,13 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 import com.github.gwtbootstrap.client.ui.Badge;
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Emphasis;
+import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
-import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconPosition;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
@@ -47,50 +48,45 @@ public class RecipeView extends AbstractView {
 	private final Emphasis subHeading = new Emphasis();
 	private final Paragraph notFoundMessage = new Paragraph(messages.recipeNotFoundTry());
 
-	private final FlowPanel imgPanel = new FlowPanel();
-	private final FlowPanel infoPanel = new FlowPanel();
 	private final TabsWidget tabsWidget = new TabsWidget();
 	private final UtensilsWidget utensilsWidget = new UtensilsWidget();
 	private final IngredientsWidget ingredientsWidget = new IngredientsWidget();
 
+	private final FlowPanel commentsPanel = new FlowPanel();
 	private final FlowPanel appendixPanel = new FlowPanel();
 	private final SimplePanel appendixHolder = new SimplePanel();
-	private final Button appendixToggle = new Button(constants.appendicesShow());
 	private final FlowPanel appendixListPanel = new FlowPanel();
+	// TODO should be real button (not bootstrap's "button" = link), using it for convenience
+	private final Button appendixToggle = new Button(constants.appendicesShow());
 
-	private final FlowPanel commentsPanel = new FlowPanel();
-
-	private final FlowPanel center = new FlowPanel();
-	private final FlowPanel fluid1 = new FlowPanel();
-	private final FlowPanel fluid2 = new FlowPanel();
+	// grid
+	private final FluidRow fluidTop = new FluidRow();
+	private final FluidRow fluidMain = new FluidRow();
+	private final Column columnImg = new Column(9);
+	private final Column columnInfo = new Column(3);
+	private final Column columnSide = new Column(3);
+	private final Column columnMain = new Column(9);
 
 	public RecipeView() {
-		// fluid 1
-		imgPanel.getElement().setId("imgPanel");
-		imgPanel.setStyleName(Constants.SPAN + 9);
-		imgPanel.addStyleName(ImageType.ROUNDED.get());
-		infoPanel.setStyleName(Constants.SPAN + 3);
-		infoPanel.getElement().setId("infoPanel");
+		// fluid top
+		columnImg.addStyleName(ImageType.ROUNDED.get());
+		columnImg.getElement().setId("columnImg");
+		columnInfo.getElement().setId("columnInfo");
 
-		fluid1.setStyleName(Constants.ROW_FLUID);
-		fluid1.add(imgPanel);
-		fluid1.add(infoPanel);
+		fluidTop.add(columnImg);
+		fluidTop.add(columnInfo);
 
-		// fluid 2
-		FlowPanel side = new FlowPanel();
-		side.setStyleName(Constants.SPAN + 3);
-		side.add(ingredientsWidget);
-		side.add(utensilsWidget);
+		// fluid main
+		columnSide.add(ingredientsWidget);
+		columnSide.add(utensilsWidget);
 
-		center.setStyleName(Constants.SPAN + 9);
-		center.add(new Heading(HEADING_SIZE + 1, constants.recipeProcedure()));
-		center.add(tabsWidget);
-		center.add(appendixPanel);
-		center.add(commentsPanel);
+		columnMain.add(new Heading(HEADING_SIZE + 1, constants.recipeProcedure()));
+		columnMain.add(tabsWidget);
+		columnMain.add(appendixPanel);
+		columnMain.add(commentsPanel);
 
-		fluid2.setStyleName(Constants.ROW_FLUID);
-		fluid2.add(side);
-		fluid2.add(center);
+		fluidMain.add(columnSide);
+		fluidMain.add(columnMain);
 
 		// styles
 		notFoundMessage.setVisible(false);
@@ -113,9 +109,9 @@ public class RecipeView extends AbstractView {
 		main.setStyleName("recipeView");
 		main.add(heading);
 		main.add(subHeading);
+		main.add(fluidTop);
+		main.add(fluidMain);
 		main.add(notFoundMessage);
-		main.add(fluid1);
-		main.add(fluid2);
 		initWidget(main);
 	}
 
@@ -141,9 +137,9 @@ public class RecipeView extends AbstractView {
 		// recipe info
 		String imageUrl = recipe.getImageUrl();
 		if (imageUrl != null) {
-			imgPanel.getElement().setAttribute("style", "background-image: url('" + RECIPE_IMG_FOLDER + imageUrl + "')");
+			columnImg.getElement().setAttribute("style", "background-image: url('" + RECIPE_IMG_FOLDER + imageUrl + "')");
 		} else {
-			imgPanel.getElement().removeAttribute("style");
+			columnImg.getElement().removeAttribute("style");
 		}
 		
 		Label timePreparation = new Label(" " + constants.timePreparation() + ": " + timeFromMinutes(recipe.getTimePreparation()));
@@ -181,17 +177,17 @@ public class RecipeView extends AbstractView {
 			}
 		}
 
-		infoPanel.add(review);
-		infoPanel.add(timePreparation);
-		infoPanel.add(timeCooking);
-		infoPanel.add(timeOverall);
-		infoPanel.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
-		infoPanel.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
+		columnInfo.add(review);
+		columnInfo.add(timePreparation);
+		columnInfo.add(timeCooking);
+		columnInfo.add(timeOverall);
+		columnInfo.add(new Label(constants.recipeAuthor() + ": " + recipe.getAuthor()));
+		columnInfo.add(new Label(constants.difficulty() + ": " + constants.difficultyMap().get(recipe.getDifficulty().name())));
 
 		// categories & seasons
 		Label categoriesLabel = new Label(constants.categories());
 		categoriesLabel.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
-		infoPanel.add(categoriesLabel);
+		columnInfo.add(categoriesLabel);
 		for (Category category : recipe.getCategories()) {
 			Badge categoryBadge = new Badge(localizeEnum(category));
 			categoryBadge.setStylePrimaryName("category");
@@ -199,12 +195,12 @@ public class RecipeView extends AbstractView {
 			categoryBadge.setWordWrap(false);
 			Anchor categoryAnchor = new Anchor("", SearchPresenter.buildSearchByCategoryUrl(category));
 			categoryAnchor.getElement().appendChild(categoryBadge.getElement());
-			infoPanel.add(categoryAnchor);
+			columnInfo.add(categoryAnchor);
 		}
 
 		Label seasonsLabel = new Label(constants.seasons());
 		seasonsLabel.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
-		infoPanel.add(seasonsLabel);
+		columnInfo.add(seasonsLabel);
 		for (Season season : recipe.getSeasons()) {
 			Badge seasonBadge = new Badge(localizeEnum(season));
 			seasonBadge.setStylePrimaryName("season");
@@ -212,7 +208,7 @@ public class RecipeView extends AbstractView {
 			seasonBadge.setWordWrap(false);
 			Anchor seasonAnchor = new Anchor("", SearchPresenter.buildSearchBySeasonUrl(season));
 			seasonAnchor.getElement().appendChild(seasonBadge.getElement());
-			infoPanel.add(seasonAnchor);
+			columnInfo.add(seasonAnchor);
 		}
 
 		// ingredients
@@ -245,21 +241,21 @@ public class RecipeView extends AbstractView {
 		tabsWidget.displayRecipe(recipe, view);
 
 		// show
-		fluid1.setVisible(true);
-		fluid2.setVisible(true);
+		fluidTop.setVisible(true);
+		fluidMain.setVisible(true);
 	}
 
 	private void clearAll() {
 		subHeading.setText("");
 		notFoundMessage.setVisible(false);
-		infoPanel.clear();
-		imgPanel.clear();
+		columnInfo.clear();
+		columnImg.clear();
 		tabsWidget.clearAll();
 		appendixPanel.setVisible(false);
 		appendixListPanel.clear();
 		commentsPanel.clear();
-		fluid1.setVisible(false);
-		fluid2.setVisible(false);
+		fluidTop.setVisible(false);
+		fluidMain.setVisible(false);
 	}
 
 	public void performActions(List<String> actions) {

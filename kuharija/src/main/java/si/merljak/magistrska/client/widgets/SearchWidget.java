@@ -7,6 +7,7 @@ import com.github.gwtbootstrap.client.ui.AppendButton;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
+import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -33,6 +34,7 @@ public class SearchWidget extends Composite implements HasText {
 
 	// widgets
 	private final TextBox searchBox = new TextBox();
+	private final Button searchButton = new Button(constants.search());
 
 	// handler
 	private final SearchHandler handler;
@@ -58,7 +60,6 @@ public class SearchWidget extends Composite implements HasText {
 			}
 		});
 
-		Button searchButton = new Button(constants.search());
 		searchButton.setIcon(IconType.SEARCH);
 		searchButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -76,6 +77,11 @@ public class SearchWidget extends Composite implements HasText {
 
 		// ARIA
 		Roles.getSearchRole().set(getElement());
+	}
+
+	public void setLarge(boolean isLarge) {
+		searchBox.setStyleName(ButtonSize.LARGE.getWithoutPrefix(), isLarge);
+		searchButton.setSize(isLarge ? ButtonSize.LARGE : ButtonSize.DEFAULT);
 	}
 
 	/** Clears search text. */
