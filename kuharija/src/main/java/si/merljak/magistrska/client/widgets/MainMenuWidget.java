@@ -9,6 +9,7 @@ import si.merljak.magistrska.client.mvp.home.HomePresenter;
 import si.merljak.magistrska.client.mvp.lexicon.LexiconPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipeIndexPresenter;
+import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.common.dto.UserDto;
 
 import com.github.gwtbootstrap.client.ui.Nav;
@@ -16,6 +17,7 @@ import com.github.gwtbootstrap.client.ui.NavCollapse;
 import com.github.gwtbootstrap.client.ui.NavHeader;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.ResponsiveNavbar;
+import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.constants.Alignment;
 import com.github.gwtbootstrap.client.ui.constants.Device;
 import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
@@ -24,7 +26,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Composite;
 
-public class MainMenuWidget extends Composite implements LoginEventHandler {
+public class MainMenuWidget extends Composite implements LoginEventHandler, SearchWidget.SearchHandler {
 
 	// i18n
 	private final CommonConstants constants = Kuharija.constants;
@@ -34,7 +36,7 @@ public class MainMenuWidget extends Composite implements LoginEventHandler {
 	private final Nav navRight = new Nav();
 	private final NavLink loginLink = new NavLink(constants.login(), LoginPresenter.getLoginUrl());
 	private final NavLink logoutButton = new NavLink(constants.logout(), LoginPresenter.getLoginUrl());
-	private final SearchWidget searchWidget = new SearchWidget();
+	private final SearchWidget searchWidget = new SearchWidget(this);
 
 	// handler
 	private final LogoutHandler handler;
@@ -54,7 +56,7 @@ public class MainMenuWidget extends Composite implements LoginEventHandler {
 
 		// right buttons (login)
 		navRight.setAlignment(Alignment.RIGHT);
-		navRight.add(searchWidget);
+		navRight.add(new ListItem(searchWidget));
 		navRight.add(loginLink);
 
 		logoutButton.addClickHandler(new ClickHandler() {
@@ -91,5 +93,11 @@ public class MainMenuWidget extends Composite implements LoginEventHandler {
 			navRight.remove(logoutButton);
 			navRight.add(loginLink);
 		}
+	}
+
+	@Override
+	public void doSearch() {
+		SearchPresenter.doSearch(searchWidget.getText());
+		searchWidget.clear();
 	}
 }

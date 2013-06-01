@@ -2,12 +2,10 @@ package si.merljak.magistrska.client.widgets;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
-import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 
 import com.github.gwtbootstrap.client.ui.AppendButton;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.TextBox;
-import com.github.gwtbootstrap.client.ui.base.ListItem;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -16,8 +14,19 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasText;
 
-public class SearchWidget extends Composite {
+/**
+ * Search widget.
+ * 
+ * @author Jakob Merljak
+ * 
+ */
+public class SearchWidget extends Composite implements HasText {
+
+	public interface SearchHandler {
+		void doSearch();
+	}
 
 	// i18n
 	private final CommonConstants constants = Kuharija.constants;
@@ -25,16 +34,26 @@ public class SearchWidget extends Composite {
 	// widgets
 	private final TextBox searchBox = new TextBox();
 
-	public SearchWidget() {
-		searchBox.setPlaceholder(constants.searchQuery());
+	// handler
+	private final SearchHandler handler;
+
+	/**
+	 * Search widget. Search handler parameter must not be {@code null}.
+	 * 
+	 * @param searchHandler handler
+	 */
+	public SearchWidget(SearchHandler searchHandler) {
+		this.handler = searchHandler;
+
 //		searchBox.setSearchQuery(true);
-		searchBox.setAccessKey('/');
+//		searchBox.setAccessKey('/');
 		searchBox.setTitle(constants.searchQuery());
+		searchBox.setPlaceholder(constants.searchQuery());
 		searchBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					doSearch();
+					handler.doSearch();
 				}
 			}
 		});
@@ -44,25 +63,33 @@ public class SearchWidget extends Composite {
 		searchButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				doSearch();
+				handler.doSearch();
 			}
 		});
 
+		// layout
 		AppendButton formPanel = new AppendButton();
 		formPanel.addStyleName("searchWidget");
 		formPanel.add(searchBox);
 		formPanel.add(searchButton);
-		initWidget(new ListItem(formPanel));
+		initWidget(formPanel);
 
-		Roles.getSearchRole().set(formPanel.getElement());
+		// ARIA
+		Roles.getSearchRole().set(getElement());
 	}
 
-	/**
-	 * Initiates search for search string.
-	 */
-	private void doSearch() {
-		SearchPresenter.doSearch(searchBox.getValue());
-		searchBox.setText("");
+	/** Clears search text. */
+	public void clear() {
+		setText("");
 	}
 
+	@Override
+	public void setText(String searchString) {
+		searchBox.setValue(searchString);
+	}
+
+	@Override
+	public String getText() {
+		return searchBox.getValue();
+	}
 }

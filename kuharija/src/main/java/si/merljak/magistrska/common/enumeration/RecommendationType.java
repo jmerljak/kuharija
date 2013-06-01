@@ -6,5 +6,7 @@ public enum RecommendationType {
 	LOCAL_SEASON,
 	LOCAL_TIME,
 	LOCAL_SPECIALTY,
-	FEATURED;
+	SOMETHING_NEW,
+	FEATURED,
+	RANDOM;
 }

@@ -45,7 +45,7 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("Show all recipes")
 	String browseAllRecipes();
 
-	@DefaultMessage("Have you searched for: ")
+	@DefaultMessage("Did you search for ...")
 	String haveYouSearchedFor();
 
 	@DefaultMessage("Find recipes with {0}")

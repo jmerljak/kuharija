@@ -100,13 +100,13 @@ public interface CommonConstants extends Constants {
 	String searchQuery();
 
 	@DefaultStringValue("Advanced search")
-	String searchFilters();
+	String searchAdvanced();
 
-	@DefaultStringValue("Show")
-	String searchFiltersShow();
-
-	@DefaultStringValue("Clear and hide")
-	String searchFiltersClear();
+	@DefaultStringValue("Basic search")
+	String searchBasic();
+	
+	@DefaultStringValue("Toggle between basic and advanced search")
+	String searchToggleInfo();
 
 	@DefaultStringValue("Search results")
 	String searchResults();
@@ -120,7 +120,7 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Search and add an utensil")
 	String searchAndAddUtensil();
 	
-	@DefaultStringValue("Sort by")
+	@DefaultStringValue("Sort by: ")
 	String sortBy();
 
 	@DefaultStringValue("Preparation time")
@@ -316,6 +316,9 @@ public interface CommonConstants extends Constants {
 		"LOCAL_SEASON", "Seasonal",
 		"LOCAL_TIME", "For the time of day",
 		"LOCAL_SPECIALTY", "Local specialty",
-		"FEATURED", "Featured"})
+		"SOMETHING_NEW", "Try something new",
+		"FEATURED", "Featured",
+		"RANDOM", "Random recipe"
+		})
 	Map<String, String> recommendationMap();
 }
