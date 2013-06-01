@@ -219,7 +219,7 @@ public class RecipeView extends AbstractView {
 		ingredientsWidget.setIngredients(recipe.getIngredients(), recipe.getNumberOfMeals(), recipe.getMealUnit(), true);
 
 		// utensils
-		utensilsWidget.update(recipe.getUtensils());
+		utensilsWidget.setUtensils(recipe.getUtensils());
 
 		// appendices
 		List<AppendixDto> appendices = recipe.getAppendices();

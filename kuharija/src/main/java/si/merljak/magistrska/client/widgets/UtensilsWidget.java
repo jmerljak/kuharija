@@ -47,7 +47,7 @@ public class UtensilsWidget extends Composite {
 	 * 
 	 * @param utensils list of utensils
 	 */
-	public void update(List<UtensilDto> utensils) {
+	public void setUtensils(List<UtensilDto> utensils) {
 		utensilsList.clear();
 		for (UtensilDto utensil : utensils) {
 			ListItem listItem = new ListItem();

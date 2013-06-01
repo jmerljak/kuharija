@@ -133,6 +133,14 @@ public class IngredientsWidget extends Composite {
 		initWidget(panel);
 	}
 
+	/**
+	 * Clears old data and displays ingredient list.
+	 * 
+	 * @param ingredients list of ingredients
+	 * @param numOfMeals base number of meals
+	 * @param mealUnit meal unit enumerator
+	 * @param useMetric use metric units by default?
+	 */
 	public void setIngredients(List<IngredientDto> ingredients, int numOfMeals, MealUnit mealUnit, boolean useMetric) {
 		this.ingredients = ingredients;
 		this.numOfMealsBase = numOfMeals;
@@ -142,6 +150,7 @@ public class IngredientsWidget extends Composite {
 		updateList();
 	}
 
+	/** Recalculates units and amounts then updates list. */
 	private void updateList() {
 		numberInput.setText(Integer.toString(numOfMeals));
 
