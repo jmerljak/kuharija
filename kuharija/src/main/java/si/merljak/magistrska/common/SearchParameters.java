@@ -69,60 +69,60 @@ public class SearchParameters implements Serializable {
 		return difficulties;
 	}
 
-	public void addDifficulty(Difficulty difficulty) {
-		difficulties.add(difficulty);
+	public boolean addDifficulty(Difficulty difficulty) {
+		return difficulties.add(difficulty);
 	}
 
-	public void removeDifficulty(Difficulty difficulty) {
-		difficulties.remove(difficulty);
+	public boolean removeDifficulty(Difficulty difficulty) {
+		return difficulties.remove(difficulty);
 	}
 
 	public Set<Category> getCategories() {
 		return categories;
 	}
 
-	public void addCategory(Category category) {
-		categories.add(category);
+	public boolean addCategory(Category category) {
+		return categories.add(category);
 	}
 
-	public void removeCategory(Category category) {
-		categories.remove(category);
+	public boolean removeCategory(Category category) {
+		return categories.remove(category);
 	}
 
 	public Set<Season> getSeasons() {
 		return seasons;
 	}
 
-	public void addSeason(Season season) {
-		seasons.add(season);
+	public boolean addSeason(Season season) {
+		return seasons.add(season);
 	}
 
-	public void removeSeason(Season season) {
-		seasons.remove(season);
+	public boolean removeSeason(Season season) {
+		return seasons.remove(season);
 	}
 
 	public Set<String> getIngredients() {
 		return ingredients;
 	}
 
-	public void addIngredient(String ingredient) {
-		ingredients.add(ingredient);
+	public boolean addIngredient(String ingredient) {
+		return ingredients.add(ingredient);
 	}
 
-	public void removeIngredient(String ingredient) {
-		ingredients.remove(ingredient);
+	public boolean removeIngredient(String ingredient) {
+		return ingredients.remove(ingredient);
 	}
 
 	public Set<String> getUtensils() {
 		return utensils;
 	}
 
-	public void addUtensil(String utensil) {
-		this.utensils.add(utensil);
+	public boolean addUtensil(String utensil) {
+		return this.utensils.add(utensil);
 	}
 
-	public void removeUtensil(String utensil) {
-		this.utensils.remove(utensil);
+	public boolean removeUtensil(String utensil) {
+		return this.utensils.remove(utensil);
 	}
 
 	public Language getLanguage() {
