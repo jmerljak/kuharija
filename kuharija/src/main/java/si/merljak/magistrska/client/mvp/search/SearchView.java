@@ -35,7 +35,6 @@ import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.ListBox;
-import com.github.gwtbootstrap.client.ui.Typeahead;
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.github.gwtbootstrap.client.ui.base.ListItem;
@@ -118,7 +117,6 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 	private SuggestBox ingredientSuggest;
 	private final AppendButton ingredientSuggestForm = new AppendButton();
 	private final Button ingredientAdd = new Button();
-	private Typeahead ingredientSuggest2;
 
 	private final Label labelUtensils = new Label(constants.utensils());
 	private final FlowPanel filterUtensil = new FlowPanel();
@@ -172,6 +170,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 			}
 		});
 
+		// TODO cleanup!!!
 		Label labelDifficulty = new Label(constants.difficulty());
 		labelDifficulty.setStyleName("filterLabel");
 		filterDifficulty.setSize(8);
@@ -294,6 +293,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 			}
 		});
 
+		// TODO set title / label
 		ingredientAdd.setIcon(IconType.OK);
 		ingredientAdd.addClickHandler(new ClickHandler() {
 			@Override
@@ -549,6 +549,10 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 			filterSeason.clear();
 			Set<Season> seasons = searchParameters.getSeasons();
 			for (final Season season : Season.values()) {
+				if (season == Season.ALLYEAR) {
+					continue;
+				}
+
 				boolean active = seasons.contains(season);
 				String seasonName = season.name();
 				filterSeason.addItem(constants.seasonMap().get(seasonName), seasonName);

@@ -15,7 +15,9 @@ import si.merljak.magistrska.common.dto.RecommendationsDto;
 import si.merljak.magistrska.common.enumeration.RecommendationType;
 
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Emphasis;
+import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
@@ -39,8 +41,8 @@ import com.google.gwt.user.client.ui.Widget;
 public class HomeView extends AbstractView {
 
 	// widgets
-	private final FlowPanel recommendPanel = new FlowPanel();
-	private final FlowPanel userPanel = new FlowPanel();
+	private final FluidRow userRecommendPanel = new FluidRow();
+	private final FlowPanel recommendListPanel = new FlowPanel();
 
 	private List<RecommendationType> recommendationTypes = Arrays.asList(
 			RecommendationType.INGREDIENTS_FROM_FRIDGE, 
@@ -57,7 +59,7 @@ public class HomeView extends AbstractView {
 		heading2.setText(constants.recommendations2());
 		heading2.addStyleDependentName("home");
 
-		userPanel.setStyleName("userRecommendations");
+		userRecommendPanel.addStyleName("userRecommendations");
 
 		Button buttonAll = new Button(messages.browseAllRecipes());
 		buttonAll.setType(ButtonType.PRIMARY);
@@ -70,9 +72,9 @@ public class HomeView extends AbstractView {
 
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.appTitle()));
-		main.add(userPanel);
+		main.add(userRecommendPanel);
 		main.add(heading2);
-		main.add(recommendPanel);
+		main.add(recommendListPanel);
 		main.add(new Lead());
 		main.add(buttonAll);
 		initWidget(main);
@@ -80,8 +82,8 @@ public class HomeView extends AbstractView {
 
 	public void displayRecommendations(RecommendationsDto result) {
 		idSet.clear();
-		userPanel.clear();
-		recommendPanel.clear();
+		userRecommendPanel.clear();
+		recommendListPanel.clear();
 
 		Map<RecommendationType, List<RecipeDto>> recommendations = result.getRecommendations();
 		// using predefined type list (instead of recommendations.keySet()) to assure order
@@ -104,6 +106,7 @@ public class HomeView extends AbstractView {
 		}
 	}
 
+	// TODO cleanup!!!
 	private void addResultEntry(RecipeDto recipe, RecommendationType type) {
 		String heading = recipe.getHeading();
 		String imageUrl = recipe.getImageUrl();
@@ -129,7 +132,7 @@ public class HomeView extends AbstractView {
 		recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
 		recommendationEntry.add(timeOverall);
 		recommendationEntry.add(new Emphasis(constants.recommendationMap().get(type.name())));
-		recommendPanel.add(recommendationEntry);
+		recommendListPanel.add(recommendationEntry);
 	}
 
 	private void addExposedEntry(RecipeDto recipe, RecommendationType type) {
@@ -154,14 +157,14 @@ public class HomeView extends AbstractView {
 		lead.addStyleDependentName("home");
 		lead.setText(constants.recommendationMap().get(type.name()));
 
-		FlowPanel recommendationEntry = new FlowPanel();
-		recommendationEntry.setStyleName("exposedEntry");
-		recommendationEntry.addStyleDependentName(type.name().toLowerCase());
+		Column recommendationEntry = new Column(6);
+		recommendationEntry.addStyleName("exposedEntry");
+		recommendationEntry.addStyleName("exposedEntry-" + type.name().toLowerCase());
 		recommendationEntry.add(lead);
 		recommendationEntry.add(link);
 		recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
 		recommendationEntry.add(timeOverall);
-		userPanel.add(recommendationEntry);
+		userRecommendPanel.add(recommendationEntry);
 	}
 
 	@Override

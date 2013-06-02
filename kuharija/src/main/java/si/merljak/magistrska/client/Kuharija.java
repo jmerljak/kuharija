@@ -11,6 +11,7 @@ import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.i18n.UrlConstants;
 import si.merljak.magistrska.client.i18n.UtensilsConstants;
 import si.merljak.magistrska.client.mvp.AbstractPresenter;
+import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.compare.ComparePresenter;
 import si.merljak.magistrska.client.mvp.error.NotFoundPresenter;
 import si.merljak.magistrska.client.mvp.home.HomePresenter;
@@ -161,7 +162,7 @@ public class Kuharija implements EntryPoint {
 		Label breadcrumbsLabel = new InlineLabel(constants.youAreHere());
 		breadcrumbsLabel.setStyleName(CSS_VISUALLY_HIDDEN);
 		Image headerImage = new Image();
-		headerImage.setUrl(GWT.getHostPageBaseURL() + "img/kuharija.png");
+		headerImage.setUrl(AbstractView.IMG_BASE_FOLDER + "kuharija.jpg");
 		headerImage.setAltText("logo");
 		breadcrumbs.addStyleName(CSS_VISUALLY_HIDDEN);
 		headerPanel.add(headerImage);
@@ -175,7 +176,7 @@ public class Kuharija implements EntryPoint {
 		footerPanel.add(localeWidget);
 
 		// geolocate
-		geolocate();
+//		geolocate(); // TODO not needed for usability testing
 
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {

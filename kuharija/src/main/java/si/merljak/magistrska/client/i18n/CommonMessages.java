@@ -87,10 +87,13 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("{0}, posted {1}")
 	String commentBy(String user, String date);
 
+	@DefaultMessage("Did you know?")
+	String tipDidYouKnow();
+
 	@DefaultMessage("After setting search parameters, press the search button to refresh results.")
 	String tipSearch();
 
-	@DefaultMessage("You can move between steps using gestures.")
+	@DefaultMessage("You can move between steps using hand gestures.")
 	String tipRecipeGestures();
 
 	@DefaultMessage("http://en.wikipedia.org/w/index.php?search={0}")

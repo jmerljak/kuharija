@@ -52,7 +52,6 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 		this.wozService = wozService;
 		eventBus.addHandler(LoginEvent.TYPE, this);
 
-		
 		timer = new Timer() {
 			@Override
 			public void run() {
@@ -100,6 +99,7 @@ public class RecipePresenter extends AbstractPresenter implements LoginEventHand
 			public void onSuccess(RecipeDetailsDto recipe) {
 				recipeView.displayRecipe(recipe, view);
 				recipeView.setVisible(true);
+				recipeDto = recipe;
 			}
 
 			@Override

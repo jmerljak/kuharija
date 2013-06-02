@@ -33,7 +33,7 @@ public class RecipeIndexView extends AbstractView {
 
 	public RecipeIndexView() {
 		Button buttonRecommendations = new Button(messages.browseRecommendations());
-		buttonRecommendations.setType(ButtonType.INVERSE);
+		buttonRecommendations.setType(ButtonType.SUCCESS);
 		buttonRecommendations.setSize(ButtonSize.LARGE);
 		buttonRecommendations.addClickHandler(new ClickHandler() {
 			@Override
@@ -71,9 +71,9 @@ public class RecipeIndexView extends AbstractView {
 		FlowPanel main = new FlowPanel();
 		main.add(new Heading(HEADING_SIZE, constants.recipes()));
 		main.add(new Paragraph(messages.browseOrSearchRecipes()));
-//		main.add(buttonRecommendations);
-//		main.add(new InlineLabel(" "));
 		main.add(buttonAll);
+		main.add(new InlineLabel(" "));
+		main.add(buttonRecommendations);
 		main.add(new Heading(HEADING_SIZE + 1, constants.categories()));
 		main.add(categories);
 		main.add(new Heading(HEADING_SIZE + 1, constants.seasons()));

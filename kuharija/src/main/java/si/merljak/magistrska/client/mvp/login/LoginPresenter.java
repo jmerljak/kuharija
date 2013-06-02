@@ -71,7 +71,7 @@ public class LoginPresenter extends AbstractPresenter implements LoginHandler, L
 	private static final String SESSION_COOKIE_NAME = "sid";
 
 	// redirect timer timeout (in miliseconds)
-	private static final int REDIRECT_TIMEOUT = 7000;
+	private static final int REDIRECT_TIMEOUT = 5000;
 
 	// remote service
 	private final UserServiceAsync userService;

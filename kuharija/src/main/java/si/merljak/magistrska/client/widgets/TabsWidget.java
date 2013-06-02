@@ -13,11 +13,13 @@ import si.merljak.magistrska.common.dto.StepDto;
 import si.merljak.magistrska.common.dto.TextDto;
 import si.merljak.magistrska.common.dto.VideoDto;
 
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Lead;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Tab;
 import com.github.gwtbootstrap.client.ui.TabPanel;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
@@ -96,9 +98,13 @@ public class TabsWidget extends Composite {
 			}
 		});
 
+		Alert tip = new Alert(messages.tipRecipeGestures(), AlertType.INFO);
+		tip.setHeading(messages.tipDidYouKnow());
+
 		Tab tabSteps = new Tab();
 		tabSteps.setIcon(IconType.HAND_RIGHT);
 		tabSteps.setHeading(constants.tabSteps());
+		tabSteps.add(tip);
 		tabSteps.add(panelSteps);
 		tabSteps.addClickHandler(new ClickHandler() {
 			@Override

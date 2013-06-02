@@ -2,10 +2,6 @@ body.kuharija {
 	background: white url("../img/white_wall_hash.png") repeat top left;
 }
 
-div.main {
-	background-image: none;	
-}
-
 #noScript {
 	width: 22em;
 	position: absolute;
@@ -39,6 +35,7 @@ div.main {
 	#header img {
 		display: block;
 		height: 100px;
+		width: 100%;
 	}
 }
 
@@ -46,36 +43,6 @@ div.main {
 footer {
 	margin-top: 30px;
 	text-align: right;
-}
-
-/* home */
-.recommendations {
-	display: inline-block;
-	margin: 10px 0;
-	width: 100%;
-}
-
-@media (min-width: 960px) {
-	.recommendations {
-		margin: 0.5%;
-		width: 49%;
-	}
-}
-
-.recommendation {
-}
-
-.recommendation img {
-	width: 100%;
-	height: 100%;
-}
-
-.recommendation a {
-	display: block;
-}
-
-.recommendations i {
-	margin: auto 5px;
 }
 
 /* login */
@@ -111,16 +78,7 @@ footer {
 
 /* image links */
 .imageLink {
-	display: inline-block;
-	margin: 10px 0;
-	width: 100%;
-}
-
-@media (min-width: 960px) {
-	.imageLink {
-		margin: 0.5%;
-		width: 49%;
-	}
+	margin-bottom: 10px;
 }
 
 .imageLink-ingredients {
@@ -173,16 +131,7 @@ div[role=article] a {
 
 /* exposed */
 .exposedEntry {
-	display: inline-block;
 	margin: 10px 0;
-	width: 100%;
-}
-
-@media (min-width: 960px) {
-	.exposedEntry {
-		margin: 0.5%;
-		width: 49%;
-	}
 }
 
 .exposedEntry img {
