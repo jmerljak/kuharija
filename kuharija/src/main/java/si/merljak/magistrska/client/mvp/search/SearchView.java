@@ -145,6 +145,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		filtersShowButton.setIconPosition(IconPosition.RIGHT);
 		filtersShowButton.setTitle(constants.searchToggleInfo());
 		filtersShowButton.getElement().setId("filtersShowButton");
+		filtersShowButton.addStyleName("hasBoxShaddow");
 		filtersShowButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -159,6 +160,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		filtersHideButton.setIconPosition(IconPosition.RIGHT);
 		filtersHideButton.setTitle(constants.searchToggleInfo());
 		filtersHideButton.getElement().setId("filtersHideButton");
+		filtersHideButton.addStyleName("hasBoxShaddow");
 		filtersHideButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -335,6 +337,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		filtersPanel.add(filterIngredients);
 
 		filtersContainer.addStyleName("filtersPanel");
+		filtersContainer.addStyleName("hasBoxShaddow");
 		filtersContainer.add(new Alert(messages.tipSearch(), AlertType.INFO));
 		filtersContainer.add(filtersPanel);
 		
@@ -388,6 +391,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		resultsPanel.add(resultsMain);
 
 		resultsLexicon.addStyleName("resultsPanel");
+		resultsLexicon.addStyleName("hasBoxShaddow");
 		resultsLexicon.add(headingLexicon);
 		resultsLexicon.add(new Emphasis(messages.didYouSearchFor()));
 		resultsLexicon.add(resultsIngredients);
@@ -400,6 +404,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		resultsUtensils.add(resultsUtensilList);
 		
 		resultsMain.addStyleName("resultsPanel");
+		resultsMain.addStyleName("hasBoxShaddow");
 		resultsMain.add(headingRecipes);
 		resultsMain.add(sortPanel);
 		resultsMain.add(resultsRecipes);
