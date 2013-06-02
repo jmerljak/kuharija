@@ -182,6 +182,9 @@ p.lead-home {
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
+	-moz-box-shadow: 5px 5px 10px #DDDDDD;
+	-webkit-box-shadow: 5px 5px 10px #DDDDDD;
+	box-shadow: 5px 5px 10px #DDDDDD;
 	margin-top: 1em;
 	padding: 10px;
 }
@@ -219,6 +222,9 @@ p.lead-home {
 	-moz-border-radius-bottomleft: 10px;
 	border-bottom-right-radius: 10px;
 	border-bottom-left-radius: 10px;
+	-moz-box-shadow: 5px 5px 10px #DDDDDD;
+	-webkit-box-shadow: 5px 5px 10px #DDDDDD;
+	box-shadow: 5px 5px 10px #DDDDDD;
 	margin: 0 auto;
 }
 
@@ -229,6 +235,9 @@ p.lead-home {
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
+	-moz-box-shadow: 5px 5px 10px #DDDDDD;
+	-webkit-box-shadow: 5px 5px 10px #DDDDDD;
+	box-shadow: 5px 5px 10px #DDDDDD;
 	padding: 10px;
 }
 

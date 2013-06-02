@@ -597,7 +597,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 
 					filterUtensil.add(utensilEntry);
 				}
-				filtersPanel.add(filterUtensil);
+				filtersContainer.add(filterUtensil);
 			}
 	
 			// sort
@@ -688,7 +688,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 		resultsUtensilList.clear();
 		
 		filterUtensil.clear();
-		filtersPanel.remove(filterUtensil);
+		filtersContainer.remove(filterUtensil);
 
 		pagingWidget.setVisible(false);
 		compareLink.setVisible(false);
