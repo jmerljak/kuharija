@@ -28,7 +28,7 @@ public interface CommonConstants extends Constants {
 	String recommendations1();
 
 	@DefaultStringValue("Have you tried ...")
-	String recommendations2();
+	String haveYouTried();
 
 	@DefaultStringValue("Remove")
 	String remove();
@@ -57,6 +57,9 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Recipes")
 	String recipes();
 
+	@DefaultStringValue("Recipes by category")
+	String recipesByCategory();
+
 	@DefaultStringValue("Compare selected recipes")
 	String recipeCompare();
 
@@ -65,9 +68,6 @@ public interface CommonConstants extends Constants {
 
 	@DefaultStringValue("Recipe comparison")
 	String recipeComparison();
-
-	@DefaultStringValue("Recipes by difficulty")
-	String recipesByDifficulty();
 
 	@DefaultStringValue("Procedure")
 	String recipeProcedure();

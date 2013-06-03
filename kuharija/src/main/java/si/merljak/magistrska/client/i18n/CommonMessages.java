@@ -39,14 +39,11 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("Read more on Wikipedia")
 	String utensilReadMoreOnWikipedia();
 	
-	@DefaultMessage("Browse by category or <a href=\"#search\">search</a> by a keyword.")
-	String browseOrSearchRecipes();
-	
-	@DefaultMessage("Show all recipes")
+	@DefaultMessage("Browse all recipes")
 	String browseAllRecipes();
 	
-	@DefaultMessage("Show recommendations")
-	String browseRecommendations();
+	@DefaultMessage("Login for recommendations")
+	String loginForRecommendations();
 
 	@DefaultMessage("Did you search for ...")
 	String didYouSearchFor();

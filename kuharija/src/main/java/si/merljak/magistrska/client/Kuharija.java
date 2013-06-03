@@ -17,11 +17,9 @@ import si.merljak.magistrska.client.mvp.error.NotFoundPresenter;
 import si.merljak.magistrska.client.mvp.home.HomePresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientIndexPresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
-import si.merljak.magistrska.client.mvp.lexicon.LexiconPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.client.mvp.login.LoginView;
 import si.merljak.magistrska.client.mvp.mock.WizardControlsPresenter;
-import si.merljak.magistrska.client.mvp.recipe.RecipeIndexPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilIndexPresenter;
@@ -142,13 +140,11 @@ public class Kuharija implements EntryPoint {
 
 		// MVP
 		final LoginPresenter loginPresenter = new LoginPresenter(language, userService, new LoginView(), eventBus);
-		presenters.put(LexiconPresenter.SCREEN_NAME, new LexiconPresenter(language));
 		presenters.put(IngredientIndexPresenter.SCREEN_NAME, new IngredientIndexPresenter(language));
 		presenters.put(IngredientPresenter.SCREEN_NAME, new IngredientPresenter(language, ingredientService));
 		presenters.put(UtensilPresenter.SCREEN_NAME, new UtensilPresenter(language, utensilService));
 		presenters.put(UtensilIndexPresenter.SCREEN_NAME, new UtensilIndexPresenter(language));
 		presenters.put(RecipePresenter.SCREEN_NAME, new RecipePresenter(language, recipeService, wOzService, eventBus));
-		presenters.put(RecipeIndexPresenter.SCREEN_NAME, new RecipeIndexPresenter(language));
 		presenters.put(SearchPresenter.SCREEN_NAME, new SearchPresenter(language, searchService));
 		presenters.put(ComparePresenter.SCREEN_NAME, new ComparePresenter(language, recipeService));
 		presenters.put(LoginPresenter.SCREEN_NAME, loginPresenter);

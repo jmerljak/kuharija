@@ -64,7 +64,7 @@ public class HomePresenter extends AbstractPresenter implements LoginEventHandle
 		recommendationService.recommendRecipes(username, latitude, longitude, language, new AsyncCallback<RecommendationsDto>() {
 			@Override
 			public void onSuccess(RecommendationsDto result) {
-				homeView.displayRecommendations(result);
+				homeView.displayRecommendations(result, user != null);
 			}
 
 			@Override
