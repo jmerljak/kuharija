@@ -57,6 +57,8 @@ import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -157,10 +159,18 @@ public class Kuharija implements EntryPoint {
 
 		Label breadcrumbsLabel = new InlineLabel(constants.youAreHere());
 		breadcrumbsLabel.setStyleName(CSS_VISUALLY_HIDDEN);
+		breadcrumbs.addStyleName(CSS_VISUALLY_HIDDEN);
+
 		Image headerImage = new Image();
 		headerImage.setUrl(AbstractView.IMG_BASE_FOLDER + "kuharija.jpg");
 		headerImage.setAltText("logo");
-		breadcrumbs.addStyleName(CSS_VISUALLY_HIDDEN);
+		headerImage.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem(HomePresenter.SCREEN_NAME);
+			}
+		});
+
 		headerPanel.add(headerImage);
 		headerPanel.add(breadcrumbsLabel);
 		headerPanel.add(breadcrumbs);

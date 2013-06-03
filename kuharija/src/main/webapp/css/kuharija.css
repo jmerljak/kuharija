@@ -29,6 +29,7 @@ body.kuharija {
 /* header */
 #header img {
 	display: none;
+	cursor: pointer;
 }
 
 @media (min-width: 979px) {

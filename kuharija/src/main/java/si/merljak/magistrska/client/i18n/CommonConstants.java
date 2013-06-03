@@ -33,6 +33,12 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("Remove")
 	String remove();
 
+	@DefaultStringValue("and")
+	String and();
+
+	@DefaultStringValue("or")
+	String or();
+
 	@DefaultStringValue("Page")
 	String page();
 	
