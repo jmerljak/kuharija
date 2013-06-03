@@ -35,6 +35,7 @@ body.kuharija {
 	#header img {
 		display: block;
 		height: 100px;
+		margin-top: -5px;
 		width: 100%;
 	}
 }
@@ -68,7 +69,7 @@ footer {
 	}
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 979px) {
 	.index {
 		-moz-column-count: 3;
 		-webkit-column-count: 3;
