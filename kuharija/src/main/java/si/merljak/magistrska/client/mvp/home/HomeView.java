@@ -22,7 +22,6 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
-import com.github.gwtbootstrap.client.ui.Emphasis;
 import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
@@ -54,6 +53,8 @@ public class HomeView extends AbstractView {
 	// widgets
 	private final Button linkBrowseAll = new Button(messages.browseAllRecipes());
 	private final Button linkLogin = new Button(messages.loginForRecommendations());
+
+	private final Lead recommendIntro = new Lead();
 	private final FluidRow recommendPanel = new FluidRow();
 	private final FluidRow featuredPanel = new FluidRow();
 
@@ -73,12 +74,17 @@ public class HomeView extends AbstractView {
 		Heading headingCategories = new Heading(HEADING_SIZE + 1, constants.recipesByCategory());
 
 		// featured and recommendations
+		recommendIntro.addStyleName("lead-home");
+		recommendIntro.addStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
+		recommendIntro.setText(constants.recommendations());
+		recommendIntro.setVisible(false);
+		
 		Lead featuredIntro = new Lead();
 		featuredIntro.addStyleName("lead-home");
 		featuredIntro.setText(constants.haveYouTried());
 
-		featuredPanel.setStyleName("featuredPanel");
 		recommendPanel.addStyleName("recommendPanel");
+		featuredPanel.setStyleName("featuredPanel");
 
 		// links
 		linkLogin.setVisible(false);
@@ -172,6 +178,7 @@ public class HomeView extends AbstractView {
 		// layout
 		FlowPanel main = new FlowPanel();
 		main.add(heading);
+		main.add(recommendIntro);
 		main.add(recommendPanel);
 		main.add(featuredIntro);
 		main.add(featuredPanel);
@@ -186,6 +193,7 @@ public class HomeView extends AbstractView {
 
 	public void displayRecommendations(RecommendationsDto result, boolean isUserLoggedIn) {
 		idSet.clear();
+		recommendIntro.setVisible(false);
 		recommendPanel.clear();
 		featuredPanel.clear();
 		linkLogin.setVisible(!isUserLoggedIn);
@@ -209,9 +217,10 @@ public class HomeView extends AbstractView {
 				}
 			}
 		}
+
+		recommendIntro.setVisible(recommendPanel.getWidgetCount() > 0);
 	}
 
-	// TODO cleanup!!!
 	private void addResultEntry(RecipeDto recipe, RecommendationType type) {
 		String heading = recipe.getHeading();
 		String imageUrl = recipe.getImageUrl();

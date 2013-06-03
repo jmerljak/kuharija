@@ -24,8 +24,8 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("You are here")
 	String youAreHere();
 
-	@DefaultStringValue("Recommendations for you")
-	String recommendations1();
+	@DefaultStringValue("Recommended for you")
+	String recommendations();
 
 	@DefaultStringValue("Have you tried ...")
 	String haveYouTried();
