@@ -265,6 +265,10 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 					} else {
 						ingredientSuggestForm.addStyleName(ControlGroupType.SUCCESS.get());
 					}
+				} else if (value.isEmpty()) {
+					ingredientSuggestForm.removeStyleName(ControlGroupType.ERROR.get());
+					ingredientSuggestForm.removeStyleName(ControlGroupType.SUCCESS.get());
+					Roles.getTextboxRole().setAriaInvalidState(ingredientSuggest.getElement(), InvalidValue.FALSE);
 				} else {
 					// show error
 					ingredientSuggestForm.addStyleName(ControlGroupType.ERROR.get());
@@ -318,13 +322,13 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 			}
 		});
 
-		Label labelIngredients = new Label(constants.ingredients());
+		Label labelIngredients = new Label(constants.searchByAllIngredients());
 		labelIngredients.setStyleName("filterLabel");
 		labelUtensils.setStyleName("filterLabel");
 
 		ingredientSuggestForm.addStyleName(Constants.CONTROL_GROUP);
 		ingredientSuggestForm.add(ingredientSuggest);
-		ingredientSuggestForm.add(ingredientAdd);
+//		ingredientSuggestForm.add(ingredientAdd);
 
 		Column filterIngredients = new Column(3);
 		filterIngredients.add(labelIngredients);
@@ -620,6 +624,8 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 	private FlowPanel getIngredientLabel(final String ingredient) {
 		final FlowPanel ingredientEntry = new FlowPanel(); 
 
+		InlineLabel ingredientLabel = new InlineLabel(ingredientMap.get(ingredient) + " ");
+
 		IconAnchor removeIcon = new IconAnchor();
 		removeIcon.setIcon(IconType.REMOVE);
 		removeIcon.setText(constants.remove());
@@ -633,7 +639,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 //				doSearch();
 			}
 		});
-		InlineLabel ingredientLabel = new InlineLabel(ingredientMap.get(ingredient) + " ");
+
 		ingredientEntry.add(ingredientLabel);
 		ingredientEntry.add(removeIcon);
 		return ingredientEntry;
