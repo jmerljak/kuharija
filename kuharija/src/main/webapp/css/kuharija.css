@@ -79,19 +79,23 @@ footer {
 
 /* image links */
 .imageLink {
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
 	margin-bottom: 10px;
 }
 
 .imageLink-ingredients {
 	background: black url("../img/ingredients.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 .imageLink-utensils {
 	background: black url("../img/utensils.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 .imageLink a {

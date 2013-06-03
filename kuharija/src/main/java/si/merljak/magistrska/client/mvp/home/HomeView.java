@@ -143,7 +143,7 @@ public class HomeView extends AbstractView {
 		}
 
 		Image image = new Image(AbstractView.RECIPE_THUMB_IMG_FOLDER + imageUrl);
-		image.setType(ImageType.ROUNDED);
+		image.setType(ImageType.POLAROID);
 		image.setAltText(heading);
 
 		Anchor link = new Anchor(heading, RecipePresenter.buildRecipeUrl(recipe.getId()));

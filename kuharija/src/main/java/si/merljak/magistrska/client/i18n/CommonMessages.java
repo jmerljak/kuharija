@@ -93,7 +93,7 @@ public interface CommonMessages extends Messages {
 	@DefaultMessage("After setting search parameters, press the search button to refresh results.")
 	String tipSearch();
 
-	@DefaultMessage("You can move between steps using hand gestures.")
+	@DefaultMessage("You can move between steps using gestures or voice.")
 	String tipRecipeGestures();
 
 	@DefaultMessage("http://en.wikipedia.org/w/index.php?search={0}")
