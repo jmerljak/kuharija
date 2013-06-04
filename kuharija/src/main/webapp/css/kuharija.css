@@ -380,6 +380,10 @@ p.stepContent {
 	margin: 10px 0;
 }
 
+video {
+	width: 100%;	
+}
+
 /* widgets */
 .sideWidget {
 	padding: 2px;

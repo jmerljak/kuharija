@@ -53,9 +53,12 @@ public class VideoWidget extends Composite {
 			videoWidget = Video.createIfSupported();
 			videoWidget.setAutoplay(false);
 			videoWidget.setControls(true);
-			videoWidget.setPoster(VIDEO_FOLDER + videoDto.getPosterUrl());
 			videoWidget.setPreload(MediaElement.PRELOAD_METADATA);
-			videoWidget.setWidth("100%");
+
+			String posterUrl = videoDto.getPosterUrl();
+			if (posterUrl != null) {
+				videoWidget.setPoster(VIDEO_FOLDER + posterUrl);
+			}
 			main.add(videoWidget);
 		} else {
 			// add a flash player?
