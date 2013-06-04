@@ -56,13 +56,6 @@
 		    <version>14.0.1</version>
 		</dependency>
 
-		<!-- URL rewriting
-		<dependency>
-		    <groupId>org.tuckey</groupId>
-		    <artifactId>urlrewritefilter</artifactId>
-		    <version>4.0.3</version>
-		</dependency> -->
-
 		<!-- postgres driver -->
 		<dependency>
 			<groupId>postgresql</groupId>
