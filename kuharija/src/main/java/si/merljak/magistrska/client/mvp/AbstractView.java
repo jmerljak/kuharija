@@ -35,7 +35,7 @@ public abstract class AbstractView extends Composite {
 	public static final String INGREDIENT_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/ingredient/";
 	public static final String RECIPE_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/recipe/";
 	public static final String RECIPE_THUMB_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/recipe/thumbs/";
-	public static final String RECIPE_IMG_FALLBACK = "../../noimage.png";
+	public static final String RECIPE_IMG_FALLBACK = "noimage.png";
 	public static final String UTENSIL_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/utensil/";
 
 	/** Returns localized name of category. */

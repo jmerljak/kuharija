@@ -136,6 +136,8 @@ public class RecipeView extends AbstractView {
 
 		// recipe info
 		String imageUrl = recipe.getImageUrl();
+		columnImg.setStyleName("image", imageUrl != null);
+		columnImg.setStyleName("empty", imageUrl == null);
 		if (imageUrl != null) {
 			columnImg.getElement().setAttribute("style", "background-image: url('" + RECIPE_IMG_FOLDER + imageUrl + "')");
 		} else {
