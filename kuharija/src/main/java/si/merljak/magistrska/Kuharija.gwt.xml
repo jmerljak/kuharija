@@ -21,8 +21,8 @@
 	<extend-property name="locale" values="sl_SI" />
 	<extend-property name="locale" values="en" />
 
-	<!-- Compile only for Firefox and Chrome -->
-    <set-property name="user.agent" value="gecko1_8,safari" />
+	<!-- Compile only for Firefox and Chrome
+    <set-property name="user.agent" value="gecko1_8,safari" /> -->
     
 	<!-- Application entry point class -->
 	<entry-point class="si.merljak.magistrska.client.Kuharija" />

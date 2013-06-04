@@ -182,7 +182,7 @@ public class Kuharija implements EntryPoint {
 		footerPanel.add(localeWidget);
 
 		// geolocate
-//		geolocate(); // TODO not needed for usability testing
+		geolocate();
 
 		// history handler
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {

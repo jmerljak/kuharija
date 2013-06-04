@@ -58,6 +58,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.innerJoin(recipe.ingredients, recipeIngredient)
 											.innerJoin(recipeIngredient.ingredient, ingredient)
 											.where(ingredient.name.notIn(ingredientsFromFridge))
+											// TODO check parent ingredient
 											.distinct();
 			
 			List<RecipeDto> recipesFromIngredients = new JPAQuery(em)
@@ -66,7 +67,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.id.notIn(recipesWithMissingIngredient.list(recipe.id)))
 											.orderBy(NumberExpression.random().asc()) // randomize
-											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
+											.limit(1) // TODO temporary limit to only one result
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 
@@ -130,7 +131,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 											.where(recipeDetails.language.eq(language))
 											.where(recipe.metadata.contains(searchString))
 											.orderBy(NumberExpression.random().asc()) // randomize
-											.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
+											.limit(1) // TODO temporary limit to only one result
 											.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 													recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 
@@ -144,7 +145,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 									.where(recipeDetails.language.eq(language))
 									.where(recipe.metadata.contains("featured"))
 									.orderBy(NumberExpression.random().asc()) // randomize
-									.limit(LIMIT_PER_RECOMMENDATION_TYPE) // limit to few results
+									.limit(LIMIT_PER_RECOMMENDATION_TYPE * 2) // limit to few results
 									.list(new QRecipeDto(recipe.id, recipeDetails.heading, 
 											recipe.imageUrl, recipe.difficulty, recipe.timeOverall));
 
@@ -155,7 +156,7 @@ public class RecommendationServiceImpl extends RemoteServiceServlet implements R
 
 	@Override
 	public List<RecipeDto> recommendSimmilarRecipes(long recipeId, String username) {
-		// TODO Auto-generated method stub
+		// TODO implement
 		return null;
 	}
 }
