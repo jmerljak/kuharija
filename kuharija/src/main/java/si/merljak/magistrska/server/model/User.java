@@ -40,7 +40,7 @@ public class User implements Serializable {
 	private String preferences;
 
 	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(name = "bookmark", inverseJoinColumns = @JoinColumn(name = "recipe_id"))
+	@JoinTable(name = "bookmark", joinColumns = @JoinColumn(name="users_username"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
 	private Set<Recipe> bookmarks;
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="user")

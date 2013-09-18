@@ -25,6 +25,8 @@ public class Session implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date expires;
 
+	protected Session() {}
+
 	public Session(String id, User user, Date expires) {
 		this.id = id;
 		this.user = user;
