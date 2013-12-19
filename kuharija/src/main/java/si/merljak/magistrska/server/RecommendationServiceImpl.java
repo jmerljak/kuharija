@@ -28,6 +28,11 @@ import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.expr.NumberExpression;
 
+/**
+ * Basic recommendation system.
+ * 
+ * @author Jakob Merljak
+ */
 public class RecommendationServiceImpl extends RemoteServiceServlet implements RecommendationService {
 
 	private static final long serialVersionUID = 1636894033893317781L;

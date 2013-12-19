@@ -13,6 +13,9 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 import com.mysema.query.annotations.QueryProjection;
 
+/**
+ * @author Jakob Merljak
+ */
 public class RecipeDetailsDto implements Serializable {
 
 	private static final long serialVersionUID = -8729613147411600991L;

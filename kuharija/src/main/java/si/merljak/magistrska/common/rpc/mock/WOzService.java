@@ -5,6 +5,12 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+/**
+ * Remote control interface.
+ * See article about <a href="https://en.wikipedia.org/wiki/Wizard_of_Oz_experiment">Wizard of Oz Experiment</a>.
+ *  
+ * @author Jakob Merljak
+ */
 @RemoteServiceRelativePath("woz")
 public interface WOzService extends RemoteService {
 

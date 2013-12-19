@@ -9,6 +9,9 @@ import javax.persistence.Table;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @Table(name="technique_text")
 public class TechniqueText extends Text implements Serializable {

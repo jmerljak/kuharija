@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import com.mysema.query.annotations.QueryProjection;
 
+/**
+ * @author Jakob Merljak
+ */
 public class UserDto implements Serializable {
 
 	private static final long serialVersionUID = 644407345016869943L;

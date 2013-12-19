@@ -51,6 +51,9 @@ import si.merljak.magistrska.server.model.Video;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+/**
+ * @author Jakob Merljak
+ */
 public class RecipeServiceImpl extends RemoteServiceServlet implements RecipeService {
 
 	private static final long serialVersionUID = 8165315606051808675L;

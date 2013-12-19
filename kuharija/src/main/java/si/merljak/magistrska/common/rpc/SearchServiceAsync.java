@@ -5,6 +5,9 @@ import si.merljak.magistrska.common.dto.RecipeListDto;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+/**
+ * @author Jakob Merljak
+ */
 public interface SearchServiceAsync {
 
 	void search(SearchParameters searchParameters, AsyncCallback<RecipeListDto> callback);

@@ -5,6 +5,9 @@ import java.util.Date;
 
 import com.mysema.query.annotations.QueryProjection;
 
+/**
+ * @author Jakob Merljak
+ */
 public class CommentDto implements Serializable {
 
 	private static final long serialVersionUID = -6686847920153154747L;

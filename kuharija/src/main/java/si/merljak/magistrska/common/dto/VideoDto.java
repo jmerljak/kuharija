@@ -7,6 +7,9 @@ import com.mysema.query.annotations.QueryProjection;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 public class VideoDto implements Serializable {
 
 	private static final long serialVersionUID = 1055624611304299737L;

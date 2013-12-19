@@ -3,6 +3,9 @@ package si.merljak.magistrska.common.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author Jakob Merljak
+ */
 public class SessionDto implements Serializable {
 
 	private static final long serialVersionUID = -3760441446058253929L;

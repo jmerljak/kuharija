@@ -31,6 +31,9 @@ import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+/**
+ * @author Jakob Merljak
+ */
 public class SearchServiceImpl extends RemoteServiceServlet implements SearchService {
 
 	private static final long serialVersionUID = 6742097745368981008L;

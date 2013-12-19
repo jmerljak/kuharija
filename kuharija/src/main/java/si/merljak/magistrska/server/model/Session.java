@@ -10,6 +10,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 public class Session implements Serializable {
 

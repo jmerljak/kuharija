@@ -5,6 +5,9 @@ import si.merljak.magistrska.common.dto.IngredientDto;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+/**
+ * @author Jakob Merljak
+ */
 @RemoteServiceRelativePath("ingredient")
 public interface IngredientService extends RemoteService {
 

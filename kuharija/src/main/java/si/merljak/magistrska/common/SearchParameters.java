@@ -10,6 +10,11 @@ import si.merljak.magistrska.common.enumeration.Language;
 import si.merljak.magistrska.common.enumeration.RecipeSortKey;
 import si.merljak.magistrska.common.enumeration.Season;
 
+/**
+ * Parameters for advanced search.
+ * 
+ * @author Jakob Merljak
+ */
 public class SearchParameters implements Serializable {
 
 	private static final long serialVersionUID = 2817702799360224889L;

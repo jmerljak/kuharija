@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
 
 import si.merljak.magistrska.common.enumeration.Difficulty;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 public class Technique implements Serializable {
 

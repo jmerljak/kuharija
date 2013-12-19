@@ -7,6 +7,9 @@ import java.util.Map;
 
 import si.merljak.magistrska.common.enumeration.RecommendationType;
 
+/**
+ * @author Jakob Merljak
+ */
 public class RecommendationsDto implements Serializable {
 
 	private static final long serialVersionUID = 3166258673861297035L;

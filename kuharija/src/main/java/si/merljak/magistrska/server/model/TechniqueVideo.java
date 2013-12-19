@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @DiscriminatorValue("T")
 public class TechniqueVideo extends Video implements Serializable {

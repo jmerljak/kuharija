@@ -6,6 +6,9 @@ import si.merljak.magistrska.common.enumeration.Difficulty;
 
 import com.mysema.query.annotations.QueryProjection;
 
+/**
+ * @author Jakob Merljak
+ */
 public class RecipeDto implements Serializable {
 
 	private static final long serialVersionUID = 4556223060117165325L;

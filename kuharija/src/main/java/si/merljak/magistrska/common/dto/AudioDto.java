@@ -7,6 +7,9 @@ import com.mysema.query.annotations.QueryProjection;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 public class AudioDto implements Serializable {
 
 	private static final long serialVersionUID = 6162966631238503867L;

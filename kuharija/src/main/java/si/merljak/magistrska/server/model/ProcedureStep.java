@@ -15,6 +15,9 @@ import javax.validation.constraints.Size;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @Table(name="step")
 public class ProcedureStep implements Serializable {

@@ -10,6 +10,11 @@ import javax.persistence.ManyToOne;
 import si.merljak.magistrska.server.model.Ingredient;
 import si.merljak.magistrska.server.model.User;
 
+/**
+ * Entity for mocking connection to smart refrigerator.
+ * 
+ * @author Jakob Merljak
+ */
 @Entity
 public class Fridge implements Serializable {
 

@@ -15,6 +15,9 @@ import si.merljak.magistrska.common.rpc.IngredientService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+/**
+ * @author Jakob Merljak
+ */
 public class IngredientServiceImpl extends RemoteServiceServlet implements IngredientService {
 
 	private static final long serialVersionUID = -1157324345144797122L;

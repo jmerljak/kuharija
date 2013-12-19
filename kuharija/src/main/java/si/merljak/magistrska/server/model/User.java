@@ -16,6 +16,9 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @Table(name="users")
 public class User implements Serializable {

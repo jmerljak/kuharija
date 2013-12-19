@@ -2,6 +2,15 @@ package si.merljak.magistrska.client.utils;
 
 import si.merljak.magistrska.common.enumeration.Unit;
 
+/**
+ * Utility class for conversion between units (e.g. imperial to metric and vice versa).
+ * 
+ * Note: This is not very smart solution. Functionality is limited and 
+ * we should find another (better) way to do conversions.
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public class Calc {
 
 	public static Unit getUnit(Unit unit, boolean toMetric) {

@@ -19,6 +19,11 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+/**
+ * Basic implementation for remote control by the 'Wizard of Oz'.
+ * 
+ * @author Jakob Merljak
+ */
 public class WOzServiceImpl extends RemoteServiceServlet implements WOzService {
 
 	private static final long serialVersionUID = -1972686679692469943L;

@@ -26,6 +26,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Composite;
 
+/**
+ * Main menu.
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public class MainMenuWidget extends Composite implements LoginEventHandler, SearchWidget.SearchHandler {
 
 	// i18n

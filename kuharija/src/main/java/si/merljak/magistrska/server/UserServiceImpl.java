@@ -27,6 +27,9 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+/**
+ * @author Jakob Merljak
+ */
 public class UserServiceImpl extends RemoteServiceServlet implements UserService {
 
 	private static final long serialVersionUID = -1972686679692469943L;

@@ -10,6 +10,12 @@ import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Location;
 
+/** 
+ * Simple widget that enables user to choose user interface language.
+ * 
+ * @author Jakob Merljak
+ *
+ */
 public class LocaleWidget extends ListBox {
 
 	private String currentLocale;

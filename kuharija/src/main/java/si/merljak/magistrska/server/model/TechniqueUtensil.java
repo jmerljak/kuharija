@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @Table(name="technique_utensil")
 public class TechniqueUtensil implements Serializable {

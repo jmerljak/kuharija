@@ -6,6 +6,9 @@ import si.merljak.magistrska.common.dto.UserDto;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+/**
+ * @author Jakob Merljak
+ */
 @RemoteServiceRelativePath("user")
 public interface UserService extends RemoteService {
 

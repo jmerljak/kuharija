@@ -23,6 +23,9 @@ import si.merljak.magistrska.common.enumeration.Difficulty;
 import si.merljak.magistrska.common.enumeration.MealUnit;
 import si.merljak.magistrska.common.enumeration.Season;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 public class Recipe implements Serializable {
 

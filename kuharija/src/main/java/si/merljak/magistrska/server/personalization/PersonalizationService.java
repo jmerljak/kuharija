@@ -4,6 +4,9 @@ import java.util.List;
 
 import si.merljak.magistrska.common.enumeration.Season;
 
+/**
+ * @author Jakob Merljak
+ */
 public interface PersonalizationService {
 
 	/** 

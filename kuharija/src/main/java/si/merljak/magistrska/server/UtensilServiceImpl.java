@@ -15,6 +15,9 @@ import si.merljak.magistrska.common.rpc.UtensilService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+/**
+ * @author Jakob Merljak
+ */
 public class UtensilServiceImpl extends RemoteServiceServlet implements UtensilService {
 
 	private static final long serialVersionUID = -6657779731960840808L;

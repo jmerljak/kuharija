@@ -3,6 +3,9 @@ package si.merljak.magistrska.common.dto;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author Jakob Merljak
+ */
 public class RecipeListDto implements Serializable {
 
 	private static final long serialVersionUID = -4689515931972660496L;

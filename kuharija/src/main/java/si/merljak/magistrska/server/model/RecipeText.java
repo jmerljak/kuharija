@@ -9,6 +9,9 @@ import javax.persistence.Table;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @Table(name="recipe_text")
 public class RecipeText extends Text implements Serializable {

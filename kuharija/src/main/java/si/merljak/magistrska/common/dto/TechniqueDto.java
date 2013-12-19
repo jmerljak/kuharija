@@ -8,6 +8,9 @@ import com.mysema.query.annotations.QueryProjection;
 
 import si.merljak.magistrska.common.enumeration.Difficulty;
 
+/**
+ * @author Jakob Merljak
+ */
 public class TechniqueDto implements Serializable {
 
 	private static final long serialVersionUID = 8774960896820340914L;

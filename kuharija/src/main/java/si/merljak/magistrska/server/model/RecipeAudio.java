@@ -9,6 +9,9 @@ import javax.persistence.Table;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @Table(name="recipe_audio")
 public class RecipeAudio extends Audio implements Serializable {

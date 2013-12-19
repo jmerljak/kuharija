@@ -6,6 +6,9 @@ import com.mysema.query.annotations.QueryProjection;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 public class SubtitleDto implements Serializable {
 
 	private static final long serialVersionUID = 7637546509808846048L;

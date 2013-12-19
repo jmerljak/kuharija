@@ -9,6 +9,9 @@ import si.merljak.magistrska.common.enumeration.Language;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+/**
+ * @author Jakob Merljak
+ */
 @RemoteServiceRelativePath("recommend")
 public interface RecommendationService extends RemoteService {
 	

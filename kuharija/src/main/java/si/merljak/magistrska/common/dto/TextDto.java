@@ -6,6 +6,9 @@ import com.mysema.query.annotations.QueryProjection;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 public class TextDto implements Serializable {
 
 	private static final long serialVersionUID = -6696710834850758287L;

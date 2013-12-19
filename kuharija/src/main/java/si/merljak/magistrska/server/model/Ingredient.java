@@ -7,6 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 public class Ingredient implements Serializable {
 

@@ -7,6 +7,9 @@ import com.mysema.query.annotations.QueryProjection;
 import si.merljak.magistrska.common.enumeration.AppendixType;
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 public class AppendixDto implements Serializable {
 
 	private static final long serialVersionUID = 4201466622978374724L;

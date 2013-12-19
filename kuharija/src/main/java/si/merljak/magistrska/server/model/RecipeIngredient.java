@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
 
 import si.merljak.magistrska.common.enumeration.Unit;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @Table(name="recipe_ingredient")
 public class RecipeIngredient implements Serializable {

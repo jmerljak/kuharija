@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @Table(name="recipe_details")
 public class RecipeDetails extends Details implements Serializable {

@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 public class WOzAction implements Serializable {
 

@@ -18,6 +18,9 @@ import javax.validation.constraints.NotNull;
 
 import si.merljak.magistrska.common.enumeration.Language;
 
+/**
+ * @author Jakob Merljak
+ */
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="dtype", discriminatorType=DiscriminatorType.STRING, length=1)
