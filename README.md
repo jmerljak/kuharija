@@ -1,11 +1,11 @@
 Kuharija
 ========
 
-'Kuharija' is a prototype of culinary educational rich internet application. It was developed as a part of my master's thesis (Development of personalized user interface
+**Kuharija** is a prototype of culinary educational rich internet application. It was developed as a part of my master's thesis (Development of personalized user interface
 for media-rich educational web application) and evaluated with two iterations of usability testing.
 
 Used tools and libraries
-========================
+------------------------
 - Maven
 - Java
 - JPA, Hibernate
@@ -16,10 +16,12 @@ Used tools and libraries
 - GWTBootstrap
 - ...
 
-Installation
-============
+Usage
+------------
 Compile and deploy to JBoss Application Server 7 in one step!
 mvn clean apt:process install jboss-as:deploy
 
 
+Copyright
+---------
 Jakob Merljak, 2013.
