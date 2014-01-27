@@ -7,6 +7,21 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<name>Kuharija</name>
+	<description>Kuharija is a prototype of culinary educational rich internet application.</description>
+	<inceptionYear>2013</inceptionYear>
+	<developers>
+		<developer>
+			<id>jmerljak</id>
+			<name>Jakob Merljak</name>
+		</developer>
+	</developers>
+	
+	<scm>
+		<url>https://github.com/jmerljak/kuharija</url>
+		<tag>HEAD</tag>
+	</scm>
+
 	<properties>
 		<db.name>kuharija</db.name>
 		<db.user>user</db.user>
@@ -128,8 +143,9 @@
 				<configuration>
 					<!-- Exclude client only classes from the deployment. As these classes 
 						compile down to JavaScript, they are not needed at runtime. They would only 
-						introduce runtime dependencies to GWT development libraries. -->
-					<packagingExcludes>**/client/**/*.class</packagingExcludes>
+						introduce runtime dependencies to GWT development libraries.
+						Also exclude database SQL scripts. -->
+					<packagingExcludes>**/client/**/*.class,**/*.sql</packagingExcludes>
 				</configuration>
 			</plugin>
 
