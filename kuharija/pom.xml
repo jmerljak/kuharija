@@ -4,32 +4,32 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>si.merljak.magistrska</groupId>
 	<artifactId>kuharija</artifactId>
-    <version>1.0-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-    <properties>
-        <db.name>kuharija</db.name>
-        <db.user>user</db.user>
-        <db.password>****</db.password>
+	<properties>
+		<db.name>kuharija</db.name>
+		<db.user>user</db.user>
+		<db.password>****</db.password>
 		
-        <gwt.version>2.5.1</gwt.version>
-        <querydsl.version>3.1.1</querydsl.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+		<gwt.version>2.5.1</gwt.version>
+		<querydsl.version>3.1.1</querydsl.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 	<dependencies>
-        <dependency>
-            <groupId>org.jboss.spec</groupId>
-            <artifactId>jboss-javaee-6.0</artifactId>
-            <version>3.0.2.Final</version>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-6.0</artifactId>
+			<version>3.0.2.Final</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.5</version>
-            <scope>provided</scope>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- utilities -->
@@ -49,15 +49,15 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.guava</groupId>
-		    <artifactId>guava-gwt</artifactId>
-		    <version>14.0.1</version>
-            <scope>provided</scope>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-gwt</artifactId>
+			<version>14.0.1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.guava</groupId>
-		    <artifactId>guava</artifactId>
-		    <version>14.0.1</version>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>14.0.1</version>
 		</dependency>
 
 		<!-- postgres driver -->
@@ -75,12 +75,12 @@
 		</dependency>
 
 		<!-- GWT -->
-	    <dependency>
-	      <groupId>com.google.gwt</groupId>
-	      <artifactId>gwt-servlet</artifactId>
-	      <version>${gwt.version}</version>
-	      <scope>runtime</scope>
-	    </dependency>
+		<dependency>
+		  <groupId>com.google.gwt</groupId>
+		  <artifactId>gwt-servlet</artifactId>
+		  <version>${gwt.version}</version>
+		  <scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
@@ -97,11 +97,11 @@
 		</dependency>
 	</dependencies>
 
-    <repositories>
-    </repositories>
+	<repositories>
+	</repositories>
 
 	<build>
-    	<finalName>${project.artifactId}</finalName>
+		<finalName>${project.artifactId}</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
 			<resource>
@@ -129,76 +129,76 @@
 					<!-- Exclude client only classes from the deployment. As these classes 
 						compile down to JavaScript, they are not needed at runtime. They would only 
 						introduce runtime dependencies to GWT development libraries. -->
-          			<packagingExcludes>**/client/**/*.class</packagingExcludes>
+					<packagingExcludes>**/client/**/*.class</packagingExcludes>
 				</configuration>
 			</plugin>
 
 			<!-- Querydsl generation -->
 			<plugin>
-		    	<groupId>com.mysema.maven</groupId>
+				<groupId>com.mysema.maven</groupId>
 		   		<artifactId>apt-maven-plugin</artifactId>
-		    	<version>1.0.8</version>
-	        	<configuration>
-	            	<outputDirectory>target/generated-sources/java</outputDirectory>
-	            	<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-	        	</configuration>
-		    	<dependencies>
-			    	<dependency>
+				<version>1.0.8</version>
+				<configuration>
+					<outputDirectory>target/generated-sources/java</outputDirectory>
+					<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+				</configuration>
+				<dependencies>
+					<dependency>
 						<groupId>com.mysema.querydsl</groupId>
 						<artifactId>querydsl-apt</artifactId>
 						<version>${querydsl.version}</version>
 					</dependency>
-			    	<dependency>
+					<dependency>
 						<groupId>com.mysema.querydsl</groupId>
 						<artifactId>querydsl-jpa</artifactId>
 						<classifier>apt</classifier>
 						<version>${querydsl.version}</version>
 					</dependency>
 				</dependencies>
-		    </plugin>
+			</plugin>
 
 			<!-- JBoss AS plugin to deploy war -->
 			<plugin>
 				<groupId>org.jboss.as.plugins</groupId>
 				<artifactId>jboss-as-maven-plugin</artifactId>
-                <version>7.4.Final</version>
+				<version>7.4.Final</version>
 				<executions>
-                    <execution>
-                        <id>deploy-postgresql</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>deploy-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <groupId>postgresql</groupId>
-                            <artifactId>postgresql</artifactId>
-                            <name>postgresql.jar</name>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-datasource</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>add-resource</goal>
-                        </goals>
-                        <configuration>
-                            <address>subsystem=datasources,data-source=postgresDS</address>
-                            <resource>
-                                <enable-resource>true</enable-resource>
-                                <properties>
-                                    <connection-url>jdbc:postgresql://localhost/${db.name}</connection-url>
-                                    <jndi-name>java:jboss/postgresDS</jndi-name>
-                                    <enabled>true</enabled>
-                                    <driver-name>postgresql.jar</driver-name>
-                                    <class-name>org.postgres.Driver</class-name>
-                                    <user-name>${db.user}</user-name>
-                                    <password>${db.password}</password>
-                                    <pool-name>myPool</pool-name>
-                                </properties>
-                            </resource>
-                        </configuration>
-                    </execution>
-                </executions>
+					<execution>
+						<id>deploy-postgresql</id>
+						<phase>install</phase>
+						<goals>
+							<goal>deploy-artifact</goal>
+						</goals>
+						<configuration>
+							<groupId>postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+							<name>postgresql.jar</name>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-datasource</id>
+						<phase>install</phase>
+						<goals>
+							<goal>add-resource</goal>
+						</goals>
+						<configuration>
+							<address>subsystem=datasources,data-source=postgresDS</address>
+							<resource>
+								<enable-resource>true</enable-resource>
+								<properties>
+									<connection-url>jdbc:postgresql://localhost/${db.name}</connection-url>
+									<jndi-name>java:jboss/postgresDS</jndi-name>
+									<enabled>true</enabled>
+									<driver-name>postgresql.jar</driver-name>
+									<class-name>org.postgres.Driver</class-name>
+									<user-name>${db.user}</user-name>
+									<password>${db.password}</password>
+									<pool-name>myPool</pool-name>
+								</properties>
+							</resource>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- GWT plugin to compile client-side java code to javascript and to run GWT development mode -->
@@ -217,11 +217,11 @@
 					<noServer>true</noServer>
 				</configuration>
 				<executions>
-				    <execution>
+					<execution>
 						<goals>
 							<goal>compile</goal>
 						</goals>
-			        </execution>
+					</execution>
 					<execution>
 						<id>gwt-clean</id>
 						<phase>clean</phase>
