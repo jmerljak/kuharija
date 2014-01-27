@@ -8,6 +8,10 @@
 	<packaging>war</packaging>
 
     <properties>
+        <db.name>kuharija</db.name>
+        <db.user>user</db.user>
+        <db.password>****</db.password>
+		
         <gwt.version>2.5.1</gwt.version>
         <querydsl.version>3.1.1</querydsl.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -182,13 +186,13 @@
                             <resource>
                                 <enable-resource>true</enable-resource>
                                 <properties>
-                                    <connection-url>jdbc:postgresql://localhost/magistrska</connection-url>
+                                    <connection-url>jdbc:postgresql://localhost/${db.name}</connection-url>
                                     <jndi-name>java:jboss/postgresDS</jndi-name>
                                     <enabled>true</enabled>
                                     <driver-name>postgresql.jar</driver-name>
                                     <class-name>org.postgres.Driver</class-name>
-                                    <user-name>magistrska</user-name>
-                                    <password>magistrskapostgres</password>
+                                    <user-name>${db.user}</user-name>
+                                    <password>${db.password}</password>
                                     <pool-name>myPool</pool-name>
                                 </properties>
                             </resource>
