@@ -1,9 +1,10 @@
-
-image(s)            | licence                                         | source / author
-----------------------------------------------------------------------------
-img/white_wall...   | Creative Commons Attribution-ShareAlike 3.0     | http://subtlepatterns.com/
-img/404.jpg         | public domain, CreativeCommons, GNU or similar  | Wikipedia
-img/ingredient*     | public domain, CreativeCommons, GNU or similar  | Wikipedia
-img/utensil/*       | public domain, CreativeCommons, GNU or similar  | Wikipedia
-img/recipe/*        | all rights reserved, used with permission       | Krištof Koman
-img/utensils.jpg    | CreativeCommons					              | https://secure.flickr.com/photos/mag3737/3865804497/sizes/o/in/photostream/
+image(s)                        | licence                                         | source / author
+----------------------------------------------------------------------------------------------------
+img/404.jpg                     | public domain, CreativeCommons, GNU or similar  | Wikipedia
+img/ingredient*                 | public domain, CreativeCommons, GNU or similar  | Wikipedia
+img/recipe/banana_icecream.jpg* | public domain, CreativeCommons, GNU or similar  |
+img/recipe/testenine_por_tuna*  | CreativeCommons                                 | Jakob Merljak
+img/recipe/*                    | all rights reserved, used with permission       | Krištof Koman
+img/utensil/*                   | public domain, CreativeCommons, GNU or similar  | Wikipedia
+img/utensils.jpg                | CreativeCommons                                 | https://secure.flickr.com/photos/mag3737/3865804497/sizes/o/in/photostream/
+img/white_wall_hash.png         | Creative Commons Attribution-ShareAlike 3.0     | http://subtlepatterns.com/
