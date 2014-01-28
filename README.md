@@ -10,13 +10,13 @@ Let's assume you have:
 - installed PostgreSQL 9, created database `${db.name}` in default tablespace and granted privileges to user `${db.user}` with password `${db.password}`,
 - replaced dummy database name, username and password in properties section of pom.xml with real ones.
 
-Than you can compile and deploy application (including JDBC driver and datasource) to JBoss Application Server 7 in one step!
+Than you can compile and deploy application (including JDBC driver and datasource) to JBoss Application Server 7 in just one single step!
 
 `mvn clean apt:process install jboss-as:deploy`
 
 Application is then accessible at [http://localhost:8080/kuharija/](http://localhost:8080/kuharija/).
 
-Note: Deploy also creates database tables, but does not insert any data. You can insert basic data from provided script at `/src/main/resources/db/basic_data.sql`.
+Note: Deploy also creates database tables, but does not insert any data. You can insert basic demonstration data from provided script at `/src/main/resources/db/basic_data.sql`.
 
 Developers
 ------------
@@ -25,18 +25,19 @@ You can easily import this project into your favourite IDE. For example, in Ecli
 Used tools, technologies and libraries:
 - [Apache Maven](https://maven.apache.org/)
 - [Java](https://www.java.com/)
-- JPA, Hibernate
+- JPA, [Hibernate](http://hibernate.org/)
 - [QueryDsl](http://www.querydsl.com/)
 - [Joda Time](http://www.joda.org/joda-time/)
 - [Guava](https://code.google.com/p/guava-libraries/)
 - [GWT](http://www.gwtproject.org/)
 - [GWTBootstrap](http://gwtbootstrap.github.io/)
+- HTML5 (+ [ARIA](https://en.wikipedia.org/wiki/WAI-ARIA))
 - ...
 
 Copyright & legal notice
 ---------
-You are (except as otherwise noted) free to use, copy, fork, adapt and redistribute all of the project's source code, but please give the credit.
-**This software is provided "AS IS", without warranty of any kind** ... (and so on :)).
+You are (except as otherwise noted) free to use, copy, fork, adapt and redistribute all of the project's source code, but please give credit.
+**The software is provided "AS IS", without warranty of any kind** ... (and so on :)).
 
 
 Jakob Merljak, 2013.
