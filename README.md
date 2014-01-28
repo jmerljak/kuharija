@@ -23,14 +23,14 @@ Developers
 You can easily import this project into your favourite IDE. For example, in Eclipse use `Import` and then `Existing Maven projects`. Essentially you have to configure Java build path to include `/target/generated-sources/java` and run `mvn apt:process` to generate QueryDsl classes.
 
 Used tools, technologies and libraries:
-- [https://maven.apache.org/](Apache Maven)
-- [https://www.java.com/](Java)
+- [Apache Maven](https://maven.apache.org/)
+- [Java](https://www.java.com/)
 - JPA, Hibernate
-- [http://www.querydsl.com/](QueryDsl)
-- [http://www.joda.org/joda-time/](Joda Time)
-- [https://code.google.com/p/guava-libraries/](Guava)
-- [http://www.gwtproject.org/](GWT)
-- [http://gwtbootstrap.github.io/](GWTBootstrap)
+- [QueryDsl](http://www.querydsl.com/)
+- [Joda Time](http://www.joda.org/joda-time/)
+- [Guava](https://code.google.com/p/guava-libraries/]
+- [GWT](http://www.gwtproject.org/)
+- [GWTBootstrap](http://gwtbootstrap.github.io/)
 - ...
 
 
