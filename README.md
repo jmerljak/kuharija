@@ -28,7 +28,7 @@ Used tools, technologies and libraries:
 - JPA, Hibernate
 - [QueryDsl](http://www.querydsl.com/)
 - [Joda Time](http://www.joda.org/joda-time/)
-- [Guava](https://code.google.com/p/guava-libraries/]
+- [Guava](https://code.google.com/p/guava-libraries/)
 - [GWT](http://www.gwtproject.org/)
 - [GWTBootstrap](http://gwtbootstrap.github.io/)
 - ...
