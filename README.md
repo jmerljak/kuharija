@@ -20,7 +20,7 @@ Note: Deploy also creates database tables, but does not insert any data. You can
 
 Developers
 ------------
-You can easily import this project into your favourite IDE. For example, in Eclipse use `Import` and then `Existing Maven projects`. Essentially you have to configure Java build path to include `/target/generated-sources/java` and run `mvn apt:process` to generate QueryDsl classes.
+You can easily import this project into your favourite IDE. For example, in Eclipse use `Import` and then `Existing Maven projects`. You have to configure Java build path to include `/target/generated-sources/java` and run `mvn apt:process` to generate QueryDsl classes.
 
 Used tools, technologies and libraries:
 - [Apache Maven](https://maven.apache.org/)
@@ -28,15 +28,15 @@ Used tools, technologies and libraries:
 - JPA, Hibernate
 - [QueryDsl](http://www.querydsl.com/)
 - [Joda Time](http://www.joda.org/joda-time/)
-- [Guava](https://code.google.com/p/guava-libraries/]
+- [Guava](https://code.google.com/p/guava-libraries/)
 - [GWT](http://www.gwtproject.org/)
 - [GWTBootstrap](http://gwtbootstrap.github.io/)
 - ...
 
-
-Copyright
+Copyright & legal notice
 ---------
 You are (except as otherwise noted) free to use, copy, fork, adapt and redistribute all of the project's source code, but please give the credit.
+**This software is provided "AS IS", without warranty of any kind** ... (and so on :)).
 
 
 Jakob Merljak, 2013.
