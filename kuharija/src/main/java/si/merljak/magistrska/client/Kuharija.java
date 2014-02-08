@@ -45,9 +45,8 @@ import si.merljak.magistrska.common.rpc.mock.WOzServiceAsync;
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Image;
+import com.github.gwtbootstrap.client.ui.base.AlertBase;
 import com.github.gwtbootstrap.client.ui.constants.AlertType;
-import com.github.gwtbootstrap.client.ui.event.CloseEvent;
-import com.github.gwtbootstrap.client.ui.event.CloseHandler;
 import com.google.common.base.Joiner;
 import com.google.common.base.Joiner.MapJoiner;
 import com.google.common.base.Splitter;
@@ -59,6 +58,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -281,9 +282,9 @@ public class Kuharija implements EntryPoint {
 	public static void handleException(Throwable caught) {
 		Alert alert = new Alert(messages.unknownError(), AlertType.ERROR);
 		alert.setAnimation(true);
-		alert.addCloseHandler(new CloseHandler() {
+		alert.addCloseHandler(new CloseHandler<AlertBase>() {
 			@Override
-			public void onClose(CloseEvent closeEvent) {
+			public void onClose(CloseEvent<AlertBase> closeEvent) {
 				alertPlaceholder.clear();
 			}
 		});

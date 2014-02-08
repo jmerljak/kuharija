@@ -7,11 +7,11 @@ import si.merljak.magistrska.common.dto.VideoDto;
 
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.dom.client.VideoElement;
 import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;

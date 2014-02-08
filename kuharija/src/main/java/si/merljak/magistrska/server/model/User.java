@@ -12,6 +12,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -50,6 +52,7 @@ public class User implements Serializable {
 	private Set<Session> sessions;
 
 	@Version
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date updated;
 
 	protected User() {}
