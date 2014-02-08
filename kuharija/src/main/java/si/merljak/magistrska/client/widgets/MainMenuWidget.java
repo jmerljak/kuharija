@@ -102,8 +102,8 @@ public class MainMenuWidget extends Composite implements LoginEventHandler, Sear
 	}
 
 	@Override
-	public void doSearch() {
-		SearchPresenter.doSearch(searchWidget.getText());
+	public void doSearch(String searchString) {
+		SearchPresenter.doSearch(searchString);
 		searchWidget.clear();
 	}
 }

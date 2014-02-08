@@ -123,6 +123,9 @@ public interface CommonConstants extends Constants {
 	@DefaultStringValue("No results")
 	String searchNoResults();
 
+	@DefaultStringValue("No results for:")
+	String searchNoResultsForQuery();
+
 	@DefaultStringValue("Contains all listed")
 	String searchByAllIngredients();
 

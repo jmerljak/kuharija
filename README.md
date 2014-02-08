@@ -6,11 +6,11 @@ Kuharija
 Installation
 ------------
 Let's assume you have:
-- installed and basically configured JBoss Application Server 7,
+- installed and basically configured JBoss Application Server 7.1.1,
 - installed PostgreSQL 9, created database `${db.name}` in default tablespace and granted privileges to user `${db.user}` with password `${db.password}`,
 - replaced dummy database name, username and password in properties section of pom.xml with real ones.
 
-Than you can compile and deploy application (including JDBC driver and datasource) to JBoss Application Server 7 in just one single step!
+Than you can compile and deploy application (including JDBC driver and datasource) to JBoss Application Server 7.1.1 in just one single step!
 
 `mvn clean apt:process install jboss-as:deploy`
 
@@ -31,6 +31,7 @@ Used tools, technologies and libraries:
 - [Guava](https://code.google.com/p/guava-libraries/)
 - [GWT](http://www.gwtproject.org/)
 - [GWTBootstrap](http://gwtbootstrap.github.io/)
+- [GWT Chosen](http://jdramaix.github.io/gwtchosen/)
 - HTML5 (+ [ARIA](https://en.wikipedia.org/wiki/WAI-ARIA))
 - ...
 

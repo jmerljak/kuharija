@@ -12,12 +12,12 @@ import si.merljak.magistrska.common.enumeration.Season;
 
 /**
  * Parameters for advanced search.
- * 
+ *
  * @author Jakob Merljak
  */
 public class SearchParameters implements Serializable {
 
-	private static final long serialVersionUID = 2817702799360224889L;
+	private static final long serialVersionUID = 7889216557312346162L;
 
 	public static final int DEFAULT_PAGE_SIZE = 8;
 	public static final RecipeSortKey DEFAULT_SORT_KEY = RecipeSortKey.ID;
@@ -25,11 +25,11 @@ public class SearchParameters implements Serializable {
 	private int page = 1;
 	private int pageSize = DEFAULT_PAGE_SIZE;
 	private String searchString;
-	private Set<Difficulty> difficulties = new HashSet<Difficulty>(0);
-	private Set<Category> categories = new HashSet<Category>(0);
-	private Set<Season> seasons = new HashSet<Season>(0);
-	private Set<String> ingredients = new HashSet<String>(0);
-	private Set<String> utensils = new HashSet<String>(0);
+	private final Set<Difficulty> difficulties = new HashSet<Difficulty>(0);
+	private final Set<Category> categories = new HashSet<Category>(0);
+	private final Set<Season> seasons = new HashSet<Season>(0);
+	private final Set<String> ingredients = new HashSet<String>(0);
+	private final Set<String> utensils = new HashSet<String>(0);
 	private Language language;
 	private RecipeSortKey sortKey = DEFAULT_SORT_KEY;
 
@@ -82,6 +82,10 @@ public class SearchParameters implements Serializable {
 		return difficulties.remove(difficulty);
 	}
 
+	public void clearDifficulties() {
+		difficulties.clear();
+	}
+
 	public Set<Category> getCategories() {
 		return categories;
 	}
@@ -92,6 +96,10 @@ public class SearchParameters implements Serializable {
 
 	public boolean removeCategory(Category category) {
 		return categories.remove(category);
+	}
+
+	public void clearCategories() {
+		categories.clear();
 	}
 
 	public Set<Season> getSeasons() {
@@ -106,6 +114,10 @@ public class SearchParameters implements Serializable {
 		return seasons.remove(season);
 	}
 
+	public void clearSeasons() {
+		seasons.clear();
+	}
+
 	public Set<String> getIngredients() {
 		return ingredients;
 	}
@@ -118,6 +130,10 @@ public class SearchParameters implements Serializable {
 		return ingredients.remove(ingredient);
 	}
 
+	public void clearIngredients() {
+		ingredients.clear();
+	}
+
 	public Set<String> getUtensils() {
 		return utensils;
 	}
@@ -128,6 +144,10 @@ public class SearchParameters implements Serializable {
 
 	public boolean removeUtensil(String utensil) {
 		return this.utensils.remove(utensil);
+	}
+
+	public void clearUtensils() {
+		utensils.clear();
 	}
 
 	public Language getLanguage() {

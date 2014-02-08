@@ -25,7 +25,8 @@ import com.google.gwt.user.client.ui.HasText;
 public class SearchWidget extends Composite implements HasText {
 
 	public interface SearchHandler {
-		void doSearch();
+		/** Initiates search. */
+		void doSearch(String searchString);
 	}
 
 	// i18n
@@ -54,7 +55,7 @@ public class SearchWidget extends Composite implements HasText {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					handler.doSearch();
+					handler.doSearch(searchBox.getValue());
 				}
 			}
 		});
@@ -63,7 +64,7 @@ public class SearchWidget extends Composite implements HasText {
 		searchButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				handler.doSearch();
+				handler.doSearch(searchBox.getValue());
 			}
 		});
 

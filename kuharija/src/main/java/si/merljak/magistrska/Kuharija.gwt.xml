@@ -12,6 +12,9 @@
 
 	<!-- Bootstrap -->
 	<inherits name="com.github.gwtbootstrap.Bootstrap" />
+	
+	<!-- Chosen -->
+	<inherits name='com.watopi.chosen.Chosen'/>
 
 	<!-- Source path -->
 	<source path="client"/>
