@@ -4,15 +4,15 @@ import si.merljak.magistrska.common.enumeration.Unit;
 
 /**
  * Utility class for conversion between units (e.g. imperial to metric and vice versa).
- * 
- * Note: This is not very smart solution. Functionality is limited and 
+ *
+ * Note: This is not very smart solution. Functionality is limited and
  * we should find another (better) way to do conversions.
- * 
+ *
  * @author Jakob Merljak
  *
  */
 public final class Calc {
-	
+
 	private Calc() {}
 
 	public static Unit getUnit(Unit unit, boolean toMetric) {
@@ -87,7 +87,7 @@ public final class Calc {
 			case DL:
 				return amount / 2.4;
 			case ML:
-				return amount / 15;
+				return amount / 5;
 			case C:
 				return amount * 9.0 / 5 + 32;
 			default:
