@@ -85,7 +85,7 @@ public class Calc {
 			case DL:
 				return amount / 2.4;
 			case ML:
-				return amount / 15;
+				return amount / 5;
 			case C:
 				return amount * 9.0 / 5 + 32;
 			default:
