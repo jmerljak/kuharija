@@ -4,7 +4,7 @@ import java.util.List;
 
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.mvp.AbstractView;
-import si.merljak.magistrska.client.mvp.search.SearchPresenter;
+import si.merljak.magistrska.client.utils.Badges;
 import si.merljak.magistrska.client.widgets.AppendixWidget;
 import si.merljak.magistrska.client.widgets.CommentWidget;
 import si.merljak.magistrska.client.widgets.IngredientsWidget;
@@ -16,7 +16,6 @@ import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Season;
 
-import com.github.gwtbootstrap.client.ui.Badge;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Emphasis;
@@ -30,7 +29,6 @@ import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.constants.ImageType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -191,26 +189,14 @@ public class RecipeView extends AbstractView {
 		categoriesLabel.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
 		columnInfo.add(categoriesLabel);
 		for (Category category : recipe.getCategories()) {
-			Badge categoryBadge = new Badge(localizeEnum(category));
-			categoryBadge.setStylePrimaryName("category");
-			categoryBadge.addStyleDependentName(category.name().toLowerCase());
-			categoryBadge.setWordWrap(false);
-			Anchor categoryAnchor = new Anchor("", SearchPresenter.buildSearchByCategoryUrl(category));
-			categoryAnchor.getElement().appendChild(categoryBadge.getElement());
-			columnInfo.add(categoryAnchor);
+			columnInfo.add(Badges.getCategoryBadge(category));
 		}
 
 		Label seasonsLabel = new Label(constants.seasons());
 		seasonsLabel.setStyleName(Kuharija.CSS_VISUALLY_HIDDEN);
 		columnInfo.add(seasonsLabel);
 		for (Season season : recipe.getSeasons()) {
-			Badge seasonBadge = new Badge(localizeEnum(season));
-			seasonBadge.setStylePrimaryName("season");
-			seasonBadge.addStyleDependentName(season.name().toLowerCase());
-			seasonBadge.setWordWrap(false);
-			Anchor seasonAnchor = new Anchor("", SearchPresenter.buildSearchBySeasonUrl(season));
-			seasonAnchor.getElement().appendChild(seasonBadge.getElement());
-			columnInfo.add(seasonAnchor);
+			columnInfo.add(Badges.getSeasonBadge(season));
 		}
 
 		// ingredients

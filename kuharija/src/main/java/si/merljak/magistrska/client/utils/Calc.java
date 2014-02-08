@@ -11,7 +11,9 @@ import si.merljak.magistrska.common.enumeration.Unit;
  * @author Jakob Merljak
  *
  */
-public class Calc {
+public final class Calc {
+	
+	private Calc() {}
 
 	public static Unit getUnit(Unit unit, boolean toMetric) {
 		if (toMetric) {

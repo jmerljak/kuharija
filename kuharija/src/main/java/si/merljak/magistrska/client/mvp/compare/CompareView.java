@@ -8,13 +8,13 @@ import si.merljak.magistrska.client.i18n.IngredientsConstants;
 import si.merljak.magistrska.client.mvp.AbstractView;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
-import si.merljak.magistrska.client.mvp.search.SearchPresenter;
+import si.merljak.magistrska.client.utils.Badges;
+import si.merljak.magistrska.client.utils.EnumUtils;
 import si.merljak.magistrska.common.dto.IngredientDto;
 import si.merljak.magistrska.common.dto.RecipeDetailsDto;
 import si.merljak.magistrska.common.enumeration.Category;
 import si.merljak.magistrska.common.enumeration.Season;
 
-import com.github.gwtbootstrap.client.ui.Badge;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
@@ -116,7 +116,7 @@ public class CompareView extends AbstractView {
 
 //				compareTable.setText(ROW_TITLE, column, result.getSubHeading());
 				compareTable.setWidget(ROW_IMG, column, imageLink);
-				compareTable.setText(ROW_DIFFICULTY, column, localizeEnum(result.getDifficulty()));
+				compareTable.setText(ROW_DIFFICULTY, column, EnumUtils.localizeEnum(result.getDifficulty()));
 				compareTable.setText(ROW_TIME_PREPARATION, column, timeFromMinutes(result.getTimePreparation()));
 				compareTable.setText(ROW_TIME_COOKING, column, timeFromMinutes(result.getTimeCooking()));
 				compareTable.setText(ROW_TIME_OVERALL, column, timeFromMinutes(result.getTimeOverall()));
@@ -134,26 +134,14 @@ public class CompareView extends AbstractView {
 				// categories
 				FlowPanel categories = new FlowPanel();
 				for (Category category : result.getCategories()) {
-					Badge categoryBadge = new Badge(localizeEnum(category));
-					categoryBadge.setStylePrimaryName("category");
-					categoryBadge.addStyleDependentName(category.name().toLowerCase());
-					categoryBadge.setWordWrap(false);
-					Anchor categoryAnchor = new Anchor("", SearchPresenter.buildSearchByCategoryUrl(category));
-					categoryAnchor.getElement().appendChild(categoryBadge.getElement());
-					categories.add(categoryAnchor);
+					categories.add(Badges.getCategoryBadge(category));
 				}
 				compareTable.setWidget(ROW_CATEGORIES, column, categories);
 
 				// seasons
 				FlowPanel seasons = new FlowPanel();
 				for (Season season : result.getSeasons()) {
-					Badge seasonBadge = new Badge(localizeEnum(season));
-					seasonBadge.setStylePrimaryName("season");
-					seasonBadge.setWordWrap(false);
-					seasonBadge.addStyleDependentName(season.name().toLowerCase());
-					Anchor seasonAnchor = new Anchor("", SearchPresenter.buildSearchBySeasonUrl(season));
-					seasonAnchor.getElement().appendChild(seasonBadge.getElement());
-					seasons.add(seasonAnchor);
+					seasons.add(Badges.getSeasonBadge(season));
 				}
 				compareTable.setWidget(ROW_SEASONS, column, seasons);
 

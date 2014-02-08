@@ -13,6 +13,7 @@ import si.merljak.magistrska.client.mvp.login.LoginPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
 import si.merljak.magistrska.client.mvp.search.SearchPresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilIndexPresenter;
+import si.merljak.magistrska.client.utils.EnumUtils;
 import si.merljak.magistrska.common.dto.RecipeDto;
 import si.merljak.magistrska.common.dto.RecommendationsDto;
 import si.merljak.magistrska.common.enumeration.Category;
@@ -58,7 +59,7 @@ public class HomeView extends AbstractView {
 	private final FluidRow recommendPanel = new FluidRow();
 	private final FluidRow featuredPanel = new FluidRow();
 
-	private List<RecommendationType> recommendationTypes = Arrays.asList(
+	private final List<RecommendationType> recommendationTypes = Arrays.asList(
 			RecommendationType.INGREDIENTS_FROM_FRIDGE, 
 			RecommendationType.USER_PREFERENCES, 
 			RecommendationType.LOCAL_TIME,
@@ -66,7 +67,7 @@ public class HomeView extends AbstractView {
 			RecommendationType.LOCAL_SEASON,
 			RecommendationType.LOCAL_SPECIALTY);
 
-	private Set<Long> idSet = new HashSet<Long>();
+	private final Set<Long> idSet = new HashSet<Long>();
 
 	public HomeView() {
 		Heading heading = new Heading(HEADING_SIZE, constants.appTitle());
@@ -137,7 +138,7 @@ public class HomeView extends AbstractView {
 		UnorderedList categories = new UnorderedList();
 		categories.setStyleName("categoriesLinkList");
 		for (Category category : Category.values()) {
-			Anchor link = new Anchor(localizeEnum(category));
+			Anchor link = new Anchor(EnumUtils.localizeEnum(category));
 			link.setHref(SearchPresenter.buildSearchByCategoryUrl(category));
 			categories.add(new ListItem(link));
 		}
@@ -145,7 +146,7 @@ public class HomeView extends AbstractView {
 		UnorderedList seasons = new UnorderedList();
 		seasons.setStyleName("categoriesLinkList");
 		for (Season season : Season.values()) {
-			Anchor link = new Anchor(localizeEnum(season));
+			Anchor link = new Anchor(EnumUtils.localizeEnum(season));
 			link.setHref(SearchPresenter.buildSearchBySeasonUrl(season));
 			seasons.add(new ListItem(link));
 		}
@@ -153,7 +154,7 @@ public class HomeView extends AbstractView {
 		UnorderedList difficulties = new UnorderedList();
 		difficulties.setStyleName("categoriesLinkList");
 		for (Difficulty difficulty : Difficulty.values()) {
-			Anchor link = new Anchor(localizeEnum(difficulty));
+			Anchor link = new Anchor(EnumUtils.localizeEnum(difficulty));
 			link.setHref(SearchPresenter.buildSearchByDifficultyUrl(difficulty));
 			difficulties.add(new ListItem(link));
 		}
@@ -243,7 +244,7 @@ public class HomeView extends AbstractView {
 		recommendationEntry.setStyleName("resultEntry");
 		recommendationEntry.addStyleDependentName(type.name().toLowerCase());
 		recommendationEntry.add(link);
-		recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
+		recommendationEntry.add(new Label(EnumUtils.localizeEnum(recipe.getDifficulty())));
 		recommendationEntry.add(timeOverall);
 //		recommendationEntry.add(new Emphasis(constants.recommendationMap().get(type.name())));
 		featuredPanel.add(recommendationEntry);
@@ -276,7 +277,7 @@ public class HomeView extends AbstractView {
 		recommendationEntry.addStyleName("exposedEntry-" + type.name().toLowerCase());
 		recommendationEntry.add(lead);
 		recommendationEntry.add(link);
-		recommendationEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
+		recommendationEntry.add(new Label(EnumUtils.localizeEnum(recipe.getDifficulty())));
 		recommendationEntry.add(timeOverall);
 		recommendPanel.add(recommendationEntry);
 	}

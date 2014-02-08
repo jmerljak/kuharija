@@ -6,11 +6,6 @@ import java.util.List;
 import si.merljak.magistrska.client.Kuharija;
 import si.merljak.magistrska.client.i18n.CommonConstants;
 import si.merljak.magistrska.client.i18n.CommonMessages;
-import si.merljak.magistrska.common.enumeration.Category;
-import si.merljak.magistrska.common.enumeration.Difficulty;
-import si.merljak.magistrska.common.enumeration.Language;
-import si.merljak.magistrska.common.enumeration.Season;
-import si.merljak.magistrska.common.enumeration.Unit;
 
 import com.google.common.base.Joiner;
 import com.google.gwt.core.client.GWT;
@@ -37,31 +32,6 @@ public abstract class AbstractView extends Composite {
 	public static final String RECIPE_THUMB_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/recipe/thumbs/";
 	public static final String RECIPE_IMG_FALLBACK = "noimage.png";
 	public static final String UTENSIL_IMG_FOLDER = GWT.getHostPageBaseURL() + "img/utensil/";
-
-	/** Returns localized name of category. */
-	protected static String localizeEnum(Category category) {
-		return constants.categoryMap().get(category.name());
-	}
-
-	/** Returns localized name of difficulty. */
-	protected static String localizeEnum(Difficulty difficulty) {
-		return constants.difficultyMap().get(difficulty.name());
-	}
-
-	/** Gets localized name of language. */
-	protected static String localizeEnum(Language language) {
-		return constants.languageMap().get(language.name());
-	}
-
-	/** Gets localized name of season. */
-	protected static String localizeEnum(Season season) {
-		return constants.seasonMap().get(season.name());
-	}
-
-	/** Gets localized name of unit. */
-	protected static String localizeEnum(Unit unit) {
-		return constants.unitMap().get(unit.name());
-	}
 
 	/**
 	 * Formats time/duration from number of minutes.

@@ -14,6 +14,7 @@ import si.merljak.magistrska.client.mvp.compare.ComparePresenter;
 import si.merljak.magistrska.client.mvp.ingredient.IngredientPresenter;
 import si.merljak.magistrska.client.mvp.recipe.RecipePresenter;
 import si.merljak.magistrska.client.mvp.utensil.UtensilPresenter;
+import si.merljak.magistrska.client.utils.EnumUtils;
 import si.merljak.magistrska.client.widgets.PagingWidget;
 import si.merljak.magistrska.client.widgets.SearchWidget;
 import si.merljak.magistrska.common.SearchParameters;
@@ -114,7 +115,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 	private final Button filtersShowButton = new Button(constants.searchAdvanced() + " ");
 	private final Button filtersHideButton = new Button(constants.searchBasic() + " ");
 
-	private SuggestBox ingredientSuggest;
+	private final SuggestBox ingredientSuggest;
 	private final AppendButton ingredientSuggestForm = new AppendButton();
 	private final Button ingredientAdd = new Button();
 
@@ -126,7 +127,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 
 	// variables
 	private SearchParameters searchParameters = new SearchParameters(null, null);
-	private Set<Long> selectedRecipes = new HashSet<Long>();
+	private final Set<Long> selectedRecipes = new HashSet<Long>();
 
 	public SearchView () {
 		// headings
@@ -473,7 +474,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 			FlowPanel resultEntry = new FlowPanel();
 			resultEntry.setStyleName("resultEntry");
 			resultEntry.add(link);
-			resultEntry.add(new Label(localizeEnum(recipe.getDifficulty())));
+			resultEntry.add(new Label(EnumUtils.localizeEnum(recipe.getDifficulty())));
 
 			Label timeOverall = new Label(" " + timeFromMinutes(recipe.getTimeOverall()));
 			timeOverall.setTitle(constants.timeOverall());
@@ -534,7 +535,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 			Set<Difficulty> difficulties = searchParameters.getDifficulties();
 			for (final Difficulty difficulty : Difficulty.values()) {
 				boolean active = difficulties.contains(difficulty);
-				filterDifficulty.addItem(localizeEnum(difficulty), difficulty.name());
+				filterDifficulty.addItem(EnumUtils.localizeEnum(difficulty), difficulty.name());
 				filterDifficulty.setItemSelected(filterDifficulty.getItemCount() - 1, active);
 			}
 //			if (difficulties.isEmpty()) {
@@ -547,7 +548,7 @@ public class SearchView extends AbstractView implements PagingHandler, SearchWid
 			Set<Category> categories = searchParameters.getCategories();
 			for (final Category category : Category.values()) {
 				boolean active = categories.contains(category);
-				filterCategory.addItem(localizeEnum(category), category.name());
+				filterCategory.addItem(EnumUtils.localizeEnum(category), category.name());
 				filterCategory.setItemSelected(filterCategory.getItemCount() - 1, active);
 			}
 //			if (categories.isEmpty()) {
