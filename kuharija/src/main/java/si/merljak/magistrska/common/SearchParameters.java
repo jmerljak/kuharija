@@ -25,11 +25,11 @@ public class SearchParameters implements Serializable {
 	private int page = 1;
 	private int pageSize = DEFAULT_PAGE_SIZE;
 	private String searchString;
-	private final Set<Difficulty> difficulties = new HashSet<Difficulty>(0);
-	private final Set<Category> categories = new HashSet<Category>(0);
-	private final Set<Season> seasons = new HashSet<Season>(0);
-	private final Set<String> ingredients = new HashSet<String>(0);
-	private final Set<String> utensils = new HashSet<String>(0);
+	private Set<Difficulty> difficulties = new HashSet<Difficulty>(0);
+	private Set<Category> categories = new HashSet<Category>(0);
+	private Set<Season> seasons = new HashSet<Season>(0);
+	private Set<String> ingredients = new HashSet<String>(0);
+	private Set<String> utensils = new HashSet<String>(0);
 	private Language language;
 	private RecipeSortKey sortKey = DEFAULT_SORT_KEY;
 
